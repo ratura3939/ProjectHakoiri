@@ -1,6 +1,6 @@
 #include"DxLib.h"
 #include"Application.h"
-#include"SceneManager.h"
+#include"/Manager/SceneManager.h"
 
 Application* Application::instance_ = nullptr;
 

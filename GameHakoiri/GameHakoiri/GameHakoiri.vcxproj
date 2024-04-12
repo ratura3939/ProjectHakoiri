@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Scr\Manager\SceneManager.cpp" />
+    <ClCompile Include="Scr\Scene\SceneBase.cpp" />
+    <ClCompile Include="Shader\Fader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Scr\Manager\SceneManager.h" />
+    <ClInclude Include="Scr\Scene\SceneBase.h" />
+    <ClInclude Include="Shader\Fader.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -150,12 +162,6 @@
       <AdditionalLibraryDirectories>C:\DxLib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Scr\Application.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Scr\Application.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
