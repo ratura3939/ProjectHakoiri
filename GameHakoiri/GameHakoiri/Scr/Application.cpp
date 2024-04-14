@@ -42,6 +42,7 @@ bool Application::Init(void)
 	{
 		return false;	//初期化失敗のためシステム終了
 	}
+	
 
 	//正しく処理が終了したので
 	return true;
@@ -50,20 +51,21 @@ bool Application::Init(void)
 //********************************************************
 void Application::Run(void)
 {
+	SceneManager& instance = SceneManager::GetInstance();
 	//ゲームループ
 	//------------------------------------------------------------
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 		//ゲームメイン処理
 		//------------------------------------------------------------------------
-		SceneManager::GetInstance().Update();	//更新
+		instance.Update();	//更新
 
 		//描画処理
 		//------------------------------------------------------------------------
 		SetDrawScreen(DX_SCREEN_BACK);	//描画する画面を裏の画面に設定
 		ClearDrawScreen();				//描画する画面の内容を消去
 
-		SceneManager::GetInstance().Draw();	//描画
+		instance.Draw();	//描画
 
 		ScreenFlip();					//裏の画面を表の画面に瞬間コピー
 	}

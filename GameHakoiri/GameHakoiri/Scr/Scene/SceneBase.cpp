@@ -1,6 +1,6 @@
 #include<DxLib.h>
-#include"SceneBase.h"
 #include"../Manager/SceneManager.h"
+#include"SceneBase.h"
 
 //コンストラクタ
 //********************************************************

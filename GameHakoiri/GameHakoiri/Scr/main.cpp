@@ -1,11 +1,13 @@
-//ゲーム制作：kadai5
+//ゲーム制作：箱入り娘の脱出
 //氏名：松永諒雅
 //-----------------------------------------------------
 
 #include<DxLib.h>	//DXライブラリの使用
 #include"Application.h"
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int WINAPI WinMain(
+	HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine, int nCmdShow)
 {
 	if (Application::CreateInstance() == false)	//初期化
 	{

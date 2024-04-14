@@ -1,2 +1,11 @@
-﻿LIBCMTD.lib(exe_main.obj) : error LNK2019: 未解決の外部シンボル main が関数 "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) で参照されました
+﻿  GameScene.cpp
+C:\DxLib\DxLib.h(3964,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  ResultScene.cpp
+C:\DxLib\DxLib.h(3964,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  SelectScene.cpp
+C:\DxLib\DxLib.h(3964,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  TitleScene.cpp
+C:\DxLib\DxLib.h(3964,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  コードを生成中...
+LIBCMTD.lib(exe_main.obj) : error LNK2019: 未解決の外部シンボル main が関数 "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) で参照されました
 C:\Users\mryog\OneDrive\デスクトップ\ProjectHakoiri\GameHakoiri\x64\Debug\GameHakoiri.exe : fatal error LNK1120: 1 件の未解決の外部参照
