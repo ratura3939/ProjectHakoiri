@@ -13,8 +13,9 @@ public:
 	{
 		NONE
 		, TITLE
+		, SELECT
 		, GAME
-		, GAMEOVER
+		, RESULT
 		, MAX
 	};
 	//ç\ë¢ëÃ

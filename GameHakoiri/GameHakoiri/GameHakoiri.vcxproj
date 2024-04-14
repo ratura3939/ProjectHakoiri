@@ -19,15 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Scr\Application.cpp" />
+    <ClCompile Include="Scr\main.cpp" />
     <ClCompile Include="Scr\Manager\SceneManager.cpp" />
+    <ClCompile Include="Scr\Scene\GameScene.cpp" />
+    <ClCompile Include="Scr\Scene\ResultScene.cpp" />
     <ClCompile Include="Scr\Scene\SceneBase.cpp" />
+    <ClCompile Include="Scr\Scene\SelectScene.cpp" />
+    <ClCompile Include="Scr\Scene\TitleScene.cpp" />
     <ClCompile Include="Shader\Fader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
+    <ClInclude Include="Scr\Application.h" />
     <ClInclude Include="Scr\Manager\SceneManager.h" />
+    <ClInclude Include="Scr\Scene\GameScene.h" />
+    <ClInclude Include="Scr\Scene\ResultScene.h" />
     <ClInclude Include="Scr\Scene\SceneBase.h" />
+    <ClInclude Include="Scr\Scene\SelectScene.h" />
+    <ClInclude Include="Scr\Scene\TitleScene.h" />
     <ClInclude Include="Shader\Fader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

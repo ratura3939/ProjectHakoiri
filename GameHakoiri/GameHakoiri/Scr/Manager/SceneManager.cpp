@@ -1,8 +1,9 @@
 #include<DxLib.h>
 #include"SceneManager.h"
-#include"SceneTitle.h"
-#include"SceneGame.h"
-#include"SceneGameOver.h"
+#include"../Scene/TitleScene.h"
+#include"../Scene/SelectScene.h"
+#include"../Scene/GameScene.h"
+#include"../Scene/ResultScene.h"
 #include"../../Shader/Fader.h"
 
 
@@ -137,19 +138,25 @@ void SceneManager::DoChangeScene(void)
 	{
 	case SCENEID::TITLE:
 		//タイトル
-		scene_ = new SceneTitle;
+		scene_ = new TitleScene;
+		scene_->Init();
+		break;
+
+	case SCENEID::SELECT:
+		//ゲーム
+		scene_ = new SelectScene;
 		scene_->Init();
 		break;
 
 	case SCENEID::GAME:
 		//ゲーム
-		scene_ = new SceneGame;
+		scene_ = new GameScene;
 		scene_->Init();
 		break;
 
-	case SCENEID::GAMEOVER:
+	case SCENEID::RESULT:
 		//ゲームオーバー
-		scene_ = new SceneGameOver;
+		scene_ = new ResultScene;
 		scene_->Init();
 		break;
 	}

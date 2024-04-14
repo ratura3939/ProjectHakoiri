@@ -4,8 +4,8 @@ class Application
 {
 public:
 	//’è”
-	static constexpr int SCREEN_SIZE_X = 640;
-	static constexpr int SCREEN_SIZE_Y = 480;
+	static constexpr int SCREEN_SIZE_X = 1280;
+	static constexpr int SCREEN_SIZE_Y = 720;
 
 	//ƒƒ“ƒoŠÖ”
 	bool Init(void);	//‰Šú‰»

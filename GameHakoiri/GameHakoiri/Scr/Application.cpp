@@ -1,6 +1,6 @@
 #include"DxLib.h"
 #include"Application.h"
-#include"/Manager/SceneManager.h"
+#include"Manager/SceneManager.h"
 
 Application* Application::instance_ = nullptr;
 
@@ -29,7 +29,7 @@ bool Application::Init(void)
 {
 	//システム処理
 	//------------------------------------------------------------
-	SetWindowText("2316026 松永諒雅");	//ゲームウィンドウのタイトル
+	SetWindowText("ProjectHakoiri");	//ゲームウィンドウのタイトル
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 32);			//ゲームウィンドウのサイズと色モードを設定
 	ChangeWindowMode(true);				//ゲームウィンドウの表示方法（false : フルスクリーン）
 	if (DxLib_Init() == -1)				//DXライブラリの初期化処理
