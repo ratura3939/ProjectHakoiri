@@ -31,7 +31,7 @@ void SelectScene::Update(void)
 //********************************************************
 void SelectScene::Draw(void)
 {
-	//DrawString(0, 0, "SelectScene", 0xffffff, true);
+	DrawString(0, 0, "SelectScene", 0xffffff, true);
 }
 //‰ð•ú
 //********************************************************

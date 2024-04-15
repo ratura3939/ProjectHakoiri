@@ -31,7 +31,7 @@ void ResultScene::Update(void)
 //********************************************************
 void ResultScene::Draw(void)
 {
-	//DrawString(0, 0, "ResultScene", 0xffffff, true);
+	DrawString(0, 0, "ResultScene", 0xffffff, true);
 }
 //‰ð•ú
 //********************************************************

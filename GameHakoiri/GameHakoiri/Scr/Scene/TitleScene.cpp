@@ -30,7 +30,7 @@ void TitleScene::Update(void)
 //********************************************************
 void TitleScene::Draw(void)
 {
-	//DrawString(0, 0, "TitleScene",0xffffff, true);
+	DrawString(0, 0, "TitleScene",0xffffff, true);
 }
 //‰ð•ú
 //********************************************************
