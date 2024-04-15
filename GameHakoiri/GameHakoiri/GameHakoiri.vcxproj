@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Pazzle\PazzleBase.cpp" />
     <ClCompile Include="Src\Application.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Manager\SceneManager.cpp" />
@@ -29,8 +30,10 @@
     <ClCompile Include="Src\Scene\SelectScene.cpp" />
     <ClCompile Include="Src\Scene\TitleScene.cpp" />
     <ClCompile Include="Shader\Fader.cpp" />
+    <ClCompile Include="Src\Stealth\StealthBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Pazzle\PazzleBase.h" />
     <ClInclude Include="Src\Application.h" />
     <ClInclude Include="Src\Manager\SceneManager.h" />
     <ClInclude Include="Src\Scene\EndingScene.h" />
@@ -40,6 +43,7 @@
     <ClInclude Include="Src\Scene\SelectScene.h" />
     <ClInclude Include="Src\Scene\TitleScene.h" />
     <ClInclude Include="Shader\Fader.h" />
+    <ClInclude Include="Src\Stealth\StealthBase.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
