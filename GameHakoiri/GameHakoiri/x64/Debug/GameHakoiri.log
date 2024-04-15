@@ -1,11 +1,2 @@
-﻿  Application.cpp
-  main.cpp
-  SceneManager.cpp
-  GameScene.cpp
-  ResultScene.cpp
-  SceneBase.cpp
-  SelectScene.cpp
-  TitleScene.cpp
-  Fader.cpp
-  コードを生成中...
+﻿  EndingScene.cpp
   GameHakoiri.vcxproj -> C:\Users\2316026\Desktop\ProjectHakoiri\GameHakoiri\x64\Debug\GameHakoiri.exe

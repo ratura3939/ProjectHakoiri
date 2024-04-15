@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"../Manager/SceneManager.h"
 #include"TitleScene.h"
 
 
@@ -24,13 +25,17 @@ bool TitleScene::Init(void)
 //********************************************************
 void TitleScene::Update(void)
 {
-
+	if (SceneManager::GetInstance().SpaceHit() == true)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
+	}
 }
 //•`‰æ
 //********************************************************
 void TitleScene::Draw(void)
 {
 	DrawString(0, 0, "TitleScene",0xffffff, true);
+	DrawBox(50, 50, 500, 500, 0xffff00, true);
 }
 //‰ð•ú
 //********************************************************

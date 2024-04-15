@@ -5,6 +5,7 @@
 #include"../Scene/SelectScene.h"
 #include"../Scene/GameScene.h"
 #include"../Scene/ResultScene.h"
+#include"../Scene/EndingScene.h"
 #include"../../Shader/Fader.h"
 
 
@@ -144,7 +145,7 @@ void SceneManager::DoChangeScene(void)
 		break;
 
 	case SCENEID::SELECT:
-		//ゲーム
+		//ステージ選択
 		scene_ = new SelectScene;
 		scene_->Init();
 		break;
@@ -156,8 +157,14 @@ void SceneManager::DoChangeScene(void)
 		break;
 
 	case SCENEID::RESULT:
-		//ゲームオーバー
+		//リザルト
 		scene_ = new ResultScene;
+		scene_->Init();
+		break;
+
+	case SCENEID::ENDING:
+		//エンディング
+		scene_ = new EndingScene;
 		scene_->Init();
 		break;
 	}

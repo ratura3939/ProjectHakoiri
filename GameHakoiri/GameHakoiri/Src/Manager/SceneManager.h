@@ -16,6 +16,7 @@ public:
 		, SELECT
 		, GAME
 		, RESULT
+		, ENDING
 		, MAX
 	};
 	//ç\ë¢ëÃ

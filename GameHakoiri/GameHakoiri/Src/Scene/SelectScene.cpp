@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"../Manager/SceneManager.h"
 #include"SelectScene.h"
 
 
@@ -25,13 +26,17 @@ bool SelectScene::Init(void)
 //********************************************************
 void SelectScene::Update(void)
 {
-
+	if (SceneManager::GetInstance().SpaceHit() == true)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
+	}
 }
 //•`‰æ
 //********************************************************
 void SelectScene::Draw(void)
 {
 	DrawString(0, 0, "SelectScene", 0xffffff, true);
+	DrawBox(50, 50, 500, 500, 0xff00ff, true);
 }
 //‰ð•ú
 //********************************************************

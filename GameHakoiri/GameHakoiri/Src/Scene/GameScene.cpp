@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"../Manager/SceneManager.h"
 #include"GameScene.h"
 
 
@@ -12,7 +13,7 @@ GameScene::GameScene(void)
 //********************************************************
 GameScene::~GameScene(void)
 {
-
+	
 }
 //èâä˙âª
 //********************************************************
@@ -25,13 +26,17 @@ bool GameScene::Init(void)
 //********************************************************
 void GameScene::Update(void)
 {
-
+	if (SceneManager::GetInstance().SpaceHit() == true)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);
+	}
 }
 //ï`âÊ
 //********************************************************
 void GameScene::Draw(void)
 {
 	DrawString(0, 0, "GameScene", 0xffffff, true);
+	DrawBox(50, 50, 500, 500, 0x0000ff, true);
 }
 //âï˙
 //********************************************************

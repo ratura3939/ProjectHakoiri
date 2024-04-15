@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"../Manager/SceneManager.h"
 #include"ResultScene.h"
 
 
@@ -25,13 +26,17 @@ bool ResultScene::Init(void)
 //********************************************************
 void ResultScene::Update(void)
 {
-
+	if (SceneManager::GetInstance().SpaceHit() == true)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::ENDING, true);
+	}
 }
 //•`‰æ
 //********************************************************
 void ResultScene::Draw(void)
 {
 	DrawString(0, 0, "ResultScene", 0xffffff, true);
+	DrawBox(50, 50, 500, 500, 0x00ffff, true);
 }
 //‰ð•ú
 //********************************************************
