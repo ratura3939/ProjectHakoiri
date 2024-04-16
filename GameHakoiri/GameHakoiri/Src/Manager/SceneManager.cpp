@@ -6,7 +6,7 @@
 #include"../Scene/GameScene.h"
 #include"../Scene/ResultScene.h"
 #include"../Scene/EndingScene.h"
-#include"../../Shader/Fader.h"
+#include"../Common/Fader.h"
 
 
 //シングルトン化(インスタンスの初期化)
