@@ -1,10 +1,10 @@
 #pragma once
 
-class StealthBase
+class StageBase
 {
 public:
-	StealthBase(void);	//コンストラクタ
-	virtual ~StealthBase(void);	//デストラクタ
+	StageBase(void);	//コンストラクタ
+	virtual ~StageBase(void);	//デストラクタ
 
 	virtual bool Init(void);	//初期化
 	virtual void Update(void);	//更新

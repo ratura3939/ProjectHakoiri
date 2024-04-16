@@ -1,22 +1,22 @@
 #include<DxLib.h>
-#include "PazzleBase.h"
+#include "Pazzle.h"
 
 //コンストラクタ
 //********************************************************
-PazzleBase::PazzleBase(void)
+Pazzle::Pazzle(void)
 {
 
 }
 //デストラクタ
 //********************************************************
-PazzleBase::~PazzleBase(void)
+Pazzle::~Pazzle(void)
 {
 
 }
 
 //初期化
 //********************************************************
-bool PazzleBase::Init(void)
+bool Pazzle::Init(void)
 {
 
 	//正しく処理が終了したので
@@ -24,19 +24,19 @@ bool PazzleBase::Init(void)
 }
 //更新
 //********************************************************
-void PazzleBase::Update(void)
+void Pazzle::Update(void)
 {
 
 }
 //描画
 //********************************************************
-void PazzleBase::Draw(void)
+void Pazzle::Draw(void)
 {
 
 }
 //解放
 //********************************************************
-bool PazzleBase::Release(void)
+bool Pazzle::Release(void)
 {
 
 	//正しく処理が終了したので

@@ -1,22 +1,22 @@
 #include<DxLib.h>
-#include"StealthBase.h"
+#include"Stealth.h"
 
 //コンストラクタ
 //********************************************************
-StealthBase::StealthBase(void)
+Stealth::Stealth(void)
 {
 
 }
 //デストラクタ
 //********************************************************
-StealthBase::~StealthBase(void)
+Stealth::~Stealth(void)
 {
 
 }
 
 //初期化
 //********************************************************
-bool StealthBase::Init(void)
+bool Stealth::Init(void)
 {
 
 	//正しく処理が終了したので
@@ -24,19 +24,19 @@ bool StealthBase::Init(void)
 }
 //更新
 //********************************************************
-void StealthBase::Update(void)
+void Stealth::Update(void)
 {
 
 }
 //描画
 //********************************************************
-void StealthBase::Draw(void)
+void Stealth::Draw(void)
 {
 
 }
 //解放
 //********************************************************
-bool StealthBase::Release(void)
+bool Stealth::Release(void)
 {
 
 	//正しく処理が終了したので

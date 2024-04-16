@@ -1,9 +1,9 @@
-#pragma once
-class PazzleBase
+//#pragma once
+class Pazzle
 {
 public:
-	PazzleBase(void);	//コンストラクタ
-	virtual ~PazzleBase(void);	//デストラクタ
+	Pazzle(void);	//コンストラクタ
+	virtual ~Pazzle(void);	//デストラクタ
 
 	virtual bool Init(void);	//初期化
 	virtual void Update(void);	//更新
