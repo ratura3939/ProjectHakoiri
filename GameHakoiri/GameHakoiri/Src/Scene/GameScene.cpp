@@ -1,5 +1,8 @@
 #include<DxLib.h>
 #include"../Manager/SceneManager.h"
+#include"../Manager/StageManager.h"
+#include"../System/Pazzle.h"
+#include"../System/Stealth.h"
 #include"GameScene.h"
 
 
@@ -19,6 +22,12 @@ GameScene::~GameScene(void)
 //********************************************************
 bool GameScene::Init(void)
 {
+	//インスタンスの生成
+	if (!StageManager::CreateInstance())
+	{
+		return false;	//初期化失敗のためシステム終了
+	}
+
 	//正常に処理が行われたので
 	return true;
 }
@@ -35,13 +44,15 @@ void GameScene::Update(void)
 //********************************************************
 void GameScene::Draw(void)
 {
+	StageManager::GetInstance().Draw();
 	DrawString(0, 0, "GameScene", 0xffffff, true);
-	DrawBox(50, 50, 500, 500, 0x0000ff, true);
+	//DrawBox(50, 50, 500, 500, 0x0000ff, true);
 }
 //解放
 //********************************************************
 bool GameScene::Release(void)
 {
+	StageManager::GetInstance().Release();
 	//正常に処理が行われたので
 	return true;
 }

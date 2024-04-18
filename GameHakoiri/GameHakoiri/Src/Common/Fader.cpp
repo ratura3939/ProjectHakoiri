@@ -1,5 +1,5 @@
 #include <DxLib.h>
-#include "../Src/Application.h"
+#include "../Application.h"
 #include "Fader.h"
 
 Fader::Fader(void)

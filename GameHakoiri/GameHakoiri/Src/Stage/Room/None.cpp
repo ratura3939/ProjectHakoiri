@@ -1,0 +1,14 @@
+#include<DxLib.h>
+#include "None.h"
+
+//パラメータの設定
+void None::SetParam(void)
+{
+	PazzleSize_ = { 1.0f,1.0f };
+	StealthSize_ = { 0.0f,0.0f };
+	//画像の格納
+
+//テスト用
+	//dbgColor_ = 0x8b4513;
+	dbgColor_ = 0xff0000;
+}

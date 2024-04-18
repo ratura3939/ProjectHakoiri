@@ -1,8 +1,2 @@
-﻿  PazzleBase.cpp
-c1xx : fatal error C1083: ソース ファイルを開けません。'Src\Pazzle\PazzleBase.cpp':No such file or directory
-  SceneManager.cpp
-  Fader.cpp
-c1xx : fatal error C1083: ソース ファイルを開けません。'Shader\Fader.cpp':No such file or directory
-  StealthBase.cpp
-c1xx : fatal error C1083: ソース ファイルを開けません。'Src\Stealth\StealthBase.cpp':No such file or directory
-  コードを生成中...
+﻿  StageBase.cpp
+  GameHakoiri.vcxproj -> C:\Users\2316026\Desktop\ProjectHakoiri\GameHakoiri\x64\Debug\GameHakoiri.exe

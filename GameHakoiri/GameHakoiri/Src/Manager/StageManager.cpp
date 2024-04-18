@@ -1,4 +1,6 @@
 #include<DxLib.h>
+#include"../Stage/StageBase.h"
+#include"../Stage/TutorialStage.h"
 #include"StageManager.h"
 
 //シングルトン化(インスタンスの初期化)
@@ -8,7 +10,7 @@ StageManager* StageManager::instance_ = nullptr;
 //********************************************************
 StageManager::StageManager(void)
 {
-
+	stage_ = nullptr;
 }
 //デストラクタ
 //********************************************************
@@ -21,6 +23,12 @@ void StageManager::Destroy(void)
 //********************************************************
 bool StageManager::Init(void)
 {
+	stage_ = new TutorialStage();
+	if (!stage_->Init())
+	{
+		OutputDebugString("チュートリアルの初期化失敗");
+		return false;
+	}
 
 	//正しく処理が終了したので
 	return true;
@@ -35,13 +43,15 @@ void StageManager::Update(void)
 //********************************************************
 void StageManager::Draw(void)
 {
-
+	stage_->Draw();
 }
 //解放
 //********************************************************
 bool StageManager::Release(void)
 {
-
+	stage_->Release();
+	delete stage_;
+	stage_ = nullptr;
 	//正しく処理が終了したので
 	return true;
 }
@@ -55,7 +65,7 @@ bool StageManager::CreateInstance(void)
 	}
 	if (!instance_->Init())	//初期化に失敗したら
 	{
-		OutputDebugString("シーンマネージャ初期化失敗");
+		OutputDebugString("ステージマネージャ初期化失敗");
 		return false;
 	}
 	//正しく処理が終了したので

@@ -1,19 +1,10 @@
 #pragma once
 
+class StageBase;
+
 class StageManager
 {
 public:
-	//列挙型
-	enum class STAGENUM
-	{
-		TUTORIAL
-		, FIRST
-		, SECOND
-		, THIRD
-		,MAX
-	};
-
-	
 
 	bool Init(void);	//初期化
 	void Update(void);	//更新
@@ -32,4 +23,6 @@ private:
 	void Destroy(void);	//デストラクタ
 
 	static  StageManager* instance_;	//実体を確保
+
+	StageBase* stage_;
 };
