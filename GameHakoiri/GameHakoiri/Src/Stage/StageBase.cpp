@@ -1,5 +1,10 @@
 #include<DxLib.h>
+#include<fstream>
+#include<sstream>
+#include<string>
+
 #include"../Application.h"
+#include"../Utility/Utility.h"
 #include"Room/RoomBase.h"
 #include"Room/Wasitu.h"
 #include"Room/None.h"
@@ -26,7 +31,8 @@ bool StageBase::Init(void)
 
 	//テスト用
 
-	
+	size_t pzlY = pzlY_.size();
+	size_t pzlX = pzlX_.size();
 	
 	for (int i = 0; i < 5; i++)
 	{
@@ -68,6 +74,9 @@ bool StageBase::Init(void)
 
 		rooms_.push_back(r);	//配列内に格納
 	}
+
+	LoadPazzle();
+
 	//正しく処理が終了したので
 	return true;
 }
@@ -86,7 +95,21 @@ void StageBase::Draw(void)
 	int x = 0;
 	int y = 0;
 
-	size_t piece = rooms_.size();
+	size_t pzlY = pzlY_.size();
+	size_t pzlX = pzlX_.size();
+	for (int i = 0; i < pzlY; i++)
+	{
+		for (int m = 0; m < pzlX; m++)
+		{
+			pos.x_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_X);
+			rooms_[i]->SetPzlPos(pos);
+			rooms_[i]->DrawPazzle();
+			DrawFormatString(x, y, 0xffffff, "配列%dを描画", i, true);
+			y += 100;
+		}
+	}
+
+	/*size_t piece = rooms_.size();
 	for (int i = 0; i < piece; i++)
 	{
 		pos.x_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_X);
@@ -94,7 +117,8 @@ void StageBase::Draw(void)
 		rooms_[i]->DrawPazzle();
 		DrawFormatString(x, y, 0xffffff, "配列%dを描画", i, true);
 		y += 100;
-	}
+	}*/
+
 }
 //解放
 //********************************************************
@@ -110,6 +134,49 @@ bool StageBase::Release(void)
 	}
 	//正しく処理が終了したので
 	return true;
+}
+//盤面の読み込み
+//********************************************************
+void StageBase::LoadPazzle(void)
+{
+	std::string loadName;
+	//loadName = Application::PATH_PAZZLE + testName_;
+
+	//std::ifstream ifs = std::ifstream(loadName);
+	std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/test.csv");
+	if (!ifs)
+	{
+		OutputDebugString("地上ステージのifstreamの準備失敗");
+		return;
+	}
+
+	int chipNo = 0;
+	//列の先頭から保存する
+	int x = 0;
+	int y = 0;
+	int num = 0;
+
+	//行格納用領域
+	std::string line;
+	while (getline(ifs, line))	//行がある間
+	{
+		//Split関数戻り値受け取り用
+		std::vector<std::string> strSplit;
+
+		strSplit = Utility::Split(line, ',');	//関数の呼び出し
+
+		//一文字の情報
+		std::string chipData;
+		//分割したマップデータを格納する
+		for (int x = 0; x < strSplit.size(); x++)
+		{
+			chipNo = stoi(strSplit[x]);
+			num = chipNo;
+			pzlX_.push_back(num);	//配列内に格納
+		}
+		pzlY_.push_back(pzlX_);	//配列内に格納
+	}
+
 }
 
 //ステージごとのパラメータ設定

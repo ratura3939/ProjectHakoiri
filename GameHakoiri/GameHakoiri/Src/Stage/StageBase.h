@@ -30,12 +30,19 @@ public:
 
 
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
+	void LoadPazzle(void);			//盤面の読み込み
 
 private:
 	std::vector<RoomBase*> rooms_;	//部屋の動的管理
+
+	std::vector<int>pzlX_;
+	std::vector<std::vector<int>>pzlY_;
 
 protected:
 
 	//テスト用
 	int test_[5];
+	int testX_;
+	int testY_;
+	//std::string testName_;
 };

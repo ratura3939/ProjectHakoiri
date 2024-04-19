@@ -1,11 +1,19 @@
 //#pragma once
 
+#include <string>
+
 class Application
 {
 public:
 	//定数
+	// スクリーンサイズ
+	//-------------------------------------------
 	static constexpr int SCREEN_SIZE_X = 1280;
 	static constexpr int SCREEN_SIZE_Y = 720;
+
+	// データパス関連
+	//-------------------------------------------
+	static const std::string PATH_PAZZLE;
 
 	//メンバ関数
 	bool Init(void);	//初期化
