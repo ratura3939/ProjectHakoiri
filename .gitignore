@@ -30,3 +30,8 @@ GameHakoiri/GameHakoiri/x64/Debug/vc143.idb
 GameHakoiri/GameHakoiri/x64/Debug/main.obj
 GameHakoiri/GameHakoiri/x64/Debug/GameHakoiri.tlog/link.write.1.tlog
 *.tlog
+GameHakoiri/x64/Debug/GameHakoiri.pdb
+GameHakoiri/GameHakoiri/x64/Debug/vc143.pdb
+GameHakoiri/GameHakoiri/x64/Debug/vc143.idb
+*.obj
+*.tlog

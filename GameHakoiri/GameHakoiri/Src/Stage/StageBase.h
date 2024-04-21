@@ -1,6 +1,8 @@
 #pragma once
 #include<vector>
 #include<list>
+#include<string>
+#include<map>
 
 //StageBaseは各ステージの情報置き場という認識
 
@@ -31,18 +33,18 @@ public:
 
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 	void LoadPazzle(void);			//盤面の読み込み
+	void CreateKey(int y, int x);	//連想配列のキー生成
 
 private:
-	std::vector<RoomBase*> rooms_;	//部屋の動的管理
+	std::map<std::string, RoomBase*> roomMng_;	//部屋の情報一括管理
+	std::string roomKey_;	//連想配列のキー
+
 
 	std::vector<int>pzlX_;
-	std::vector<std::vector<int>>pzlY_;
+	std::vector<std::vector<int>>pzlMap_;	//パズルの置き場情報を数字で管理
 
 protected:
 
 	//テスト用
-	int test_[5];
-	int testX_;
-	int testY_;
 	//std::string testName_;
 };

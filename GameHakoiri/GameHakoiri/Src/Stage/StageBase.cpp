@@ -1,7 +1,6 @@
 #include<DxLib.h>
 #include<fstream>
 #include<sstream>
-#include<string>
 
 #include"../Application.h"
 #include"../Utility/Utility.h"
@@ -14,7 +13,7 @@
 //********************************************************
 StageBase::StageBase(void)
 {
-
+	roomKey_ = "00";
 }
 //デストラクタ
 //********************************************************
@@ -27,56 +26,61 @@ StageBase::~StageBase(void)
 //********************************************************
 bool StageBase::Init(void)
 {
+	//
 	SetParam();
-
-	//テスト用
-
-	size_t pzlY = pzlY_.size();
-	size_t pzlX = pzlX_.size();
-	
-	for (int i = 0; i < 5; i++)
-	{
-		RoomBase* r = nullptr;
-
-		switch (static_cast<RoomBase::TYPE>(test_[i]))
-		{
-		case RoomBase::TYPE::NONE: //空きスペース
-			r = new None();
-			OutputDebugString("NONEのインスタンス生成\n");
-			break;
-		//case RoomBase::TYPE::OWN: //自室
-		//	r = new Own();
-		//	break;
-		case RoomBase::TYPE::WASITU: //和室
-			r = new Wasitu();
-			OutputDebugString("和室のインスタンス生成\n");
-			break;
-		//case RoomBase::TYPE::LIVING: //居間
-		//	r = new Living();
-		//	break;
-		//case RoomBase::TYPE::BATH: //風呂
-		//	r = new Bath();
-		//	break;
-		//case RoomBase::TYPE::STORAGE: //物置
-		//	r = new Storage();
-		//	break;
-		//case RoomBase::TYPE::KITCHEN: //台所
-		//	r = new Kitchen();
-		//	break;
-		//case RoomBase::TYPE::ENTRANCE: //玄関
-		//	r = new Entrance();
-		//	break;
-		}
-		if (r->Init() == false)
-		{
-			OutputDebugString("部屋の初期化失敗\n");
-		}
-
-		rooms_.push_back(r);	//配列内に格納
-	}
 
 	LoadPazzle();
 
+	//テスト用
+
+	size_t pzlY = pzlMap_.size();
+	size_t pzlX = pzlX_.size();
+
+	for (int y = 0; y < pzlY; y++)
+	{
+		for (int x = 0; x < pzlX; x++)
+		{
+			RoomBase* r = nullptr;
+
+			switch (static_cast<RoomBase::TYPE>(pzlMap_[y][x]))
+			{
+			case RoomBase::TYPE::NONE: //空きスペース
+				r = new None();
+				OutputDebugString("NONEのインスタンス生成\n");
+				break;
+				//case RoomBase::TYPE::OWN: //自室
+				//	r = new Own();
+				//	break;
+			case RoomBase::TYPE::WASITU: //和室
+				r = new Wasitu();
+				OutputDebugString("和室のインスタンス生成\n");
+				break;
+				//case RoomBase::TYPE::LIVING: //居間
+				//	r = new Living();
+				//	break;
+				//case RoomBase::TYPE::BATH: //風呂
+				//	r = new Bath();
+				//	break;
+				//case RoomBase::TYPE::STORAGE: //物置
+				//	r = new Storage();
+				//	break;
+				//case RoomBase::TYPE::KITCHEN: //台所
+				//	r = new Kitchen();
+				//	break;
+				//case RoomBase::TYPE::ENTRANCE: //玄関
+				//	r = new Entrance();
+				//	break;
+			}
+			if (r->Init() == false)
+			{
+				OutputDebugString("部屋の初期化失敗\n");
+			}
+
+			//rooms_.push_back(r);	//配列内に格納
+			CreateKey(y, x);
+			roomMng_[roomKey_] = r;
+		}
+	}
 	//正しく処理が終了したので
 	return true;
 }
@@ -92,20 +96,17 @@ void StageBase::Draw(void)
 {
 	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 2),
 	static_cast<float>(Application::SCREEN_SIZE_Y / 2) };
-	int x = 0;
-	int y = 0;
 
-	size_t pzlY = pzlY_.size();
+	size_t pzlY = pzlMap_.size();
 	size_t pzlX = pzlX_.size();
-	for (int i = 0; i < pzlY; i++)
+	for (int y = 0; y < pzlY; y++)
 	{
-		for (int m = 0; m < pzlX; m++)
+		for (int x = 0; x < pzlX; x++)
 		{
 			pos.x_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_X);
-			rooms_[i]->SetPzlPos(pos);
-			rooms_[i]->DrawPazzle();
-			DrawFormatString(x, y, 0xffffff, "配列%dを描画", i, true);
-			y += 100;
+			CreateKey(y, x);
+			roomMng_[roomKey_]->SetPzlPos(pos);
+			roomMng_[roomKey_]->DrawPazzle();;
 		}
 	}
 
@@ -125,13 +126,19 @@ void StageBase::Draw(void)
 bool StageBase::Release(void)
 {
 	//駒
-	size_t size = rooms_.size();
-	for (int i = 0; i < size; i++)
+	size_t pzlY = pzlMap_.size();
+	size_t pzlX = pzlX_.size();
+	for (int y = 0; y < pzlY; y++)
 	{
-		rooms_[i]->Release();
-		delete rooms_[i];
-		rooms_[i] = nullptr;
+		for (int x = 0; x < pzlX; x++)
+		{
+			CreateKey(y, x);
+			roomMng_[roomKey_]->Release();
+			delete roomMng_[roomKey_];
+			roomMng_[roomKey_] = nullptr;
+		}
 	}
+
 	//正しく処理が終了したので
 	return true;
 }
@@ -174,7 +181,7 @@ void StageBase::LoadPazzle(void)
 			num = chipNo;
 			pzlX_.push_back(num);	//配列内に格納
 		}
-		pzlY_.push_back(pzlX_);	//配列内に格納
+		pzlMap_.push_back(pzlX_);	//配列内に格納
 	}
 
 }
@@ -184,4 +191,10 @@ void StageBase::LoadPazzle(void)
 void StageBase::SetParam(void)
 {
 	//この関数は派生先ごとのものなので関係なし
+}
+//連想配列のキー生成
+//********************************************************
+void StageBase::CreateKey(int y, int x)
+{
+	roomKey_ = std::to_string(y) + std::to_string(x);
 }
