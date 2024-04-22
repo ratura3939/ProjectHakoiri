@@ -1,6 +1,5 @@
 #include<DxLib.h>
-#include<fstream>
-#include<sstream>
+
 
 #include"../Application.h"
 #include"../Utility/Utility.h"
@@ -36,13 +35,15 @@ bool StageBase::Init(void)
 	size_t pzlY = pzlMap_.size();
 	size_t pzlX = pzlX_.size();
 
+	pzlX /= pzlY;
+
 	for (int y = 0; y < pzlY; y++)
 	{
 		for (int x = 0; x < pzlX; x++)
 		{
 			RoomBase* r = nullptr;
 
-			switch (static_cast<RoomBase::TYPE>(pzlMap_[y][x]))
+			switch (static_cast<RoomBase::TYPE>(pzlMap_[y][x+(3*y)]))
 			{
 			case RoomBase::TYPE::NONE: //ãÛÇ´ÉXÉyÅ[ÉX
 				r = new None();
@@ -99,6 +100,9 @@ void StageBase::Draw(void)
 
 	size_t pzlY = pzlMap_.size();
 	size_t pzlX = pzlX_.size();
+
+	pzlX /= pzlY;
+
 	for (int y = 0; y < pzlY; y++)
 	{
 		for (int x = 0; x < pzlX; x++)
@@ -108,6 +112,8 @@ void StageBase::Draw(void)
 			roomMng_[roomKey_]->SetPzlPos(pos);
 			roomMng_[roomKey_]->DrawPazzle();;
 		}
+		pos.x_ = static_cast<float>(Application::SCREEN_SIZE_X / 2);
+		pos.y_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_Y);
 	}
 
 	/*size_t piece = rooms_.size();
@@ -128,6 +134,9 @@ bool StageBase::Release(void)
 	//ãÓ
 	size_t pzlY = pzlMap_.size();
 	size_t pzlX = pzlX_.size();
+
+	pzlX /= pzlY;
+
 	for (int y = 0; y < pzlY; y++)
 	{
 		for (int x = 0; x < pzlX; x++)
@@ -150,7 +159,8 @@ void StageBase::LoadPazzle(void)
 	//loadName = Application::PATH_PAZZLE + testName_;
 
 	//std::ifstream ifs = std::ifstream(loadName);
-	std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/test.csv");
+	std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/test_2.csv");
+
 	if (!ifs)
 	{
 		OutputDebugString("ínè„ÉXÉeÅ[ÉWÇÃifstreamÇÃèÄîıé∏îs");
@@ -160,8 +170,6 @@ void StageBase::LoadPazzle(void)
 	int chipNo = 0;
 	//óÒÇÃêÊì™Ç©ÇÁï€ë∂Ç∑ÇÈ
 	int x = 0;
-	int y = 0;
-	int num = 0;
 
 	//çsäiî[ópóÃàÊ
 	std::string line;
@@ -178,8 +186,7 @@ void StageBase::LoadPazzle(void)
 		for (int x = 0; x < strSplit.size(); x++)
 		{
 			chipNo = stoi(strSplit[x]);
-			num = chipNo;
-			pzlX_.push_back(num);	//îzóÒì‡Ç…äiî[
+			pzlX_.push_back(chipNo);	//îzóÒì‡Ç…äiî[
 		}
 		pzlMap_.push_back(pzlX_);	//îzóÒì‡Ç…äiî[
 	}
@@ -196,5 +203,6 @@ void StageBase::SetParam(void)
 //********************************************************
 void StageBase::CreateKey(int y, int x)
 {
-	roomKey_ = std::to_string(y) + std::to_string(x);
+	std::string key= std::to_string(y) + std::to_string(x);
+	roomKey_ = key;
 }

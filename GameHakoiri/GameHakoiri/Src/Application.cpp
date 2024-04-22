@@ -4,7 +4,7 @@
 
 Application* Application::instance_ = nullptr;
 
-const std::string Application::PATH_PAZZLE = "Data/Csv/Pazzle/";
+//const std::string Application::PATH_PAZZLE = "Data/Csv/Pazzle/";
 
 //コンストラクタ
 //********************************************************

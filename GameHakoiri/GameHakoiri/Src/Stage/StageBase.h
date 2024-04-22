@@ -1,6 +1,8 @@
 #pragma once
 #include<vector>
 #include<list>
+#include<fstream>
+#include<sstream>
 #include<string>
 #include<map>
 
