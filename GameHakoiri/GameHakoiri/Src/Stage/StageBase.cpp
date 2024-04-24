@@ -93,7 +93,7 @@ void StageBase::Update(void)
 }
 //•`‰æ
 //********************************************************
-void StageBase::Draw(void)
+void StageBase::PazzleDraw(void)
 {
 	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 2),
 	static_cast<float>(Application::SCREEN_SIZE_Y / 2) };
@@ -115,17 +115,6 @@ void StageBase::Draw(void)
 		pos.x_ = static_cast<float>(Application::SCREEN_SIZE_X / 2);
 		pos.y_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_Y);
 	}
-
-	/*size_t piece = rooms_.size();
-	for (int i = 0; i < piece; i++)
-	{
-		pos.x_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_X);
-		rooms_[i]->SetPzlPos(pos);
-		rooms_[i]->DrawPazzle();
-		DrawFormatString(x, y, 0xffffff, "”z—ñ%d‚ð•`‰æ", i, true);
-		y += 100;
-	}*/
-
 }
 //‰ð•ú
 //********************************************************

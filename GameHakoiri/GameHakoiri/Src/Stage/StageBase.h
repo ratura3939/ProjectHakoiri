@@ -19,7 +19,7 @@ public:
 
 	virtual bool Init(void);	//‰Šú‰»
 	virtual void Update(void);	//XV
-	virtual void Draw(void);	//•`‰æ
+	virtual void PazzleDraw(void);	//•`‰æ
 	virtual bool Release(void);	//‰ğ•ú
 
 

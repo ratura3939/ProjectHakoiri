@@ -1,6 +1,7 @@
 #include<DxLib.h>
 #include"Application.h"
 #include"Manager/SceneManager.h"
+#include"Manager/InputManager.h"
 
 Application* Application::instance_ = nullptr;
 
@@ -45,6 +46,7 @@ bool Application::Init(void)
 		return false;	//初期化失敗のためシステム終了
 	}
 	
+	InputManager::CreateInstance();
 
 	//正しく処理が終了したので
 	return true;
@@ -60,6 +62,7 @@ void Application::Run(void)
 	{
 		//ゲームメイン処理
 		//------------------------------------------------------------------------
+		InputManager::GetInstance().Update();
 		instance.Update();	//更新
 
 		//描画処理

@@ -32,6 +32,7 @@ bool GameScene::Init(void)
 	}
 
 	mode_ = MODE::PAZZLE;
+	pzl_ = new Pazzle;
 
 	//³í‚Éˆ—‚ªs‚í‚ê‚½‚Ì‚Å
 	return true;
@@ -49,7 +50,7 @@ void GameScene::Update(void)
 	switch (mode_)
 	{
 	case GameScene::MODE::PAZZLE:
-		
+		pzl_->Update();
 		break;
 	case GameScene::MODE::STEALTH:
 
@@ -63,7 +64,6 @@ void GameScene::Draw(void)
 {
 	StageManager::GetInstance().Draw();
 	DrawString(0, 0, "GameScene", 0xffffff, true);
-	//DrawBox(50, 50, 500, 500, 0x0000ff, true);
 }
 //‰ð•ú
 //********************************************************

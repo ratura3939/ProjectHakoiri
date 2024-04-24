@@ -26,7 +26,8 @@ bool TitleScene::Init(void)
 //********************************************************
 void TitleScene::Update(void)
 {
-	auto& ins = InputManager::GetInstance();
+	InputManager& ins = InputManager::GetInstance();
+
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);

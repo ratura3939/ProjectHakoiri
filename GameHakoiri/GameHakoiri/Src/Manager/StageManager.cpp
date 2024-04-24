@@ -63,7 +63,7 @@ void StageManager::Update(void)
 //********************************************************
 void StageManager::Draw(void)
 {
-	stage_->Draw();
+	stage_->PazzleDraw();
 }
 //‰ð•ú
 //********************************************************
