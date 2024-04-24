@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include"../Manager/SceneManager.h"
+#include"../Manager/InputManager.h"
 #include"SelectScene.h"
 
 
@@ -7,7 +8,7 @@
 //********************************************************
 SelectScene::SelectScene(void)
 {
-
+	selectNum_ = 0;
 }
 //デストラクタ
 //********************************************************
@@ -19,6 +20,7 @@ SelectScene::~SelectScene(void)
 //********************************************************
 bool SelectScene::Init(void)
 {
+	selectNum_ = 0;
 	//正常に処理が行われたので
 	return true;
 }
@@ -26,8 +28,11 @@ bool SelectScene::Init(void)
 //********************************************************
 void SelectScene::Update(void)
 {
-	if (SceneManager::GetInstance().SpaceHit() == true)
+	auto& ins = InputManager::GetInstance();
+	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
+		//ステージナンバーを受け渡しシーン切り替え
+		SceneManager::GetInstance().SetStageNum(selectNum_);
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
 	}
 }

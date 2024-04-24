@@ -11,6 +11,7 @@ StageManager* StageManager::instance_ = nullptr;
 StageManager::StageManager(void)
 {
 	stage_ = nullptr;
+	num_ = STAGENUM::MAX;
 }
 //デストラクタ
 //********************************************************
@@ -21,12 +22,31 @@ void StageManager::Destroy(void)
 
 //初期化
 //********************************************************
-bool StageManager::Init(void)
+bool StageManager::Init(STAGENUM num)
 {
-	stage_ = new TutorialStage();
+	num_ = num;
+
+	switch (num_)
+	{
+	case StageManager::STAGENUM::TUTORIAL:
+		stage_ = new TutorialStage();
+		break;
+	case StageManager::STAGENUM::FIRST:
+
+		break;
+	case StageManager::STAGENUM::SECOND:
+
+		break;
+	case StageManager::STAGENUM::THIRD:
+
+		break;
+	default:
+		break;
+	}
+
 	if (!stage_->Init())
 	{
-		OutputDebugString("チュートリアルの初期化失敗");
+		OutputDebugString("ステージの初期化失敗");
 		return false;
 	}
 
@@ -55,15 +75,17 @@ bool StageManager::Release(void)
 	//正しく処理が終了したので
 	return true;
 }
+
+
 //外部から静的インスタンスを生成
 //********************************************************
-bool StageManager::CreateInstance(void)
+bool StageManager::CreateInstance(STAGENUM num)
 {
 	if (instance_ == nullptr)
 	{
 		instance_ = new StageManager();	//インスタンス生成
 	}
-	if (!instance_->Init())	//初期化に失敗したら
+	if (!instance_->Init(num))	//初期化に失敗したら
 	{
 		OutputDebugString("ステージマネージャ初期化失敗");
 		return false;

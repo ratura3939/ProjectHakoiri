@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include"../Manager/SceneManager.h"
+#include"../Manager/InputManager.h"
 #include"ResultScene.h"
 
 
@@ -26,7 +27,8 @@ bool ResultScene::Init(void)
 //********************************************************
 void ResultScene::Update(void)
 {
-	if (SceneManager::GetInstance().SpaceHit() == true)
+	auto& ins = InputManager::GetInstance();
+	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::ENDING, true);
 	}

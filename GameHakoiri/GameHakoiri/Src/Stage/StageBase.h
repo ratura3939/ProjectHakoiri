@@ -14,16 +14,6 @@ class StageBase
 {
 public:
 
-	//列挙型
-	enum class STAGENUM
-	{
-		TUTORIAL
-		, FIRST
-		, SECOND
-		, THIRD
-		, MAX
-	};
-
 	StageBase(void);	//コンストラクタ
 	virtual ~StageBase(void);	//デストラクタ
 

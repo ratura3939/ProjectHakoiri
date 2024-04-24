@@ -18,8 +18,6 @@ SceneManager::SceneManager(void)
 {
 	sceneID_ = SCENEID::NONE;
 	nextSceneID_ = SCENEID::NONE;
-	space_.now = 0;
-	space_.old = 0;
 	isChangeScene_ = false;
 	scene_ = nullptr;
 	fader_ = nullptr;
@@ -42,17 +40,13 @@ bool SceneManager::Init(void)
 {
 	//シーン管理
 	sceneID_ = SCENEID::NONE;
-	nextSceneID_ = SCENEID::GAME;
+	nextSceneID_ = SCENEID::TITLE;
 
 	DoChangeScene();
 
 	//フェード
 	fader_ = new Fader;
 	fader_->Init();
-
-	//トリガー
-	space_.now = 0;
-	space_.old = 0;
 
 	//タイトルをフェードインで表示
 	fader_->SetFade(Fader::STATE::FADE_IN);
@@ -99,19 +93,19 @@ bool SceneManager::Release(void)
 	//正しく処理が終了したので
 	return true;
 }
-
-//スペースキーが押されたかどうか
+//ステージナンバーの保管
 //********************************************************
-bool SceneManager::SpaceHit(void)
+void SceneManager::SetStageNum(int num)
 {
-	space_.old = space_.now;
-	space_.now = CheckHitKey(KEY_INPUT_SPACE);
-	if (space_.now == 1 && space_.old == 0)
-	{
-		return true;
-	}
-	return false;
+	stageNum_ = num;
 }
+//ステージナンバーの譲渡
+//********************************************************
+int SceneManager::GetStageNum(void)
+{
+	return stageNum_;
+}
+
 //シーン切り替え
 //********************************************************
 void SceneManager::ChangeScene(SCENEID next,bool isToFade)

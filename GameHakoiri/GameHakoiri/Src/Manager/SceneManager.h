@@ -19,12 +19,7 @@ public:
 		, ENDING
 		, MAX
 	};
-	//構造体
-	struct TRG
-	{
-		int now;
-		int old;
-	};
+	
 	
 	//メンバ関数
 	bool Init(void);	//初期化
@@ -32,8 +27,10 @@ public:
 	void Draw(void);	//描画
 	bool Release(void);	//解放
 
-	bool SpaceHit(void);		//スペースキーが押されたかどうか
 	void ChangeScene(SCENEID,bool);		//シーン切り替え(フェード有り)
+
+	void SetStageNum(int);		//ステージナンバーの保管
+	int GetStageNum(void);		//ステージナンバーの譲渡
 
 	//シングルトン化
 	static bool CreateInstance(void);	//外部から静的インスタンスを生成
@@ -43,12 +40,15 @@ public:
 private:
 	SCENEID sceneID_;	//シーン切り替え
 	SCENEID nextSceneID_;	//次のシーンを保持
-	TRG space_;			//トリガー
+	
 	bool isChangeScene_;	//シーン切り替え用の論理型
 
 	//インスタンスの動的確保
 	SceneBase* scene_;	//シーン遷移
 	Fader* fader_;	//フェード
+
+
+	int stageNum_;	//選択したステージナンバー保存用
 
 	//メンバ関数
 	void DoChangeScene(void);		//シーン切り替え(フェードなし)

@@ -1,6 +1,8 @@
 //#pragma once
 #include"SceneBase.h"
 
+
+
 class SelectScene :public SceneBase
 {
 public:
@@ -11,6 +13,8 @@ public:
 	void Update(void);	//更新
 	void Draw(void);	//描画
 	bool Release(void);	//解放
+
 private:
 
+	int selectNum_;	//カーソル上のステージナンバーを保持
 };
