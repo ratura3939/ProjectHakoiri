@@ -7,8 +7,13 @@ void None::SetParam(void)
 	PazzleSize_ = { 1.0f,1.0f };
 	StealthSize_ = { 0.0f,0.0f };
 	//画像の格納
+	frameImg_ = LoadGraph("Data/Img/waku.png");
+	if (frameImg_ == -1)
+	{
+		OutputDebugString("NONEにて枠読み込み失敗");
+	}
 
-//テスト用
+	//テスト用
 	//dbgColor_ = 0x8b4513;
 	dbgColor_ = 0xff0000;
 }

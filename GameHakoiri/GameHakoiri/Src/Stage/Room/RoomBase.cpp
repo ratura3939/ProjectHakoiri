@@ -7,7 +7,12 @@
 //********************************************************
 RoomBase::RoomBase(void)
 {
-
+	type_ = TYPE::NONE;
+	pzlPos_ = { 0.0f,0.0f };
+	mapPos_ = { 0.0f,0.0f };
+	pieceSize_ = { 1.0f,1.0f };
+	mapSize_ = { 1.0f,1.0f };
+	isCursor_ = false;
 }
 //デストラクタ
 //********************************************************
@@ -22,6 +27,7 @@ bool RoomBase::Init(void)
 {
 	pzlPos_ = { 0.0f,0.0f };
 	mapPos_ = { 0.0f,0.0f };
+	isCursor_ = false;
 
 	//各性質の設定
 	SetParam();
@@ -46,6 +52,12 @@ void RoomBase::DrawPazzle(void)
 		pos.x_ + static_cast<int>(pieceSize_.x_),
 		pos.y_ + static_cast<int>(pieceSize_.y_),
 		dbgColor_, true);
+
+	//枠の描画
+	if (isCursor_)
+	{
+		DrawGraph(pos.x_, pos.y_, frameImg_, true);
+	}
 }
 //ステルスシーンにおける部屋の描画
 //********************************************************
@@ -75,6 +87,19 @@ void RoomBase::SetPzlPos(Vector2F pos)
 void RoomBase::SetMapPos(Vector2F pos)
 {
 	mapPos_ = pos;
+}
+
+//カーソルフラグの設定
+//********************************************************
+void RoomBase::SetIsCursor(bool flag)
+{
+	isCursor_ = flag;
+}
+
+//カーソルフラグの返却
+bool RoomBase::GetIsCursor(void)
+{
+	return isCursor_;
 }
 
 //部屋ごとのパラメータ設定

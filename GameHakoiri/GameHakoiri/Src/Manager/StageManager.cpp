@@ -76,6 +76,56 @@ bool StageManager::Release(void)
 	return true;
 }
 
+//カーソルの移動
+//********************************************************
+void StageManager::MoveCursor(Utility::DIR dir)
+{
+	switch (dir)
+	{
+	case Utility::DIR::UP:
+		//カーソルの移動（縦方向の移動量、横方向の移動量）
+		stage_->SetCursor(-1, 0);
+		break;
+	case Utility::DIR::RIGHT:
+		//カーソルの移動（縦方向の移動量、横方向の移動量）
+		stage_->SetCursor(0, 1);
+		break;
+	case Utility::DIR::DOWN:
+		//カーソルの移動（縦方向の移動量、横方向の移動量）
+		stage_->SetCursor(1, 0);
+		break;
+	case Utility::DIR::LEFT:
+		//カーソルの移動（縦方向の移動量、横方向の移動量）
+		stage_->SetCursor(0, -1);
+		break;
+	}
+}
+
+//駒の移動
+//********************************************************
+void StageManager::MovePiece(Utility::DIR dir)
+{
+	switch (dir)
+	{
+	case Utility::DIR::UP:
+		//カーソルの移動（縦方向の移動量、横方向の移動量）
+		stage_->SetCursor(-1, 0);
+		break;
+	case Utility::DIR::RIGHT:
+		//カーソルの移動（縦方向の移動量、横方向の移動量）
+		stage_->SetCursor(0, 1);
+		break;
+	case Utility::DIR::DOWN:
+		//カーソルの移動（縦方向の移動量、横方向の移動量）
+		stage_->SetCursor(1, 0);
+		break;
+	case Utility::DIR::LEFT:
+		//カーソルの移動（縦方向の移動量、横方向の移動量）
+		stage_->SetCursor(0, -1);
+		break;
+	}
+}
+
 
 //外部から静的インスタンスを生成
 //********************************************************

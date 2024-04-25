@@ -3,6 +3,7 @@
 
 class Pazzle;
 class Stealth;
+class StageManager;
 
 class GameScene :public SceneBase
 {

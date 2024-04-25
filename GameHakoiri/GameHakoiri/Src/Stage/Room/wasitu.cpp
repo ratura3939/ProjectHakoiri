@@ -6,7 +6,12 @@ void Wasitu::SetParam(void)
 {
 	PazzleSize_ = { 1.0f,1.0f };
 	StealthSize_ = { 30.0f,30.0f };
-		//‰æ‘œ‚ÌŠi”[
+	//‰æ‘œ‚ÌŠi”[
+	frameImg_ = LoadGraph("Data/Img/waku.png");
+	if (frameImg_ == -1)
+	{
+		OutputDebugString("NONE‚É‚Ä˜g“Ç‚İ‚İ¸”s");
+	}
 
 	//ƒeƒXƒg—p
 	dbgColor_ = 0x00ff00;

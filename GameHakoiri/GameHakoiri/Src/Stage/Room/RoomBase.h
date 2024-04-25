@@ -33,10 +33,14 @@ public:
 	void DrawStealth(void);	//ステルスシーンにおける部屋の描画
 	bool Release(void);	//解放
 
+	TYPE GetRoomType(void);	//
+
 	void SetPzlPos(Vector2F);	//パズル座標の設定
 	void SetMapPos(Vector2F);	//マップの座標設定
 
-	virtual void SetParam(void);	//部屋ごとのパラメータ設定
+	void SetIsCursor(bool);	//カーソルフラグの設定
+	bool GetIsCursor(void);	//カーソルフラグの返却
+	
 
 private:
 	Vector2F pzlPos_;		//パズルシーンにおける座標
@@ -44,14 +48,22 @@ private:
 
 	Vector2F pieceSize_;	//実際に描画する駒のサイズ
 	Vector2F mapSize_;		//実際に描画するマップのサイズ
+
+	bool isCursor_;			//カーソルに選択されているかどうか
 	
 
 protected:
+
+	TYPE type_;	//部屋の種類の識別子
+
 	Vector2F PazzleSize_;	//パズルシーンにおけるサイズ(〇×〇か）
 	int pieceImg_;		//駒の画像格納
+	int frameImg_;		//枠の画像
 
 	Vector2F StealthSize_;	//ステルスシーンにおけるマップのサイズ(〇×〇か）
 
+
+	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 
 	//テスト用
 	int dbgColor_;

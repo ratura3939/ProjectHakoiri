@@ -1,4 +1,5 @@
 #pragma once
+#include"../Utility/Utility.h"
 
 class StageBase;
 
@@ -7,6 +8,7 @@ class StageManager
 public:
 
 	//列挙型
+	//生成するステージ
 	enum class STAGENUM
 	{
 		TUTORIAL
@@ -21,6 +23,8 @@ public:
 	void Draw(void);	//描画
 	bool Release(void);	//解放
 
+	void MoveCursor(Utility::DIR dir);	//カーソルの移動
+	void MovePiece(Utility::DIR dir);	//駒の移動
 	
 
 	//シングルトン化

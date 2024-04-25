@@ -1,4 +1,7 @@
 //#pragma once
+
+class StageManager;
+
 class Pazzle
 {
 public:
@@ -6,10 +9,13 @@ public:
 	~Pazzle(void);	//デストラクタ
 
 	void Update(void);	//更新
-	// キーボードの操作
-	void KeyboardContoroller(void);
 
-	// ゲームパッドの操作
-	void GamePadController(void);
+	void KeyboardContoroller(void);	// キーボードの操作
+	void GamePadController(void);	// ゲームパッドの操作
+
+private:
+	bool isSelect_;		//選択中かどうか
+
+	void ChangeIsSelect(bool);	//IsSelectの変更
 };
 

@@ -1,2 +1,7 @@
-﻿  TitleScene.cpp
+﻿  StageManager.cpp
+  GameScene.cpp
+  StageBase.cpp
+  TutorialStage.cpp
+  Pazzle.cpp
+  コードを生成中...
   GameHakoiri.vcxproj -> C:\Users\2316026\Desktop\ProjectHakoiri\GameHakoiri\x64\Debug\GameHakoiri.exe

@@ -5,6 +5,7 @@
 #include<sstream>
 #include<string>
 #include<map>
+#include"../Common/Vector2.h"
 
 //StageBaseは各ステージの情報置き場という認識
 
@@ -26,6 +27,9 @@ public:
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 	void LoadPazzle(void);			//盤面の読み込み
 	void CreateKey(int y, int x);	//連想配列のキー生成
+	Vector2 GetNowCursorPos(void);	//現在のカーソルの位置を取得
+	void SetCursor(int moveY, int moveX);	//カーソルのセット yとxはカーソルの移動量
+	void SetPiece(int moveY, int moveX);	//駒の位置入れ替え yとxはカーソルの移動量
 
 private:
 	std::map<std::string, RoomBase*> roomMng_;	//部屋の情報一括管理

@@ -82,6 +82,12 @@ bool StageBase::Init(void)
 			roomMng_[roomKey_] = r;
 		}
 	}
+
+
+
+	CreateKey(0, 0);
+	roomMng_[roomKey_]->SetIsCursor(true);
+
 	//正しく処理が終了したので
 	return true;
 }
@@ -103,6 +109,8 @@ void StageBase::PazzleDraw(void)
 
 	pzlX /= pzlY;
 
+	
+
 	for (int y = 0; y < pzlY; y++)
 	{
 		for (int x = 0; x < pzlX; x++)
@@ -110,7 +118,7 @@ void StageBase::PazzleDraw(void)
 			pos.x_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_X);
 			CreateKey(y, x);
 			roomMng_[roomKey_]->SetPzlPos(pos);
-			roomMng_[roomKey_]->DrawPazzle();;
+			roomMng_[roomKey_]->DrawPazzle();
 		}
 		pos.x_ = static_cast<float>(Application::SCREEN_SIZE_X / 2);
 		pos.y_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_Y);
@@ -140,8 +148,9 @@ bool StageBase::Release(void)
 	//正しく処理が終了したので
 	return true;
 }
-//盤面の読み込み
-//********************************************************
+
+#pragma region パズル読み込み
+
 void StageBase::LoadPazzle(void)
 {
 	std::string loadName;
@@ -181,6 +190,7 @@ void StageBase::LoadPazzle(void)
 	}
 
 }
+#pragma endregion
 
 //ステージごとのパラメータ設定
 //********************************************************
@@ -195,3 +205,87 @@ void StageBase::CreateKey(int y, int x)
 	std::string key= std::to_string(y) + std::to_string(x);
 	roomKey_ = key;
 }
+
+#pragma region 現在のカーソル位置取得
+
+Vector2 StageBase::GetNowCursorPos(void)
+{
+	//現在のカーソルの位置を取得
+	Vector2 cursor;
+
+	size_t pzlY = pzlMap_.size();
+	size_t pzlX = pzlX_.size();
+	pzlX /= pzlY;
+	for (int y = 0; y < pzlY; y++)
+	{
+		for (int x = 0; x < pzlX; x++)
+		{
+			CreateKey(y, x);
+			if (roomMng_[roomKey_]->GetIsCursor())
+			{
+				cursor = { x,y };
+			}
+		}
+	}
+	return cursor;
+}
+#pragma endregion
+
+
+#pragma region カーソルの移動
+
+void StageBase::SetCursor(int moveY, int moveX)
+{
+	//現在のカーソル位置
+	Vector2 cursor = GetNowCursorPos();
+
+	//現在のカーソルの解除
+	CreateKey(cursor.y_, cursor.x_);	//roomKey_の生成
+	roomMng_[roomKey_]->SetIsCursor(false);
+
+	//カーソル位置の移動
+	cursor.y_ += moveY;
+	cursor.x_ += moveX;
+
+	size_t pzlY = pzlMap_.size();
+	size_t pzlX = pzlX_.size();
+	pzlX /= pzlY;
+
+	//移動後が上限を超えていたら
+	if ((cursor.x_ >= pzlX)
+		|| (cursor.y_ >= pzlY))
+	{
+		cursor.y_ -= moveY;
+		cursor.x_ -= moveX;
+		CreateKey(cursor.y_, cursor.x_);	//roomKey_の生成
+		roomMng_[roomKey_]->SetIsCursor(true);
+	}
+	else
+	{
+		CreateKey(cursor.y_, cursor.x_);	//roomKey_の生成
+		roomMng_[roomKey_]->SetIsCursor(true);
+	}
+}
+#pragma endregion
+
+#pragma region 駒の入れ替え
+
+void StageBase::SetPiece(int moveY, int moveX)
+{
+	size_t pzlY = pzlMap_.size();
+	size_t pzlX = pzlX_.size();
+	pzlX /= pzlY;
+
+	//現在のカーソル位置
+	Vector2 cursor = GetNowCursorPos();
+	
+	//移動したい場所の中身チェック
+	cursor.y_ += moveY;
+	cursor.x_ += moveX;
+	CreateKey(cursor.y_, cursor.x_);
+
+	if()
+}
+#pragma endregion
+
+	
