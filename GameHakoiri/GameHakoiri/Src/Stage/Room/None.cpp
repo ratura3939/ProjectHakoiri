@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"RoomBase.h"
 #include "None.h"
 
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
@@ -6,6 +7,7 @@ void None::SetParam(void)
 {
 	PazzleSize_ = { 1.0f,1.0f };
 	StealthSize_ = { 0.0f,0.0f };
+	type_ = RoomBase::TYPE::NONE;
 	//‰æ‘œ‚ÌŠi”[
 	frameImg_ = LoadGraph("Data/Img/waku.png");
 	if (frameImg_ == -1)

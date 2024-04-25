@@ -75,6 +75,11 @@ bool RoomBase::Release(void)
 	//正しく処理が終了したので
 	return true;
 }
+//部屋の種類を返却
+RoomBase::TYPE RoomBase::GetRoomType(void)
+{
+	return type_;
+}
 
 //パズル座標の設定
 //********************************************************

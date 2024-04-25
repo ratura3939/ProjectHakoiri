@@ -61,19 +61,19 @@ void Pazzle::KeyboardContoroller(void)
 		//‹î‚ÌˆÚ“®Žó•t
 		if (ins.IsTrgDown(KEY_INPUT_UP))
 		{
-
+			StageManager::GetInstance().MovePiece(Utility::DIR::UP);
 		}
 		if (ins.IsTrgDown(KEY_INPUT_DOWN))
 		{
-
+			StageManager::GetInstance().MovePiece(Utility::DIR::DOWN);
 		}
 		if (ins.IsTrgDown(KEY_INPUT_LEFT))
 		{
-
+			StageManager::GetInstance().MovePiece(Utility::DIR::LEFT);
 		}
 		if (ins.IsTrgDown(KEY_INPUT_RIGHT))
 		{
-
+			StageManager::GetInstance().MovePiece(Utility::DIR::RIGHT);
 		}
 		if (ins.IsTrgDown(KEY_INPUT_Q))
 		{

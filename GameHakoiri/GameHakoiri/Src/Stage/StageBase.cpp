@@ -278,13 +278,29 @@ void StageBase::SetPiece(int moveY, int moveX)
 
 	//現在のカーソル位置
 	Vector2 cursor = GetNowCursorPos();
+	CreateKey(cursor.y_, cursor.x_);
+	std::string prevKey = roomKey_;
 	
 	//移動したい場所の中身チェック
 	cursor.y_ += moveY;
 	cursor.x_ += moveX;
 	CreateKey(cursor.y_, cursor.x_);
 
-	if()
+	//移動先が範囲内であるか
+	if ((cursor.x_ >= 0) &&
+		(cursor.x_ < pzlX) &&
+		(cursor.y_ >= 0) &&
+		(cursor.y_ < pzlY))
+	{
+		//移動先がNONEだったら
+		if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::NONE)
+		{
+			//部屋の入れ替え
+			RoomBase* change = roomMng_[prevKey];
+			roomMng_[prevKey] = roomMng_[roomKey_];
+			roomMng_[roomKey_] = change;
+		}
+	}
 }
 #pragma endregion
 

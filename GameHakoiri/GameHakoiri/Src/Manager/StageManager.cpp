@@ -109,19 +109,19 @@ void StageManager::MovePiece(Utility::DIR dir)
 	{
 	case Utility::DIR::UP:
 		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetCursor(-1, 0);
+		stage_->SetPiece(-1, 0);
 		break;
 	case Utility::DIR::RIGHT:
 		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetCursor(0, 1);
+		stage_->SetPiece(0, 1);
 		break;
 	case Utility::DIR::DOWN:
 		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetCursor(1, 0);
+		stage_->SetPiece(1, 0);
 		break;
 	case Utility::DIR::LEFT:
 		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetCursor(0, -1);
+		stage_->SetPiece(0, -1);
 		break;
 	}
 }

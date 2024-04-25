@@ -33,7 +33,7 @@ public:
 	void DrawStealth(void);	//ステルスシーンにおける部屋の描画
 	bool Release(void);	//解放
 
-	TYPE GetRoomType(void);	//
+	TYPE GetRoomType(void);	//部屋の種類を返却
 
 	void SetPzlPos(Vector2F);	//パズル座標の設定
 	void SetMapPos(Vector2F);	//マップの座標設定
