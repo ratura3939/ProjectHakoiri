@@ -61,6 +61,7 @@ bool StageBase::Init(void)
 			//自室
 			case RoomBase::TYPE::OWN: 
 				r = new Own();
+				SetInstanceRight(y, x, r);
 				break;
 			//和室
 			case RoomBase::TYPE::WASITU:
@@ -68,6 +69,7 @@ bool StageBase::Init(void)
 				break;
 			//居間
 			case RoomBase::TYPE::LIVING:
+				SetInstanceDown(y, x, r);
 				r = new Living;
 				break;
 			//風呂
@@ -80,11 +82,13 @@ bool StageBase::Init(void)
 				break;
 			//台所
 			case RoomBase::TYPE::KITCHEN: 
+				SetInstanceDown(y, x, r);
 				r = new Kitchen;
 				break;
 			//玄関
 			case RoomBase::TYPE::ENTRANCE: 
 				r = new Entrance;
+				SetInstanceRight(y, x, r);
 				break;
 			//壁
 			case RoomBase::TYPE::WALL:	
@@ -95,6 +99,12 @@ bool StageBase::Init(void)
 			{
 				OutputDebugString("部屋の初期化失敗\n");
 			}
+
+			if (r->GetRoomType() == RoomBase::TYPE::NONE)
+			{
+
+			}
+
 			CreateKey(y, x);
 			roomMng_[roomKey_] = r;//配列内に格納
 		}
@@ -327,4 +337,32 @@ void StageBase::SetPiece(int moveY, int moveX)
 }
 #pragma endregion
 
+#pragma region 長方形駒の２マス目生成
+
+void StageBase::SetInstanceDown(int y, int x, RoomBase* r)
+{
+	y++;
+	CreateKey(y, x);
+	roomMng_[roomKey_] = r;//配列内に格納
+}
+void StageBase::SetInstanceRight(int y, int x, RoomBase* r)
+{
+	x++;
+	CreateKey(y, x);
+	roomMng_[roomKey_] = r;//配列内に格納
+}
+#pragma endregion
+
+#pragma region NONEを長方形の２マス目と見立てる
+
+//NONEを入れる予定のスペースに他のインスタンスが入っているか
+bool StageBase::CheckIsOtherExistence(int y, int x)
+{
+	CreateKey(y, x);
 	
+}
+void StageBase::SetOtherType2None(RoomBase::TYPE)
+{
+
+}
+#pragma endregion

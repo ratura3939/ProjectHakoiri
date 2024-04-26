@@ -30,7 +30,7 @@ public:
 	~RoomBase(void);	//デストラクタ
 
 	bool Init(void);	//初期化
-	void DrawPazzle(void);	//パズルシーンにおける部屋の描画
+	virtual void DrawPazzle(void);	//パズルシーンにおける部屋の描画
 	void DrawStealth(void);	//ステルスシーンにおける部屋の描画
 	bool Release(void);	//解放
 
@@ -44,7 +44,6 @@ public:
 	
 
 private:
-	Vector2F pzlPos_;		//パズルシーンにおける座標
 	Vector2F mapPos_;		//ステルスシーンにおけるmapの座標（必要かはわからん）
 
 	Vector2F pieceSize_;	//実際に描画する駒のサイズ
@@ -56,6 +55,9 @@ private:
 protected:
 
 	TYPE type_;	//部屋の種類の識別子
+
+
+	Vector2F pzlPos_;		//パズルシーンにおける座標
 
 	Vector2F PazzleSize_;	//パズルシーンにおけるサイズ(〇×〇か）
 	int pieceImg_;		//駒の画像格納

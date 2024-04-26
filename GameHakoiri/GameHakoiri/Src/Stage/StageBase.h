@@ -39,6 +39,14 @@ private:
 	std::vector<int>pzlX_;
 	std::vector<std::vector<int>>pzlMap_;	//パズルの置き場情報を数字で管理
 
+	//長方形の２マス目生成
+	void SetInstanceDown(int y, int x, RoomBase* r);
+	void SetInstanceRight(int y, int x, RoomBase* r);
+
+	//NONEを長方形の２マス目となるかを判断
+	bool CheckIsOtherExistence(int y, int x);
+	void SetOtherType2None(RoomBase::TYPE);
+
 protected:
 
 	//テスト用
