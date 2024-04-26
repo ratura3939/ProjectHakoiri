@@ -17,5 +17,5 @@ void None::SetParam(void)
 
 	//テスト用
 	//dbgColor_ = 0x8b4513;
-	dbgColor_ = 0xff0000;
+	dbgColor_ = 0x000000;
 }

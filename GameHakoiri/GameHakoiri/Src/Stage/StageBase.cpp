@@ -4,8 +4,17 @@
 #include"../Application.h"
 #include"../Utility/Utility.h"
 #include"Room/RoomBase.h"
-#include"Room/Wasitu.h"
 #include"Room/None.h"
+#include"Room/Own.h"
+#include"Room/Wasitu.h"
+#include"Room/Living.h"
+#include"Room/Bath.h"
+#include"Room/Storage.h"
+#include"Room/Kitchen.h"
+#include"Room/Entrance.h"
+#include"Room/Wall.h"
+
+
 #include"StageBase.h"
 
 //コンストラクタ
@@ -45,41 +54,49 @@ bool StageBase::Init(void)
 
 			switch (static_cast<RoomBase::TYPE>(pzlMap_[y][x+(3*y)]))
 			{
-			case RoomBase::TYPE::NONE: //空きスペース
-				r = new None();
-				OutputDebugString("NONEのインスタンス生成\n");
+			//空きスペース
+			case RoomBase::TYPE::NONE: 
+				r = new None;
 				break;
-				//case RoomBase::TYPE::OWN: //自室
-				//	r = new Own();
-				//	break;
-			case RoomBase::TYPE::WASITU: //和室
-				r = new Wasitu();
-				OutputDebugString("和室のインスタンス生成\n");
+			//自室
+			case RoomBase::TYPE::OWN: 
+				r = new Own();
 				break;
-				//case RoomBase::TYPE::LIVING: //居間
-				//	r = new Living();
-				//	break;
-				//case RoomBase::TYPE::BATH: //風呂
-				//	r = new Bath();
-				//	break;
-				//case RoomBase::TYPE::STORAGE: //物置
-				//	r = new Storage();
-				//	break;
-				//case RoomBase::TYPE::KITCHEN: //台所
-				//	r = new Kitchen();
-				//	break;
-				//case RoomBase::TYPE::ENTRANCE: //玄関
-				//	r = new Entrance();
-				//	break;
+			//和室
+			case RoomBase::TYPE::WASITU:
+				r = new Wasitu;;
+				break;
+			//居間
+			case RoomBase::TYPE::LIVING:
+				r = new Living;
+				break;
+			//風呂
+			case RoomBase::TYPE::BATH: 
+				r = new Bath;
+				break;
+			//物置
+			case RoomBase::TYPE::STORAGE:
+				r = new Storage;
+				break;
+			//台所
+			case RoomBase::TYPE::KITCHEN: 
+				r = new Kitchen;
+				break;
+			//玄関
+			case RoomBase::TYPE::ENTRANCE: 
+				r = new Entrance;
+				break;
+			//壁
+			case RoomBase::TYPE::WALL:	
+				r = new Wall;
+				break;
 			}
 			if (r->Init() == false)
 			{
 				OutputDebugString("部屋の初期化失敗\n");
 			}
-
-			//rooms_.push_back(r);	//配列内に格納
 			CreateKey(y, x);
-			roomMng_[roomKey_] = r;
+			roomMng_[roomKey_] = r;//配列内に格納
 		}
 	}
 
@@ -246,23 +263,25 @@ void StageBase::SetCursor(int moveY, int moveX)
 	//カーソル位置の移動
 	cursor.y_ += moveY;
 	cursor.x_ += moveX;
+	CreateKey(cursor.y_, cursor.x_);	//移動後のroomKey_の生成
 
 	size_t pzlY = pzlMap_.size();
 	size_t pzlX = pzlX_.size();
 	pzlX /= pzlY;
 
-	//移動後が上限を超えていたら
+	//移動後が上限を超えていた、または壁だった場合
 	if ((cursor.x_ >= pzlX)
-		|| (cursor.y_ >= pzlY))
+		|| (cursor.y_ >= pzlY)
+		|| (roomMng_[roomKey_]->GetRoomType()==RoomBase::TYPE::WALL))
 	{
+		//移動前に戻す
 		cursor.y_ -= moveY;
 		cursor.x_ -= moveX;
-		CreateKey(cursor.y_, cursor.x_);	//roomKey_の生成
+		CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
 		roomMng_[roomKey_]->SetIsCursor(true);
 	}
 	else
 	{
-		CreateKey(cursor.y_, cursor.x_);	//roomKey_の生成
 		roomMng_[roomKey_]->SetIsCursor(true);
 	}
 }
@@ -286,19 +305,23 @@ void StageBase::SetPiece(int moveY, int moveX)
 	cursor.x_ += moveX;
 	CreateKey(cursor.y_, cursor.x_);
 
-	//移動先が範囲内であるか
-	if ((cursor.x_ >= 0) &&
-		(cursor.x_ < pzlX) &&
-		(cursor.y_ >= 0) &&
-		(cursor.y_ < pzlY))
+	//移動先が壁でないか
+	if (roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::WALL)
 	{
-		//移動先がNONEだったら
-		if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::NONE)
+		//移動先が範囲内であるか
+		if ((cursor.x_ >= 0) &&
+			(cursor.x_ < pzlX) &&
+			(cursor.y_ >= 0) &&
+			(cursor.y_ < pzlY))
 		{
-			//部屋の入れ替え
-			RoomBase* change = roomMng_[prevKey];
-			roomMng_[prevKey] = roomMng_[roomKey_];
-			roomMng_[roomKey_] = change;
+			//移動先がNONEだったら
+			if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::NONE)
+			{
+				//部屋の入れ替え
+				RoomBase* change = roomMng_[prevKey];
+				roomMng_[prevKey] = roomMng_[roomKey_];
+				roomMng_[roomKey_] = change;
+			}
 		}
 	}
 }

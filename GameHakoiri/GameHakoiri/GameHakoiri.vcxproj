@@ -19,6 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Stage\Room\Bath.cpp" />
+    <ClCompile Include="Src\Stage\Room\Entrance.cpp" />
+    <ClCompile Include="Src\Stage\Room\Kitchen.cpp" />
+    <ClCompile Include="Src\Stage\Room\Living.cpp" />
+    <ClCompile Include="Src\Stage\Room\Own.cpp" />
     <ClCompile Include="Src\Common\Fader.cpp" />
     <ClCompile Include="Src\Manager\InputManager.cpp" />
     <ClCompile Include="Src\Manager\Resource.cpp" />
@@ -44,8 +49,15 @@
     <ClCompile Include="Src\System\Pazzle.cpp" />
     <ClCompile Include="Src\System\Stealth.cpp" />
     <ClCompile Include="Src\Utility\Utility.cpp" />
+    <ClCompile Include="Src\Stage\Room\Wall.cpp" />
+    <ClCompile Include="Src\Stage\Room\Storage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Stage\Room\Bath.h" />
+    <ClInclude Include="Src\Stage\Room\Entrance.h" />
+    <ClInclude Include="Src\Stage\Room\Kitchen.h" />
+    <ClInclude Include="Src\Stage\Room\Living.h" />
+    <ClInclude Include="Src\Stage\Room\Own.h" />
     <ClInclude Include="Src\Common\Fader.h" />
     <ClInclude Include="Src\Manager\InputManager.h" />
     <ClInclude Include="Src\Manager\Resource.h" />
@@ -70,6 +82,8 @@
     <ClInclude Include="Src\System\Pazzle.h" />
     <ClInclude Include="Src\System\Stealth.h" />
     <ClInclude Include="Src\Utility\Utility.h" />
+    <ClInclude Include="Src\Stage\Room\Wall.h" />
+    <ClInclude Include="Src\Stage\Room\Storage.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

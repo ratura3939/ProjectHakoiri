@@ -22,6 +22,7 @@ public:
 		, STORAGE
 		, KITCHEN
 		, ENTRANCE
+		, WALL
 		, MAX
 	};
 
