@@ -4,8 +4,8 @@ class None : public RoomBase
 {
 public:
 	void SetParam(void)override;
-	void DrawPazzle(void)override;
+	//void DrawPazzle(void)override;
 
-	void ChangeRole(RoomBase::TYPE type, int clr);
+	//void ChangeRole(RoomBase::TYPE type, int clr);
 };
 

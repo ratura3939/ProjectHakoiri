@@ -21,27 +21,3 @@ void None::SetParam(void)
 	dbgColor_ = 0x000000;
 }
 
-//パズルシーンにおける部屋の描画
-//********************************************************
-void RoomBase::DrawPazzle(void)
-{
-	Vector2 pos = pzlPos_.ToVector2();
-	DrawBox(pos.x_, pos.y_,
-		pos.x_ + static_cast<int>(pieceSize_.x_),
-		pos.y_ + static_cast<int>(pieceSize_.y_),
-		dbgColor_, true);
-
-	//枠の描画
-	if (isCursor_
-		&& type_==RoomBase::TYPE::NONE)
-	{
-		DrawGraph(pos.x_, pos.y_, frameImg_, true);
-	}
-}
-
-//長方形の駒の補助
-void None::ChangeRole(RoomBase::TYPE type, int clr)
-{
-	type_ = type;
-	dbgColor_ = clr;
-}

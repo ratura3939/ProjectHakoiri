@@ -23,8 +23,6 @@ public:
 	virtual void PazzleDraw(void);	//描画
 	virtual bool Release(void);	//解放
 
-
-	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 	void LoadPazzle(void);			//盤面の読み込み
 	void CreateKey(int y, int x);	//連想配列のキー生成
 	Vector2 GetNowCursorPos(void);	//現在のカーソルの位置を取得
@@ -39,15 +37,17 @@ private:
 	std::vector<int>pzlX_;
 	std::vector<std::vector<int>>pzlMap_;	//パズルの置き場情報を数字で管理
 
-	//長方形の２マス目生成
-	void SetInstanceDown(int y, int x, RoomBase* r);
-	void SetInstanceRight(int y, int x, RoomBase* r);
+	//長方形の２コマ目かを判断
+	bool CheckInstanceUp(int y, int x, RoomBase* r);
+	bool CheckInstanceLeft(int y, int x, RoomBase* r);
+	//長方形２コマ目のインスタンスの生成
+	RoomBase* GetSecondRoomInstance(RoomBase* r);
 
-	//NONEを長方形の２マス目となるかを判断
-	bool CheckIsOtherExistence(int y, int x);
-	void SetOtherType2None(RoomBase::TYPE);
+	
 
 protected:
+
+	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 
 	//テスト用
 	//std::string testName_;

@@ -13,5 +13,5 @@ void Entrance::SetParam(void)
 	frameImg_ = LoadGraph("Data/Img/frame_oblong_2.png");
 
 	//テスト用
-	dbgColor_ = 0x00ffff;
+	dbgColor_ = 0xff8c00;
 }

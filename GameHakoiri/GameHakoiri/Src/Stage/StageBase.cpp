@@ -13,6 +13,7 @@
 #include"Room/Kitchen.h"
 #include"Room/Entrance.h"
 #include"Room/Wall.h"
+#include"Room/Goal.h"
 
 
 #include"StageBase.h"
@@ -52,57 +53,66 @@ bool StageBase::Init(void)
 		{
 			RoomBase* r = nullptr;
 
-			switch (static_cast<RoomBase::TYPE>(pzlMap_[y][x+(3*y)]))
+			switch (static_cast<RoomBase::TYPE>(pzlMap_[y][x+(pzlX*y)]))
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
 				r = new None;
+				r->Init();
 				break;
 			//自室
 			case RoomBase::TYPE::OWN: 
 				r = new Own();
-				SetInstanceRight(y, x, r);
+				r->Init();
+				//もし生成したものが長方形の２コマ目だったら
+				if (CheckInstanceLeft(y, x, r)){ r = GetSecondRoomInstance(r); }
 				break;
 			//和室
 			case RoomBase::TYPE::WASITU:
 				r = new Wasitu;;
+				r->Init();
 				break;
 			//居間
 			case RoomBase::TYPE::LIVING:
-				SetInstanceDown(y, x, r);
 				r = new Living;
+				r->Init();
+				//もし生成したものが長方形の２コマ目だったら
+				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//風呂
 			case RoomBase::TYPE::BATH: 
 				r = new Bath;
+				r->Init();
 				break;
 			//物置
 			case RoomBase::TYPE::STORAGE:
 				r = new Storage;
+				r->Init();
 				break;
 			//台所
 			case RoomBase::TYPE::KITCHEN: 
-				SetInstanceDown(y, x, r);
 				r = new Kitchen;
+				r->Init();
+				//もし生成したものが長方形の２コマ目だったら
+				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//玄関
 			case RoomBase::TYPE::ENTRANCE: 
 				r = new Entrance;
-				SetInstanceRight(y, x, r);
+				r->Init();
+				//もし生成したものが長方形の２コマ目だったら
+				if (CheckInstanceLeft(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//壁
 			case RoomBase::TYPE::WALL:	
 				r = new Wall;
+				r->Init();
 				break;
-			}
-			if (r->Init() == false)
-			{
-				OutputDebugString("部屋の初期化失敗\n");
-			}
-
-			if (r->GetRoomType() == RoomBase::TYPE::NONE)
-			{
-
+			//ゴール
+			case RoomBase::TYPE::GOAL:
+				r = new Goal;
+				r->Init();
+				break;
 			}
 
 			CreateKey(y, x);
@@ -112,7 +122,7 @@ bool StageBase::Init(void)
 
 
 
-	CreateKey(0, 0);
+	CreateKey(1, 1);
 	roomMng_[roomKey_]->SetIsCursor(true);
 
 	//正しく処理が終了したので
@@ -128,8 +138,8 @@ void StageBase::Update(void)
 //********************************************************
 void StageBase::PazzleDraw(void)
 {
-	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 2),
-	static_cast<float>(Application::SCREEN_SIZE_Y / 2) };
+	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
+	static_cast<float>(Application::SCREEN_SIZE_Y / 4) };
 
 	size_t pzlY = pzlMap_.size();
 	size_t pzlX = pzlX_.size();
@@ -147,7 +157,7 @@ void StageBase::PazzleDraw(void)
 			roomMng_[roomKey_]->SetPzlPos(pos);
 			roomMng_[roomKey_]->DrawPazzle();
 		}
-		pos.x_ = static_cast<float>(Application::SCREEN_SIZE_X / 2);
+		pos.x_ = static_cast<float>(Application::SCREEN_SIZE_X / 4);
 		pos.y_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_Y);
 	}
 }
@@ -184,7 +194,7 @@ void StageBase::LoadPazzle(void)
 	//loadName = Application::PATH_PAZZLE + testName_;
 
 	//std::ifstream ifs = std::ifstream(loadName);
-	std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/test_2.csv");
+	std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/map_test.csv");
 
 	if (!ifs)
 	{
@@ -282,7 +292,8 @@ void StageBase::SetCursor(int moveY, int moveX)
 	//移動後が上限を超えていた、または壁だった場合
 	if ((cursor.x_ >= pzlX)
 		|| (cursor.y_ >= pzlY)
-		|| (roomMng_[roomKey_]->GetRoomType()==RoomBase::TYPE::WALL))
+		|| (roomMng_[roomKey_]->GetRoomType()==RoomBase::TYPE::WALL)
+		|| (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::GOAL))
 	{
 		//移動前に戻す
 		cursor.y_ -= moveY;
@@ -315,8 +326,9 @@ void StageBase::SetPiece(int moveY, int moveX)
 	cursor.x_ += moveX;
 	CreateKey(cursor.y_, cursor.x_);
 
-	//移動先が壁でないか
-	if (roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::WALL)
+	//移動先が壁・ゴールでないか
+	if (roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::WALL ||
+		roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::GOAL)
 	{
 		//移動先が範囲内であるか
 		if ((cursor.x_ >= 0) &&
@@ -337,32 +349,41 @@ void StageBase::SetPiece(int moveY, int moveX)
 }
 #pragma endregion
 
-#pragma region 長方形駒の２マス目生成
+#pragma region 長方形駒の２マス目かを判断
 
-void StageBase::SetInstanceDown(int y, int x, RoomBase* r)
+bool StageBase::CheckInstanceUp(int y, int x, RoomBase* r)
 {
-	y++;
-	CreateKey(y, x);
-	roomMng_[roomKey_] = r;//配列内に格納
+	y--;
+	CreateKey(y, x);	//配列一つ上のキーを生成
+	if (roomMng_[roomKey_] == r)
+	{
+		return true;
+	}
+	return false;
 }
-void StageBase::SetInstanceRight(int y, int x, RoomBase* r)
+bool StageBase::CheckInstanceLeft(int y, int x, RoomBase* r)
 {
-	x++;
-	CreateKey(y, x);
-	roomMng_[roomKey_] = r;//配列内に格納
+	x--;
+	CreateKey(y, x);	//配列一つ左のキーを生成
+	if (roomMng_[roomKey_] == r)
+	{
+		return true;
+	}
+	return false;
+}
+#pragma endregion
+
+#pragma region 長方形の２コマ目のインスタンスを生成
+
+//２コマ目のインスタンスはNONEで置きタイプをイジル
+RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
+{
+	RoomBase* room;
+	room = new None;
+	room->Init();
+	room->SetRoomType(r->GetRoomType());
+	room->SetColor(r->GetColor());
+	return room;
 }
 #pragma endregion
 
-#pragma region NONEを長方形の２マス目と見立てる
-
-//NONEを入れる予定のスペースに他のインスタンスが入っているか
-bool StageBase::CheckIsOtherExistence(int y, int x)
-{
-	CreateKey(y, x);
-	
-}
-void StageBase::SetOtherType2None(RoomBase::TYPE)
-{
-
-}
-#pragma endregion

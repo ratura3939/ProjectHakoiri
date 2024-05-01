@@ -23,6 +23,7 @@ public:
 		, KITCHEN
 		, ENTRANCE
 		, WALL
+		, GOAL
 		, MAX
 	};
 
@@ -34,13 +35,22 @@ public:
 	void DrawStealth(void);	//ステルスシーンにおける部屋の描画
 	bool Release(void);	//解放
 
+	void SetRoomType(TYPE type);	//部屋の種類を設定
 	TYPE GetRoomType(void);	//部屋の種類を返却
 
-	void SetPzlPos(Vector2F);	//パズル座標の設定
-	void SetMapPos(Vector2F);	//マップの座標設定
+	void SetPzlPos(Vector2F pos);	//パズルの座標設定
+	Vector2F GetPzlPos(void);	//パズルの座標返却
 
-	void SetIsCursor(bool);	//カーソルフラグの設定
+	void SetMapPos(Vector2F pos);	//マップの座標設定
+	Vector2F GetMapPos(void);	//マップの座標返却
+
+	void SetIsCursor(bool flag);	//カーソルフラグの設定
 	bool GetIsCursor(void);	//カーソルフラグの返却
+
+
+	//いずれ消すもの
+	void SetColor(int col);
+	int GetColor(void);
 	
 
 private:

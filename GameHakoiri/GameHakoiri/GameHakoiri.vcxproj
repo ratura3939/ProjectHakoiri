@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Stage\Room\Goal.cpp" />
     <ClCompile Include="Src\Stage\Room\Bath.cpp" />
     <ClCompile Include="Src\Stage\Room\Entrance.cpp" />
     <ClCompile Include="Src\Stage\Room\Kitchen.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="Src\Stage\Room\Storage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Stage\Room\Goal.h" />
     <ClInclude Include="Src\Stage\Room\Bath.h" />
     <ClInclude Include="Src\Stage\Room\Entrance.h" />
     <ClInclude Include="Src\Stage\Room\Kitchen.h" />

@@ -75,37 +75,73 @@ bool RoomBase::Release(void)
 	//正しく処理が終了したので
 	return true;
 }
-//部屋の種類を返却
+
+#pragma region 部屋の種類のSetGet
+
+void RoomBase::SetRoomType(TYPE type)
+{
+	type_ = type;
+}
+
 RoomBase::TYPE RoomBase::GetRoomType(void)
 {
 	return type_;
 }
+#pragma endregion
 
-//パズル座標の設定
-//********************************************************
+
+
+#pragma region パズルのSetGet
+
 void RoomBase::SetPzlPos(Vector2F pos)
 {
 	pzlPos_ = pos;
 }
-//マップの座標設定
-//********************************************************
+Vector2F RoomBase::GetPzlPos(void)
+{
+	return pzlPos_;
+}
+#pragma endregion
+
+#pragma region マップのSetGet
+
 void RoomBase::SetMapPos(Vector2F pos)
 {
 	mapPos_ = pos;
 }
 
-//カーソルフラグの設定
-//********************************************************
+Vector2F RoomBase::GetMapPos(void)
+{
+	return mapPos_;
+}
+#pragma endregion
+
+#pragma region カーソルのSetGet
+
 void RoomBase::SetIsCursor(bool flag)
 {
 	isCursor_ = flag;
 }
 
-//カーソルフラグの返却
 bool RoomBase::GetIsCursor(void)
 {
 	return isCursor_;
 }
+#pragma endregion
+
+
+#pragma region いずれ消すもの
+
+void RoomBase::SetColor(int col)
+{
+	dbgColor_ = col;
+}
+int RoomBase::GetColor(void)
+{
+	return dbgColor_;
+}
+#pragma endregion
+
 
 //部屋ごとのパラメータ設定
 //********************************************************
