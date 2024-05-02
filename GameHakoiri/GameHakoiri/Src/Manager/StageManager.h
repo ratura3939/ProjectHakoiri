@@ -38,6 +38,8 @@ private:
 
 	STAGENUM num_;	//生成するステージ番号を保持
 
+	Vector2 dir_[static_cast<int>(Utility::DIR::MAX)];
+
 
 	//シングルトン化
 	StageManager(void);	//コンストラクタ

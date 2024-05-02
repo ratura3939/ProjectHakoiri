@@ -12,6 +12,10 @@ StageManager::StageManager(void)
 {
 	stage_ = nullptr;
 	num_ = STAGENUM::MAX;
+	dir_[static_cast<int>(Utility::DIR::UP)] = { 0,-1 };
+	dir_[static_cast<int>(Utility::DIR::DOWN)] = { 0,1 };
+	dir_[static_cast<int>(Utility::DIR::LEFT)] = { -1,0 };
+	dir_[static_cast<int>(Utility::DIR::RIGHT)] = { 1,0 };
 }
 //デストラクタ
 //********************************************************
@@ -80,50 +84,14 @@ bool StageManager::Release(void)
 //********************************************************
 void StageManager::MoveCursor(Utility::DIR dir)
 {
-	switch (dir)
-	{
-	case Utility::DIR::UP:
-		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetCursor(-1, 0);
-		break;
-	case Utility::DIR::RIGHT:
-		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetCursor(0, 1);
-		break;
-	case Utility::DIR::DOWN:
-		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetCursor(1, 0);
-		break;
-	case Utility::DIR::LEFT:
-		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetCursor(0, -1);
-		break;
-	}
+	stage_->SetCursor(dir_[static_cast<int>(dir)],dir);
 }
 
 //駒の移動
 //********************************************************
 void StageManager::MovePiece(Utility::DIR dir)
 {
-	switch (dir)
-	{
-	case Utility::DIR::UP:
-		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetPiece(-1, 0);
-		break;
-	case Utility::DIR::RIGHT:
-		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetPiece(0, 1);
-		break;
-	case Utility::DIR::DOWN:
-		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetPiece(1, 0);
-		break;
-	case Utility::DIR::LEFT:
-		//カーソルの移動（縦方向の移動量、横方向の移動量）
-		stage_->SetPiece(0, -1);
-		break;
-	}
+	stage_->SetPiece(dir_[static_cast<int>(dir)],dir);
 }
 
 

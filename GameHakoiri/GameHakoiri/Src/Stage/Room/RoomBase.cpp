@@ -43,6 +43,16 @@ bool RoomBase::Init(void)
 	//正しく処理が終了したので
 	return true;
 }
+
+#pragma region 描画
+
+void RoomBase::Draw(void)
+{
+	DrawPazzle();
+}
+#pragma endregion
+
+
 //パズルシーンにおける部屋の描画
 //********************************************************
 void RoomBase::DrawPazzle(void)
@@ -52,12 +62,6 @@ void RoomBase::DrawPazzle(void)
 		pos.x_ + static_cast<int>(pieceSize_.x_),
 		pos.y_ + static_cast<int>(pieceSize_.y_),
 		dbgColor_, true);
-
-	//枠の描画
-	if (isCursor_)
-	{
-		DrawGraph(pos.x_, pos.y_, frameImg_, true);
-	}
 }
 //ステルスシーンにおける部屋の描画
 //********************************************************
@@ -128,6 +132,9 @@ bool RoomBase::GetIsCursor(void)
 	return isCursor_;
 }
 #pragma endregion
+
+
+
 
 
 #pragma region いずれ消すもの
