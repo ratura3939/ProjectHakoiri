@@ -44,6 +44,8 @@ private:
 	int frameObImg_;
 	int frameOb2Img_;
 	
+	void MovePiece(const Vector2 csr,
+		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKey
 
 	bool CheckInstanceUp(int y, int x, RoomBase* r);	//長方形の２コマ目かを判断およびインスタンスの生成
 	bool CheckInstanceLeft(int y, int x, RoomBase* r);

@@ -493,47 +493,119 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 #pragma region 駒の入れ替え
 
+//駒の入れかえ準備
 void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 {
-	size_t pzlY = pzlMap_.size();
-	size_t pzlX = pzlX_.size();
-	pzlX /= pzlY;
+	std::string nowCursorKey;	//現在のカーソル
+	std::string nowCursorKey2;	//現在のカーソル(長方形用)
+	std::string afterMoveKey;	//移動後のマス
+	std::string afterMoveKey2;	//長方形の二コマ目の移動後を示す
+
+	bool isSecondPvs = false;	//二コマ目の移動が優先か
 
 	//現在のカーソル位置
 	Vector2 cursor = GetNowCursorPos();
+	Vector2 cursor2 = GetNowCursorPos();
 	CreateKey(cursor.y_, cursor.x_);
-	std::string prevKey = roomKey_;
+	nowCursorKey = roomKey_;
+	//長方形用の二マス目のカーソル位置
+	if (roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
+		roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::LIVING)
+	{
+
+	}
 	
 	//移動したい場所の中身チェック
 	cursor.y_ += move.y_;
 	cursor.x_ += move.x_;
 	CreateKey(cursor.y_, cursor.x_);
+	afterMoveKey = roomKey_;
+
+	//長方形の追加分や変位を対応(この時点でのroomKeyはカーソルの移動後のマス)
+	//縦長長方形
+	if (roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
+		roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::LIVING)
+	{
+		if (dir == Utility::DIR::DOWN) { isSecondPvs = true; }
+		cursor2.y_++;	//長方形の下用
+		CreateKey(cursor2.y_, cursor2.x_);
+		afterMoveKey2 = roomKey_;
+	}
+	//横長長方形
+	if (roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::OWN ||
+		roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::ENTRANCE)
+	{
+		if (dir == Utility::DIR::RIGHT) { isSecondPvs = true; }
+		cursor2.x_++;	//長方形の右用
+		CreateKey(cursor2.y_, cursor2.x_);
+		afterMoveKey2 = roomKey_;
+	}
+
+	///入れ替え
+	switch (roomMng_[roomKey_]->GetRoomType())
+	{
+		//一マス
+	case RoomBase::TYPE::NONE:
+	case RoomBase::TYPE::WASITU:
+	case RoomBase::TYPE::BATH:
+	case RoomBase::TYPE::STORAGE:
+	case RoomBase::TYPE::WALL:
+	case RoomBase::TYPE::GOAL:
+
+		MovePiece(cursor,nowCursorKey,afterMoveKey);
+		break;
+
+		//長方形
+	case RoomBase::TYPE::LIVING:
+	case RoomBase::TYPE::KITCHEN:
+	case RoomBase::TYPE::OWN:
+	case RoomBase::TYPE::ENTRANCE:
+
+		if (isSecondPvs)
+		{
+
+		}
+		else
+		{
+
+		}
+		break;
+	}
+}
+
+//入れ替え
+void StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::string aft)
+{
+	//配列要素数
+	size_t pzlY = pzlMap_.size();
+	size_t pzlX = pzlX_.size();
+	pzlX /= pzlY;
 
 	//移動先が壁・ゴールでないか
-	if (roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::WALL ||
-		roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::GOAL)
+	if (roomMng_[aft]->GetRoomType() != RoomBase::TYPE::WALL ||
+		roomMng_[aft]->GetRoomType() != RoomBase::TYPE::GOAL)
 	{
 		//移動先が範囲内であるか
-		if ((cursor.x_ >= 0) &&
-			(cursor.x_ < pzlX) &&
-			(cursor.y_ >= 0) &&
-			(cursor.y_ < pzlY))
+		if ((csr.x_ >= 0) &&
+			(csr.x_ < pzlX) &&
+			(csr.y_ >= 0) &&
+			(csr.y_ < pzlY))
 		{
 			//移動先がNONEだったら
-			if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::NONE)
+			if (roomMng_[aft]->GetRoomType() == RoomBase::TYPE::NONE)
 			{
 				//部屋の入れ替え
-				RoomBase* change = roomMng_[prevKey];
-				roomMng_[prevKey] = roomMng_[roomKey_];
-				roomMng_[roomKey_] = change;
+				RoomBase* change = roomMng_[bfr];
+				roomMng_[bfr] = roomMng_[aft];
+				roomMng_[aft] = change;
 			}
 		}
 	}
 }
+
 #pragma endregion
 
 #pragma region 長方形駒の２マス目
-
 //インスタンスの生成（初期化に使用）
 bool StageBase::CheckInstanceUp(int y, int x, RoomBase* r)
 {
