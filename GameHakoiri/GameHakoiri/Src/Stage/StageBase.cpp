@@ -351,14 +351,13 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 	Vector2 cursor = GetNowCursorPos();
 
 	//現在のカーソルの解除
-	CreateKey(cursor.y_, cursor.x_);	//現在位置のroomKey_の生成
-	roomMng_[roomKey_]->SetIsCursor(false);
-
+	CreateKey(cursor.y_, cursor.x_);	
 	//実行前の位置を保存
-	std::string prevKey = roomKey_;;
+	std::string prevKey = roomKey_;
+	roomMng_[prevKey]->SetIsCursor(false);
 
 	//カーソル位置の現在地からの移動
-	switch (roomMng_[roomKey_]->GetRoomType())
+	switch (roomMng_[prevKey]->GetRoomType())
 	{
 		//空きスペース
 	case RoomBase::TYPE::NONE:
@@ -402,22 +401,33 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 	//移動後
 	CreateKey(cursor.y_, cursor.x_);	//移動後のroomKey_の生成
-	std::string holdKey = roomKey_;		//長方形などの場合があるので保留とする
+	std::string afterMoveKey = roomKey_;		//移動後のroomKey_の生成保存
 
-	RoomBase::TYPE roomType = roomMng_[roomKey_]->GetRoomType();
+	RoomBase::TYPE afterRoomType = roomMng_[afterMoveKey]->GetRoomType();
 
 	size_t pzlY = pzlMap_.size();
 	size_t pzlX = pzlX_.size();
 	pzlX /= pzlY;
 
+#pragma region 移動後がNONEだった時,いらないかも
+	if (afterRoomType == RoomBase::TYPE::NONE)
+	{
+		//追加で移動
+		cursor.y_ += move.y_;
+		cursor.x_ += move.x_;
+		//追加移動先のキー関係
+		CreateKey(cursor.y_, cursor.x_);	
+		std::string afterMoveKey = roomKey_;
+		RoomBase::TYPE roomType = roomMng_[afterMoveKey]->GetRoomType();
+	}
+#pragma endregion
 
-#pragma region 長方形の二マス目だった時
-	//縦長
-	if (roomType == RoomBase::TYPE::KITCHEN ||
-		roomType == RoomBase::TYPE::LIVING)
+
+#pragma region 長方形の二マス目だった時の処理
+	if (IsOblong(afterRoomType))
 	{
 		RoomBase* r = nullptr;
-		switch (roomType)
+		switch (afterRoomType)
 		{
 		case RoomBase::TYPE::LIVING:
 			r = new Living;
@@ -427,27 +437,6 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 			r = new Kitchen;
 			r->Init();
 			break;
-		}
-		//現在が長方形の本体かを確認
-		if (CheckInstanceUp(cursor.y_, cursor.x_, r))
-		{
-			//保留のカーソルをキャンセル
-			roomMng_[holdKey]->SetIsCursor(false);
-			//長方形に合わせた場所に移動
-			cursor.y_--;
-			CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
-			roomMng_[roomKey_]->SetIsCursor(true);
-		}
-
-		delete r;
-	}
-	//横長
-	if (roomType == RoomBase::TYPE::ENTRANCE ||
-		roomType == RoomBase::TYPE::OWN)
-	{
-		RoomBase* r = nullptr;
-		switch (roomType)
-		{
 		case RoomBase::TYPE::OWN:
 			r = new Own;
 			r->Init();
@@ -458,26 +447,95 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 			break;
 		}
 		//現在が長方形の本体かを確認
-		if (CheckInstanceLeft(cursor.y_, cursor.x_, r))
+		if (CheckInstanceUp(cursor.y_, cursor.x_, r))
 		{
 			//保留のカーソルをキャンセル
-			roomMng_[holdKey]->SetIsCursor(false);
+			roomMng_[afterMoveKey]->SetIsCursor(false);
 			//長方形に合わせた場所に移動
-			cursor.x_--;
+			if (afterRoomType == RoomBase::TYPE::KITCHEN || afterRoomType == RoomBase::TYPE::LIVING)//{ cursor.y_--; }
+			{
+				OutputDebugString("縦長の下の駒のため上に移動\n");
+				cursor.y_--;
+			}
+			if (afterRoomType == RoomBase::TYPE::ENTRANCE ||afterRoomType == RoomBase::TYPE::OWN)//{ cursor.x_--; }
+			{
+				OutputDebugString("横長の右の駒のため上に移動\n");
+				cursor.x_--;
+			}
 			CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
 			roomMng_[roomKey_]->SetIsCursor(true);
 		}
 
 		delete r;
 	}
+
+	////縦長
+	//if (afterRoomType == RoomBase::TYPE::KITCHEN ||
+	//	afterRoomType == RoomBase::TYPE::LIVING)
+	//{
+	//	RoomBase* r = nullptr;
+	//	switch (afterRoomType)
+	//	{
+	//	case RoomBase::TYPE::LIVING:
+	//		r = new Living;
+	//		r->Init();
+	//		break;
+	//	case RoomBase::TYPE::KITCHEN:
+	//		r = new Kitchen;
+	//		r->Init();
+	//		break;
+
+	//	}
+	//	//現在が長方形の本体かを確認
+	//	if (CheckInstanceUp(cursor.y_, cursor.x_, r))
+	//	{
+	//		//保留のカーソルをキャンセル
+	//		roomMng_[afterMoveKey]->SetIsCursor(false);
+	//		//長方形に合わせた場所に移動
+	//		cursor.y_--;
+	//		CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
+	//		roomMng_[roomKey_]->SetIsCursor(true);
+	//	}
+
+	//	delete r;
+	//}
+	////横長
+	//if (afterRoomType == RoomBase::TYPE::ENTRANCE ||
+	//	afterRoomType == RoomBase::TYPE::OWN)
+	//{
+	//	RoomBase* r = nullptr;
+	//	switch (afterRoomType)
+	//	{
+	//	case RoomBase::TYPE::OWN:
+	//		r = new Own;
+	//		r->Init();
+	//		break;
+	//	case RoomBase::TYPE::ENTRANCE:
+	//		r = new Entrance;
+	//		r->Init();
+	//		break;
+	//	}
+	//	//現在が長方形の本体かを確認
+	//	if (CheckInstanceLeft(cursor.y_, cursor.x_, r))
+	//	{
+	//		//保留のカーソルをキャンセル
+	//		roomMng_[afterMoveKey]->SetIsCursor(false);
+	//		//長方形に合わせた場所に移動
+	//		cursor.x_--;
+	//		CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
+	//		roomMng_[roomKey_]->SetIsCursor(true);
+	//	}
+
+	//	delete r;
+	//}
 #pragma endregion
 
 #pragma region 移動範囲外だった時
 
 	if ((cursor.x_ >= pzlX)
 		|| (cursor.y_ >= pzlY)
-		|| (roomType == RoomBase::TYPE::WALL)
-		|| (roomType == RoomBase::TYPE::GOAL))
+		|| (afterRoomType == RoomBase::TYPE::WALL)
+		|| (afterRoomType == RoomBase::TYPE::GOAL))
 	{
 		//移動前に戻す
 		roomMng_[prevKey]->SetIsCursor(true);
@@ -508,11 +566,24 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 	Vector2 cursor2 = GetNowCursorPos();
 	CreateKey(cursor.y_, cursor.x_);
 	nowCursorKey = roomKey_;
-	//長方形用の二マス目のカーソル位置
-	if (roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
-		roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::LIVING)
-	{
 
+	//長方形用の二マス目のカーソル位置
+	if (IsOblong(nowCursorKey))	//長方形だった時
+	{
+		//縦長か横長かを判断
+		switch (roomMng_[nowCursorKey]->GetRoomType())
+		{
+		case RoomBase::TYPE::LIVING:
+		case RoomBase::TYPE::KITCHEN:
+			cursor2.y_++;	//長方形の下用
+			break;
+		case RoomBase::TYPE::OWN:
+		case RoomBase::TYPE::ENTRANCE:
+			cursor2.x_++;	//長方形の右用
+			break;
+		}
+		CreateKey(cursor2.y_, cursor2.x_);
+		nowCursorKey2 = roomKey_;
 	}
 	
 	//移動したい場所の中身チェック
@@ -522,27 +593,29 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 	afterMoveKey = roomKey_;
 
 	//長方形の追加分や変位を対応(この時点でのroomKeyはカーソルの移動後のマス)
-	//縦長長方形
-	if (roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
-		roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::LIVING)
+	if (IsOblong(nowCursorKey))
 	{
-		if (dir == Utility::DIR::DOWN) { isSecondPvs = true; }
-		cursor2.y_++;	//長方形の下用
+		//移動したい場所の中身チェック
+		cursor2.y_ += move.y_;
+		cursor2.x_ += move.x_;
 		CreateKey(cursor2.y_, cursor2.x_);
 		afterMoveKey2 = roomKey_;
-	}
-	//横長長方形
-	if (roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::OWN ||
-		roomMng_[nowCursorKey]->GetRoomType() == RoomBase::TYPE::ENTRANCE)
-	{
-		if (dir == Utility::DIR::RIGHT) { isSecondPvs = true; }
-		cursor2.x_++;	//長方形の右用
-		CreateKey(cursor2.y_, cursor2.x_);
-		afterMoveKey2 = roomKey_;
+
+		switch (roomMng_[nowCursorKey]->GetRoomType())
+		{
+		case RoomBase::TYPE::LIVING:
+		case RoomBase::TYPE::KITCHEN:
+			if (dir == Utility::DIR::DOWN) { isSecondPvs = true; }
+			break;
+		case RoomBase::TYPE::OWN:
+		case RoomBase::TYPE::ENTRANCE:
+			if (dir == Utility::DIR::RIGHT) { isSecondPvs = true; }
+			break;
+		}
 	}
 
 	///入れ替え
-	switch (roomMng_[roomKey_]->GetRoomType())
+	switch (roomMng_[nowCursorKey]->GetRoomType())
 	{
 		//一マス
 	case RoomBase::TYPE::NONE:
@@ -563,11 +636,13 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 
 		if (isSecondPvs)
 		{
-
+			MovePiece(cursor2, nowCursorKey2, afterMoveKey2);
+			MovePiece(cursor, nowCursorKey, afterMoveKey);
 		}
 		else
 		{
-
+			MovePiece(cursor, nowCursorKey, afterMoveKey);
+			MovePiece(cursor2, nowCursorKey2, afterMoveKey2);
 		}
 		break;
 	}
@@ -605,7 +680,7 @@ void StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::st
 
 #pragma endregion
 
-#pragma region 長方形駒の２マス目
+#pragma region 長方形判定
 //インスタンスの生成（初期化に使用）
 bool StageBase::CheckInstanceUp(int y, int x, RoomBase* r)
 {
@@ -629,6 +704,30 @@ bool StageBase::CheckInstanceLeft(int y, int x, RoomBase* r)
 	}
 	x++;
 	CreateKey(y, x);	//元の場所のキーを生成
+	return false;
+}
+
+//長方形であるか
+bool StageBase::IsOblong(std::string key)
+{
+	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
+		roomMng_[key]->GetRoomType() == RoomBase::TYPE::LIVING ||
+		roomMng_[key]->GetRoomType() == RoomBase::TYPE::OWN ||
+		roomMng_[key]->GetRoomType() == RoomBase::TYPE::ENTRANCE)
+	{
+		return true;
+	}
+	return false;
+}
+bool StageBase::IsOblong(RoomBase::TYPE type)
+{
+	if (type == RoomBase::TYPE::KITCHEN ||
+		type == RoomBase::TYPE::LIVING ||
+		type == RoomBase::TYPE::OWN ||
+		type == RoomBase::TYPE::ENTRANCE)
+	{
+		return true;
+	}
 	return false;
 }
 

@@ -7,6 +7,7 @@
 #include<map>
 #include"../Common/Vector2.h"
 #include"../Utility/Utility.h"
+#include"Room/RoomBase.h"
 
 //StageBaseは各ステージの情報置き場という認識
 
@@ -47,9 +48,13 @@ private:
 	void MovePiece(const Vector2 csr,
 		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKey
 
+	//判定系
 	bool CheckInstanceUp(int y, int x, RoomBase* r);	//長方形の２コマ目かを判断およびインスタンスの生成
 	bool CheckInstanceLeft(int y, int x, RoomBase* r);
+	bool IsOblong(std::string key);	//今いる場所が長方形か
+	bool IsOblong(RoomBase::TYPE type);	//今いる場所が長方形か
 
+	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
 
 	void DrawCursor(void);	//カーソルの描画
