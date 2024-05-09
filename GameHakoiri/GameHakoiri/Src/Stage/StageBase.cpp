@@ -409,17 +409,17 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 	size_t pzlX = pzlX_.size();
 	pzlX /= pzlY;
 
-#pragma region 移動後がNONEだった時,いらないかも
-	if (afterRoomType == RoomBase::TYPE::NONE)
-	{
-		//追加で移動
-		cursor.y_ += move.y_;
-		cursor.x_ += move.x_;
-		//追加移動先のキー関係
-		CreateKey(cursor.y_, cursor.x_);	
-		std::string afterMoveKey = roomKey_;
-		RoomBase::TYPE roomType = roomMng_[afterMoveKey]->GetRoomType();
-	}
+#pragma region 移動後がNONEだった時,現在OFF
+	//if (afterRoomType == RoomBase::TYPE::NONE)
+	//{
+	//	//追加で移動
+	//	cursor.y_ += move.y_;
+	//	cursor.x_ += move.x_;
+	//	//追加移動先のキー関係
+	//	CreateKey(cursor.y_, cursor.x_);	
+	//	std::string afterMoveKey = roomKey_;
+	//	afterRoomType = roomMng_[afterMoveKey]->GetRoomType();
+	//}
 #pragma endregion
 
 
@@ -447,8 +447,10 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 			break;
 		}
 		//現在が長方形の本体かを確認
-		if (CheckInstanceUp(cursor.y_, cursor.x_, r))
+		if (CheckInstanceUp(cursor.y_, cursor.x_, r)||
+			CheckInstanceLeft(cursor.y_, cursor.x_, r))
 		{
+			OutputDebugString("長方形だね～\n");
 			//保留のカーソルをキャンセル
 			roomMng_[afterMoveKey]->SetIsCursor(false);
 			//長方形に合わせた場所に移動
