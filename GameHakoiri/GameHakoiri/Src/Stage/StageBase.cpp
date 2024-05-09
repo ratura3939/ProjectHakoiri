@@ -39,6 +39,8 @@ bool StageBase::Init(void)
 	frameImg_ = LoadGraph("Data/Img/frame.png");
 	frameObImg_ = LoadGraph("Data/Img/frame_oblong.png");
 	frameOb2Img_= LoadGraph("Data/Img/frame_oblong_2.png");
+	frameAnim_ = 0;
+	SetFrameFlash(false);
 
 	//各ステージによる設定
 	SetParam();
@@ -124,6 +126,7 @@ bool StageBase::Init(void)
 
 			CreateKey(y, x);
 			roomMng_[roomKey_] = r;//配列内に格納
+			resetRoom_[roomKey_] = r->GetRoomType();
 			pzlPos_[roomKey_] = pos;
 
 			//座標の更新
@@ -158,6 +161,7 @@ void StageBase::Update(void)
 	
 		pzlX /= pzlY;
 
+		frameAnim_++;
 
 		//駒の描画
 		for (int y = 0; y < pzlY; y++)
@@ -170,8 +174,19 @@ void StageBase::Update(void)
 			}
 			
 		}
-		//枠の描画
-		DrawCursor();
+		if (frameFlash_)
+		{
+			if (frameAnim_ % Application::FPS < FRAME_INTERVAL)
+			{
+				//枠の描画
+				DrawCursor();
+			}
+		}
+		else
+		{
+			//枠の描画
+			DrawCursor();
+		}
 	}
 	#pragma endregion
 
@@ -181,7 +196,7 @@ void StageBase::Update(void)
 	{
 		Vector2 key = GetNowCursorPos();
 
-		DrawFormatString(0, 20, 0xffffff, "CURSOR={%d.%d}", key.x_, key.y_);
+		//DrawFormatString(0, 20, 0xffffff, "CURSOR={%d.%d}", key.x_, key.y_);
 
 		CreateKey(key.y_, key.x_);
 		switch (roomMng_[roomKey_]->GetRoomType())
@@ -223,13 +238,11 @@ void StageBase::Update(void)
 				frame_, true);
 		}
 	}
+	
 #pragma endregion
 
 
 #pragma endregion
-
-//描画
-//********************************************************
 
 //解放
 //********************************************************
@@ -264,15 +277,12 @@ bool StageBase::Release(void)
 
 void StageBase::LoadPazzle(void)
 {
-	std::string loadName;
-	//loadName = Application::PATH_PAZZLE + testName_;
-
-	//std::ifstream ifs = std::ifstream(loadName);
-	std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/map_test.csv");
+	//std::ifstream ifs = std::ifstream(Application::PATH_PAZZLE+file_Pzl.c_str());
+	std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/Stage_Tutorial.csv");
 
 	if (!ifs)
 	{
-		OutputDebugString("地上ステージのifstreamの準備失敗");
+		OutputDebugString("パズルのifstreamの準備失敗");
 		return;
 	}
 
@@ -389,6 +399,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 		//横長
 		//自室
 	case RoomBase::TYPE::OWN:
+
 		//玄関
 	case RoomBase::TYPE::ENTRANCE:
 		if (dir == Utility::DIR::RIGHT) { cursor.x_ += move.x_ * 2; }
@@ -450,18 +461,15 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 		if (CheckInstanceUp(cursor.y_, cursor.x_, r)||
 			CheckInstanceLeft(cursor.y_, cursor.x_, r))
 		{
-			OutputDebugString("長方形だね～\n");
 			//保留のカーソルをキャンセル
 			roomMng_[afterMoveKey]->SetIsCursor(false);
 			//長方形に合わせた場所に移動
 			if (afterRoomType == RoomBase::TYPE::KITCHEN || afterRoomType == RoomBase::TYPE::LIVING)//{ cursor.y_--; }
 			{
-				OutputDebugString("縦長の下の駒のため上に移動\n");
 				cursor.y_--;
 			}
 			if (afterRoomType == RoomBase::TYPE::ENTRANCE ||afterRoomType == RoomBase::TYPE::OWN)//{ cursor.x_--; }
 			{
-				OutputDebugString("横長の右の駒のため上に移動\n");
 				cursor.x_--;
 			}
 			CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
@@ -470,74 +478,13 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 		delete r;
 	}
-
-	////縦長
-	//if (afterRoomType == RoomBase::TYPE::KITCHEN ||
-	//	afterRoomType == RoomBase::TYPE::LIVING)
-	//{
-	//	RoomBase* r = nullptr;
-	//	switch (afterRoomType)
-	//	{
-	//	case RoomBase::TYPE::LIVING:
-	//		r = new Living;
-	//		r->Init();
-	//		break;
-	//	case RoomBase::TYPE::KITCHEN:
-	//		r = new Kitchen;
-	//		r->Init();
-	//		break;
-
-	//	}
-	//	//現在が長方形の本体かを確認
-	//	if (CheckInstanceUp(cursor.y_, cursor.x_, r))
-	//	{
-	//		//保留のカーソルをキャンセル
-	//		roomMng_[afterMoveKey]->SetIsCursor(false);
-	//		//長方形に合わせた場所に移動
-	//		cursor.y_--;
-	//		CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
-	//		roomMng_[roomKey_]->SetIsCursor(true);
-	//	}
-
-	//	delete r;
-	//}
-	////横長
-	//if (afterRoomType == RoomBase::TYPE::ENTRANCE ||
-	//	afterRoomType == RoomBase::TYPE::OWN)
-	//{
-	//	RoomBase* r = nullptr;
-	//	switch (afterRoomType)
-	//	{
-	//	case RoomBase::TYPE::OWN:
-	//		r = new Own;
-	//		r->Init();
-	//		break;
-	//	case RoomBase::TYPE::ENTRANCE:
-	//		r = new Entrance;
-	//		r->Init();
-	//		break;
-	//	}
-	//	//現在が長方形の本体かを確認
-	//	if (CheckInstanceLeft(cursor.y_, cursor.x_, r))
-	//	{
-	//		//保留のカーソルをキャンセル
-	//		roomMng_[afterMoveKey]->SetIsCursor(false);
-	//		//長方形に合わせた場所に移動
-	//		cursor.x_--;
-	//		CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
-	//		roomMng_[roomKey_]->SetIsCursor(true);
-	//	}
-
-	//	delete r;
-	//}
 #pragma endregion
 
 #pragma region 移動範囲外だった時
 
 	if ((cursor.x_ >= pzlX)
 		|| (cursor.y_ >= pzlY)
-		|| (afterRoomType == RoomBase::TYPE::WALL)
-		|| (afterRoomType == RoomBase::TYPE::GOAL))
+		|| IsDontMoveBlock(afterMoveKey))
 	{
 		//移動前に戻す
 		roomMng_[prevKey]->SetIsCursor(true);
@@ -638,20 +585,29 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 
 		if (isSecondPvs)
 		{
-			MovePiece(cursor2, nowCursorKey2, afterMoveKey2);
-			MovePiece(cursor, nowCursorKey, afterMoveKey);
+			if (!MovePiece(cursor2, nowCursorKey2, afterMoveKey2)) { return; }	//移動が行われなかったので処理終了
+			//長方形の二マス目が移動されなかった場合
+			if (!MovePiece(cursor, nowCursorKey, afterMoveKey))
+			{
+				//ひとつ前の手順をなかったことに
+				MovePiece(cursor2, afterMoveKey2, nowCursorKey2);
+			}
 		}
 		else
 		{
-			MovePiece(cursor, nowCursorKey, afterMoveKey);
-			MovePiece(cursor2, nowCursorKey2, afterMoveKey2);
+			if (!MovePiece(cursor, nowCursorKey, afterMoveKey)) { return; }		//移動が行われなかったので処理終了
+			if (!MovePiece(cursor2, nowCursorKey2, afterMoveKey2))
+			{
+				//ひとつ前の手順をなかったことに
+				MovePiece(cursor, afterMoveKey, nowCursorKey);
+			}
 		}
 		break;
 	}
 }
 
 //入れ替え
-void StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::string aft)
+bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::string aft)
 {
 	//配列要素数
 	size_t pzlY = pzlMap_.size();
@@ -659,8 +615,7 @@ void StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::st
 	pzlX /= pzlY;
 
 	//移動先が壁・ゴールでないか
-	if (roomMng_[aft]->GetRoomType() != RoomBase::TYPE::WALL ||
-		roomMng_[aft]->GetRoomType() != RoomBase::TYPE::GOAL)
+	if (!IsDontMoveBlock(aft))
 	{
 		//移動先が範囲内であるか
 		if ((csr.x_ >= 0) &&
@@ -675,9 +630,13 @@ void StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::st
 				RoomBase* change = roomMng_[bfr];
 				roomMng_[bfr] = roomMng_[aft];
 				roomMng_[aft] = change;
+				//移動が行われたので
+				return true;
 			}
 		}
 	}
+	//移動が行われなかったので
+	return false;
 }
 
 #pragma endregion
@@ -733,6 +692,17 @@ bool StageBase::IsOblong(RoomBase::TYPE type)
 	return false;
 }
 
+bool StageBase::IsDontMoveBlock(std::string key)
+{
+	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::GOAL ||
+		roomMng_[key]->GetRoomType() == RoomBase::TYPE::WALL)
+	{
+		//移動不可のブロックなので
+		return true;
+	}
+	return false;
+}
+
 #pragma endregion
 
 #pragma region 長方形の２コマ目のインスタンスを生成
@@ -747,5 +717,66 @@ RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 	room->SetColor(r->GetColor());
 	return room;
 }
+void StageBase::SetFrameFlash(bool flag)
+{
+	frameFlash_ = flag;
+}
 #pragma endregion
+
+#pragma region リセット
+
+void StageBase::ResetPazzl(void)
+{
+	size_t pzlY = pzlMap_.size();
+	size_t pzlX = pzlX_.size();
+	pzlX /= pzlY;
+
+	//入れ替え処理用の現在位置保存
+	std::string nowKey;
+
+	for (int y = 0; y < pzlY; y++)
+	{
+		for (int x = 0; x < pzlX; x++)
+		{
+			CreateKey(y, x);
+			nowKey = roomKey_;	
+
+			//初期と部屋が違った場合
+			if (roomMng_[nowKey]->GetRoomType() != resetRoom_[nowKey])
+			{
+				//現在の位置から初期のタイプの部屋があるかを確認
+				for (int i = 0; i < pzlY; i++)
+				{
+					for (int n = 0; n < pzlX; n++)
+					{
+						CreateKey(i, n);
+						//まだ確定していない場所で初期の部屋が見つかった場合
+						if (!roomMng_[roomKey_]->IsChange() &&
+							roomMng_[roomKey_]->GetRoomType() == resetRoom_[nowKey])
+						{
+							RoomBase* r = roomMng_[nowKey];
+							roomMng_[nowKey] = roomMng_[roomKey_];
+							roomMng_[roomKey_] = r;
+						}
+					}
+				}
+			}
+			//確定済みに変更
+			roomMng_[nowKey]->SetIsChange(true);
+		}
+	}
+	
+	//確定を解除
+	for (int y = 0; y < pzlY; y++)
+	{
+		for (int x = 0; x < pzlX; x++)
+		{
+			CreateKey(y, x);
+			nowKey = roomKey_;
+			roomMng_[nowKey]->SetIsChange(false);
+		}
+	}
+}
+#pragma endregion
+
 

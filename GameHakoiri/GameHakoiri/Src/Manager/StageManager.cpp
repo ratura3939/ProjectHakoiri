@@ -94,6 +94,16 @@ void StageManager::MovePiece(Utility::DIR dir)
 	stage_->SetPiece(dir_[static_cast<int>(dir)],dir);
 }
 
+void StageManager::PazzleReset(void)
+{
+	stage_->ResetPazzl();
+}
+
+void StageManager::SetFlash(bool flag)
+{
+	stage_->SetFrameFlash(flag);
+}
+
 
 //外部から静的インスタンスを生成
 //********************************************************

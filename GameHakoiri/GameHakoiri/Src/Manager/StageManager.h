@@ -25,6 +25,8 @@ public:
 
 	void MoveCursor(Utility::DIR dir);	//カーソルの移動
 	void MovePiece(Utility::DIR dir);	//駒の移動
+	void PazzleReset(void);		//盤面リセット
+	void SetFlash(bool flag);	//枠点滅
 	
 
 	//シングルトン化

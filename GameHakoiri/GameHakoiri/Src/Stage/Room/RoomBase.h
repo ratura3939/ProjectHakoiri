@@ -48,7 +48,8 @@ public:
 	void SetIsCursor(bool flag);	//カーソルフラグの設定
 	bool GetIsCursor(void);	//カーソルフラグの返却
 
-	int GetFrameImg(void);	//枠の画像を返却
+	bool IsChange(void);	//IsChangeのゲッター
+	void SetIsChange(bool flag);	//IsChangeのセッター
 
 
 	//いずれ消すもの
@@ -59,6 +60,8 @@ public:
 private:
 	Vector2F mapPos_;		//ステルスシーンにおけるmapの座標（必要かはわからん）
 	Vector2F mapSize_;		//実際に描画するマップのサイズ
+
+	bool IsChange_;	//パズルリセット時にすでに確定している場所であるかの判定
 	
 
 protected:

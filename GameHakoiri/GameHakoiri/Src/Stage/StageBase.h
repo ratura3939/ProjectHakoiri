@@ -17,6 +17,8 @@ class StageBase
 {
 public:
 
+	static constexpr int FRAME_INTERVAL = 30;
+
 	StageBase(void);	//コンストラクタ
 	virtual ~StageBase(void);	//デストラクタ
 
@@ -30,9 +32,13 @@ public:
 	Vector2 GetNowCursorPos(void);	//現在のカーソルの位置を取得
 	void SetCursor(Vector2 move, Utility::DIR dir);	//カーソルのセット yとxはカーソルの移動量
 	void SetPiece(Vector2 move, Utility::DIR dir);	//駒の位置入れ替え yとxはカーソルの移動量
+	void SetFrameFlash(bool flag);	//枠点滅用
+
+	void ResetPazzl(void);	//パズルのリセット
 
 private:
 	std::map<std::string, RoomBase*> roomMng_;	//部屋の情報一括管理
+	std::map<std::string, RoomBase::TYPE> resetRoom_;//部屋のリセット用
 	std::string roomKey_;	//連想配列のキー
 
 
@@ -44,8 +50,10 @@ private:
 	int frameImg_;
 	int frameObImg_;
 	int frameOb2Img_;
+	bool frameFlash_;
+	int frameAnim_;
 	
-	void MovePiece(const Vector2 csr,
+	bool MovePiece(const Vector2 csr,
 		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKey
 
 	//判定系
@@ -53,16 +61,19 @@ private:
 	bool CheckInstanceLeft(int y, int x, RoomBase* r);
 	bool IsOblong(std::string key);	//今いる場所が長方形か
 	bool IsOblong(RoomBase::TYPE type);	//今いる場所が長方形か
+	bool IsDontMoveBlock(std::string key);	//移動不可なブロックかどうか
 
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
+	
 
 	void DrawCursor(void);	//カーソルの描画
 
 protected:
+	//各ステージのファイル名
+	std::string file_Pzl;
+	std::string file_Map;
+
 
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
-
-	//テスト用
-	//std::string testName_;
 };

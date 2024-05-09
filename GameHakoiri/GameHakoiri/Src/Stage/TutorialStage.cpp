@@ -2,6 +2,6 @@
 
 void TutorialStage::SetParam(void)
 {
-
-	//testName_ = "test.csv";
+	//パズルファイル名
+	file_Pzl = "Stage_Tutorial.csv";
 }

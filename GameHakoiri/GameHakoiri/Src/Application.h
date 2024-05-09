@@ -11,6 +11,8 @@ public:
 	static constexpr int SCREEN_SIZE_X = 1280;
 	static constexpr int SCREEN_SIZE_Y = 720;
 
+	static constexpr int FPS = 60;
+
 	// データパス関連
 	//-------------------------------------------
 	static const std::string PATH_PAZZLE;

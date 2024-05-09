@@ -47,6 +47,7 @@ void GameScene::Update(void)
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);
 	}
 
+
 	switch (mode_)
 	{
 	case GameScene::MODE::PAZZLE:

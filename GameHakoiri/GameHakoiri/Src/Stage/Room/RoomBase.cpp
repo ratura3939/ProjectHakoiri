@@ -13,6 +13,7 @@ RoomBase::RoomBase(void)
 	pieceSize_ = { 1.0f,1.0f };
 	mapSize_ = { 1.0f,1.0f };
 	isCursor_ = false;
+	IsChange_ = false;
 }
 //デストラクタ
 //********************************************************
@@ -28,6 +29,7 @@ bool RoomBase::Init(void)
 	pzlPos_ = { 0.0f,0.0f };
 	mapPos_ = { 0.0f,0.0f };
 	isCursor_ = false;
+	IsChange_ = false;
 
 	//各性質の設定
 	SetParam();
@@ -130,6 +132,14 @@ void RoomBase::SetIsCursor(bool flag)
 bool RoomBase::GetIsCursor(void)
 {
 	return isCursor_;
+}
+bool RoomBase::IsChange(void)
+{
+	return IsChange_;
+}
+void RoomBase::SetIsChange(bool flag)
+{
+	IsChange_ = flag;
 }
 #pragma endregion
 
