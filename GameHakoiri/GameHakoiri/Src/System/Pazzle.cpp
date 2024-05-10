@@ -98,63 +98,63 @@ void Pazzle::KeyboardContoroller(void)
 //********************************************************
 void Pazzle::GamePadController(void)
 {
-	InputManager& ins = InputManager::GetInstance();
-	StageManager& stage = StageManager::GetInstance();
+	//InputManager& ins = InputManager::GetInstance();
+	//StageManager& stage = StageManager::GetInstance();
 
-	if (!isSelect_)
-	{
-		//盤面リセット
-		if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1,InputManager::JOYPAD_BTN::TOP))
-		{
-			stage.PazzleReset();
-		}
-		//カーソルの移動受付
-		if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1,InputManager::JOYPAD_BTN::TOP))
-		{
-			stage.MoveCursor(Utility::DIR::UP);
-		}
-		if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
-		{
-			stage.MoveCursor(Utility::DIR::DOWN);
-		}
-		if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::LEFT))
-		{
-			stage.MoveCursor(Utility::DIR::LEFT);
-		}
-		if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
-		{
-			stage.MoveCursor(Utility::DIR::RIGHT);
-		}
-		if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
-		{
-			ChangeIsSelect(true);
-		}
-	}
-	else
-	{
-		//駒の移動受付
-		if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::TOP))
-		{
-			stage.MovePiece(Utility::DIR::UP);
-		}
-		if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
-		{
-			stage.MovePiece(Utility::DIR::DOWN);
-		}
-		if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::LEFT))
-		{
-			stage.MovePiece(Utility::DIR::LEFT);
-		}
-		if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
-		{
-			stage.MovePiece(Utility::DIR::RIGHT);
-		}
+	//if (!isSelect_)
+	//{
+	//	//盤面リセット
+	//	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1,InputManager::JOYPAD_BTN::TOP))
+	//	{
+	//		stage.PazzleReset();
+	//	}
+	//	//カーソルの移動受付
+	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1,InputManager::JOYPAD_BTN::TOP))
+	//	{
+	//		stage.MoveCursor(Utility::DIR::UP);
+	//	}
+	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+	//	{
+	//		stage.MoveCursor(Utility::DIR::DOWN);
+	//	}
+	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::LEFT))
+	//	{
+	//		stage.MoveCursor(Utility::DIR::LEFT);
+	//	}
+	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
+	//	{
+	//		stage.MoveCursor(Utility::DIR::RIGHT);
+	//	}
+	//	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+	//	{
+	//		ChangeIsSelect(true);
+	//	}
+	//}
+	//else
+	//{
+	//	//駒の移動受付
+	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::TOP))
+	//	{
+	//		stage.MovePiece(Utility::DIR::UP);
+	//	}
+	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+	//	{
+	//		stage.MovePiece(Utility::DIR::DOWN);
+	//	}
+	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::LEFT))
+	//	{
+	//		stage.MovePiece(Utility::DIR::LEFT);
+	//	}
+	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
+	//	{
+	//		stage.MovePiece(Utility::DIR::RIGHT);
+	//	}
 
-		if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
-		{
-			ChangeIsSelect(false);
-		}
-	}
+	//	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
+	//	{
+	//		ChangeIsSelect(false);
+	//	}
+	//}
 }
 #pragma endregion
 

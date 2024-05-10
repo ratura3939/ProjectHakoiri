@@ -17,7 +17,7 @@ class StageBase
 {
 public:
 
-	static constexpr int FRAME_INTERVAL = 30;
+	static constexpr int FRAME_INTERVAL = 15;
 
 	StageBase(void);	//コンストラクタ
 	virtual ~StageBase(void);	//デストラクタ

@@ -176,7 +176,7 @@ void StageBase::Update(void)
 		}
 		if (frameFlash_)
 		{
-			if (frameAnim_ % Application::FPS < FRAME_INTERVAL)
+			if (frameAnim_ % (Application::FPS / 2) < FRAME_INTERVAL)
 			{
 				//˜g‚Ì•`‰æ
 				DrawCursor();
