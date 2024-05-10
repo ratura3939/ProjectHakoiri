@@ -65,6 +65,7 @@ void GameScene::Draw(void)
 {
 	StageManager::GetInstance().Draw();
 	DrawString(0, 0, "GameScene", 0xffffff, true);
+	DrawFormatString(0, 100, 0xffffff, "%d", pzl_->IsNeutral(), true);
 }
 //‰ð•ú
 //********************************************************

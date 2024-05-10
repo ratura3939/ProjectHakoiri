@@ -10,6 +10,8 @@
 Pazzle::Pazzle(void)
 {
 	isSelect_ = false;
+	isNeutral_ = true;
+	neutralStick_ = { 0,0 };
 }
 //デストラクタ
 //********************************************************
@@ -30,13 +32,16 @@ void Pazzle::Update(void)
 	GamePadController();
 }
 
+#pragma region キーボード
+
 // キーボードの操作
 //********************************************************
 void Pazzle::KeyboardContoroller(void)
 {
 	InputManager& ins = InputManager::GetInstance();
 	StageManager& stage = StageManager::GetInstance();
-	
+
+
 	if (!isSelect_)
 	{
 		//盤面リセット
@@ -91,6 +96,8 @@ void Pazzle::KeyboardContoroller(void)
 		}
 	}
 }
+#pragma endregion
+
 
 #pragma region パッド操作
 
@@ -98,63 +105,69 @@ void Pazzle::KeyboardContoroller(void)
 //********************************************************
 void Pazzle::GamePadController(void)
 {
-	//InputManager& ins = InputManager::GetInstance();
-	//StageManager& stage = StageManager::GetInstance();
+	
+	InputManager& ins = InputManager::GetInstance();
+	StageManager& stage = StageManager::GetInstance();
 
-	//if (!isSelect_)
-	//{
-	//	//盤面リセット
-	//	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1,InputManager::JOYPAD_BTN::TOP))
-	//	{
-	//		stage.PazzleReset();
-	//	}
-	//	//カーソルの移動受付
-	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1,InputManager::JOYPAD_BTN::TOP))
-	//	{
-	//		stage.MoveCursor(Utility::DIR::UP);
-	//	}
-	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
-	//	{
-	//		stage.MoveCursor(Utility::DIR::DOWN);
-	//	}
-	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::LEFT))
-	//	{
-	//		stage.MoveCursor(Utility::DIR::LEFT);
-	//	}
-	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
-	//	{
-	//		stage.MoveCursor(Utility::DIR::RIGHT);
-	//	}
-	//	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
-	//	{
-	//		ChangeIsSelect(true);
-	//	}
-	//}
-	//else
-	//{
-	//	//駒の移動受付
-	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::TOP))
-	//	{
-	//		stage.MovePiece(Utility::DIR::UP);
-	//	}
-	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
-	//	{
-	//		stage.MovePiece(Utility::DIR::DOWN);
-	//	}
-	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::LEFT))
-	//	{
-	//		stage.MovePiece(Utility::DIR::LEFT);
-	//	}
-	//	if (ins.IsPadStickTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
-	//	{
-	//		stage.MovePiece(Utility::DIR::RIGHT);
-	//	}
+	// 左スティックの横軸
+	auto leftStickX = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLX;
+	// 左スティックの縦軸
+	auto leftStickY = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLY;
+	//スティックの動きを合わせて保存
+	Vector2 inputStick = { leftStickX,leftStickY };
 
-	//	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
-	//	{
-	//		ChangeIsSelect(false);
-	//	}
-	//}
+	//ニュートラルに戻すか判定
+	if (!isNeutral_)
+	{
+		//現在がニュートラルかを判断
+		if (IsStickNeutral(inputStick))
+		{
+			ChangeIsNeutral(true);
+		}
+	}
+	
+
+	//スティックがニュートラル状態のとき
+	if (isNeutral_)
+	{
+		//駒の選択中ではないとき
+		if (!isSelect_)
+		{
+			//盤面リセット
+			if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::TOP))
+			{
+				stage.PazzleReset();
+			}
+
+			//スティックが移動しているとき
+			if (abs(leftStickY) > 0 ||
+				abs(leftStickX) > 0)
+			{
+				stage.MoveCursor(MoveStick(inputStick));
+			}
+			
+			//駒の選択
+			if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+			{
+				ChangeIsSelect(true);
+			}
+		}
+		else
+		{
+			//駒の移動受付
+			//スティックが移動しているとき
+			if (abs(leftStickY) > 0 ||
+				abs(leftStickX) > 0)
+			{
+				stage.MovePiece(MoveStick(inputStick));
+			}
+
+			if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+			{
+				ChangeIsSelect(false);
+			}
+		}
+	}
 }
 #pragma endregion
 
@@ -163,9 +176,61 @@ bool Pazzle::IsSelect(void)
 	return isSelect_;
 }
 
+bool Pazzle::IsNeutral(void)
+{
+	return isNeutral_;
+}
+
 //IsSelectの変更
 //********************************************************
 void Pazzle::ChangeIsSelect(bool flag)
 {
 	isSelect_ = flag;
+}
+
+void Pazzle::ChangeIsNeutral(bool flag)
+{
+	isNeutral_ = flag;
+}
+
+bool Pazzle::IsStickNeutral(Vector2 stick)
+{
+	if (neutralStick_.x_ == stick.x_ &&
+		neutralStick_.y_ == stick.y_)
+	{
+		return true;
+	}
+	return false;
+}
+
+Utility::DIR Pazzle::MoveStick(Vector2 stick)
+{
+	
+		//縦軸の方が移動量が多い時
+		if (abs(stick.y_) > abs(stick.x_))
+		{
+			if (stick.y_ < 0)
+			{
+				ChangeIsNeutral(false);
+				return Utility::DIR::UP;
+			}
+			else
+			{
+				ChangeIsNeutral(false);
+				return Utility::DIR::DOWN;
+			}
+		}
+		else
+		{
+			if (stick.x_ > 0)
+			{
+				ChangeIsNeutral(false);
+				return Utility::DIR::RIGHT;
+			}
+			else
+			{
+				ChangeIsNeutral(false);
+				return Utility::DIR::LEFT;
+			}
+		}
 }

@@ -8,6 +8,7 @@ class InputManager
 
 public:
 
+
 	// ゲームコントローラーの認識番号
 	// DxLib定数、DX_INPUT_PAD1等に対応
 	enum class JOYPAD_NO
@@ -50,6 +51,10 @@ public:
 		L_TRIGGER,
 		ZL_TRIGGER,
 		L3_TRIGGER,
+		CROSS_LEFT,
+		CROSS_RIGHT,
+		CROSS_UP,
+		CROSS_DOWN,
 		MAX
 	};
 
