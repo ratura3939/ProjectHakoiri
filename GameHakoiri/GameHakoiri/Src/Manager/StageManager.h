@@ -1,6 +1,8 @@
 #pragma once
+#include<memory>
 #include"../Utility/Utility.h"
 
+class GameScene;
 class StageBase;
 
 class StageManager
@@ -19,8 +21,8 @@ public:
 	};
 
 	bool Init(STAGENUM);	//初期化
-	void Update(void);	//更新
-	void Draw(void);	//描画
+	void Update(std::shared_ptr<GameScene> scn);	//更新
+	void Draw(std::shared_ptr<GameScene> scn);	//描画
 	bool Release(void);	//解放
 
 	void MoveCursor(Utility::DIR dir);	//カーソルの移動

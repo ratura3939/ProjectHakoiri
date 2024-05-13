@@ -23,6 +23,10 @@ public:
 	void Update(void);	//更新
 	void Draw(void);	//描画
 	bool Release(void);	//解放
+
+	void SetMode(MODE mode);	//ゲームモード変更
+	MODE GetMode(void)const;			//ゲームモード取得
+
 private:
 
 	//インスタンス

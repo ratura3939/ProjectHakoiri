@@ -3,12 +3,14 @@
 #include"../Utility/Utility.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/StageManager.h"
-#include "Pazzle.h"
+#include"../Scene/GameScene.h"
+#include "Pazzle.h"	
 
 //コンストラクタ
 //********************************************************
 Pazzle::Pazzle(void)
 {
+	isFinish_ = false;
 	isSelect_ = false;
 	isNeutral_ = true;
 	neutralStick_ = { 0,0 };
@@ -41,6 +43,11 @@ void Pazzle::KeyboardContoroller(void)
 	InputManager& ins = InputManager::GetInstance();
 	StageManager& stage = StageManager::GetInstance();
 
+	if (ins.IsTrgDown(KEY_INPUT_RETURN))
+	{
+		ChangeIsFinish(true);
+		return;
+	}
 
 	if (!isSelect_)
 	{
@@ -109,6 +116,16 @@ void Pazzle::GamePadController(void)
 	InputManager& ins = InputManager::GetInstance();
 	StageManager& stage = StageManager::GetInstance();
 
+	//パズル完了次のモードに移行
+	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
+	{
+		ChangeIsFinish(true);
+		return;
+	}
+
+
+
+
 	// 左スティックの横軸
 	auto leftStickX = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLX;
 	// 左スティックの縦軸
@@ -171,6 +188,9 @@ void Pazzle::GamePadController(void)
 }
 #pragma endregion
 
+
+#pragma region フラグのゲッター
+
 bool Pazzle::IsSelect(void)
 {
 	return isSelect_;
@@ -181,8 +201,14 @@ bool Pazzle::IsNeutral(void)
 	return isNeutral_;
 }
 
-//IsSelectの変更
-//********************************************************
+bool Pazzle::IsFinish(void)
+{
+	return isFinish_;
+}
+#pragma endregion
+
+#pragma region フラグのセッター
+
 void Pazzle::ChangeIsSelect(bool flag)
 {
 	isSelect_ = flag;
@@ -193,6 +219,16 @@ void Pazzle::ChangeIsNeutral(bool flag)
 	isNeutral_ = flag;
 }
 
+void Pazzle::ChangeIsFinish(bool flag)
+{
+	isFinish_ = flag;
+}
+#pragma endregion
+
+
+#pragma region Lスティック関連
+
+//ニュートラル状態の判定
 bool Pazzle::IsStickNeutral(Vector2 stick)
 {
 	if (neutralStick_.x_ == stick.x_ &&
@@ -203,34 +239,38 @@ bool Pazzle::IsStickNeutral(Vector2 stick)
 	return false;
 }
 
+//移動した方向
 Utility::DIR Pazzle::MoveStick(Vector2 stick)
 {
-	
-		//縦軸の方が移動量が多い時
-		if (abs(stick.y_) > abs(stick.x_))
+
+	//縦軸の方が移動量が多い時
+	if (abs(stick.y_) > abs(stick.x_))
+	{
+		if (stick.y_ < 0)
 		{
-			if (stick.y_ < 0)
-			{
-				ChangeIsNeutral(false);
-				return Utility::DIR::UP;
-			}
-			else
-			{
-				ChangeIsNeutral(false);
-				return Utility::DIR::DOWN;
-			}
+			ChangeIsNeutral(false);
+			return Utility::DIR::UP;
 		}
 		else
 		{
-			if (stick.x_ > 0)
-			{
-				ChangeIsNeutral(false);
-				return Utility::DIR::RIGHT;
-			}
-			else
-			{
-				ChangeIsNeutral(false);
-				return Utility::DIR::LEFT;
-			}
+			ChangeIsNeutral(false);
+			return Utility::DIR::DOWN;
 		}
+	}
+	else
+	{
+		if (stick.x_ > 0)
+		{
+			ChangeIsNeutral(false);
+			return Utility::DIR::RIGHT;
+		}
+		else
+		{
+			ChangeIsNeutral(false);
+			return Utility::DIR::LEFT;
+		}
+	}
 }
+
+#pragma endregion
+

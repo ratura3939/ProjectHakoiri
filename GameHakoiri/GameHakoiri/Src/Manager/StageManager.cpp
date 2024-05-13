@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"../Scene/GameScene.h"
 #include"../Stage/StageBase.h"
 #include"../Stage/TutorialStage.h"
 #include"StageManager.h"
@@ -59,15 +60,15 @@ bool StageManager::Init(STAGENUM num)
 }
 //XV
 //********************************************************
-void StageManager::Update(void)
+void StageManager::Update(std::shared_ptr<GameScene> scn)
 {
-
+	stage_->Update(scn.get()->GetMode());
 }
 //•`‰æ
 //********************************************************
-void StageManager::Draw(void)
+void StageManager::Draw(std::shared_ptr<GameScene> scn)
 {
-	stage_->PazzleDraw();
+	stage_->Draw(scn.get()->GetMode());
 }
 //‰ğ•ú
 //********************************************************

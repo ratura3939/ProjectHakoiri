@@ -7,6 +7,7 @@
 #include<map>
 #include"../Common/Vector2.h"
 #include"../Utility/Utility.h"
+#include"../Scene/GameScene.h"
 #include"Room/RoomBase.h"
 
 //StageBaseは各ステージの情報置き場という認識
@@ -23,8 +24,8 @@ public:
 	virtual ~StageBase(void);	//デストラクタ
 
 	virtual bool Init(void);	//初期化
-	virtual void Update(void);	//更新
-	virtual void PazzleDraw(void);	//描画
+	virtual void Update(GameScene::MODE mode);	//更新
+	virtual void Draw(GameScene::MODE mode);	//描画
 	virtual bool Release(void);	//解放
 
 	void LoadPazzle(void);			//盤面の読み込み
@@ -66,8 +67,13 @@ private:
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
 	
+	//更新
+	void UpdateStealth(void);
 
-	void DrawCursor(void);	//カーソルの描画
+	//描画
+	void DrawPazzle(void);	//パズル
+	void DrawCursor(void);	//カーソル
+	void DrawStealth(void);	//ステルス
 
 protected:
 	//各ステージのファイル名

@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include<memory>
 #include"../Manager/SceneManager.h"
 #include"../Manager/StageManager.h"
 #include"../Manager/InputManager.h"
@@ -31,7 +32,7 @@ bool GameScene::Init(void)
 		return false;	//初期化失敗のためシステム終了
 	}
 
-	mode_ = MODE::PAZZLE;
+	SetMode(MODE::PAZZLE);
 	pzl_ = new Pazzle;
 
 	//正常に処理が行われたので
@@ -47,11 +48,16 @@ void GameScene::Update(void)
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);
 	}
 
+	StageManager::GetInstance().Update(std::make_shared<GameScene>(this));
 
 	switch (mode_)
 	{
 	case GameScene::MODE::PAZZLE:
 		pzl_->Update();
+		if (pzl_->IsFinish())
+		{
+			SetMode(MODE::STEALTH);
+		}
 		break;
 	case GameScene::MODE::STEALTH:
 
@@ -63,7 +69,7 @@ void GameScene::Update(void)
 //********************************************************
 void GameScene::Draw(void)
 {
-	StageManager::GetInstance().Draw();
+	StageManager::GetInstance().Draw(std::make_shared<GameScene>(this));
 	DrawString(0, 0, "GameScene", 0xffffff, true);
 	DrawFormatString(0, 100, 0xffffff, "%d", pzl_->IsNeutral(), true);
 }
@@ -79,4 +85,15 @@ bool GameScene::Release(void)
 
 	//正常に処理が行われたので
 	return true;
+}
+
+
+void GameScene::SetMode(MODE mode)
+{
+	mode_ = mode;
+}
+
+GameScene::MODE GameScene::GetMode(void)const
+{
+	return mode_;
 }

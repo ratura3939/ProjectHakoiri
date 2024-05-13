@@ -144,17 +144,47 @@ bool StageBase::Init(void)
 	//正しく処理が終了したので
 	return true;
 }
-//更新
-//********************************************************
-void StageBase::Update(void)
-{
 
+#pragma region 更新
+
+void StageBase::Update(GameScene::MODE mode)
+{
+	switch (mode)
+	{
+	case GameScene::MODE::STEALTH:
+		UpdateStealth();
+		break;
+	default:
+		break;
+	}
 }
+
+void StageBase::UpdateStealth(void)
+{
+}
+#pragma endregion
+
+
+
 #pragma region 描画
 
+void StageBase::Draw(GameScene::MODE mode)
+{
+	switch (mode)
+	{
+	case GameScene::MODE::PAZZLE:
+		DrawPazzle();
+		break;
+	case GameScene::MODE::STEALTH:
+		DrawStealth();
+		break;
+	default:
+		break;
+	}
+}
 #pragma region パズルシーン
 
-	void StageBase::PazzleDraw(void)
+	void StageBase::DrawPazzle(void)
 	{		
 		size_t pzlY = pzlMap_.size();
 		size_t pzlX = pzlX_.size();
@@ -188,6 +218,7 @@ void StageBase::Update(void)
 			DrawCursor();
 		}
 	}
+
 	#pragma endregion
 
 #pragma region カーソル
@@ -238,7 +269,17 @@ void StageBase::Update(void)
 				frame_, true);
 		}
 	}
+
 	
+	
+#pragma endregion
+
+#pragma region ステルス
+
+	void StageBase::DrawStealth(void)
+	{
+
+	}
 #pragma endregion
 
 
