@@ -2,6 +2,14 @@
 #include"RoomBase.h"
 #include "Own.h"
 
+Own::Own(int roomImg) :RoomBase(roomImg)
+{
+
+}
+Own::~Own(void)
+{
+
+}
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Own::SetParam(void)
 {

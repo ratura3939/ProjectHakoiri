@@ -2,6 +2,14 @@
 #include"RoomBase.h"
 #include "Living.h"
 
+Living::Living(int roomImg) :RoomBase(roomImg)
+{
+
+}
+Living::~Living(void)
+{
+
+}
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Living::SetParam(void)
 {

@@ -2,6 +2,14 @@
 #include"RoomBase.h"
 #include "Storage.h"
 
+Storage::Storage(int roomImg) :RoomBase(roomImg)
+{
+
+}
+Storage::~Storage(void)
+{
+
+}
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Storage::SetParam(void)
 {

@@ -2,6 +2,14 @@
 #include"RoomBase.h"
 #include "Entrance.h"
 
+Entrance::Entrance(int roomImg) :RoomBase(roomImg)
+{
+
+}
+Entrance::~Entrance(void)
+{
+
+}
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Entrance::SetParam(void)
 {

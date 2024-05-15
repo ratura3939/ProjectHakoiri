@@ -3,6 +3,14 @@
 #include"RoomBase.h"
 #include "None.h"
 
+None::None(int roomImg) :RoomBase(roomImg)
+{
+
+}
+None::~None(void)
+{
+
+}
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void None::SetParam(void)
 {

@@ -49,6 +49,7 @@ private:
 	std::map<std::string, RoomBase*> roomMng_;	//部屋の情報一括管理
 	std::map<std::string, RoomBase::TYPE> resetRoom_;//部屋のリセット用
 	std::string roomKey_;	//連想配列のキー
+	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];
 
 
 	std::vector<std::vector<int>>pzlMap_;	//パズルの置き場情報を数字で管理

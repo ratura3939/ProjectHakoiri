@@ -14,9 +14,21 @@ public:
 	enum class SRC
 	{
 		//âÊëú
+		//ÉJÅ[É\Éã
 		FRAME_IMG,
 		FRAME_OBLONG_IMG,
 		FRAME_OBLONG_2_IMG,
+		//ïîâÆ
+		BATH_IMG,
+		ENTRANCE_IMG,
+		GOAL_IMG,
+		KITCHEN_IMG,
+		LIVING_IMG,
+		NONE_IMG,
+		OWN_IMG,
+		STRAGE_IMG,
+		WALL_IMG,
+		WASITU_IMG,
 
 		//å¯â âπ
 		PUSH_ENTER_SND,

@@ -2,6 +2,15 @@
 #include"RoomBase.h"
 #include "Bath.h"
 
+
+Bath::Bath(int roomImg) :RoomBase(roomImg)
+{
+
+}
+Bath::~Bath(void)
+{
+
+}
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Bath::SetParam(void)
 {

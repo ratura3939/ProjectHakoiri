@@ -43,6 +43,8 @@ bool StageBase::Init(void)
 	SetParam();
 	//パズル配置の読み込み
 	LoadPazzle();
+	//画像読み込み
+	LoadImgs();
 
 	//初期化に必要な変数
 	size_t pzlY = pzlMap_.size();
@@ -133,11 +135,21 @@ bool StageBase::Init(void)
 		pos.y_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_Y);
 	}
 
-
-
-	CreateKey(1, 1);
-	roomMng_[roomKey_]->SetIsCursor(true);
-
+	//初期のカーソル設定
+	for (int y = 0; y < pzlY; y++)
+	{
+		for (int x = 0; x < pzlX; x++)
+		{
+			CreateKey(y, x);
+			if (!IsDontMoveBlock(roomKey_) &&
+				roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::NONE)
+			{
+				roomMng_[roomKey_]->SetIsCursor(true);
+				//正しく処理が終了したので
+				return true;
+			}
+		}
+	}
 	//正しく処理が終了したので
 	return true;
 }
@@ -757,6 +769,7 @@ RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 	room->Init();
 	room->SetRoomType(r->GetRoomType());
 	room->SetColor(r->GetColor());
+	room->SetIsDrawRoom(false);
 	return room;
 }
 
@@ -826,9 +839,32 @@ void StageBase::ResetPazzl(void)
 
 void StageBase::LoadImgs(void)
 {
+	//カーソル
 	frame_[static_cast<int>(CURSOR::NORMAL)]= ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_IMG).handleId_;
 	frame_[static_cast<int>(CURSOR::OBLONG)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_IMG).handleId_;
-	frame_[static_cast<int>(CURSOR::OBLONG)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
+	frame_[static_cast<int>(CURSOR::OBLONG_2)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
+
+	//部屋
+	roomImg_[static_cast<int>(RoomBase::TYPE::BATH)]=
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::GOAL_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::NONE)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::NONE_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::OWN)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::WALL)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::WALL_IMG).handleId_;
+	roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::WASITU_IMG).handleId_;
 }
 #pragma endregion
 

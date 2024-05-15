@@ -3,6 +3,9 @@
 class None : public RoomBase
 {
 public:
+	None(int roomImg);
+	~None(void);
+
 	void SetParam(void)override;
 	//void DrawPazzle(void)override;
 

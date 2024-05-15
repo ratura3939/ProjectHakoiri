@@ -27,8 +27,8 @@ public:
 		, MAX
 	};
 
-	RoomBase(void);	//コンストラクタ
-	~RoomBase(void);	//デストラクタ
+	RoomBase(int roomImg);	//コンストラクタ
+	virtual ~RoomBase(void);	//デストラクタ
 
 	bool Init(void);	//初期化
 	void Draw(void);
@@ -50,6 +50,8 @@ public:
 
 	bool IsChange(void);	//IsChangeのゲッター
 	void SetIsChange(bool flag);	//IsChangeのセッター
+
+	void SetIsDrawRoom(bool flag);
 
 
 	//いずれ消すもの
@@ -78,6 +80,9 @@ protected:
 	Vector2F StealthSize_;	//ステルスシーンにおけるマップのサイズ(〇×〇か）
 
 	bool isCursor_;			//カーソルに選択されているかどうか
+
+	int roomImg_;	//部屋の画像
+	int isDrawRoom_;	//描画するか決める（長方形の二マス目用）
 
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 

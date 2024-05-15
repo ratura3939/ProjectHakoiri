@@ -2,6 +2,14 @@
 #include"RoomBase.h"
 #include "Goal.h"
 
+Goal::Goal(int roomImg) :RoomBase(roomImg)
+{
+
+}
+Goal::~Goal(void)
+{
+
+}
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Goal::SetParam(void)
 {

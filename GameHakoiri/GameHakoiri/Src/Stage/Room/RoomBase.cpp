@@ -5,8 +5,9 @@
 
 //コンストラクタ
 //********************************************************
-RoomBase::RoomBase(void)
+RoomBase::RoomBase(int roomImg)
 {
+	roomImg_ = roomImg;
 	type_ = TYPE::NONE;
 	pzlPos_ = { 0.0f,0.0f };
 	mapPos_ = { 0.0f,0.0f };
@@ -60,10 +61,16 @@ void RoomBase::Draw(void)
 void RoomBase::DrawPazzle(void)
 {
 	Vector2 pos = pzlPos_.ToVector2();
-	DrawBox(pos.x_, pos.y_,
+	if (isDrawRoom_)
+	{
+		DrawGraph(pos.x_, pos.y_,
+			roomImg_, true);
+	}
+	
+	/*DrawBox(pos.x_, pos.y_,
 		pos.x_ + static_cast<int>(pieceSize_.x_),
 		pos.y_ + static_cast<int>(pieceSize_.y_),
-		dbgColor_, true);
+		dbgColor_, true);*/
 }
 //ステルスシーンにおける部屋の描画
 //********************************************************
@@ -140,6 +147,10 @@ bool RoomBase::IsChange(void)
 void RoomBase::SetIsChange(bool flag)
 {
 	IsChange_ = flag;
+}
+void RoomBase::SetIsDrawRoom(bool flag)
+{
+	isDrawRoom_ = flag;
 }
 #pragma endregion
 

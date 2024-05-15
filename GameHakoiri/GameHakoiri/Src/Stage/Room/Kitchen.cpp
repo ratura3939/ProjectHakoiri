@@ -2,6 +2,14 @@
 #include"RoomBase.h"
 #include "Kitchen.h"
 
+Kitchen::Kitchen(int roomImg) :RoomBase(roomImg)
+{
+
+}
+Kitchen::~Kitchen(void)
+{
+
+}
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Kitchen::SetParam(void)
 {

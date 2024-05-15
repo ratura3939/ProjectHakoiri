@@ -2,6 +2,15 @@
 #include"RoomBase.h"
 #include "Wall.h"
 
+Wall::Wall(int roomImg) :RoomBase(roomImg)
+{
+
+}
+Wall::~Wall(void)
+{
+
+}
+
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Wall::SetParam(void)
 {

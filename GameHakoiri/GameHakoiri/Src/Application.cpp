@@ -45,17 +45,17 @@ bool Application::Init(void)
 	{
 		return false;						//DXライブラリの初期化失敗のためシステム終了
 	}
+	
+	//入力管理初期化
+	InputManager::CreateInstance();
+	//リソース管理初期化
+	ResourceManager::CreateInstance();
 
 	//インスタンスの生成
 	if (!SceneManager::CreateInstance())
 	{
 		return false;	//初期化失敗のためシステム終了
 	}
-	
-	//入力管理初期化
-	InputManager::CreateInstance();
-	//リソース管理初期化
-	ResourceManager::CreateInstance();
 
 	//正しく処理が終了したので
 	return true;
