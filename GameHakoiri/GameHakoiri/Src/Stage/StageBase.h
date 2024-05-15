@@ -18,6 +18,14 @@ class StageBase
 {
 public:
 
+	enum class CURSOR
+	{
+		NORMAL,
+		OBLONG,
+		OBLONG_2,
+		MAX
+	};
+
 	static constexpr int FRAME_INTERVAL = 15;
 
 	StageBase(void);	//コンストラクタ
@@ -47,10 +55,8 @@ private:
 	std::vector<int>pzlX_;
 	std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
 
-	int frame_;
-	int frameImg_;
-	int frameObImg_;
-	int frameOb2Img_;
+	CURSOR type_;
+	int frame_[static_cast<int>(CURSOR::MAX)];
 	bool frameFlash_;
 	int frameAnim_;
 	
@@ -66,6 +72,7 @@ private:
 
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
+	void SetCursorType(CURSOR type);
 	
 	//更新
 	void UpdateStealth(void);
@@ -74,6 +81,8 @@ private:
 	void DrawPazzle(void);	//パズル
 	void DrawCursor(void);	//カーソル
 	void DrawStealth(void);	//ステルス
+
+	void LoadImgs(void);
 
 protected:
 	//各ステージのファイル名

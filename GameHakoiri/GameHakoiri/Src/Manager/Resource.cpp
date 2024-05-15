@@ -1,4 +1,5 @@
 #include <DxLib.h>
+//#include <EffekseerForDXLib.h>
 #include "Resource.h"
 
 Resource::Resource(void)

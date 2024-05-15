@@ -1,4 +1,4 @@
-//#pragma once
+#pragma once
 #include"SceneBase.h"
 
 class Pazzle;
@@ -25,7 +25,7 @@ public:
 	bool Release(void);	//解放
 
 	void SetMode(MODE mode);	//ゲームモード変更
-	MODE GetMode(void)const;			//ゲームモード取得
+	MODE GetMode(void);			//ゲームモード取得
 
 private:
 

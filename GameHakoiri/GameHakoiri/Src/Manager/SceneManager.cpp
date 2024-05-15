@@ -40,7 +40,7 @@ bool SceneManager::Init(void)
 {
 	//ÉVÅ[Éìä«óù
 	sceneID_ = SCENEID::NONE;
-	nextSceneID_ = SCENEID::GAME;
+	nextSceneID_ = SCENEID::TITLE;
 
 	DoChangeScene();
 

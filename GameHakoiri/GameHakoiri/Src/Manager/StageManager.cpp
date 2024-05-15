@@ -60,15 +60,15 @@ bool StageManager::Init(STAGENUM num)
 }
 //XV
 //********************************************************
-void StageManager::Update(std::shared_ptr<GameScene> scn)
+void StageManager::Update(GameScene::MODE mode)
 {
-	stage_->Update(scn.get()->GetMode());
+	stage_->Update(mode);
 }
 //•`‰æ
 //********************************************************
-void StageManager::Draw(std::shared_ptr<GameScene> scn)
+void StageManager::Draw(GameScene::MODE mode)
 {
-	stage_->Draw(scn.get()->GetMode());
+	stage_->Draw(mode);
 }
 //‰ğ•ú
 //********************************************************

@@ -3,6 +3,7 @@
 
 #include"../Application.h"
 #include"../Utility/Utility.h"
+#include"../Manager/ResourceManager.h"
 #include"Room/RoomBase.h"
 #include"Room/None.h"
 #include"Room/Own.h"
@@ -35,10 +36,6 @@ StageBase::~StageBase(void)
 //********************************************************
 bool StageBase::Init(void)
 {
-	frame_ = 0;
-	frameImg_ = LoadGraph("Data/Img/frame.png");
-	frameObImg_ = LoadGraph("Data/Img/frame_oblong.png");
-	frameOb2Img_= LoadGraph("Data/Img/frame_oblong_2.png");
 	frameAnim_ = 0;
 	SetFrameFlash(false);
 
@@ -227,8 +224,6 @@ void StageBase::Draw(GameScene::MODE mode)
 	{
 		Vector2 key = GetNowCursorPos();
 
-		//DrawFormatString(0, 20, 0xffffff, "CURSOR={%d.%d}", key.x_, key.y_);
-
 		CreateKey(key.y_, key.x_);
 		switch (roomMng_[roomKey_]->GetRoomType())
 		{
@@ -244,14 +239,14 @@ void StageBase::Draw(GameScene::MODE mode)
 		case RoomBase::TYPE::WALL:
 			//ÉSÅ[Éã
 		case RoomBase::TYPE::GOAL:
-			frame_ = frameImg_;
+			SetCursorType(CURSOR::NORMAL);
 			break;
 			//ècí∑
 			//ãèä‘
 		case RoomBase::TYPE::LIVING:
 			//ë‰èä
 		case RoomBase::TYPE::KITCHEN:
-			frame_ = frameObImg_;
+			SetCursorType(CURSOR::OBLONG);
 			break;
 
 			//â°í∑
@@ -259,14 +254,14 @@ void StageBase::Draw(GameScene::MODE mode)
 		case RoomBase::TYPE::OWN:
 			//å∫ä÷
 		case RoomBase::TYPE::ENTRANCE:
-			frame_ = frameOb2Img_;
+			SetCursorType(CURSOR::OBLONG_2);
 			break;
 		}
 		if (roomMng_[roomKey_]->GetIsCursor())
 		{
 			//ògÇÃï`âÊ
 			DrawGraph(pzlPos_[roomKey_].x_, pzlPos_[roomKey_].y_,
-				frame_, true);
+				frame_[static_cast<int>(type_)], true);
 		}
 	}
 
@@ -306,9 +301,10 @@ bool StageBase::Release(void)
 		}
 	}
 
-	DeleteGraph(frameImg_);
-	DeleteGraph(frameObImg_);
-	DeleteGraph(frameOb2Img_);
+	for (int i = 0; i < static_cast<int>(CURSOR::MAX); i++)
+	{
+		DeleteGraph(frame_[i]);
+	}
 
 	//ê≥ÇµÇ≠èàóùÇ™èIóπÇµÇΩÇÃÇ≈
 	return true;
@@ -390,6 +386,11 @@ Vector2 StageBase::GetNowCursorPos(void)
 		}
 	}
 	return cursor;
+}
+
+void StageBase::SetCursorType(CURSOR type)
+{
+	type_ = type;
 }
 #pragma endregion
 
@@ -758,6 +759,7 @@ RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 	room->SetColor(r->GetColor());
 	return room;
 }
+
 void StageBase::SetFrameFlash(bool flag)
 {
 	frameFlash_ = flag;
@@ -820,4 +822,13 @@ void StageBase::ResetPazzl(void)
 }
 #pragma endregion
 
+#pragma region âÊëúì«Ç›çûÇ›
+
+void StageBase::LoadImgs(void)
+{
+	frame_[static_cast<int>(CURSOR::NORMAL)]= ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_IMG).handleId_;
+	frame_[static_cast<int>(CURSOR::OBLONG)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_IMG).handleId_;
+	frame_[static_cast<int>(CURSOR::OBLONG)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
+}
+#pragma endregion
 

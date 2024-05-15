@@ -16,6 +16,11 @@ public:
 	// データパス関連
 	//-------------------------------------------
 	static const std::string PATH_PAZZLE;
+	static const std::string PATH_MAP;
+	static const std::string PATH_IMAGE;
+	static const std::string PATH_ANIM;
+	static const std::string PATH_SOUND;
+	static const std::string PATH_BGM;
 
 	//メンバ関数
 	bool Init(void);	//初期化

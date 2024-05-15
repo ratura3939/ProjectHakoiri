@@ -12,7 +12,6 @@
 //********************************************************
 GameScene::GameScene(void)
 {
-	mode_ = MODE::PAZZLE;
 	pzl_ = nullptr;
 	stl_ = nullptr;
 }
@@ -31,7 +30,6 @@ bool GameScene::Init(void)
 	{
 		return false;	//初期化失敗のためシステム終了
 	}
-
 	SetMode(MODE::PAZZLE);
 	pzl_ = new Pazzle;
 
@@ -48,7 +46,7 @@ void GameScene::Update(void)
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);
 	}
 
-	StageManager::GetInstance().Update(std::make_shared<GameScene>(this));
+	StageManager::GetInstance().Update(GetMode());
 
 	switch (mode_)
 	{
@@ -69,7 +67,7 @@ void GameScene::Update(void)
 //********************************************************
 void GameScene::Draw(void)
 {
-	StageManager::GetInstance().Draw(std::make_shared<GameScene>(this));
+	StageManager::GetInstance().Draw(GetMode());
 	DrawString(0, 0, "GameScene", 0xffffff, true);
 	DrawFormatString(0, 100, 0xffffff, "%d", pzl_->IsNeutral(), true);
 }
@@ -93,7 +91,7 @@ void GameScene::SetMode(MODE mode)
 	mode_ = mode;
 }
 
-GameScene::MODE GameScene::GetMode(void)const
+GameScene::MODE GameScene::GetMode(void)
 {
 	return mode_;
 }

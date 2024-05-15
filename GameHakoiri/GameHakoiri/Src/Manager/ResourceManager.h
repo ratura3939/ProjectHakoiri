@@ -14,22 +14,19 @@ public:
 	enum class SRC
 	{
 		//画像
-		TITLE_IMG,
-		
-		STAGE_IMG,
-		
+		FRAME_IMG,
+		FRAME_OBLONG_IMG,
+		FRAME_OBLONG_2_IMG,
+
 		//効果音
-	
+		PUSH_ENTER_SND,
+
 		//BGM
 		TITLE_BGM,
-		SEARCH_BGM,
-		SEARCH_FINAL_BGM,
-		FAILED_BGM,
-		SUCCESS_BGM,
 
 		//エフェクト
+		HIT_EFFECT,
 		
-	
 		//タイトル
 
 	};

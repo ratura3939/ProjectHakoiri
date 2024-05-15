@@ -2,10 +2,16 @@
 #include"Application.h"
 #include"Manager/SceneManager.h"
 #include"Manager/InputManager.h"
+#include"Manager/ResourceManager.h"
 
 Application* Application::instance_ = nullptr;
 
-//const std::string Application::PATH_PAZZLE = "Data/Csv/Pazzle/";
+const std::string Application::PATH_PAZZLE = "Data/Csv/Pazzle/";
+const std::string Application::PATH_MAP = "Data/Csv/Map/";
+const std::string Application::PATH_IMAGE = "Data/Img/";
+const std::string Application::PATH_ANIM = "Data/Anim/";
+const std::string Application::PATH_SOUND = "Data/Snd/";
+const std::string Application::PATH_BGM = "Data/Snd/Bgm/";
 
 //コンストラクタ
 //********************************************************
@@ -46,7 +52,10 @@ bool Application::Init(void)
 		return false;	//初期化失敗のためシステム終了
 	}
 	
+	//入力管理初期化
 	InputManager::CreateInstance();
+	//リソース管理初期化
+	ResourceManager::CreateInstance();
 
 	//正しく処理が終了したので
 	return true;
@@ -82,6 +91,7 @@ bool Application::Release(void)
 {
 	instance_ = nullptr;
 	SceneManager::GetInstance().Release();
+	ResourceManager::GetInstance().Destroy();
 	//システム終了処理
 //------------------------------------------------------------
 	DxLib_End();	//DXライブラリの終了処理
