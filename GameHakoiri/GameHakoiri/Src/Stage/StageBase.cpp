@@ -65,60 +65,60 @@ bool StageBase::Init(void)
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
-				r = new None;
+				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
 				r->Init();
 				break;
 			//自室
 			case RoomBase::TYPE::OWN: 
-				r = new Own();
+				r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceLeft(y, x, r)){ r = GetSecondRoomInstance(r); }
 				break;
 			//和室
 			case RoomBase::TYPE::WASITU:
-				r = new Wasitu;;
+				r = new Wasitu(roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)]);
 				r->Init();
 				break;
 			//居間
 			case RoomBase::TYPE::LIVING:
-				r = new Living;
+				r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//風呂
 			case RoomBase::TYPE::BATH: 
-				r = new Bath;
+				r = new Bath(roomImg_[static_cast<int>(RoomBase::TYPE::BATH)]);
 				r->Init();
 				break;
 			//物置
 			case RoomBase::TYPE::STORAGE:
-				r = new Storage;
+				r = new Storage(roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)]);
 				r->Init();
 				break;
 			//台所
 			case RoomBase::TYPE::KITCHEN: 
-				r = new Kitchen;
+				r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//玄関
 			case RoomBase::TYPE::ENTRANCE: 
-				r = new Entrance;
+				r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceLeft(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//壁
 			case RoomBase::TYPE::WALL:	
-				r = new Wall;
+				r = new Wall(roomImg_[static_cast<int>(RoomBase::TYPE::WALL)]);
 				r->Init();
 				break;
 			//ゴール
 			case RoomBase::TYPE::GOAL:
-				r = new Goal;
+				r = new Goal(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)]);
 				r->Init();
 				break;
 			}
@@ -495,19 +495,19 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 		switch (afterRoomType)
 		{
 		case RoomBase::TYPE::LIVING:
-			r = new Living;
+			r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
 			r->Init();
 			break;
 		case RoomBase::TYPE::KITCHEN:
-			r = new Kitchen;
+			r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
 			r->Init();
 			break;
 		case RoomBase::TYPE::OWN:
-			r = new Own;
+			r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
 			r->Init();
 			break;
 		case RoomBase::TYPE::ENTRANCE:
-			r = new Entrance;
+			r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
 			r->Init();
 			break;
 		}
@@ -765,7 +765,7 @@ bool StageBase::IsDontMoveBlock(std::string key)
 RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 {
 	RoomBase* room;
-	room = new None;
+	room = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
 	room->Init();
 	room->SetRoomType(r->GetRoomType());
 	room->SetColor(r->GetColor());
