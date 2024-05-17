@@ -10,6 +10,11 @@ class ResourceManager
 
 public:
 
+	//使用する複数枚の画像（アニメーション）などの定数登録
+	static constexpr int PAZZLE_IMG_UNIT_X = 64;
+
+
+
 	// リソース名
 	enum class SRC
 	{
