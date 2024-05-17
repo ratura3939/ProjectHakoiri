@@ -13,6 +13,7 @@ public:
 		NONE,
 		IMG,
 		IMGS,
+		CSV,
 		MODEL,
 		SOUND,
 		//EFFEKSEER
