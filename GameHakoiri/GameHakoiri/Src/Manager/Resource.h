@@ -6,7 +6,7 @@ class Resource
 {
 
 public:
-	
+
 	// リソースタイプ
 	enum class TYPE
 	{
@@ -32,6 +32,8 @@ public:
 	// 読み込み
 	void Load(void);
 
+	void LoadCsv(void);
+
 	// 解放
 	void Release(void);
 
@@ -53,6 +55,11 @@ public:
 	int numY_;
 	int sizeX_;
 	int sizeY_;
+
+	//Csv用の動的二元
+	std::vector<int> dmcHndIdX_;
+	std::vector<std::vector<int>> dmcHandleIds_;
+	std::vector<std::vector<int>>::iterator csv_;
 
 	// モデル複製用
 	std::vector<int> duplicateModelIds_;

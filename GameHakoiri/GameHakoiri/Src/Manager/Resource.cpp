@@ -2,6 +2,12 @@
 //#include <EffekseerForDXLib.h>
 #include "Resource.h"
 
+#include<fstream>
+#include<sstream>
+
+
+#include"../Utility/Utility.h"
+
 Resource::Resource(void)
 {
 	resType_ = TYPE::NONE;
@@ -68,6 +74,11 @@ void Resource::Load(void)
 			&handleIds_[0]);
 		break;
 
+	case Resource::TYPE::CSV:
+		LoadCsv();
+		csv_ = dmcHandleIds_.begin();
+		break;
+
 	case Resource::TYPE::MODEL:
 		// モデル
 		handleId_ = MV1LoadModel(path_.c_str());
@@ -84,6 +95,42 @@ void Resource::Load(void)
 
 	}
 
+}
+
+void Resource::LoadCsv(void)
+{
+	std::ifstream ifs = std::ifstream(path_.c_str());
+
+	if (!ifs)
+	{
+		OutputDebugString("パズルのifstreamの準備失敗");
+		return;
+	}
+
+	int chipNo = 0;
+	//列の先頭から保存する
+	int x = 0;
+	
+
+	//行格納用領域
+	std::string line;
+	while (getline(ifs, line))	//行がある間
+	{
+		//Split関数戻り値受け取り用
+		std::vector<std::string> strSplit;
+
+		strSplit = Utility::Split(line, ',');	//関数の呼び出し
+
+		//一文字の情報
+		std::string chipData;
+		//分割したマップデータを格納する
+		for (int x = 0; x < strSplit.size(); x++)
+		{
+			chipNo = stoi(strSplit[x]);
+			dmcHndIdX_.push_back(chipNo);	//配列内に格納
+		}
+		dmcHandleIds_.push_back(dmcHndIdX_);	//配列内に格納
+	}
 }
 
 void Resource::Release(void)
@@ -104,6 +151,10 @@ void Resource::Release(void)
 		}
 		delete[] handleIds_;
 	}
+		break;
+
+	case Resource::TYPE::CSV:
+	
 		break;
 
 	case Resource::TYPE::MODEL:

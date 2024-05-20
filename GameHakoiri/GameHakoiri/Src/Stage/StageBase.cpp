@@ -21,8 +21,11 @@
 
 //コンストラクタ
 //********************************************************
-StageBase::StageBase(void)
+StageBase::StageBase(std::vector<std::vector<int>>::iterator it, int sizeX, int sizeY)
 {
+	pzlCsv_ = it;
+	size_.x_ = sizeX;
+	size_.y_ = sizeY;
 	roomKey_ = "00";
 }
 //デストラクタ
@@ -42,7 +45,7 @@ bool StageBase::Init(void)
 	//各ステージによる設定
 	SetParam();
 	//パズル配置の読み込み
-	LoadPazzle();
+	//LoadPazzle();
 	//画像読み込み
 	LoadImgs();
 

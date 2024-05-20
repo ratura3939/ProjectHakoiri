@@ -5,6 +5,7 @@
 #include<sstream>
 #include<string>
 #include<map>
+#include<vector>
 #include"../Common/Vector2.h"
 #include"../Utility/Utility.h"
 #include"../Scene/GameScene.h"
@@ -28,7 +29,7 @@ public:
 
 	static constexpr int FRAME_INTERVAL = 15;
 
-	StageBase(void);	//コンストラクタ
+	StageBase(std::vector<std::vector<int>>::iterator it, int sizeX, int sizeY);	//コンストラクタ
 	virtual ~StageBase(void);	//デストラクタ
 
 	virtual bool Init(void);	//初期化
@@ -51,10 +52,10 @@ private:
 	std::string roomKey_;	//連想配列のキー
 	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];
 
-
-	std::vector<std::vector<int>>pzlMap_;	//パズルの置き場情報を数字で管理
-	std::vector<int>pzlX_;
-	std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
+	
+	//std::vector<std::vector<int>>pzlMap_;	//パズルの置き場情報を数字で管理
+	//std::vector<int>pzlX_;
+	//std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
 
 	CURSOR type_;
 	int frame_[static_cast<int>(CURSOR::MAX)];
@@ -86,10 +87,11 @@ private:
 	void LoadImgs(void);
 
 protected:
-	//各ステージのファイル名
-	std::string file_Pzl;
-	std::string file_Map;
+	////各ステージのファイル名
+	//std::string file_Pzl;
+	//std::string file_Map;
 
-
+	std::vector<std::vector<int>>::iterator pzlCsv_;
+	Vector2 size_;
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 };

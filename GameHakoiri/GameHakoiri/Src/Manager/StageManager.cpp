@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"ResourceManager.h"
 #include"../Scene/GameScene.h"
 #include"../Stage/StageBase.h"
 #include"../Stage/TutorialStage.h"
@@ -6,6 +7,8 @@
 
 //シングルトン化(インスタンスの初期化)
 StageManager* StageManager::instance_ = nullptr;
+
+
 
 //コンストラクタ
 //********************************************************
@@ -30,6 +33,8 @@ void StageManager::Destroy(void)
 bool StageManager::Init(STAGENUM num)
 {
 	num_ = num;
+
+	LoadCsv();
 
 	switch (num_)
 	{
@@ -105,6 +110,11 @@ void StageManager::SetFlash(bool flag)
 	stage_->SetFrameFlash(flag);
 }
 
+//読み込み
+void StageManager::LoadCsv(void)
+{
+	stageCsv_[static_cast<int>(STAGENUM::FIRST)]= ResourceManager::GetInstance().Load(ResourceManager::SRC::FIRST_PAZZLE_CSV).csv_;
+}
 
 //外部から静的インスタンスを生成
 //********************************************************

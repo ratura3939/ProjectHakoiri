@@ -12,8 +12,10 @@ public:
 
 	//使用する複数枚の画像（アニメーション）などの定数登録
 	static constexpr int PAZZLE_IMG_UNIT_X = 64;
-
-
+	static constexpr int PAZZLE_IMG_UNIT_Y = 64;
+	static constexpr int MAP_IMG_UNIT_X = 32;
+	static constexpr int MAP_IMG_UNIT_Y = 32;
+	static constexpr int MAP_TILE_SIZE_UNIT = 30;
 
 	// リソース名
 	enum class SRC
@@ -35,6 +37,9 @@ public:
 		WALL_IMG,
 		WASITU_IMG,
 
+		//Csv
+		FIRST_PAZZLE_CSV,
+
 		//効果音
 		PUSH_ENTER_SND,
 
@@ -44,7 +49,6 @@ public:
 		//エフェクト
 		HIT_EFFECT,
 		
-		//タイトル
 
 	};
 

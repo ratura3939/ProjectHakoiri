@@ -107,7 +107,13 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::WASITU_IMG, move(res));
 
-
+	//CSV
+	//パズルステージ①
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_PAZZLE + "Stage_First.csv"
+		);
+	resourcesMap_.emplace(SRC::FIRST_PAZZLE_CSV, move(res));
 	
 
 	////効果音

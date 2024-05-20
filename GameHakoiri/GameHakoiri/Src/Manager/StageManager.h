@@ -44,6 +44,10 @@ private:
 	STAGENUM num_;	//生成するステージ番号を保持
 
 	Vector2 dir_[static_cast<int>(Utility::DIR::MAX)];
+	
+	std::vector<std::vector<int>>::iterator stageCsv_[static_cast<int>(STAGENUM::MAX)];
+
+	void LoadCsv(void);
 
 
 	//シングルトン化
