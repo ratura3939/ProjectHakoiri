@@ -3,6 +3,11 @@
 #include"../Scene/GameScene.h"
 #include"../Stage/StageBase.h"
 #include"../Stage/TutorialStage.h"
+#include"../Stage/FirstStage.h"
+#include"../Stage/SecondStage.h"
+#include"../Stage/ThirdStage.h"
+
+
 #include"StageManager.h"
 
 //シングルトン化(インスタンスの初期化)
@@ -39,10 +44,11 @@ bool StageManager::Init(STAGENUM num)
 	switch (num_)
 	{
 	case StageManager::STAGENUM::TUTORIAL:
-		stage_ = new TutorialStage();
+		//stage_ = new TutorialStage();
 		break;
 	case StageManager::STAGENUM::FIRST:
-
+		stage_ = new FirstStage(stageCsv_[static_cast<int>(STAGENUM::FIRST)],
+			FIRST_PAZZLE_SIZE_X, FIRST_PAZZLE_SIZE_Y);
 		break;
 	case StageManager::STAGENUM::SECOND:
 

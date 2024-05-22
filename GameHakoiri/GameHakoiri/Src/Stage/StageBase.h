@@ -27,6 +27,7 @@ public:
 		MAX
 	};
 
+	//定数
 	static constexpr int FRAME_INTERVAL = 15;
 
 	StageBase(std::vector<std::vector<int>>::iterator it, int sizeX, int sizeY);	//コンストラクタ
@@ -55,7 +56,7 @@ private:
 	
 	//std::vector<std::vector<int>>pzlMap_;	//パズルの置き場情報を数字で管理
 	//std::vector<int>pzlX_;
-	//std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
+	std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
 
 	CURSOR type_;
 	int frame_[static_cast<int>(CURSOR::MAX)];

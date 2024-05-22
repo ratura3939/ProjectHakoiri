@@ -25,12 +25,14 @@ void ResourceManager::Init(void)
 
 	unique_ptr<Resource> res;
 
+#pragma region PICTURE
+
 	//カーソル
 	// フレーム　１×１
 	res = make_unique<Resource>(
-		Resource::TYPE::IMG, 
+		Resource::TYPE::IMG,
 		Application::PATH_IMAGE + "System/frame.png"
-	);
+		);
 	resourcesMap_.emplace(SRC::FRAME_IMG, move(res));
 	// フレーム　１×２
 	res = make_unique<Resource>(
@@ -106,15 +108,114 @@ void ResourceManager::Init(void)
 		Application::PATH_IMAGE + "Room/Wasitu.png"
 		);
 	resourcesMap_.emplace(SRC::WASITU_IMG, move(res));
+#pragma endregion
 
-	//CSV
-	//パズルステージ①
+
+#pragma region CSV
+
+	//パズル
+	//ステージ①
 	res = make_unique<Resource>(
-		Resource::TYPE::IMG,
+		Resource::TYPE::CSV,
 		Application::PATH_PAZZLE + "Stage_First.csv"
 		);
 	resourcesMap_.emplace(SRC::FIRST_PAZZLE_CSV, move(res));
-	
+
+
+	//マップ
+	//風呂
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Bath_Map.csv"
+		);
+	resourcesMap_.emplace(SRC::BATH_MAP_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Bath_Object.csv"
+		);
+	resourcesMap_.emplace(SRC::BATH_OBJ_CSV, move(res));
+
+	//玄関
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Entrance_Map.csv"
+		);
+	resourcesMap_.emplace(SRC::ENTRANCE_MAP_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Entrance_Object.csv"
+		);
+	resourcesMap_.emplace(SRC::ENTRANCE_OBJ_CSV, move(res));
+
+	//台所
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Kitchen_Map.csv"
+		);
+	resourcesMap_.emplace(SRC::KITCHEN_MAP_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Kitchen_Object.csv"
+		);
+	resourcesMap_.emplace(SRC::KITCHEN_OBJ_CSV, move(res));
+
+	//居間
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Living_Map.csv"
+		);
+	resourcesMap_.emplace(SRC::LIVING_MAP_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Living_Object.csv"
+		);
+	resourcesMap_.emplace(SRC::LIVING_OBJ_CSV, move(res));
+
+	//自室
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Own_Map.csv"
+		);
+	resourcesMap_.emplace(SRC::OWN_MAP_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Own_Object.csv"
+		);
+	resourcesMap_.emplace(SRC::OWN_OBJ_CSV, move(res));
+
+	//物置
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Strage_Map.csv"
+		);
+	resourcesMap_.emplace(SRC::STRAGE_MAP_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Strage_Object.csv"
+		);
+	resourcesMap_.emplace(SRC::STRAGE_OBJ_CSV, move(res));
+
+	//和室
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Wasitu_Map.csv"
+		);
+	resourcesMap_.emplace(SRC::WASITU_MAP_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_MAP + "Wasitu_Object.csv"
+		);
+	resourcesMap_.emplace(SRC::WASITU_OBJ_CSV, move(res));
+#pragma endregion
+
+#pragma region SOUND
 
 	////効果音
 	//// 決定音
@@ -124,7 +225,7 @@ void ResourceManager::Init(void)
 	//);
 	//resourcesMap_.emplace(SRC::PUSH_ENTER_SND, move(res));
 
-	
+
 
 	////BGM
 	////タイトル
@@ -133,9 +234,7 @@ void ResourceManager::Init(void)
 	//	Application::PATH_BGM + "Title_2.mp3"
 	//);
 	//resourcesMap_.emplace(SRC::TITLE_BGM, move(res));
-
-	
-
+#pragma endregion
 }
 
 void ResourceManager::Release(void)

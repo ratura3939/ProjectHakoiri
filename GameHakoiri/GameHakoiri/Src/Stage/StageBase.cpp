@@ -49,22 +49,17 @@ bool StageBase::Init(void)
 	//画像読み込み
 	LoadImgs();
 
-	//初期化に必要な変数
-	size_t pzlY = pzlMap_.size();
-	size_t pzlX = pzlX_.size();
-	pzlX /= pzlY;
-
 	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
 		static_cast<float>(Application::SCREEN_SIZE_Y / 4) };
 
 
-	for (int y = 0; y < pzlY; y++)
+	for (int y = 0; y < size_.y_; y++)
 	{
-		for (int x = 0; x < pzlX; x++)
+		for (int x = 0; x < size_.x_; x++)
 		{
 			RoomBase* r = nullptr;
 
-			switch (static_cast<RoomBase::TYPE>(pzlMap_[y][x+(pzlX*y)]))
+			switch (static_cast<RoomBase::TYPE>(pzlCsv_[y][x+(size_.x_*y)]))
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
@@ -139,9 +134,9 @@ bool StageBase::Init(void)
 	}
 
 	//初期のカーソル設定
-	for (int y = 0; y < pzlY; y++)
+	for (int y = 0; y < size_.y_; y++)
 	{
-		for (int x = 0; x < pzlX; x++)
+		for (int x = 0; x < size_.x_; x++)
 		{
 			CreateKey(y, x);
 			if (!IsDontMoveBlock(roomKey_) &&
@@ -198,17 +193,12 @@ void StageBase::Draw(GameScene::MODE mode)
 
 	void StageBase::DrawPazzle(void)
 	{		
-		size_t pzlY = pzlMap_.size();
-		size_t pzlX = pzlX_.size();
-	
-		pzlX /= pzlY;
-
 		frameAnim_++;
 
 		//駒の描画
-		for (int y = 0; y < pzlY; y++)
+		for (int y = 0; y < size_.y_; y++)
 		{
-			for (int x = 0; x < pzlX; x++)
+			for (int x = 0; x < size_.x_; x++)
 			{
 				CreateKey(y, x);
 				roomMng_[roomKey_]->SetPzlPos(pzlPos_[roomKey_]);
@@ -300,14 +290,10 @@ void StageBase::Draw(GameScene::MODE mode)
 bool StageBase::Release(void)
 {
 	//駒
-	size_t pzlY = pzlMap_.size();
-	size_t pzlX = pzlX_.size();
 
-	pzlX /= pzlY;
-
-	for (int y = 0; y < pzlY; y++)
+	for (int y = 0; y < size_.y_; y++)
 	{
-		for (int x = 0; x < pzlX; x++)
+		for (int x = 0; x < size_.x_; x++)
 		{
 			CreateKey(y, x);
 			roomMng_[roomKey_]->Release();
@@ -330,37 +316,37 @@ bool StageBase::Release(void)
 void StageBase::LoadPazzle(void)
 {
 	//std::ifstream ifs = std::ifstream(Application::PATH_PAZZLE+file_Pzl.c_str());
-	std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/Stage_Tutorial.csv");
+	//std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/Stage_Tutorial.csv");
 
-	if (!ifs)
-	{
-		OutputDebugString("パズルのifstreamの準備失敗");
-		return;
-	}
+	//if (!ifs)
+	//{
+	//	OutputDebugString("パズルのifstreamの準備失敗");
+	//	return;
+	//}
 
-	int chipNo = 0;
-	//列の先頭から保存する
-	int x = 0;
+	//int chipNo = 0;
+	////列の先頭から保存する
+	//int x = 0;
 
-	//行格納用領域
-	std::string line;
-	while (getline(ifs, line))	//行がある間
-	{
-		//Split関数戻り値受け取り用
-		std::vector<std::string> strSplit;
+	////行格納用領域
+	//std::string line;
+	//while (getline(ifs, line))	//行がある間
+	//{
+	//	//Split関数戻り値受け取り用
+	//	std::vector<std::string> strSplit;
 
-		strSplit = Utility::Split(line, ',');	//関数の呼び出し
+	//	strSplit = Utility::Split(line, ',');	//関数の呼び出し
 
-		//一文字の情報
-		std::string chipData;
-		//分割したマップデータを格納する
-		for (int x = 0; x < strSplit.size(); x++)
-		{
-			chipNo = stoi(strSplit[x]);
-			pzlX_.push_back(chipNo);	//配列内に格納
-		}
-		pzlMap_.push_back(pzlX_);	//配列内に格納
-	}
+	//	//一文字の情報
+	//	std::string chipData;
+	//	//分割したマップデータを格納する
+	//	for (int x = 0; x < strSplit.size(); x++)
+	//	{
+	//		chipNo = stoi(strSplit[x]);
+	//		pzlX_.push_back(chipNo);	//配列内に格納
+	//	}
+	//	pzlMap_.push_back(pzlX_);	//配列内に格納
+	//}
 
 }
 #pragma endregion
@@ -386,12 +372,9 @@ Vector2 StageBase::GetNowCursorPos(void)
 	//現在のカーソルの位置を取得
 	Vector2 cursor;
 
-	size_t pzlY = pzlMap_.size();
-	size_t pzlX = pzlX_.size();
-	pzlX /= pzlY;
-	for (int y = 0; y < pzlY; y++)
+	for (int y = 0; y < size_.y_; y++)
 	{
-		for (int x = 0; x < pzlX; x++)
+		for (int x = 0; x < size_.x_; x++)
 		{
 			CreateKey(y, x);
 			if (roomMng_[roomKey_]->GetIsCursor())
@@ -473,10 +456,6 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 	RoomBase::TYPE afterRoomType = roomMng_[afterMoveKey]->GetRoomType();
 
-	size_t pzlY = pzlMap_.size();
-	size_t pzlX = pzlX_.size();
-	pzlX /= pzlY;
-
 #pragma region 移動後がNONEだった時,現在OFF
 	//if (afterRoomType == RoomBase::TYPE::NONE)
 	//{
@@ -539,8 +518,8 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 #pragma region 移動範囲外だった時
 
-	if ((cursor.x_ >= pzlX)
-		|| (cursor.y_ >= pzlY)
+	if ((cursor.x_ >= size_.x_)
+		|| (cursor.y_ >= size_.y_)
 		|| IsDontMoveBlock(afterMoveKey))
 	{
 		//移動前に戻す
@@ -666,19 +645,14 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 //入れ替え
 bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::string aft)
 {
-	//配列要素数
-	size_t pzlY = pzlMap_.size();
-	size_t pzlX = pzlX_.size();
-	pzlX /= pzlY;
-
 	//移動先が壁・ゴールでないか
 	if (!IsDontMoveBlock(aft))
 	{
 		//移動先が範囲内であるか
 		if ((csr.x_ >= 0) &&
-			(csr.x_ < pzlX) &&
+			(csr.x_ < size_.x_) &&
 			(csr.y_ >= 0) &&
-			(csr.y_ < pzlY))
+			(csr.y_ < size_.y_))
 		{
 			//移動先がNONEだったら
 			if (roomMng_[aft]->GetRoomType() == RoomBase::TYPE::NONE)
@@ -786,16 +760,12 @@ void StageBase::SetFrameFlash(bool flag)
 
 void StageBase::ResetPazzl(void)
 {
-	size_t pzlY = pzlMap_.size();
-	size_t pzlX = pzlX_.size();
-	pzlX /= pzlY;
-
 	//入れ替え処理用の現在位置保存
 	std::string nowKey;
 
-	for (int y = 0; y < pzlY; y++)
+	for (int y = 0; y < size_.y_; y++)
 	{
-		for (int x = 0; x < pzlX; x++)
+		for (int x = 0; x < size_.x_; x++)
 		{
 			CreateKey(y, x);
 			nowKey = roomKey_;	
@@ -804,9 +774,9 @@ void StageBase::ResetPazzl(void)
 			if (roomMng_[nowKey]->GetRoomType() != resetRoom_[nowKey])
 			{
 				//現在の位置から初期のタイプの部屋があるかを確認
-				for (int i = 0; i < pzlY; i++)
+				for (int i = 0; i < size_.y_; i++)
 				{
-					for (int n = 0; n < pzlX; n++)
+					for (int n = 0; n < size_.x_; n++)
 					{
 						CreateKey(i, n);
 						//まだ確定していない場所で初期の部屋が見つかった場合
@@ -826,9 +796,9 @@ void StageBase::ResetPazzl(void)
 	}
 	
 	//確定を解除
-	for (int y = 0; y < pzlY; y++)
+	for (int y = 0; y < size_.y_; y++)
 	{
-		for (int x = 0; x < pzlX; x++)
+		for (int x = 0; x < size_.x_; x++)
 		{
 			CreateKey(y, x);
 			nowKey = roomKey_;

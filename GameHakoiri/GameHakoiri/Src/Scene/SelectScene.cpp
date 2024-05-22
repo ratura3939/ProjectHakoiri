@@ -20,7 +20,7 @@ SelectScene::~SelectScene(void)
 //********************************************************
 bool SelectScene::Init(void)
 {
-	selectNum_ = 0;
+	selectNum_ = 1;
 	//³í‚Éˆ—‚ªs‚í‚ê‚½‚Ì‚Å
 	return true;
 }

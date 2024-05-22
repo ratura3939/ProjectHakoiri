@@ -21,6 +21,23 @@ public:
 		, MAX
 	};
 
+	//íËêî
+	static constexpr int TUTORIAL_PAZZLE_SIZE_X = 6;
+	static constexpr int TUTORIAL_PAZZLE_SIZE_Y = 6;
+	static constexpr int FIRST_PAZZLE_SIZE_X = 6;
+	static constexpr int FIRST_PAZZLE_SIZE_Y = 6;
+	static constexpr int SECOND_PAZZLE_SIZE_X = 6;
+	static constexpr int SECOND_PAZZLE_SIZE_Y = 6;
+	static constexpr int THIRD_PAZZLE_SIZE_X = 6;
+	static constexpr int THIRD_PAZZLE_SIZE_Y = 6;
+
+	static constexpr int NOMAL_MAP_X = 30;
+	static constexpr int NOMAL_MAP_Y = 30;
+	static constexpr int OBLONG_MAP_X = 30;
+	static constexpr int OBLONG_MAP_Y = 60;
+	static constexpr int OBLONG_2_MAP_X = 60;
+	static constexpr int OBLONG_2_MAP_Y = 30;
+
 	bool Init(STAGENUM);	//èâä˙âª
 	void Update(GameScene::MODE mode);	//çXêV
 	void Draw(GameScene::MODE mode);	//ï`âÊ

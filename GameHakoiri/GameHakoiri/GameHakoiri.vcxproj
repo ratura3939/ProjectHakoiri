@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Stage\SecondStage.cpp" />
+    <ClCompile Include="Src\Stage\FirstStage.cpp" />
     <ClCompile Include="Src\Stage\Room\Goal.cpp" />
     <ClCompile Include="Src\Stage\Room\Bath.cpp" />
     <ClCompile Include="Src\Stage\Room\Entrance.cpp" />
@@ -52,8 +54,11 @@
     <ClCompile Include="Src\Utility\Utility.cpp" />
     <ClCompile Include="Src\Stage\Room\Wall.cpp" />
     <ClCompile Include="Src\Stage\Room\Storage.cpp" />
+    <ClCompile Include="Src\Stage\ThirdStage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Stage\SecondStage.h" />
+    <ClInclude Include="Src\Stage\FirstStage.h" />
     <ClInclude Include="Src\Stage\Room\Goal.h" />
     <ClInclude Include="Src\Stage\Room\Bath.h" />
     <ClInclude Include="Src\Stage\Room\Entrance.h" />
@@ -86,6 +91,7 @@
     <ClInclude Include="Src\Utility\Utility.h" />
     <ClInclude Include="Src\Stage\Room\Wall.h" />
     <ClInclude Include="Src\Stage\Room\Storage.h" />
+    <ClInclude Include="Src\Stage\ThirdStage.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -85,7 +85,4 @@ protected:
 	int isDrawRoom_;	//描画するか決める（長方形の二マス目用）
 
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
-
-	//テスト用
-	int dbgColor_;
 };

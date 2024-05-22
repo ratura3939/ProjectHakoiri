@@ -4,6 +4,8 @@
 class TutorialStage : public StageBase
 {
 public:
-	void SetParam(void) override; //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
+    TutorialStage(std::vector<std::vector<int>>::iterator it, int sizeX, int sizeY);
+    ~TutorialStage();
+    void SetParam(void)override;
 };
 
