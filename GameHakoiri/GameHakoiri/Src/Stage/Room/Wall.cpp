@@ -1,8 +1,9 @@
 #include<DxLib.h>
+#include"../../Manager/ResourceManager.h"
 #include"RoomBase.h"
 #include "Wall.h"
 
-Wall::Wall(int roomImg) :RoomBase(roomImg)
+Wall::Wall(int roomImg, int sizeX, int sizeY) :RoomBase(roomImg, sizeX, sizeY)
 {
 
 }
@@ -14,11 +15,7 @@ Wall::~Wall(void)
 //パラメータの設定
 void Wall::SetParam(void)
 {
-	PazzleSize_ = { 1.0f,1.0f };
-	StealthSize_ = { 30.0f,30.0f };
+	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::WALL;
 
-
-	//テスト用
-	dbgColor_ = 0x8b4513;
 }

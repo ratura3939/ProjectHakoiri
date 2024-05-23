@@ -4,6 +4,7 @@
 #include"../Application.h"
 #include"../Utility/Utility.h"
 #include"../Manager/ResourceManager.h"
+#include"../Manager/StageManager.h"
 #include"Room/RoomBase.h"
 #include"Room/None.h"
 #include"Room/Own.h"
@@ -21,11 +22,19 @@
 
 //コンストラクタ
 //********************************************************
-StageBase::StageBase(std::vector<std::vector<int>>::iterator it, int sizeX, int sizeY)
+StageBase::StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX, int pzlSizeY,
+	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+	int* roomImg, int* mapchip[])
 {
-	pzlCsv_ = it;
-	size_.x_ = sizeX;
-	size_.y_ = sizeY;
+	pzlCsv_ = pzlIt;
+	size_.x_ = pzlSizeX;
+	size_.y_ = pzlSizeY;
+
+	mapCsv_ = map;
+	objCsv_ = obj;
+	roomImg_ = roomImg;
+	mapthip_ = mapchip;
+
 	roomKey_ = "00";
 }
 //デストラクタ
@@ -63,60 +72,70 @@ bool StageBase::Init(void)
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
-				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
+				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)],
+					StageManager::OTHER_MAP_X,StageManager::OTHER_MAP_Y);
 				r->Init();
 				break;
 			//自室
 			case RoomBase::TYPE::OWN: 
-				r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
+				r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)],
+					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceLeft(y, x, r)){ r = GetSecondRoomInstance(r); }
 				break;
 			//和室
 			case RoomBase::TYPE::WASITU:
-				r = new Wasitu(roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)]);
+				r = new Wasitu(roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)],
+					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y);
 				r->Init();
 				break;
 			//居間
 			case RoomBase::TYPE::LIVING:
-				r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
+				r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)],
+					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//風呂
 			case RoomBase::TYPE::BATH: 
-				r = new Bath(roomImg_[static_cast<int>(RoomBase::TYPE::BATH)]);
+				r = new Bath(roomImg_[static_cast<int>(RoomBase::TYPE::BATH)],
+					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y);
 				r->Init();
 				break;
 			//物置
 			case RoomBase::TYPE::STORAGE:
-				r = new Storage(roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)]);
+				r = new Storage(roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)],
+					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y);
 				r->Init();
 				break;
 			//台所
 			case RoomBase::TYPE::KITCHEN: 
-				r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
+				r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
+					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//玄関
 			case RoomBase::TYPE::ENTRANCE: 
-				r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
+				r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
+					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceLeft(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//壁
 			case RoomBase::TYPE::WALL:	
-				r = new Wall(roomImg_[static_cast<int>(RoomBase::TYPE::WALL)]);
+				r = new Wall(roomImg_[static_cast<int>(RoomBase::TYPE::WALL)],
+					StageManager::OTHER_MAP_X, StageManager::OTHER_MAP_Y);
 				r->Init();
 				break;
 			//ゴール
 			case RoomBase::TYPE::GOAL:
-				r = new Goal(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)]);
+				r = new Goal(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)],
+					StageManager::OTHER_MAP_X, StageManager::OTHER_MAP_Y);
 				r->Init();
 				break;
 			}
@@ -306,50 +325,14 @@ bool StageBase::Release(void)
 	{
 		DeleteGraph(frame_[i]);
 	}
+	for (int i = 0; i < static_cast<int>(RoomBase::TYPE::MAX); i++)
+	{
+		DeleteGraph(roomImg_[i]);
+	}
 
 	//正しく処理が終了したので
 	return true;
 }
-
-#pragma region パズル読み込み
-
-void StageBase::LoadPazzle(void)
-{
-	//std::ifstream ifs = std::ifstream(Application::PATH_PAZZLE+file_Pzl.c_str());
-	//std::ifstream ifs = std::ifstream("Data/Csv/Pazzle/Stage_Tutorial.csv");
-
-	//if (!ifs)
-	//{
-	//	OutputDebugString("パズルのifstreamの準備失敗");
-	//	return;
-	//}
-
-	//int chipNo = 0;
-	////列の先頭から保存する
-	//int x = 0;
-
-	////行格納用領域
-	//std::string line;
-	//while (getline(ifs, line))	//行がある間
-	//{
-	//	//Split関数戻り値受け取り用
-	//	std::vector<std::string> strSplit;
-
-	//	strSplit = Utility::Split(line, ',');	//関数の呼び出し
-
-	//	//一文字の情報
-	//	std::string chipData;
-	//	//分割したマップデータを格納する
-	//	for (int x = 0; x < strSplit.size(); x++)
-	//	{
-	//		chipNo = stoi(strSplit[x]);
-	//		pzlX_.push_back(chipNo);	//配列内に格納
-	//	}
-	//	pzlMap_.push_back(pzlX_);	//配列内に格納
-	//}
-
-}
-#pragma endregion
 
 //ステージごとのパラメータ設定
 //********************************************************
@@ -477,19 +460,23 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 		switch (afterRoomType)
 		{
 		case RoomBase::TYPE::LIVING:
-			r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
+			r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)],
+				StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y);
 			r->Init();
 			break;
 		case RoomBase::TYPE::KITCHEN:
-			r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
+			r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
+				StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y);
 			r->Init();
 			break;
 		case RoomBase::TYPE::OWN:
-			r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
+			r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)],
+				StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y);
 			r->Init();
 			break;
 		case RoomBase::TYPE::ENTRANCE:
-			r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
+			r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
+				StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y);
 			r->Init();
 			break;
 		}
@@ -742,10 +729,10 @@ bool StageBase::IsDontMoveBlock(std::string key)
 RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 {
 	RoomBase* room;
-	room = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
+	room = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)],
+		StageManager::OTHER_MAP_X, StageManager::OTHER_MAP_Y);
 	room->Init();
 	room->SetRoomType(r->GetRoomType());
-	room->SetColor(r->GetColor());
 	room->SetIsDrawRoom(false);
 	return room;
 }
@@ -813,31 +800,12 @@ void StageBase::ResetPazzl(void)
 void StageBase::LoadImgs(void)
 {
 	//カーソル
-	frame_[static_cast<int>(CURSOR::NORMAL)]= ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_IMG).handleId_;
-	frame_[static_cast<int>(CURSOR::OBLONG)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_IMG).handleId_;
-	frame_[static_cast<int>(CURSOR::OBLONG_2)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
-
-	//部屋
-	roomImg_[static_cast<int>(RoomBase::TYPE::BATH)]=
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::GOAL_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::NONE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::NONE_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::OWN)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::WALL)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::WALL_IMG).handleId_;
-	roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::WASITU_IMG).handleId_;
+	frame_[static_cast<int>(CURSOR::NORMAL)]= 
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_IMG).handleId_;
+	frame_[static_cast<int>(CURSOR::OBLONG)] = 
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_IMG).handleId_;
+	frame_[static_cast<int>(CURSOR::OBLONG_2)] = 
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
 }
 #pragma endregion
 

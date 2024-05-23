@@ -21,6 +21,15 @@ public:
 		, MAX
 	};
 
+	//マップに使用するマップチップの種類
+	enum class MAPTHIP
+	{
+		BATH,
+		EXTERIA,
+		INTERIA,
+		MAX
+	};
+
 	//定数
 	static constexpr int TUTORIAL_PAZZLE_SIZE_X = 6;
 	static constexpr int TUTORIAL_PAZZLE_SIZE_Y = 6;
@@ -37,6 +46,10 @@ public:
 	static constexpr int OBLONG_MAP_Y = 60;
 	static constexpr int OBLONG_2_MAP_X = 60;
 	static constexpr int OBLONG_2_MAP_Y = 30;
+
+	static constexpr int OTHER_MAP_X = 0;
+	static constexpr int OTHER_MAP_Y = 0;
+
 
 	bool Init(STAGENUM);	//初期化
 	void Update(GameScene::MODE mode);	//更新
@@ -61,9 +74,20 @@ private:
 	STAGENUM num_;	//生成するステージ番号を保持
 
 	Vector2 dir_[static_cast<int>(Utility::DIR::MAX)];
-	
-	std::vector<std::vector<int>>::iterator stageCsv_[static_cast<int>(STAGENUM::MAX)];
 
+	//IMG
+	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];
+	
+	//Csv
+	//パズルステージ保持
+	std::vector<std::vector<int>> stageCsv_[static_cast<int>(STAGENUM::MAX)];
+
+
+	std::vector<std::vector<int>> mapCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//マップのCsvデータの先頭アドレス格納
+	std::vector<std::vector<int>> objCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//オブジェクトのCsvデータの先頭アドレス格納
+	int* mapTile_[static_cast<int>(MAPTHIP::MAX)];	//マップ画像を取得
+
+	void LoadImg(void);
 	void LoadCsv(void);
 
 

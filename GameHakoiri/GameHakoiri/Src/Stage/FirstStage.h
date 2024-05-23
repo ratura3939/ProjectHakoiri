@@ -4,7 +4,9 @@ class FirstStage :
     public StageBase
 {
 public:
-    FirstStage(std::vector<std::vector<int>>::iterator it, int sizeX, int sizeY);
+    FirstStage(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX, int pzlSizeY,
+        std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+        int* roomImg, int* mapchip[]);
     ~FirstStage();
     void SetParam(void)override;
 };

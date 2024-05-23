@@ -30,7 +30,9 @@ public:
 	//定数
 	static constexpr int FRAME_INTERVAL = 15;
 
-	StageBase(std::vector<std::vector<int>>::iterator it, int sizeX, int sizeY);	//コンストラクタ
+	StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX, int pzlSizeY,
+		std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+		int* roomImg,int* mapchip[]);	//コンストラクタ
 	virtual ~StageBase(void);	//デストラクタ
 
 	virtual bool Init(void);	//初期化
@@ -38,7 +40,6 @@ public:
 	virtual void Draw(GameScene::MODE mode);	//描画
 	virtual bool Release(void);	//解放
 
-	void LoadPazzle(void);			//盤面の読み込み
 	void CreateKey(int y, int x);	//連想配列のキー生成
 	Vector2 GetNowCursorPos(void);	//現在のカーソルの位置を取得
 	void SetCursor(Vector2 move, Utility::DIR dir);	//カーソルのセット yとxはカーソルの移動量
@@ -51,7 +52,6 @@ private:
 	std::map<std::string, RoomBase*> roomMng_;	//部屋の情報一括管理
 	std::map<std::string, RoomBase::TYPE> resetRoom_;//部屋のリセット用
 	std::string roomKey_;	//連想配列のキー
-	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];
 
 	
 	//std::vector<std::vector<int>>pzlMap_;	//パズルの置き場情報を数字で管理
@@ -95,4 +95,9 @@ protected:
 	std::vector<std::vector<int>>::iterator pzlCsv_;
 	Vector2 size_;
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
+
+	std::vector<std::vector<int>>::iterator mapCsv_;	//マップのCsvデータの先頭アドレス格納
+	std::vector<std::vector<int>>::iterator objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
+	//int* roomImg_;
+	int* mapthip_;
 };

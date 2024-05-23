@@ -1,9 +1,10 @@
 #include<DxLib.h>
+#include"../../Manager/ResourceManager.h"
 #include"RoomBase.h"
 #include "Bath.h"
 
 
-Bath::Bath(int roomImg) :RoomBase(roomImg)
+Bath::Bath(int roomImg, int sizeX, int sizeY) :RoomBase(roomImg, sizeX, sizeY)
 {
 
 }
@@ -14,12 +15,10 @@ Bath::~Bath(void)
 //パラメータの設定
 void Bath::SetParam(void)
 {
-	PazzleSize_ = { 1.0f,1.0f };
-	StealthSize_ = { 30.0f,30.0f };
+	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::BATH;
 
-	
 
-	//テスト用
-	dbgColor_ = 0x4169e1;
+	mapCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAP_CSV).csv_;
+	objCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_OBJ_CSV).csv_;
 }

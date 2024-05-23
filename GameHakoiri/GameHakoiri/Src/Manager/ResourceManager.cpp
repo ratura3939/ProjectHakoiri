@@ -25,7 +25,7 @@ void ResourceManager::Init(void)
 
 	unique_ptr<Resource> res;
 
-#pragma region PICTURE
+#pragma region IMG
 
 	//カーソル
 	// フレーム　１×１
@@ -108,6 +108,43 @@ void ResourceManager::Init(void)
 		Application::PATH_IMAGE + "Room/Wasitu.png"
 		);
 	resourcesMap_.emplace(SRC::WASITU_IMG, move(res));
+#pragma endregion
+
+
+#pragma region IMGS
+
+	//風呂マップチップ
+	res = make_unique<Resource>(
+		Resource::TYPE::IMGS,
+		Application::PATH_IMAGE + "Map/Bath.png",
+		BATH_MAPTHIP_X / MAP_IMG_UNIT_X,
+		BATH_MAPTHIP_Y / MAP_IMG_UNIT_Y,
+		MAP_IMG_UNIT_X,
+		MAP_IMG_UNIT_Y
+		);
+	resourcesMap_.emplace(SRC::BATH_MAPTHIP, move(res));
+
+	//外装マップチップ
+	res = make_unique<Resource>(
+		Resource::TYPE::IMGS,
+		Application::PATH_IMAGE + "Map/Exteria.png",
+		EXTERIA_MAPTHIP_X / MAP_IMG_UNIT_X,
+		EXTERIA_MAPTHIP_Y / MAP_IMG_UNIT_Y,
+		MAP_IMG_UNIT_X,
+		MAP_IMG_UNIT_Y
+		);
+	resourcesMap_.emplace(SRC::EXTERIA_MAPTHIP, move(res));
+
+	//内装マップチップ
+	res = make_unique<Resource>(
+		Resource::TYPE::IMGS,
+		Application::PATH_IMAGE + "Map/Interia.png",
+		INTERIA_MAPTHIP_X / MAP_IMG_UNIT_X,
+		INTERIA_MAPTHIP_Y / MAP_IMG_UNIT_Y,
+		MAP_IMG_UNIT_X,
+		MAP_IMG_UNIT_Y
+		);
+	resourcesMap_.emplace(SRC::INTERIA_MAPTHIP, move(res));
 #pragma endregion
 
 

@@ -4,7 +4,7 @@
 class Wasitu :public RoomBase
 {
 public:
-	Wasitu(int roomImg);
+	Wasitu(int roomImg, int sizeX, int sizeY);
 	~Wasitu(void);
 
 	void SetParam(void) override; //ƒpƒ‰ƒ[ƒ^‚Ìİ’è

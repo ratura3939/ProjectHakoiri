@@ -1,5 +1,7 @@
 #pragma once
+#include<vector>
 #include"../../Common/Vector2F.h"
+
 
 class RoomBase
 {
@@ -27,7 +29,7 @@ public:
 		, MAX
 	};
 
-	RoomBase(int roomImg);	//コンストラクタ
+	RoomBase(int roomImg, int sizeX, int sizeY);	//コンストラクタ
 	virtual ~RoomBase(void);	//デストラクタ
 
 	bool Init(void);	//初期化
@@ -54,16 +56,11 @@ public:
 	void SetIsDrawRoom(bool flag);
 
 
-	//いずれ消すもの
-	void SetColor(int col);
-	int GetColor(void);
-	
-
 private:
 	Vector2F mapPos_;		//ステルスシーンにおけるmapの座標（必要かはわからん）
-	Vector2F mapSize_;		//実際に描画するマップのサイズ
+	Vector2F mapMaxSize_;		//実際に描画するマップのサイズ
 
-	bool IsChange_;	//パズルリセット時にすでに確定している場所であるかの判定
+	bool isChange_;	//パズルリセット時にすでに確定している場所であるかの判定
 	
 
 protected:
@@ -73,11 +70,14 @@ protected:
 
 	Vector2F pzlPos_;		//パズルシーンにおける座標
 	Vector2F pieceSize_;	//実際に描画する駒のサイズ
-
-	Vector2F PazzleSize_;	//パズルシーンにおけるサイズ(〇×〇か）
+	Vector2F pazzleSize_;	//パズルシーンにおけるサイズ(〇×〇か）
 	int pieceImg_;		//駒の画像格納
+	
 
-	Vector2F StealthSize_;	//ステルスシーンにおけるマップのサイズ(〇×〇か）
+	Vector2F mapSize_;	//ステルスシーンにおけるマップのサイズ(〇×〇か）
+	std::vector<std::vector<int>>::iterator mapCsv_;	//マップのCsvデータの先頭アドレス格納
+	std::vector<std::vector<int>>::iterator objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
+	int* mapTile_;	//マップ画像を取得
 
 	bool isCursor_;			//カーソルに選択されているかどうか
 

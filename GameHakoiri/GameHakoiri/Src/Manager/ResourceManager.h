@@ -17,6 +17,13 @@ public:
 	static constexpr int MAP_IMG_UNIT_Y = 32;
 	static constexpr int MAP_TILE_SIZE_UNIT = 30;
 
+	static constexpr int BATH_MAPTHIP_X = 512;
+	static constexpr int BATH_MAPTHIP_Y = 1216;
+	static constexpr int EXTERIA_MAPTHIP_X = 256;
+	static constexpr int EXTERIA_MAPTHIP_Y = 3552;
+	static constexpr int INTERIA_MAPTHIP_X = 256;
+	static constexpr int INTERIA_MAPTHIP_Y = 2464;
+
 	// リソース名
 	enum class SRC
 	{
@@ -36,6 +43,11 @@ public:
 		STRAGE_IMG,
 		WALL_IMG,
 		WASITU_IMG,
+
+		//マップ
+		BATH_MAPTHIP,
+		EXTERIA_MAPTHIP,
+		INTERIA_MAPTHIP,
 
 		//Csv
 		//パズル

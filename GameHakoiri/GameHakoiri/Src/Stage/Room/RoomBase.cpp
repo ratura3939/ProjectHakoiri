@@ -5,16 +5,18 @@
 
 //コンストラクタ
 //********************************************************
-RoomBase::RoomBase(int roomImg)
+RoomBase::RoomBase(int roomImg, int sizeX, int sizeY)
 {
 	roomImg_ = roomImg;
+	mapSize_.x_ = sizeX;
+	mapSize_.y_ = sizeY;
 	type_ = TYPE::NONE;
 	pzlPos_ = { 0.0f,0.0f };
 	mapPos_ = { 0.0f,0.0f };
 	pieceSize_ = { 1.0f,1.0f };
-	mapSize_ = { 1.0f,1.0f };
+	mapMaxSize_ = { 1.0f,1.0f };
 	isCursor_ = false;
-	IsChange_ = false;
+	isChange_ = false;
 }
 //デストラクタ
 //********************************************************
@@ -30,17 +32,17 @@ bool RoomBase::Init(void)
 	pzlPos_ = { 0.0f,0.0f };
 	mapPos_ = { 0.0f,0.0f };
 	isCursor_ = false;
-	IsChange_ = false;
+	isChange_ = false;
 
 	//各性質の設定
 	SetParam();
 	//駒の大きさの設定
-	pieceSize_ = { PazzleSize_.x_ * static_cast<float>(UNIT_PAZZLE_SIZE_X),
-		PazzleSize_.y_ * static_cast<float>(UNIT_PAZZLE_SIZE_Y) };
+	pieceSize_ = { pazzleSize_.x_ * static_cast<float>(UNIT_PAZZLE_SIZE_X),
+		pazzleSize_.y_ * static_cast<float>(UNIT_PAZZLE_SIZE_Y) };
 
 	//マップの大きさの設定
-	mapSize_ = { StealthSize_.x_ * UNIT_STEALTH_SIZE_X,
-		StealthSize_.y_ * UNIT_STEALTH_SIZE_Y };
+	mapMaxSize_ = { mapSize_.x_ * UNIT_STEALTH_SIZE_X,
+		mapSize_.y_ * UNIT_STEALTH_SIZE_Y };
 
 
 	//正しく処理が終了したので
@@ -48,13 +50,6 @@ bool RoomBase::Init(void)
 }
 
 #pragma region 描画
-
-void RoomBase::Draw(void)
-{
-	DrawPazzle();
-}
-#pragma endregion
-
 
 //パズルシーンにおける部屋の描画
 //********************************************************
@@ -66,18 +61,27 @@ void RoomBase::DrawPazzle(void)
 		DrawGraph(pos.x_, pos.y_,
 			roomImg_, true);
 	}
-	
+
 	/*DrawBox(pos.x_, pos.y_,
 		pos.x_ + static_cast<int>(pieceSize_.x_),
 		pos.y_ + static_cast<int>(pieceSize_.y_),
 		dbgColor_, true);*/
 }
+
 //ステルスシーンにおける部屋の描画
 //********************************************************
 void RoomBase::DrawStealth(void)
 {
-	//マップの描画カメラとの関係も必要
+	//マップを表示しないところは描画処理を行わない
+	if (type_ == TYPE::NONE || type_ == TYPE::WALL || type_ == TYPE::GOAL) { return; }
+
+
+	
 }
+#pragma endregion
+
+
+
 //解放
 //********************************************************
 bool RoomBase::Release(void)
@@ -142,34 +146,17 @@ bool RoomBase::GetIsCursor(void)
 }
 bool RoomBase::IsChange(void)
 {
-	return IsChange_;
+	return isChange_;
 }
 void RoomBase::SetIsChange(bool flag)
 {
-	IsChange_ = flag;
+	isChange_ = flag;
 }
 void RoomBase::SetIsDrawRoom(bool flag)
 {
 	isDrawRoom_ = flag;
 }
 #pragma endregion
-
-
-
-
-
-#pragma region いずれ消すもの
-
-void RoomBase::SetColor(int col)
-{
-	dbgColor_ = col;
-}
-int RoomBase::GetColor(void)
-{
-	return dbgColor_;
-}
-#pragma endregion
-
 
 //部屋ごとのパラメータ設定
 //********************************************************
