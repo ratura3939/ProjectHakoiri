@@ -3,7 +3,10 @@
 #include"RoomBase.h"
 #include "Own.h"
 
-Own::Own(int roomImg, int sizeX, int sizeY) :RoomBase(roomImg, sizeX, sizeY)
+Own::Own(int roomImg, int sizeX, int sizeY,
+	std::vector<std::vector<int>>/*::iterator*/ map, std::vector<std::vector<int>>/*::iterator*/ obj,
+	int* mapchip)
+	:RoomBase(roomImg, sizeX, sizeY, map, obj, mapchip)
 {
 
 }
@@ -17,7 +20,4 @@ void Own::SetParam(void)
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::OWN;
 
-
-	mapCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_MAP_CSV).csv_;
-	objCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_OBJ_CSV).csv_;
 }

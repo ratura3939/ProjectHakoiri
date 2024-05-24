@@ -98,6 +98,6 @@ protected:
 
 	std::vector<std::vector<int>>::iterator mapCsv_;	//マップのCsvデータの先頭アドレス格納
 	std::vector<std::vector<int>>::iterator objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
-	//int* roomImg_;
-	int* mapthip_;
+	int* roomImg_;
+	int** mapchip_;
 };

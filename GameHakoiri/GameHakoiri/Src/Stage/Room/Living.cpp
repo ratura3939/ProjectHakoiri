@@ -3,7 +3,10 @@
 #include"RoomBase.h"
 #include "Living.h"
 
-Living::Living(int roomImg, int sizeX, int sizeY) :RoomBase(roomImg, sizeX, sizeY)
+Living::Living(int roomImg, int sizeX, int sizeY,
+	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+	int* mapchip) 
+	:RoomBase(roomImg, sizeX, sizeY, map, obj, mapchip)
 {
 
 }
@@ -17,6 +20,4 @@ void Living::SetParam(void)
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::LIVING;
 
-	mapCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_MAP_CSV).csv_;
-	objCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_OBJ_CSV).csv_;
 }

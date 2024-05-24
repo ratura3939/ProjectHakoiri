@@ -145,11 +145,11 @@ void StageManager::LoadImg(void)
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::WASITU_IMG).handleId_;
 
 	//マップチップ
-	mapTile_[static_cast<int>(MAPTHIP::BATH)]=
+	mapTile_[static_cast<int>(MAPCHIP::BATH)]=
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPTHIP).handleIds_;
-	mapTile_[static_cast<int>(MAPTHIP::EXTERIA)] =
+	mapTile_[static_cast<int>(MAPCHIP::EXTERIA)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPTHIP).handleIds_;
-	mapTile_[static_cast<int>(MAPTHIP::INTERIA)] =
+	mapTile_[static_cast<int>(MAPCHIP::INTERIA)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPTHIP).handleIds_;
 }
 

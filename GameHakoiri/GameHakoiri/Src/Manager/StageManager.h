@@ -22,7 +22,7 @@ public:
 	};
 
 	//マップに使用するマップチップの種類
-	enum class MAPTHIP
+	enum class MAPCHIP
 	{
 		BATH,
 		EXTERIA,
@@ -85,7 +85,7 @@ private:
 
 	std::vector<std::vector<int>> mapCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//マップのCsvデータの先頭アドレス格納
 	std::vector<std::vector<int>> objCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//オブジェクトのCsvデータの先頭アドレス格納
-	int* mapTile_[static_cast<int>(MAPTHIP::MAX)];	//マップ画像を取得
+	int* mapTile_[static_cast<int>(MAPCHIP::MAX)];	//マップ画像を取得
 
 	void LoadImg(void);
 	void LoadCsv(void);

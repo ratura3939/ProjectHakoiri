@@ -33,7 +33,7 @@ StageBase::StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX
 	mapCsv_ = map;
 	objCsv_ = obj;
 	roomImg_ = roomImg;
-	mapthip_ = mapchip;
+	mapchip_ = mapchip;
 
 	roomKey_ = "00";
 }
@@ -72,14 +72,18 @@ bool StageBase::Init(void)
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
-				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)],
-					StageManager::OTHER_MAP_X,StageManager::OTHER_MAP_Y);
+				r = new None(NULL,
+					NULL,NULL,/*StageManager::OTHER_MAP_X, StageManager::OTHER_MAP_Y,*/
+					NULL, NULL, nullptr);
 				r->Init();
 				break;
 			//自室
 			case RoomBase::TYPE::OWN: 
 				r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)],
-					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y);
+					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y,
+					mapCsv_[static_cast<int>(RoomBase::TYPE::OWN)],
+					objCsv_[static_cast<int>(RoomBase::TYPE::OWN)],
+					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceLeft(y, x, r)){ r = GetSecondRoomInstance(r); }
@@ -325,10 +329,7 @@ bool StageBase::Release(void)
 	{
 		DeleteGraph(frame_[i]);
 	}
-	for (int i = 0; i < static_cast<int>(RoomBase::TYPE::MAX); i++)
-	{
-		DeleteGraph(roomImg_[i]);
-	}
+	
 
 	//正しく処理が終了したので
 	return true;

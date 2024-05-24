@@ -5,11 +5,19 @@
 
 //コンストラクタ
 //********************************************************
-RoomBase::RoomBase(int roomImg, int sizeX, int sizeY)
+RoomBase::RoomBase(int roomImg, int sizeX, int sizeY,
+	std::vector<std::vector<int>>/*::iterator*/ map, std::vector<std::vector<int>>/*::iterator*/ obj,
+	int* mapchip)
 {
 	roomImg_ = roomImg;
 	mapSize_.x_ = sizeX;
 	mapSize_.y_ = sizeY;
+
+	map_ = map;
+	obj_ = obj;
+	mapchip_ = mapchip;
+
+
 	type_ = TYPE::NONE;
 	pzlPos_ = { 0.0f,0.0f };
 	mapPos_ = { 0.0f,0.0f };
@@ -17,6 +25,7 @@ RoomBase::RoomBase(int roomImg, int sizeX, int sizeY)
 	mapMaxSize_ = { 1.0f,1.0f };
 	isCursor_ = false;
 	isChange_ = false;
+	isDrawRoom_ = false;
 }
 //デストラクタ
 //********************************************************
@@ -86,8 +95,6 @@ void RoomBase::DrawStealth(void)
 //********************************************************
 bool RoomBase::Release(void)
 {
-	//画像の開放
-	DeleteGraph(pieceImg_);
 
 	//正しく処理が終了したので
 	return true;

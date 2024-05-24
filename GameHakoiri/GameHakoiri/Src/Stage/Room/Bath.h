@@ -3,7 +3,9 @@
 class Bath :public RoomBase
 {
 public:
-	Bath(int roomImg, int sizeX, int sizeY);
+	Bath(int roomImg, int sizeX, int sizeY,
+		std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+		int* mapchip);	//コンストラクタ
 	~Bath(void);
 	void SetParam(void) override; //パラメータの設定
 };

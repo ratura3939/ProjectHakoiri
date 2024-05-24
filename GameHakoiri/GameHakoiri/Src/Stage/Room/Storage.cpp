@@ -3,7 +3,10 @@
 #include"RoomBase.h"
 #include "Storage.h"
 
-Storage::Storage(int roomImg, int sizeX, int sizeY) :RoomBase(roomImg, sizeX, sizeY)
+Storage::Storage(int roomImg, int sizeX, int sizeY,
+	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+	int* mapchip) 
+	:RoomBase(roomImg, sizeX, sizeY, map, obj, mapchip)
 {
 
 }
@@ -17,6 +20,4 @@ void Storage::SetParam(void)
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::STORAGE;
 
-	mapCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_MAP_CSV).csv_;
-	objCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_OBJ_CSV).csv_;
 }

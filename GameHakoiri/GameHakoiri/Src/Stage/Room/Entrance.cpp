@@ -3,7 +3,10 @@
 #include"RoomBase.h"
 #include "Entrance.h"
 
-Entrance::Entrance(int roomImg, int sizeX, int sizeY) :RoomBase(roomImg, sizeX, sizeY)
+Entrance::Entrance(int roomImg, int sizeX, int sizeY,
+	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+	int* mapchip) 
+	:RoomBase(roomImg, sizeX, sizeY, map, obj, mapchip)
 {
 
 }
@@ -17,6 +20,4 @@ void Entrance::SetParam(void)
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::ENTRANCE;
 
-	mapCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_MAP_CSV).csv_;
-	objCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_OBJ_CSV).csv_;
 }

@@ -3,7 +3,10 @@
 #include"RoomBase.h"
 #include "Wall.h"
 
-Wall::Wall(int roomImg, int sizeX, int sizeY) :RoomBase(roomImg, sizeX, sizeY)
+Wall::Wall(int roomImg, int sizeX, int sizeY,
+	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+	int* mapchip) 
+	:RoomBase(roomImg, sizeX, sizeY, map, obj, mapchip)
 {
 
 }

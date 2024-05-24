@@ -29,7 +29,9 @@ public:
 		, MAX
 	};
 
-	RoomBase(int roomImg, int sizeX, int sizeY);	//コンストラクタ
+	RoomBase(int roomImg, int sizeX, int sizeY,
+		std::vector<std::vector<int>>/*::iterator*/ map, std::vector<std::vector<int>>/*::iterator*/ obj,
+		int* mapchip);	//コンストラクタ
 	virtual ~RoomBase(void);	//デストラクタ
 
 	bool Init(void);	//初期化
@@ -61,6 +63,10 @@ private:
 	Vector2F mapMaxSize_;		//実際に描画するマップのサイズ
 
 	bool isChange_;	//パズルリセット時にすでに確定している場所であるかの判定
+
+	std::vector<std::vector<int>>/*::iterator*/ map_;
+	std::vector<std::vector<int>>/*::iterator*/ obj_;
+	int* mapchip_;
 	
 
 protected:
@@ -71,18 +77,14 @@ protected:
 	Vector2F pzlPos_;		//パズルシーンにおける座標
 	Vector2F pieceSize_;	//実際に描画する駒のサイズ
 	Vector2F pazzleSize_;	//パズルシーンにおけるサイズ(〇×〇か）
-	int pieceImg_;		//駒の画像格納
 	
 
 	Vector2F mapSize_;	//ステルスシーンにおけるマップのサイズ(〇×〇か）
-	std::vector<std::vector<int>>::iterator mapCsv_;	//マップのCsvデータの先頭アドレス格納
-	std::vector<std::vector<int>>::iterator objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
-	int* mapTile_;	//マップ画像を取得
 
 	bool isCursor_;			//カーソルに選択されているかどうか
 
 	int roomImg_;	//部屋の画像
-	int isDrawRoom_;	//描画するか決める（長方形の二マス目用）
+	bool isDrawRoom_;	//描画するか決める（長方形の二マス目用）
 
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 };

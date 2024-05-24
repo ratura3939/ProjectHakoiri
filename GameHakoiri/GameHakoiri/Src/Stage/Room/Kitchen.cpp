@@ -3,7 +3,10 @@
 #include"RoomBase.h"
 #include "Kitchen.h"
 
-Kitchen::Kitchen(int roomImg, int sizeX, int sizeY) :RoomBase(roomImg, sizeX, sizeY)
+Kitchen::Kitchen(int roomImg, int sizeX, int sizeY,
+	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+	int* mapchip) 
+	:RoomBase(roomImg, sizeX, sizeY, map, obj, mapchip)
 {
 
 }
@@ -17,7 +20,4 @@ void Kitchen::SetParam(void)
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::KITCHEN;
 
-
-	mapCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_MAP_CSV).csv_;
-	objCsv_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_OBJ_CSV).csv_;
 }
