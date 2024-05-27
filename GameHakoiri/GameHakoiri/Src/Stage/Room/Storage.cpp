@@ -19,5 +19,5 @@ void Storage::SetParam(void)
 {
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::STORAGE;
-
+	isDrawRoom_ = true;
 }

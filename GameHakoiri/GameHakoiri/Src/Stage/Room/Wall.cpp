@@ -18,5 +18,5 @@ void Wall::SetParam(void)
 {
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::WALL;
-
+	isDrawRoom_ = true;
 }

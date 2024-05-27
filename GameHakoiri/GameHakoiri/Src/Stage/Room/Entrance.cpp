@@ -10,6 +10,10 @@ Entrance::Entrance(int roomImg, int sizeX, int sizeY,
 {
 
 }
+Entrance::Entrance(int roomImg)
+	: RoomBase(roomImg)
+{
+}
 Entrance::~Entrance(void)
 {
 
@@ -19,5 +23,5 @@ void Entrance::SetParam(void)
 {
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::ENTRANCE;
-
+	isDrawRoom_ = true;
 }

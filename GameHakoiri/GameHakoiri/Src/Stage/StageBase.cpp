@@ -72,8 +72,7 @@ bool StageBase::Init(void)
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
-				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)],
-					StageManager::NOMAL_MAP_X, StageManager::OBLONG_2_MAP_Y);
+				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
 				r->Init();
 				break;
 
@@ -91,13 +90,19 @@ bool StageBase::Init(void)
 			//和室
 			case RoomBase::TYPE::WASITU:
 				r = new Wasitu(roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)],
-					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y);
+					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
+					mapCsv_[static_cast<int>(RoomBase::TYPE::WASITU)],
+					objCsv_[static_cast<int>(RoomBase::TYPE::WASITU)],
+					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
 				break;
 			//居間
 			case RoomBase::TYPE::LIVING:
 				r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)],
-					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y);
+					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y,
+					mapCsv_[static_cast<int>(RoomBase::TYPE::LIVING)],
+					objCsv_[static_cast<int>(RoomBase::TYPE::LIVING)],
+					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
@@ -105,19 +110,28 @@ bool StageBase::Init(void)
 			//風呂
 			case RoomBase::TYPE::BATH: 
 				r = new Bath(roomImg_[static_cast<int>(RoomBase::TYPE::BATH)],
-					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y);
+					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
+					mapCsv_[static_cast<int>(RoomBase::TYPE::BATH)],
+					objCsv_[static_cast<int>(RoomBase::TYPE::BATH)],
+					mapchip_[static_cast<int>(StageManager::MAPCHIP::BATH)]);
 				r->Init();
 				break;
 			//物置
 			case RoomBase::TYPE::STORAGE:
 				r = new Storage(roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)],
-					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y);
+					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
+					mapCsv_[static_cast<int>(RoomBase::TYPE::STORAGE)],
+					objCsv_[static_cast<int>(RoomBase::TYPE::STORAGE)],
+					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
 				break;
 			//台所
 			case RoomBase::TYPE::KITCHEN: 
 				r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
-					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y);
+					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y,
+					mapCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
+					objCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
+					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
@@ -125,21 +139,22 @@ bool StageBase::Init(void)
 			//玄関
 			case RoomBase::TYPE::ENTRANCE: 
 				r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
-					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y);
+					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y,
+					mapCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
+					objCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
+					mapchip_[static_cast<int>(StageManager::MAPCHIP::EXTERIA)]);
 				r->Init();
 				//もし生成したものが長方形の２コマ目だったら
 				if (CheckInstanceLeft(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
 			//壁
 			case RoomBase::TYPE::WALL:	
-				r = new Wall(roomImg_[static_cast<int>(RoomBase::TYPE::WALL)],
-					StageManager::OTHER_MAP_X, StageManager::OTHER_MAP_Y);
+				r = new Wall(roomImg_[static_cast<int>(RoomBase::TYPE::WALL)]);
 				r->Init();
 				break;
 			//ゴール
 			case RoomBase::TYPE::GOAL:
-				r = new Goal(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)],
-					StageManager::OTHER_MAP_X, StageManager::OTHER_MAP_Y);
+				r = new Goal(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)]);
 				r->Init();
 				break;
 			}
@@ -461,23 +476,19 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 		switch (afterRoomType)
 		{
 		case RoomBase::TYPE::LIVING:
-			r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)],
-				StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y);
+			r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
 			r->Init();
 			break;
 		case RoomBase::TYPE::KITCHEN:
-			r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
-				StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y);
+			r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
 			r->Init();
 			break;
 		case RoomBase::TYPE::OWN:
-			r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)],
-				StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y);
+			r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
 			r->Init();
 			break;
 		case RoomBase::TYPE::ENTRANCE:
-			r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
-				StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y);
+			r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
 			r->Init();
 			break;
 		}
@@ -730,8 +741,7 @@ bool StageBase::IsDontMoveBlock(std::string key)
 RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 {
 	RoomBase* room;
-	room = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)],
-		StageManager::OTHER_MAP_X, StageManager::OTHER_MAP_Y);
+	room = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
 	room->Init();
 	room->SetRoomType(r->GetRoomType());
 	room->SetIsDrawRoom(false);

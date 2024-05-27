@@ -6,6 +6,7 @@ public:
 	Living(int roomImg, int sizeX, int sizeY,
 		std::vector<std::vector<int>> map, std::vector<std::vector<int>> obj,
 		int* mapchip);	//コンストラクタ
+	Living(int roomImg);	//コピーコンストラクタ
 	~Living(void);
 	void SetParam(void) override; //パラメータの設定
 };

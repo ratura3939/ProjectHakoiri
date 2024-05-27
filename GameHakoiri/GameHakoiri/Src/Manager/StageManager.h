@@ -2,6 +2,7 @@
 #include<memory>
 #include"../Utility/Utility.h"
 #include"../Scene/GameScene.h"
+#include"../Stage/Room/RoomBase.h"
 
 class GameScene;
 class StageBase;
@@ -46,9 +47,6 @@ public:
 	static constexpr int OBLONG_MAP_Y = 60;
 	static constexpr int OBLONG_2_MAP_X = 60;
 	static constexpr int OBLONG_2_MAP_Y = 30;
-
-	static constexpr int OTHER_MAP_X = 0;
-	static constexpr int OTHER_MAP_Y = 0;
 
 
 	bool Init(STAGENUM);	//èâä˙âª

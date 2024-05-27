@@ -10,6 +10,10 @@ Kitchen::Kitchen(int roomImg, int sizeX, int sizeY,
 {
 
 }
+Kitchen::Kitchen(int roomImg)
+	: RoomBase(roomImg)
+{
+}
 Kitchen::~Kitchen(void)
 {
 
@@ -19,5 +23,5 @@ void Kitchen::SetParam(void)
 {
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::KITCHEN;
-
+	isDrawRoom_ = true;
 }

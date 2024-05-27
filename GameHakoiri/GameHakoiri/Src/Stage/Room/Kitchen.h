@@ -6,6 +6,7 @@ public:
 	Kitchen(int roomImg, int sizeX, int sizeY,
 		std::vector<std::vector<int>> map, std::vector<std::vector<int>> obj,
 		int* mapchip);	//コンストラクタ
+	Kitchen(int roomImg);	//コピーコンストラクタ
 	~Kitchen(void);
 	void SetParam(void) override; //パラメータの設定
 };

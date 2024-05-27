@@ -10,6 +10,10 @@ Living::Living(int roomImg, int sizeX, int sizeY,
 {
 
 }
+Living::Living(int roomImg)
+	: RoomBase(roomImg)
+{
+}
 Living::~Living(void)
 {
 
@@ -19,5 +23,5 @@ void Living::SetParam(void)
 {
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::LIVING;
-
+	isDrawRoom_ = true;
 }

@@ -10,6 +10,10 @@ Own::Own(int roomImg, int sizeX, int sizeY,
 {
 
 }
+Own::Own(int roomImg)
+	: RoomBase(roomImg)
+{
+}
 Own::~Own(void)
 {
 
@@ -19,5 +23,5 @@ void Own::SetParam(void)
 {
 	pazzleSize_ = { 1.0f,1.0f };
 	type_ = RoomBase::TYPE::OWN;
-
+	isDrawRoom_ = true;
 }
