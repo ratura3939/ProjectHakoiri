@@ -50,7 +50,7 @@ bool StageManager::Init(STAGENUM num)
 	case StageManager::STAGENUM::FIRST:
 		stage_ = new FirstStage(stageCsv_[static_cast<int>(STAGENUM::FIRST)].begin(),
 			FIRST_PAZZLE_SIZE_X, FIRST_PAZZLE_SIZE_Y,
-			mapCsv_->begin(),objCsv_->begin(),
+			mapCsv_,objCsv_,
 			roomImg_, mapTile_);
 		break;
 	case StageManager::STAGENUM::SECOND:

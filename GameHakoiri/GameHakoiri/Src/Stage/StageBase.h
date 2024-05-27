@@ -31,7 +31,7 @@ public:
 	static constexpr int FRAME_INTERVAL = 15;
 
 	StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX, int pzlSizeY,
-		std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+		std::vector<std::vector<int>> map[], std::vector<std::vector<int>> obj[],
 		int* roomImg,int* mapchip[]);	//コンストラクタ
 	virtual ~StageBase(void);	//デストラクタ
 
@@ -96,8 +96,8 @@ protected:
 	Vector2 size_;
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 
-	std::vector<std::vector<int>>::iterator mapCsv_;	//マップのCsvデータの先頭アドレス格納
-	std::vector<std::vector<int>>::iterator objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
+	std::vector<std::vector<int>>* mapCsv_;	//マップのCsvデータの先頭アドレス格納
+	std::vector<std::vector<int>>* objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
 	int* roomImg_;
 	int** mapchip_;
 };

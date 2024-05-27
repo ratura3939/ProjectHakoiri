@@ -30,8 +30,9 @@ public:
 	};
 
 	RoomBase(int roomImg, int sizeX, int sizeY,
-		std::vector<std::vector<int>>/*::iterator*/ map, std::vector<std::vector<int>>/*::iterator*/ obj,
+		std::vector<std::vector<int>> map, std::vector<std::vector<int>> obj,
 		int* mapchip);	//コンストラクタ
+	RoomBase(int roomImg);	//コピーコンストラクタ
 	virtual ~RoomBase(void);	//デストラクタ
 
 	bool Init(void);	//初期化
@@ -63,6 +64,7 @@ private:
 	Vector2F mapMaxSize_;		//実際に描画するマップのサイズ
 
 	bool isChange_;	//パズルリセット時にすでに確定している場所であるかの判定
+	bool isDrawStealth_;	//ステルスシーンにおいて描画するかを決める
 
 	std::vector<std::vector<int>>/*::iterator*/ map_;
 	std::vector<std::vector<int>>/*::iterator*/ obj_;

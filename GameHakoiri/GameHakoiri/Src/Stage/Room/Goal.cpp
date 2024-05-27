@@ -3,10 +3,8 @@
 #include"RoomBase.h"
 #include "Goal.h"
 
-Goal::Goal(int roomImg, int sizeX, int sizeY,
-	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
-	int* mapchip) 
-	:RoomBase(roomImg, sizeX, sizeY, map, obj, mapchip)
+Goal::Goal(int roomImg) 
+	:RoomBase(roomImg)
 {
 
 }

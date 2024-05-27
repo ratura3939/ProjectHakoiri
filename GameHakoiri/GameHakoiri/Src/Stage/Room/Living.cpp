@@ -4,7 +4,7 @@
 #include "Living.h"
 
 Living::Living(int roomImg, int sizeX, int sizeY,
-	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+	std::vector<std::vector<int>> map, std::vector<std::vector<int>> obj,
 	int* mapchip) 
 	:RoomBase(roomImg, sizeX, sizeY, map, obj, mapchip)
 {

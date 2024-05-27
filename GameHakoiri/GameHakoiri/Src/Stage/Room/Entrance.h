@@ -4,7 +4,7 @@ class Entrance :public RoomBase
 {
 public:
 	Entrance(int roomImg, int sizeX, int sizeY,
-		std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+		std::vector<std::vector<int>> map, std::vector<std::vector<int>> obj,
 		int* mapchip);	//コンストラクタ
 	~Entrance(void);
 	void SetParam(void) override; //パラメータの設定

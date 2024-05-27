@@ -6,7 +6,7 @@
 //コンストラクタ
 //********************************************************
 RoomBase::RoomBase(int roomImg, int sizeX, int sizeY,
-	std::vector<std::vector<int>>/*::iterator*/ map, std::vector<std::vector<int>>/*::iterator*/ obj,
+	std::vector<std::vector<int>> map, std::vector<std::vector<int>> obj,
 	int* mapchip)
 {
 	roomImg_ = roomImg;
@@ -26,6 +26,20 @@ RoomBase::RoomBase(int roomImg, int sizeX, int sizeY,
 	isCursor_ = false;
 	isChange_ = false;
 	isDrawRoom_ = false;
+	isDrawStealth_ = true;	//マップの情報があるため描画する
+}
+RoomBase::RoomBase(int roomImg)
+{
+	roomImg_ = roomImg;
+
+	type_ = TYPE::NONE;
+	pzlPos_ = { 0.0f,0.0f };
+	pieceSize_ = { 1.0f,1.0f };
+
+	isCursor_ = false;
+	isChange_ = false;
+	isDrawRoom_ = false;
+	isDrawStealth_ = false;	//マップの情報がないため描画しない
 }
 //デストラクタ
 //********************************************************
@@ -82,7 +96,7 @@ void RoomBase::DrawPazzle(void)
 void RoomBase::DrawStealth(void)
 {
 	//マップを表示しないところは描画処理を行わない
-	if (type_ == TYPE::NONE || type_ == TYPE::WALL || type_ == TYPE::GOAL) { return; }
+	if (!isDrawStealth_) { return; }
 
 
 	

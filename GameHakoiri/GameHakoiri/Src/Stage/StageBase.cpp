@@ -23,7 +23,7 @@
 //コンストラクタ
 //********************************************************
 StageBase::StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX, int pzlSizeY,
-	std::vector<std::vector<int>>::iterator map, std::vector<std::vector<int>>::iterator obj,
+	std::vector<std::vector<int>> map[], std::vector<std::vector<int>> obj[],
 	int* roomImg, int* mapchip[])
 {
 	pzlCsv_ = pzlIt;
@@ -72,11 +72,11 @@ bool StageBase::Init(void)
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
-				r = new None(NULL,
-					NULL,NULL,/*StageManager::OTHER_MAP_X, StageManager::OTHER_MAP_Y,*/
-					NULL, NULL, nullptr);
+				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)],
+					StageManager::NOMAL_MAP_X, StageManager::OBLONG_2_MAP_Y);
 				r->Init();
 				break;
+
 			//自室
 			case RoomBase::TYPE::OWN: 
 				r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)],
