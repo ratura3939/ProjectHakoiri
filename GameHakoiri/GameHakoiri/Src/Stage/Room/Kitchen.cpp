@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include"../../Manager/ResourceManager.h"
+#include"../../Manager/StageManager.h"
 #include"RoomBase.h"
 #include "Kitchen.h"
 
@@ -21,7 +22,7 @@ Kitchen::~Kitchen(void)
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Kitchen::SetParam(void)
 {
-	pazzleSize_ = { 1.0f,1.0f };
+	pazzleSize_ = { StageManager::OBLONG_PAZZLE_X,StageManager::OBLONG_PAZZLE_Y };
 	type_ = RoomBase::TYPE::KITCHEN;
 	isDrawRoom_ = true;
 }

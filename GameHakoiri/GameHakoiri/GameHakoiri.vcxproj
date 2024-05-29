@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Manager\Camera.cpp" />
     <ClCompile Include="Src\Stage\SecondStage.cpp" />
     <ClCompile Include="Src\Stage\FirstStage.cpp" />
     <ClCompile Include="Src\Stage\Room\Goal.cpp" />
@@ -57,6 +58,7 @@
     <ClCompile Include="Src\Stage\ThirdStage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Manager\Camera.h" />
     <ClInclude Include="Src\Stage\SecondStage.h" />
     <ClInclude Include="Src\Stage\FirstStage.h" />
     <ClInclude Include="Src\Stage\Room\Goal.h" />

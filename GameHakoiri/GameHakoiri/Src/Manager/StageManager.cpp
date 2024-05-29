@@ -108,15 +108,20 @@ void StageManager::MovePiece(Utility::DIR dir)
 {
 	stage_->SetPiece(dir_[static_cast<int>(dir)],dir);
 }
-
+//パズルリセット
 void StageManager::PazzleReset(void)
 {
 	stage_->ResetPazzl();
 }
-
+//フレーム点滅
 void StageManager::SetFlash(bool flag)
 {
 	stage_->SetFrameFlash(flag);
+}
+//ステルス初期化
+void StageManager::ChangeModeInit(void)
+{
+	if (!stage_->InitStealth()) { OutputDebugString("ステルス初期化失敗\n"); }
 }
 #pragma region 読み込み
 

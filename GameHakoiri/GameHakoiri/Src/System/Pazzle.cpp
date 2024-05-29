@@ -43,7 +43,7 @@ void Pazzle::KeyboardContoroller(void)
 	InputManager& ins = InputManager::GetInstance();
 	StageManager& stage = StageManager::GetInstance();
 
-	if (ins.IsTrgDown(KEY_INPUT_RETURN))
+	if (ins.IsTrgDown(KEY_INPUT_V))
 	{
 		ChangeIsFinish(true);
 		return;

@@ -47,6 +47,7 @@ public:
 	void SetFrameFlash(bool flag);	//枠点滅用
 
 	void ResetPazzl(void);	//パズルのリセット
+	bool InitStealth(void);	//ステルスシーン移行時の初期化
 
 private:
 	std::map<std::string, RoomBase*> roomMng_;	//部屋の情報一括管理

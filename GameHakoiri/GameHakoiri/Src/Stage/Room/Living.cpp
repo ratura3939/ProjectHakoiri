@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include"../../Manager/ResourceManager.h"
+#include"../../Manager/StageManager.h"
 #include"RoomBase.h"
 #include "Living.h"
 
@@ -21,7 +22,7 @@ Living::~Living(void)
 //ƒpƒ‰ƒ[ƒ^‚Ìİ’è
 void Living::SetParam(void)
 {
-	pazzleSize_ = { 1.0f,1.0f };
+	pazzleSize_ = { StageManager::OBLONG_PAZZLE_X,StageManager::OBLONG_PAZZLE_Y };
 	type_ = RoomBase::TYPE::LIVING;
 	isDrawRoom_ = true;
 }

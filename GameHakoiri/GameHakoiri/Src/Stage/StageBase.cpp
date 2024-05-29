@@ -68,7 +68,7 @@ bool StageBase::Init(void)
 		{
 			RoomBase* r = nullptr;
 
-			switch (static_cast<RoomBase::TYPE>(pzlCsv_[y][x+(size_.x_*y)]))
+			switch (static_cast<RoomBase::TYPE>(pzlCsv_[y][x]))
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
@@ -188,6 +188,26 @@ bool StageBase::Init(void)
 	}
 	//正しく処理が終了したので
 	return true;
+}
+
+bool StageBase::InitStealth(void)
+{
+	//初期位置の場所を示すルームキーを生成
+	for (int y = 0; y < size_.y_; y++)
+	{
+		for (int x = 0; x < size_.x_; x++)
+		{
+			CreateKey(y, x);
+			if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::OWN)
+			{
+				//正しく処理が終了したので
+				return true;
+			}
+		}
+	}
+
+	//処理未遂
+	return false;
 }
 
 #pragma region 更新
@@ -316,7 +336,7 @@ void StageBase::Draw(GameScene::MODE mode)
 
 	void StageBase::DrawStealth(void)
 	{
-
+		roomMng_[roomKey_]->DrawStealth();
 	}
 #pragma endregion
 
@@ -804,7 +824,10 @@ void StageBase::ResetPazzl(void)
 		}
 	}
 }
+
 #pragma endregion
+
+
 
 #pragma region 画像読み込み
 

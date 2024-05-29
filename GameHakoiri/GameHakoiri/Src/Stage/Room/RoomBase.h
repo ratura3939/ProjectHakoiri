@@ -36,7 +36,6 @@ public:
 	virtual ~RoomBase(void);	//デストラクタ
 
 	bool Init(void);	//初期化
-	void Draw(void);
 	virtual void DrawPazzle(void);	//パズルシーンにおける部屋の描画
 	void DrawStealth(void);	//ステルスシーンにおける部屋の描画
 	bool Release(void);	//解放

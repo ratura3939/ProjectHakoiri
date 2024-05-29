@@ -55,6 +55,7 @@ void GameScene::Update(void)
 		if (pzl_->IsFinish())
 		{
 			SetMode(MODE::STEALTH);
+			StageManager::GetInstance().ChangeModeInit();
 		}
 		break;
 	case GameScene::MODE::STEALTH:

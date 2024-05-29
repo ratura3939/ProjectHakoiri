@@ -32,6 +32,7 @@ public:
 	};
 
 	//定数
+	//各ステージにおけるパズルのサイズ
 	static constexpr int TUTORIAL_PAZZLE_SIZE_X = 6;
 	static constexpr int TUTORIAL_PAZZLE_SIZE_Y = 6;
 	static constexpr int FIRST_PAZZLE_SIZE_X = 6;
@@ -40,7 +41,14 @@ public:
 	static constexpr int SECOND_PAZZLE_SIZE_Y = 6;
 	static constexpr int THIRD_PAZZLE_SIZE_X = 6;
 	static constexpr int THIRD_PAZZLE_SIZE_Y = 6;
-
+	//部屋の種類別のパズルにおける大きさ
+	static constexpr int NOMAL_PAZZLE_X = 1;
+	static constexpr int NOMAL_PAZZLE_Y = 1;
+	static constexpr int OBLONG_PAZZLE_X = 1;
+	static constexpr int OBLONG_PAZZLE_Y = 2;
+	static constexpr int OBLONG_2_PAZZLE_X = 2;
+	static constexpr int OBLONG_2_PAZZLE_Y = 1;
+	//部屋の種類別のマップにおける大きさ
 	static constexpr int NOMAL_MAP_X = 30;
 	static constexpr int NOMAL_MAP_Y = 30;
 	static constexpr int OBLONG_MAP_X = 30;
@@ -59,6 +67,7 @@ public:
 	void PazzleReset(void);		//盤面リセット
 	void SetFlash(bool flag);	//枠点滅
 	
+	void ChangeModeInit(void);	//シーン切り替え時の初期化
 
 	//シングルトン化
 	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成

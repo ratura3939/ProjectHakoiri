@@ -72,23 +72,19 @@ bool RoomBase::Init(void)
 	return true;
 }
 
+
+
 #pragma region 描画
 
 //パズルシーンにおける部屋の描画
 //********************************************************
 void RoomBase::DrawPazzle(void)
 {
-	Vector2 pos = pzlPos_.ToVector2();
-	if (isDrawRoom_)
-	{
-		DrawGraph(pos.x_, pos.y_,
-			roomImg_, true);
-	}
+	if (!isDrawRoom_) { return; }
 
-	/*DrawBox(pos.x_, pos.y_,
-		pos.x_ + static_cast<int>(pieceSize_.x_),
-		pos.y_ + static_cast<int>(pieceSize_.y_),
-		dbgColor_, true);*/
+	Vector2 pos = pzlPos_.ToVector2();
+	DrawGraph(pos.x_, pos.y_,
+		roomImg_, true);
 }
 
 //ステルスシーンにおける部屋の描画
@@ -98,7 +94,31 @@ void RoomBase::DrawStealth(void)
 	//マップを表示しないところは描画処理を行わない
 	if (!isDrawStealth_) { return; }
 
+	Vector2F pos = mapPos_;
 
+	for (int y = 0; y < mapSize_.y_; y++)
+	{
+		for (int x = 0; x < mapSize_.x_; x++)
+		{
+			//mapレイヤーの描画
+			int mapchip = map_[y][x];
+			DrawGraph(pos.x_, pos.y_,
+				mapchip_[mapchip],
+				false);
+
+			//objレイヤーの描画
+			mapchip = obj_[y][x];
+			if (mapchip != -1)		//画像が存在するとき
+			{
+				DrawGraph(pos.x_, pos.y_,
+					mapchip_[mapchip],
+					true);
+			}
+			pos.x_ += UNIT_STEALTH_SIZE_X;
+		}
+		pos.x_ = 0;
+		pos.y_ += UNIT_STEALTH_SIZE_Y;
+	}
 	
 }
 #pragma endregion

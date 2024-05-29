@@ -130,6 +130,7 @@ void Resource::LoadCsv(void)
 			dmcHndIdX_.push_back(chipNo);	//”z—ñ“à‚ÉŠi”[
 		}
 		dmcHandleIds_.push_back(dmcHndIdX_);	//”z—ñ“à‚ÉŠi”[
+		dmcHndIdX_.clear();
 	}
 }
 
