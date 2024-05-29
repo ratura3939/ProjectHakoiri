@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include"SceneManager.h"
+#include"Camera.h"
 #include"../Scene/SceneBase.h"
 #include"../Scene/TitleScene.h"
 #include"../Scene/SelectScene.h"
@@ -14,7 +15,7 @@ SceneManager* SceneManager::instance_ = nullptr;
 
 //コンストラクタ
 //********************************************************
-SceneManager::SceneManager(void)
+SceneManager::SceneManager(Camera& _camera) : camera_(_camera)
 {
 	sceneID_ = SCENEID::NONE;
 	nextSceneID_ = SCENEID::NONE;
@@ -24,9 +25,9 @@ SceneManager::SceneManager(void)
 }
 //コピーコンストラクタ
 //********************************************************
-SceneManager::SceneManager(const SceneManager& ins)
+SceneManager::SceneManager(const SceneManager& ins, Camera& _camera) : camera_(_camera)
 {
-
+	
 }
 //デストラクタ
 //********************************************************
@@ -68,6 +69,7 @@ void SceneManager::Update(void)
 	}
 	else
 	{
+		camera_.Update();
 		scene_->Update();
 	}
 }
@@ -86,6 +88,7 @@ bool SceneManager::Release(void)
 {
 	//インスタンスの解放
 	ReleaseScene(sceneID_);
+	camera_.Relese();
 
 	delete fader_;
 	fader_ = nullptr;
@@ -105,6 +108,13 @@ int SceneManager::GetStageNum(void)
 {
 	return stageNum_;
 }
+
+//カメラの取得
+Camera& SceneManager::GetCamera(void) const
+{
+	return camera_;
+}
+
 
 //シーン切り替え
 //********************************************************
@@ -211,7 +221,8 @@ bool SceneManager::CreateInstance(void)
 {
 	if (instance_ == nullptr)
 	{
-		instance_ = new SceneManager();	//インスタンス生成
+		Camera::CreateInstance();
+		instance_ = new SceneManager(Camera::GetInstance());	//インスタンス生成
 	}
 	if (!instance_->Init())	//初期化に失敗したら
 	{

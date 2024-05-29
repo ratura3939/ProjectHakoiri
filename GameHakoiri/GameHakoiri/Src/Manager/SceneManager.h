@@ -3,6 +3,7 @@
 //前方宣言
 class Fader;
 class SceneBase;
+class Camera;
 
 class SceneManager
 {
@@ -32,6 +33,9 @@ public:
 	void SetStageNum(int);		//ステージナンバーの保管
 	int GetStageNum(void);		//ステージナンバーの譲渡
 
+	// カメラの取得
+	Camera& GetCamera(void) const;
+
 	//シングルトン化
 	static bool CreateInstance(void);	//外部から静的インスタンスを生成
 	static SceneManager& GetInstance(void);	//インスタンスの取得
@@ -46,6 +50,7 @@ private:
 	//インスタンスの動的確保
 	SceneBase* scene_;	//シーン遷移
 	Fader* fader_;	//フェード
+	Camera& camera_;	//カメラ
 
 
 	int stageNum_;	//選択したステージナンバー保存用
@@ -56,8 +61,8 @@ private:
 	void ReleaseScene(SCENEID);	//シーンの解放
 
 	//シングルトン化
-	SceneManager(void);	//コンストラクタ
-	SceneManager(const SceneManager&);	//コピーコンストラクタ
+	SceneManager(Camera& _camera);	//コンストラクタ
+	SceneManager(const SceneManager&, Camera& _camera);	//コピーコンストラクタ
 	void Destroy(void);	//デストラクタ
 
 	static SceneManager* instance_;	//実態を確保
