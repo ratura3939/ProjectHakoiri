@@ -1,5 +1,7 @@
 #include<DxLib.h>
 #include"../../Common/Vector2.h"
+#include"../../Manager/SceneManager.h"
+#include"../../Manager/Camera.h"
 
 #include"RoomBase.h"
 
@@ -95,6 +97,7 @@ void RoomBase::DrawStealth(void)
 	if (!isDrawStealth_) { return; }
 
 	Vector2F pos = mapPos_;
+	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
 	for (int y = 0; y < mapSize_.y_; y++)
 	{
@@ -102,7 +105,8 @@ void RoomBase::DrawStealth(void)
 		{
 			//mapƒŒƒCƒ„[‚Ì•`‰æ
 			int mapchip = map_[y][x];
-			DrawGraph(pos.x_, pos.y_,
+			DrawGraph(pos.x_-cameraPos.x_,
+				pos.y_-cameraPos.y_,
 				mapchip_[mapchip],
 				false);
 
@@ -110,7 +114,8 @@ void RoomBase::DrawStealth(void)
 			mapchip = obj_[y][x];
 			if (mapchip != -1)		//‰æ‘œ‚ª‘¶Ý‚·‚é‚Æ‚«
 			{
-				DrawGraph(pos.x_, pos.y_,
+				DrawGraph(pos.x_-cameraPos.x_
+					, pos.y_-cameraPos.y_,
 					mapchip_[mapchip],
 					true);
 			}

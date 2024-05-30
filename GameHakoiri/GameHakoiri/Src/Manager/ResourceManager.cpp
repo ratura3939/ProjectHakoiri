@@ -112,6 +112,18 @@ void ResourceManager::Init(void)
 
 
 #pragma region IMGS
+	//キャラクター
+	//プレイヤー
+	res = make_unique<Resource>(
+		Resource::TYPE::IMGS,
+		Application::PATH_IMAGE + "Character/player.png",
+		CHARACTER_ORIGIN_SIZE_X/CHARACTER_SIZE_X,
+		CHARACTER_ORIGIN_SIZE_Y/CHARACTER_SIZE_Y,
+		CHARACTER_SIZE_X,
+		CHARACTER_SIZE_Y
+		);
+	resourcesMap_.emplace(SRC::PLAYER_IMGS, move(res));
+
 
 	//風呂マップチップ
 	res = make_unique<Resource>(

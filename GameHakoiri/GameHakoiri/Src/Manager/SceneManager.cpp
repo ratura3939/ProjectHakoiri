@@ -69,7 +69,6 @@ void SceneManager::Update(void)
 	}
 	else
 	{
-		camera_.Update();
 		scene_->Update();
 	}
 }

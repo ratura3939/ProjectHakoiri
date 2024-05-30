@@ -77,6 +77,7 @@ private:
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
 	void SetCursorType(CURSOR type);
+	Vector2F GetNowDrawMapSize(void);
 	
 	//更新
 	void UpdateStealth(void);

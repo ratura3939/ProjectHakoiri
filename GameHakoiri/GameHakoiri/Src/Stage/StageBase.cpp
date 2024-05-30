@@ -409,6 +409,10 @@ void StageBase::SetCursorType(CURSOR type)
 {
 	type_ = type;
 }
+Vector2F StageBase::GetNowDrawMapSize(void)
+{
+	return Vector2F();
+}
 #pragma endregion
 
 

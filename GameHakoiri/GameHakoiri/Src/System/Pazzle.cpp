@@ -57,50 +57,22 @@ void Pazzle::KeyboardContoroller(void)
 			stage.PazzleReset();
 		}
 		//カーソルの移動受付
-		if (ins.IsTrgDown(KEY_INPUT_UP))
-		{
-			stage.MoveCursor(Utility::DIR::UP);
-		}
-		if (ins.IsTrgDown(KEY_INPUT_DOWN))
-		{
-			stage.MoveCursor(Utility::DIR::DOWN);
-		}
-		if (ins.IsTrgDown(KEY_INPUT_LEFT))
-		{
-			stage.MoveCursor(Utility::DIR::LEFT);
-		}
-		if (ins.IsTrgDown(KEY_INPUT_RIGHT))
-		{
-			stage.MoveCursor(Utility::DIR::RIGHT);
-		}
-		if (ins.IsTrgDown(KEY_INPUT_SPACE))
-		{
-			ChangeIsSelect(true);
-		}
+		if (ins.IsTrgDown(KEY_INPUT_UP))	{stage.MoveCursor(Utility::DIR::UP);}
+		if (ins.IsTrgDown(KEY_INPUT_DOWN))	{stage.MoveCursor(Utility::DIR::DOWN);}
+		if (ins.IsTrgDown(KEY_INPUT_LEFT))	{stage.MoveCursor(Utility::DIR::LEFT);}
+		if (ins.IsTrgDown(KEY_INPUT_RIGHT))	{stage.MoveCursor(Utility::DIR::RIGHT);}
+		//カーソル決定受付
+		if (ins.IsTrgDown(KEY_INPUT_SPACE))	{ChangeIsSelect(true);}
 	}
 	else
 	{
 		//駒の移動受付
-		if (ins.IsTrgDown(KEY_INPUT_UP))
-		{
-			stage.MovePiece(Utility::DIR::UP);
-		}
-		if (ins.IsTrgDown(KEY_INPUT_DOWN))
-		{
-			stage.MovePiece(Utility::DIR::DOWN);
-		}
-		if (ins.IsTrgDown(KEY_INPUT_LEFT))
-		{
-			stage.MovePiece(Utility::DIR::LEFT);
-		}
-		if (ins.IsTrgDown(KEY_INPUT_RIGHT))
-		{
-			stage.MovePiece(Utility::DIR::RIGHT);
-		}
-		if (ins.IsTrgDown(KEY_INPUT_SPACE))
-		{
-			ChangeIsSelect(false);
-		}
+		if (ins.IsTrgDown(KEY_INPUT_UP))	{stage.MovePiece(Utility::DIR::UP);}
+		if (ins.IsTrgDown(KEY_INPUT_DOWN))	{stage.MovePiece(Utility::DIR::DOWN);}
+		if (ins.IsTrgDown(KEY_INPUT_LEFT))	{stage.MovePiece(Utility::DIR::LEFT);}
+		if (ins.IsTrgDown(KEY_INPUT_RIGHT))	{stage.MovePiece(Utility::DIR::RIGHT);}
+		//決定解除
+		if (ins.IsTrgDown(KEY_INPUT_SPACE)){ChangeIsSelect(false);}
 	}
 }
 #pragma endregion
@@ -137,10 +109,7 @@ void Pazzle::GamePadController(void)
 	if (!isNeutral_)
 	{
 		//現在がニュートラルかを判断
-		if (IsStickNeutral(inputStick))
-		{
-			ChangeIsNeutral(true);
-		}
+		if (IsStickNeutral(inputStick)){ChangeIsNeutral(true);}	//ニュートラルに変更
 	}
 	
 

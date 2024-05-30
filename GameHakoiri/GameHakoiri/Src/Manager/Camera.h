@@ -12,8 +12,8 @@ public:
 	void Update(void);
 	void Relese(void);
 
-	void MoveCamera(void);
 	void SetTargetPos(Vector2F pPos);
+	Vector2F GetPos(void)const;
 
 private:
 
@@ -21,6 +21,8 @@ private:
 
 	Vector2F pos_;
 	Vector2F targetPos_;
+
+	void MoveCamera(void);
 
 	Camera(void);	//コンストラクタ
 	~Camera(void);	//デストラクタ

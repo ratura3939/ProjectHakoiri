@@ -3,6 +3,7 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/StageManager.h"
 #include"../Manager/InputManager.h"
+#include"../Manager/Camera.h"
 #include"../System/Pazzle.h"
 #include"../System/Stealth.h"
 #include"GameScene.h"
@@ -32,6 +33,7 @@ bool GameScene::Init(void)
 	}
 	SetMode(MODE::PAZZLE);
 	pzl_ = new Pazzle;
+	stl_ = new Stealth;
 
 	//³í‚Éˆ—‚ªs‚í‚ê‚½‚Ì‚Å
 	return true;
@@ -41,6 +43,8 @@ bool GameScene::Init(void)
 void GameScene::Update(void)
 {
 	auto& ins = InputManager::GetInstance();
+	auto& camera = SceneManager::GetInstance().GetCamera();
+
 	if (ins.IsTrgDown(KEY_INPUT_W))
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);
@@ -55,11 +59,12 @@ void GameScene::Update(void)
 		if (pzl_->IsFinish())
 		{
 			SetMode(MODE::STEALTH);
-			StageManager::GetInstance().ChangeModeInit();
+			stl_->Init();
 		}
 		break;
 	case GameScene::MODE::STEALTH:
-
+		stl_->Update();
+		camera.Update();
 		break;
 	}
 
@@ -69,8 +74,9 @@ void GameScene::Update(void)
 void GameScene::Draw(void)
 {
 	StageManager::GetInstance().Draw(GetMode());
+	if (mode_ == MODE::STEALTH) { stl_->Draw(); }
+
 	DrawString(0, 0, "GameScene", 0xffffff, true);
-	DrawFormatString(0, 100, 0xffffff, "%d", pzl_->IsNeutral(), true);
 }
 //‰ð•ú
 //********************************************************
@@ -79,6 +85,7 @@ bool GameScene::Release(void)
 	StageManager::GetInstance().Release();
 	delete pzl_;
 	pzl_ = nullptr;
+	stl_->Release();
 	delete stl_;
 	stl_ = nullptr;
 

@@ -11,9 +11,9 @@ public:
 
 	enum class MODE
 	{
-		PAZZLE
-		, STEALTH
-		,MAX
+		PAZZLE,
+		STEALTH,
+		MAX
 	};
 
 	GameScene(void);	//コンストラクタ

@@ -1,13 +1,18 @@
 //#pragma once
 
+class Player;
+
 class Stealth
 {
 public:
 	Stealth(void);	//コンストラクタ
-	virtual ~Stealth(void);	//デストラクタ
+	~Stealth(void);	//デストラクタ
 
-	virtual bool Init(void);	//初期化
-	virtual void Update(void);	//更新
-	virtual void Draw(void);	//描画
-	virtual bool Release(void);	//解放
+	bool Init(void);	//初期化
+	void Update(void);	//更新
+	void Draw(void);	//描画
+	bool Release(void);	//解放
+
+private:
+	Player* player_;
 };

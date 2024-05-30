@@ -1,0 +1,59 @@
+#include<DxLib.h>
+#include"../Manager/ResourceManager.h"
+#include"../Manager/InputManager.h"
+#include "Player.h"
+
+void Player::SetParam(void)
+{
+	img_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::PLAYER_IMGS).handleIds_;
+	dir_ = CharacterBase::DIR::DOWN;
+	move_ = 2.0f;
+}
+
+void Player::Move(void)
+{
+	//移動前の方向を保存
+	auto prevDir = GetDir();
+
+	KeyboardContoroller();
+	GamePadController();
+
+	//全ての移動処理が終わってからアニメーションを変更するか決める
+	if (GetDir() != prevDir)
+	{
+		ResetAnim(GetDir());
+	}
+}
+
+void Player::KeyboardContoroller(void)
+{
+	InputManager& ins = InputManager::GetInstance();
+
+	//移動
+	if (ins.IsNew(KEY_INPUT_UP)) 
+	{
+		pos_.y_ -= move_; 
+		SetDir(CharacterBase::DIR::UP);
+	}
+	if (ins.IsNew(KEY_INPUT_DOWN)) 
+	{
+		pos_.y_ += move_; 
+		SetDir(CharacterBase::DIR::DOWN);
+	}
+	if (ins.IsNew(KEY_INPUT_LEFT)) 
+	{
+		pos_.x_ -= move_; 
+		SetDir(CharacterBase::DIR::LEFT);
+	}
+	if (ins.IsNew(KEY_INPUT_RIGHT)) 
+	{
+		pos_.x_ += move_; 
+		SetDir(CharacterBase::DIR::RIGHT);
+	}
+
+}
+
+void Player::GamePadController(void)
+{
+	InputManager& ins = InputManager::GetInstance();
+}

@@ -13,9 +13,15 @@ public:
 	//使用する複数枚の画像（アニメーション）などの定数登録
 	static constexpr int PAZZLE_IMG_UNIT_X = 64;
 	static constexpr int PAZZLE_IMG_UNIT_Y = 64;
+
 	static constexpr int MAP_IMG_UNIT_X = 32;
 	static constexpr int MAP_IMG_UNIT_Y = 32;
 	static constexpr int MAP_TILE_SIZE_UNIT = 30;
+
+	static constexpr int CHARACTER_SIZE_X = 32;
+	static constexpr int CHARACTER_SIZE_Y = 32;
+	static constexpr int CHARACTER_ORIGIN_SIZE_X = 96;
+	static constexpr int CHARACTER_ORIGIN_SIZE_Y = 128;
 
 	static constexpr int BATH_MAPTHIP_X = 512;
 	static constexpr int BATH_MAPTHIP_Y = 1216;
@@ -32,6 +38,7 @@ public:
 		FRAME_IMG,
 		FRAME_OBLONG_IMG,
 		FRAME_OBLONG_2_IMG,
+	
 		//部屋
 		BATH_IMG,
 		ENTRANCE_IMG,
@@ -43,6 +50,9 @@ public:
 		STRAGE_IMG,
 		WALL_IMG,
 		WASITU_IMG,
+
+		//キャラクター
+		PLAYER_IMGS,
 
 		//マップ
 		BATH_MAPTHIP,

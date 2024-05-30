@@ -32,6 +32,7 @@ bool Camera::Init(void)
 
 void Camera::Update(void)
 {
+	MoveCamera();
 }
 
 void Camera::Relese(void)
@@ -40,7 +41,12 @@ void Camera::Relese(void)
 
 void Camera::SetTargetPos(Vector2F pPos)
 {
+	targetPos_ = pPos;
+}
 
+Vector2F Camera::GetPos(void) const
+{
+	return pos_;
 }
 
 void Camera::MoveCamera(void)

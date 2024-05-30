@@ -123,6 +123,10 @@ void StageManager::ChangeModeInit(void)
 {
 	if (!stage_->InitStealth()) { OutputDebugString("ƒXƒeƒ‹ƒX‰Šú‰»¸”s\n"); }
 }
+Vector2F StageManager::GetMapMaxSize(void)
+{
+	return Vector2F();
+}
 #pragma region “Ç‚İ‚İ
 
 void StageManager::LoadImg(void)
