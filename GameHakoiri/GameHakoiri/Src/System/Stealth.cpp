@@ -26,6 +26,9 @@ Stealth::~Stealth(void)
 bool Stealth::Init(void)
 {
 	StageManager::GetInstance().ChangeModeInit();
+	//カメラにマップのサイズを設定
+	auto& camera = Camera::GetInstance();
+	camera.SetMapSize(StageManager::GetInstance().GetMapMaxSize());
 	player_ = new Player;
 	player_->Init();
 	//正しく処理が終了したので
@@ -40,12 +43,15 @@ void Stealth::Update(void)
 	camera.SetTargetPos(player_->GetPos());
 
 	player_->Update();
+
+	Collision();
 }
 //描画
 //********************************************************
 void Stealth::Draw(void)
 {
 	player_->Draw();
+	DrawDebug();
 }
 //解放
 //********************************************************
@@ -55,3 +61,36 @@ bool Stealth::Release(void)
 	//正しく処理が終了したので
 	return true;
 }
+
+#pragma region 当たり判定
+
+void Stealth::Collision(void)
+{
+
+}
+
+#pragma endregion
+
+
+void Stealth::ChangeRoom(void/*いずれかは動く部屋の指定数をいれる*/)
+{
+
+	//カメラにマップのサイズを設定
+	auto& camera = Camera::GetInstance();
+	camera.SetMapSize(StageManager::GetInstance().GetMapMaxSize());
+}
+
+void Stealth::DrawDebug(void)
+{
+	//objectPos
+	auto cameraPos = Camera::GetInstance().GetPos();
+	auto pPos = player_->GetPos();
+
+
+
+	DrawFormatString(0, 0, 0xff0000,
+		"カメラ座標(%.1f,%.1f)\nプレイヤー座標(%.1f,%.1f)",
+		cameraPos.x_, cameraPos.y_,
+		pPos.x_, pPos.y_);
+}
+

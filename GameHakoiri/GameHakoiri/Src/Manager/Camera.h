@@ -12,7 +12,8 @@ public:
 	void Update(void);
 	void Relese(void);
 
-	void SetTargetPos(Vector2F pPos);
+	void SetTargetPos(const Vector2F pPos);
+	void SetMapSize(const Vector2F mapsize);
 	Vector2F GetPos(void)const;
 
 private:
@@ -21,6 +22,7 @@ private:
 
 	Vector2F pos_;
 	Vector2F targetPos_;
+	Vector2F mapSize_;
 
 	void MoveCamera(void);
 

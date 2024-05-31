@@ -15,6 +15,9 @@ Vector2F::Vector2F(float x,float y)
 	x_ = x;
 	y_ = y;
 }
+Vector2F::Vector2F(Vector2)
+{
+}
 //デストラクタ
 Vector2F::~Vector2F(void)
 {

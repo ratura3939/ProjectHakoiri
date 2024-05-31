@@ -41,21 +41,23 @@ public:
 	bool Release(void);	//解放
 
 	void SetRoomType(TYPE type);	//部屋の種類を設定
-	TYPE GetRoomType(void);	//部屋の種類を返却
+	TYPE GetRoomType(void)const;			//部屋の種類を返却
 
 	void SetPzlPos(Vector2F pos);	//パズルの座標設定
-	Vector2F GetPzlPos(void);	//パズルの座標返却
+	Vector2F GetPzlPos(void)const;		//パズルの座標返却
 
 	void SetMapPos(Vector2F pos);	//マップの座標設定
-	Vector2F GetMapPos(void);	//マップの座標返却
+	Vector2F GetMapPos(void)const;		//マップの座標返却
 
 	void SetIsCursor(bool flag);	//カーソルフラグの設定
-	bool GetIsCursor(void);	//カーソルフラグの返却
+	bool GetIsCursor(void)const;			//カーソルフラグの返却
 
-	bool IsChange(void);	//IsChangeのゲッター
+	bool IsChange(void);			//IsChangeのゲッター
 	void SetIsChange(bool flag);	//IsChangeのセッター
 
 	void SetIsDrawRoom(bool flag);
+
+	Vector2F GetRoomSize(void)const;
 
 
 private:

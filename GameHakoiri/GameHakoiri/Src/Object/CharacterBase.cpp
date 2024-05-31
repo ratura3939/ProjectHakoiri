@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include"../Application.h"
 #include"../Manager/ResourceManager.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/SceneManager.h"
@@ -39,9 +40,13 @@ void CharacterBase::Draw(void)
 {
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
-	DrawGraph(pos_.x_ - cameraPos.x_,
+	DrawRotaGraph(pos_.x_ - cameraPos.x_,
 		pos_.y_ - cameraPos.y_,
-		img_[animIdx_], true);
+		1.0f,
+		Application::SIE * 180.0 ,
+		img_[animIdx_],
+		true,
+		false);
 }
 
 void CharacterBase::Release(void)

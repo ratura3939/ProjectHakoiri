@@ -68,7 +68,7 @@ public:
 	void SetFlash(bool flag);	//枠点滅
 	
 	void ChangeModeInit(void);	//シーン切り替え時の初期化
-	Vector2F GetMapMaxSize(void);
+	Vector2F GetMapMaxSize(void)const;
 
 	//シングルトン化
 	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成

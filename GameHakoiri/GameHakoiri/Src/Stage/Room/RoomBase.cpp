@@ -114,8 +114,8 @@ void RoomBase::DrawStealth(void)
 			mapchip = obj_[y][x];
 			if (mapchip != -1)		//âÊëúÇ™ë∂ç›Ç∑ÇÈÇ∆Ç´
 			{
-				DrawGraph(pos.x_-cameraPos.x_
-					, pos.y_-cameraPos.y_,
+				DrawGraph(pos.x_-cameraPos.x_,
+					pos.y_-cameraPos.y_,
 					mapchip_[mapchip],
 					true);
 			}
@@ -146,7 +146,7 @@ void RoomBase::SetRoomType(TYPE type)
 	type_ = type;
 }
 
-RoomBase::TYPE RoomBase::GetRoomType(void)
+RoomBase::TYPE RoomBase::GetRoomType(void)const
 {
 	return type_;
 }
@@ -160,7 +160,7 @@ void RoomBase::SetPzlPos(Vector2F pos)
 {
 	pzlPos_ = pos;
 }
-Vector2F RoomBase::GetPzlPos(void)
+Vector2F RoomBase::GetPzlPos(void)const
 {
 	return pzlPos_;
 }
@@ -173,7 +173,7 @@ void RoomBase::SetMapPos(Vector2F pos)
 	mapPos_ = pos;
 }
 
-Vector2F RoomBase::GetMapPos(void)
+Vector2F RoomBase::GetMapPos(void)const
 {
 	return mapPos_;
 }
@@ -186,7 +186,7 @@ void RoomBase::SetIsCursor(bool flag)
 	isCursor_ = flag;
 }
 
-bool RoomBase::GetIsCursor(void)
+bool RoomBase::GetIsCursor(void)const
 {
 	return isCursor_;
 }
@@ -201,6 +201,10 @@ void RoomBase::SetIsChange(bool flag)
 void RoomBase::SetIsDrawRoom(bool flag)
 {
 	isDrawRoom_ = flag;
+}
+Vector2F RoomBase::GetRoomSize(void) const
+{
+	return mapSize_;
 }
 #pragma endregion
 

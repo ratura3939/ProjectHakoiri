@@ -13,6 +13,30 @@ public:
 
 	Vector2 ToVector2(void);//Vector2Ç÷ÇÃïœä∑
 
+	Vector2F operator+(const Vector2F& vec)const { return { x_ + vec.x_,y_ + vec.y_ }; }
+	Vector2F operator-(const Vector2F& vec)const { return { x_ - vec.x_,y_ - vec.y_ }; }
+	Vector2F operator*(const Vector2F& vec)const { return { x_ * vec.x_,y_ * vec.y_ }; }
+	Vector2F operator/(const Vector2F& vec)const { return { x_ / vec.x_,y_ / vec.y_ }; }
+	void operator+=(const Vector2F& vec)
+	{
+		x_ += vec.x_;
+		y_ += vec.y_;
+	}
+	void operator-=(const Vector2F& vec)
+	{
+		x_ -= vec.x_;
+		y_ -= vec.y_;
+	}
+	void operator*=(const Vector2F& vec)
+	{
+		x_ *= vec.x_;
+		y_ *= vec.y_;
+	}
+	void operator/=(const Vector2F& vec)
+	{
+		x_ /= vec.x_;
+		y_ /= vec.y_;
+	}
 	//ïœêî
 	float x_;
 	float y_;

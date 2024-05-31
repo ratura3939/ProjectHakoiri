@@ -411,7 +411,9 @@ void StageBase::SetCursorType(CURSOR type)
 }
 Vector2F StageBase::GetNowDrawMapSize(void)
 {
-	return Vector2F();
+	Vector2F mapMax = roomMng_[roomKey_]->GetRoomSize() * 
+		Vector2F { ResourceManager::MAP_IMG_UNIT_X, ResourceManager::MAP_IMG_UNIT_Y };
+	return mapMax;
 }
 #pragma endregion
 

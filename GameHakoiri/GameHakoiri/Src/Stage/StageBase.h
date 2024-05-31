@@ -41,13 +41,15 @@ public:
 	virtual bool Release(void);	//解放
 
 	void CreateKey(int y, int x);	//連想配列のキー生成
+	//パズルシーン
 	Vector2 GetNowCursorPos(void);	//現在のカーソルの位置を取得
 	void SetCursor(Vector2 move, Utility::DIR dir);	//カーソルのセット yとxはカーソルの移動量
 	void SetPiece(Vector2 move, Utility::DIR dir);	//駒の位置入れ替え yとxはカーソルの移動量
 	void SetFrameFlash(bool flag);	//枠点滅用
-
 	void ResetPazzl(void);	//パズルのリセット
+	//ステルスシーン
 	bool InitStealth(void);	//ステルスシーン移行時の初期化
+	Vector2F GetNowDrawMapSize(void);
 
 private:
 	std::map<std::string, RoomBase*> roomMng_;	//部屋の情報一括管理
@@ -77,7 +79,7 @@ private:
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
 	void SetCursorType(CURSOR type);
-	Vector2F GetNowDrawMapSize(void);
+	
 	
 	//更新
 	void UpdateStealth(void);

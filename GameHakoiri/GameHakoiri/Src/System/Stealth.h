@@ -15,4 +15,9 @@ public:
 
 private:
 	Player* player_;
+
+	void Collision(void);
+	void ChangeRoom(void);
+
+	void DrawDebug(void);
 };
