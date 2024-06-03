@@ -21,6 +21,7 @@ Camera& Camera::GetInstance(void)
 Camera::Camera(void)
 {
 	pos_ = { 0.0f,0.0f };
+	localCenterPos_ = { 0.0f,0.0f };
 	targetPos_ = { 0.0f,0.0f };
 	mapSize_ = { 0.0f,0.0f };
 }
@@ -31,6 +32,7 @@ Camera::~Camera(void)
 
 bool Camera::Init(void)
 {
+	localCenterPos_ = { Application::SCREEN_SIZE_X / 2,Application::SCREEN_SIZE_Y / 2 };
 	return true;
 }
 
@@ -62,8 +64,8 @@ void Camera::MoveCamera(void)
 {
 	//カメラ左上（始点）とプレイヤー（終点）のベクトル
 	auto diff = targetPos_ - pos_;
-	Vector2F scr = { Application::SCREEN_SIZE_X,Application::SCREEN_SIZE_Y };
-	Vector2F scrCenter = { Application::SCREEN_SIZE_X / 2,Application::SCREEN_SIZE_Y / 2 };
+	//現在のカメラ位置から相対的に
+	auto scrCenter = pos_+localCenterPos_;
 
 	auto cameraDir = scrCenter - pos_;
 

@@ -1,5 +1,7 @@
 #include<DxLib.h>
 
+#include"../Application.h"
+
 #include"../Utility/Utility.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/StageManager.h"
@@ -86,11 +88,19 @@ void Stealth::DrawDebug(void)
 	auto cameraPos = Camera::GetInstance().GetPos();
 	auto pPos = player_->GetPos();
 
+	auto diff = pPos - cameraPos;
+	Vector2F scr = { Application::SCREEN_SIZE_X,Application::SCREEN_SIZE_Y };
+	Vector2F scrCenter = { Application::SCREEN_SIZE_X / 2,Application::SCREEN_SIZE_Y / 2 };
 
+	auto cameraDir = scrCenter - cameraPos;
 
 	DrawFormatString(0, 0, 0xff0000,
-		"カメラ座標(%.1f,%.1f)\nプレイヤー座標(%.1f,%.1f)",
+		"カメラ座標(%.1f,%.1f)\nプレイヤー座標(%.1f,%.1f)\n中心との距離(%.1f,%.1f)\nプレイヤーとの距離(%.1f,%.1f)",
 		cameraPos.x_, cameraPos.y_,
-		pPos.x_, pPos.y_);
+		pPos.x_, pPos.y_,
+		cameraDir.x_,cameraDir.y_,
+		diff.x_,diff.y_);
+
+
 }
 

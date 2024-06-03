@@ -21,6 +21,7 @@ private:
 	static Camera* instance_;
 
 	Vector2F pos_;
+	Vector2F localCenterPos_;
 	Vector2F targetPos_;
 	Vector2F mapSize_;
 
