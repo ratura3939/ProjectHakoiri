@@ -6,10 +6,16 @@
 
 Application* Application::instance_ = nullptr;
 
-const std::string Application::PATH_PAZZLE = "Data/Csv/Pazzle/";
-const std::string Application::PATH_MAP = "Data/Csv/Map/";
-const std::string Application::PATH_IMAGE = "Data/Img/";
+
 const std::string Application::PATH_ANIM = "Data/Anim/";
+const std::string Application::PATH_MAP = "Data/Csv/Map/";
+const std::string Application::PATH_OBSTACLE = "Data/Csv/Map/Mapchip";
+const std::string Application::PATH_PAZZLE = "Data/Csv/Pazzle/";
+const std::string Application::PATH_PAZZLE = "Data/Csv/Pazzle/";
+const std::string PATH_CHARACTER = "Data/Img/Character/";
+const std::string PATH_MAPCHIP = "Data/Img/Map/";
+const std::string PATH_ROOM = "Data/Img/Room/";
+const std::string PATH_SYSTEM = "Data/Img/System/";
 const std::string Application::PATH_SOUND = "Data/Snd/";
 const std::string Application::PATH_BGM = "Data/Snd/Bgm/";
 

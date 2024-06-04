@@ -31,19 +31,19 @@ void ResourceManager::Init(void)
 	// フレーム　１×１
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "System/frame.png"
+		Application::PATH_SYSTEM + "frame.png"
 		);
 	resourcesMap_.emplace(SRC::FRAME_IMG, move(res));
 	// フレーム　１×２
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "System/frame_oblong.png"
+		Application::PATH_SYSTEM + "frame_oblong.png"
 		);
 	resourcesMap_.emplace(SRC::FRAME_OBLONG_IMG, move(res));
 	// フレーム　２×１
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "System/frame_oblong_2.png"
+		Application::PATH_SYSTEM + "frame_oblong_2.png"
 		);
 	resourcesMap_.emplace(SRC::FRAME_OBLONG_2_IMG, move(res));
 
@@ -51,61 +51,61 @@ void ResourceManager::Init(void)
 	//風呂
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Bath.png"
+		Application::PATH_ROOM + "Bath.png"
 		);
 	resourcesMap_.emplace(SRC::BATH_IMG, move(res));
 	//玄関
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Entrance.png"
+		Application::PATH_ROOM + "Entrance.png"
 		);
 	resourcesMap_.emplace(SRC::ENTRANCE_IMG, move(res));
 	//ゴール
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Goal.png"
+		Application::PATH_ROOM + "Goal.png"
 		);
 	resourcesMap_.emplace(SRC::GOAL_IMG, move(res));
 	//台所
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Kitchen.png"
+		Application::PATH_ROOM + "Kitchen.png"
 		);
 	resourcesMap_.emplace(SRC::KITCHEN_IMG, move(res));
 	//居間
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Living.png"
+		Application::PATH_ROOM + "Living.png"
 		);
 	resourcesMap_.emplace(SRC::LIVING_IMG, move(res));
 	//なし
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/None.png"
+		Application::PATH_ROOM + "None.png"
 		);
 	resourcesMap_.emplace(SRC::NONE_IMG, move(res));
 	//自室
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Own.png"
+		Application::PATH_ROOM + "Own.png"
 		);
 	resourcesMap_.emplace(SRC::OWN_IMG, move(res));
 	//物置
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Strage.png"
+		Application::PATH_ROOM + "Strage.png"
 		);
 	resourcesMap_.emplace(SRC::STRAGE_IMG, move(res));
 	//壁
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Wall.png"
+		Application::PATH_ROOM + "Wall.png"
 		);
 	resourcesMap_.emplace(SRC::WALL_IMG, move(res));
 	//和室
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_IMAGE + "Room/Wasitu.png"
+		Application::PATH_ROOM + "Wasitu.png"
 		);
 	resourcesMap_.emplace(SRC::WASITU_IMG, move(res));
 #pragma endregion
@@ -116,7 +116,7 @@ void ResourceManager::Init(void)
 	//プレイヤー
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
-		Application::PATH_IMAGE + "Character/player.png",
+		Application::PATH_CHARACTER + "player.png",
 		CHARACTER_ORIGIN_SIZE_X/CHARACTER_SIZE_X,
 		CHARACTER_ORIGIN_SIZE_Y/CHARACTER_SIZE_Y,
 		CHARACTER_SIZE_X,
@@ -128,7 +128,7 @@ void ResourceManager::Init(void)
 	//風呂マップチップ
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
-		Application::PATH_IMAGE + "Map/Bath.png",
+		Application::PATH_MAPCHIP + "Bath.png",
 		BATH_MAPTHIP_X / MAP_IMG_UNIT_X,
 		BATH_MAPTHIP_Y / MAP_IMG_UNIT_Y,
 		MAP_IMG_UNIT_X,
@@ -139,7 +139,7 @@ void ResourceManager::Init(void)
 	//外装マップチップ
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
-		Application::PATH_IMAGE + "Map/Exteria.png",
+		Application::PATH_MAPCHIP + "Exteria.png",
 		EXTERIA_MAPTHIP_X / MAP_IMG_UNIT_X,
 		EXTERIA_MAPTHIP_Y / MAP_IMG_UNIT_Y,
 		MAP_IMG_UNIT_X,
@@ -150,7 +150,7 @@ void ResourceManager::Init(void)
 	//内装マップチップ
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
-		Application::PATH_IMAGE + "Map/Interia.png",
+		Application::PATH_MAPCHIP + "Interia.png",
 		INTERIA_MAPTHIP_X / MAP_IMG_UNIT_X,
 		INTERIA_MAPTHIP_Y / MAP_IMG_UNIT_Y,
 		MAP_IMG_UNIT_X,
@@ -262,6 +262,58 @@ void ResourceManager::Init(void)
 		Application::PATH_MAP + "Wasitu_Object.csv"
 		);
 	resourcesMap_.emplace(SRC::WASITU_OBJ_CSV, move(res));
+
+	//障害物判定用のやつ
+	//風呂
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Bath/Obstacle.csv"
+		);
+	resourcesMap_.emplace(SRC::BATH_MAPCHIP_OBSTACLE_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Bath/Through.csv"
+		);
+	resourcesMap_.emplace(SRC::BATH_MAPCHIP_THROUGH_CSV, move(res));
+
+	//内装
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Interia/Obstacle.csv"
+		);
+	resourcesMap_.emplace(SRC::INTERIA_MAPCHIP_OBSTACLE_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Interia/Through.csv"
+		);
+	resourcesMap_.emplace(SRC::INTERIA_MAPCHIP_THROUGH_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Interia/Event.csv"
+		);
+	resourcesMap_.emplace(SRC::INTERIA_MAPCHIP_EVENT_CSV, move(res));
+
+	//外装
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Exteria/Obstacle.csv"
+		);
+	resourcesMap_.emplace(SRC::EXTERIA_MAPCHIP_OBSTACLE_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Exteria/Through.csv"
+		);
+	resourcesMap_.emplace(SRC::EXTERIA_MAPCHIP_THROUGH_CSV, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Exteria/Event.csv"
+		);
+	resourcesMap_.emplace(SRC::EXTERIA_MAPCHIP_EVENT_CSV, move(res));
 #pragma endregion
 
 #pragma region SOUND

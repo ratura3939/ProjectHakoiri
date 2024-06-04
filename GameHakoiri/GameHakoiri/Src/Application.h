@@ -16,10 +16,16 @@ public:
 
 	// データパス関連
 	//-------------------------------------------
-	static const std::string PATH_PAZZLE;
-	static const std::string PATH_MAP;
-	static const std::string PATH_IMAGE;
 	static const std::string PATH_ANIM;
+
+	static const std::string PATH_MAP;
+	static const std::string PATH_OBSTACLE;
+	static const std::string PATH_PAZZLE;
+
+	static const std::string PATH_CHARACTER;
+	static const std::string PATH_MAPCHIP;
+	static const std::string PATH_ROOM;
+	static const std::string PATH_SYSTEM;
 	static const std::string PATH_SOUND;
 	static const std::string PATH_BGM;
 
