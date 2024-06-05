@@ -6,7 +6,7 @@
 void Player::SetParam(void)
 {
 	img_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::PLAYER_IMGS).handleIds_;
-	dir_ = CharacterBase::DIR::DOWN;
+	dir_ = CharacterBase::DIR::BOTTOM;
 	pos_ = { 990.0f,270.0f };
 	move_ = 2.0f;
 }
@@ -34,12 +34,12 @@ void Player::KeyboardContoroller(void)
 	if (ins.IsNew(KEY_INPUT_UP)) 
 	{
 		pos_.y_ -= move_; 
-		SetDir(CharacterBase::DIR::UP);
+		SetDir(CharacterBase::DIR::TOP);
 	}
 	if (ins.IsNew(KEY_INPUT_DOWN))
 	{
 		pos_.y_ += move_; 
-		SetDir(CharacterBase::DIR::DOWN);
+		SetDir(CharacterBase::DIR::BOTTOM);
 	}
 	if (ins.IsNew(KEY_INPUT_LEFT)) 
 	{

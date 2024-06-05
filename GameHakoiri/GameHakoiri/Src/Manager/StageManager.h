@@ -31,6 +31,15 @@ public:
 		MAX
 	};
 
+	//オブジェクトの種類
+	enum class OBJECT
+	{
+		OBSTACLE,
+		THROUGH,
+		EVENT,
+		MAX
+	};
+
 	//定数
 	//各ステージにおけるパズルのサイズ
 	static constexpr int TUTORIAL_PAZZLE_SIZE_X = 6;
@@ -90,10 +99,14 @@ private:
 	//パズルステージ保持
 	std::vector<std::vector<int>> stageCsv_[static_cast<int>(STAGENUM::MAX)];
 
-
-	std::vector<std::vector<int>> mapCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//マップのCsvデータの先頭アドレス格納
-	std::vector<std::vector<int>> objCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//オブジェクトのCsvデータの先頭アドレス格納
-	int* mapTile_[static_cast<int>(MAPCHIP::MAX)];	//マップ画像を取得
+	//マップのCsvデータの先頭アドレス格納
+	std::vector<std::vector<int>> mapCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	
+	//オブジェクトのCsvデータの先頭アドレス格納
+	std::vector<std::vector<int>> objCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	
+	//マップ画像を取得
+	int* mapTile_[static_cast<int>(MAPCHIP::MAX)];	
+	//マップチップごとの当たり判定CSV格納用
+	std::vector<std::vector<int>>mapchipObj_[static_cast<int>(MAPCHIP::MAX)][static_cast<int>(OBJECT::MAX)];	
 
 	void LoadImg(void);
 	void LoadCsv(void);

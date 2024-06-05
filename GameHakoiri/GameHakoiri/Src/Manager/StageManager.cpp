@@ -173,30 +173,56 @@ void StageManager::LoadCsv(void)
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::BATH)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_OBJ_CSV).dmcHandleIds_;
+
 	mapCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_OBJ_CSV).dmcHandleIds_;
+
 	mapCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_OBJ_CSV).dmcHandleIds_;
+
 	mapCsv_[static_cast<int>(RoomBase::TYPE::LIVING)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::LIVING)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_OBJ_CSV).dmcHandleIds_;
+
 	mapCsv_[static_cast<int>(RoomBase::TYPE::OWN)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::OWN)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_OBJ_CSV).dmcHandleIds_;
+
 	mapCsv_[static_cast<int>(RoomBase::TYPE::STORAGE)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::STORAGE)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_OBJ_CSV).dmcHandleIds_;
+
 	mapCsv_[static_cast<int>(RoomBase::TYPE::WASITU)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::WASITU_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::WASITU)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::WASITU_OBJ_CSV).dmcHandleIds_;
+
+	//“–‚½‚è”»’è
+	mapchipObj_[static_cast<int>(MAPCHIP::BATH)][static_cast<int>(OBJECT::OBSTACLE)]=
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
+	mapchipObj_[static_cast<int>(MAPCHIP::BATH)][static_cast<int>(OBJECT::THROUGH)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
+
+	mapchipObj_[static_cast<int>(MAPCHIP::EXTERIA)][static_cast<int>(OBJECT::OBSTACLE)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
+	mapchipObj_[static_cast<int>(MAPCHIP::EXTERIA)][static_cast<int>(OBJECT::THROUGH)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
+	mapchipObj_[static_cast<int>(MAPCHIP::EXTERIA)][static_cast<int>(OBJECT::EVENT)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPCHIP_EVENT_CSV).dmcHandleIds_;
+
+	mapchipObj_[static_cast<int>(MAPCHIP::INTERIA)][static_cast<int>(OBJECT::OBSTACLE)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
+	mapchipObj_[static_cast<int>(MAPCHIP::INTERIA)][static_cast<int>(OBJECT::THROUGH)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
+	mapchipObj_[static_cast<int>(MAPCHIP::INTERIA)][static_cast<int>(OBJECT::EVENT)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPCHIP_EVENT_CSV).dmcHandleIds_;
 }
 #pragma endregion
 

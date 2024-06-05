@@ -10,7 +10,7 @@ CharacterBase::CharacterBase(void)
 {
 	img_ = nullptr;
 	pos_ = { 0,0 };
-	dir_ = DIR::DOWN;
+	dir_ = DIR::BOTTOM;
 	move_ = 1.0f;
 	animIdx_ = 0;
 	prvAnimIdx_ = 0;
@@ -63,8 +63,19 @@ Vector2F CharacterBase::GetPos(void)const
 	return pos_;
 }
 
-void CharacterBase::Move(void)
+Vector2F CharacterBase::GetCollisionPos(void) const
 {
+	//åªç›ÇÃï˚å¸Ç…âûÇ∂ÇΩìñÇΩÇËîªíËÇï‘Ç∑ÅB
+	Vector2F colPos = pos_;
+	if (dir_ == DIR::BOTTOM) { colPos.y_ + CHARACTER_HALF_Y; }
+	if (dir_ == DIR::LEFT) { colPos.x_ - CHARACTER_HALF_X; }
+	if (dir_ == DIR::RIGHT) { colPos.x_ + CHARACTER_HALF_X; }
+	if (dir_ == DIR::TOP) { colPos.y_ - CHARACTER_HALF_Y; }
+	if (dir_ == DIR::BOTTOM_LEFT) { colPos + Vector2F{ -CHARACTER_HALF_X, CHARACTER_HALF_Y }; }
+	if (dir_ == DIR::BOTTOM_RIGHT) { colPos + Vector2F{ CHARACTER_HALF_X, CHARACTER_HALF_Y }; }
+	if (dir_ == DIR::TOP_LEFT) { colPos + Vector2F{ -CHARACTER_HALF_X, -CHARACTER_HALF_Y }; }
+	if (dir_ == DIR::TOP_RIGHT) { colPos + Vector2F{ CHARACTER_HALF_X, -CHARACTER_HALF_Y }; }
+	return colPos;
 }
 
 void CharacterBase::Anim(void)
@@ -110,8 +121,4 @@ void CharacterBase::SetDir(DIR dir)
 CharacterBase::DIR CharacterBase::GetDir(void) const
 {
 	return dir_;
-}
-
-void CharacterBase::SetParam(void)
-{
 }

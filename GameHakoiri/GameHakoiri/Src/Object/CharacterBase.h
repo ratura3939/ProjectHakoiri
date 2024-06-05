@@ -8,10 +8,14 @@ public:
 
 	enum class DIR
 	{
-		DOWN,
+		BOTTOM,
 		LEFT,
 		RIGHT,
-		UP,
+		TOP,
+		BOTTOM_LEFT,
+		BOTTOM_RIGHT,
+		TOP_LEFT,
+		TOP_RIGHT,
 		MAX
 	};
 
@@ -23,6 +27,11 @@ public:
 	static constexpr int ANIM_RIGHT = 2;
 	static constexpr int ANIM_SWITCH_TIME = 15;
 
+	static constexpr int CHARACTER_SIZE_X = 32;
+	static constexpr int CHARACTER_HALF_X = CHARACTER_SIZE_X / 2;
+	static constexpr int CHARACTER_SIZE_Y = 32;
+	static constexpr int CHARACTER_HALF_Y = CHARACTER_SIZE_Y / 2;
+
 	CharacterBase(void);
 	~CharacterBase(void);
 
@@ -33,6 +42,7 @@ public:
 
 	void SetPos(Vector2F pos);
 	Vector2F GetPos(void)const;
+	Vector2F GetCollisionPos(void)const;
 
 private:
 	void Anim(void);
@@ -54,9 +64,9 @@ protected:
 	int animCnt_;
 
 	void ResetAnim(DIR dir);
-	virtual void Move(void);	//動きの処理
+	virtual void Move(void) = 0;	//動きの処理
 	void SetDir(DIR dir);		//方向の変換
 	DIR GetDir(void)const;		//方向の取得
-	virtual void SetParam(void);//各パラメータ設定
+	virtual void SetParam(void) = 0;//各パラメータ設定
 };
 
