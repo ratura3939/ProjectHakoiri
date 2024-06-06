@@ -9,7 +9,7 @@ Application* Application::instance_ = nullptr;
 
 const std::string Application::PATH_ANIM = "Data/Anim/";
 const std::string Application::PATH_MAP = "Data/Csv/Map/";
-const std::string Application::PATH_OBSTACLE = "Data/Csv/Map/Mapchip";
+const std::string Application::PATH_OBSTACLE = "Data/Csv/Map/Mapchip/";
 const std::string Application::PATH_PAZZLE = "Data/Csv/Pazzle/";
 const std::string Application::PATH_CHARACTER = "Data/Img/Character/";
 const std::string Application::PATH_MAPCHIP = "Data/Img/Map/";

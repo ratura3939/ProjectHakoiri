@@ -33,6 +33,8 @@ bool Stealth::Init(void)
 	camera.SetMapSize(StageManager::GetInstance().GetMapMaxSize());
 	player_ = new Player;
 	player_->Init();
+	prevPlayerPos_ = player_->GetPos();
+	
 	//正しく処理が終了したので
 	return true;
 }
@@ -44,6 +46,7 @@ void Stealth::Update(void)
 	auto& camera = SceneManager::GetInstance().GetCamera();
 	camera.SetTargetPos(player_->GetPos());
 
+	prevPlayerPos_ = player_->GetPos();
 	player_->Update();
 
 	Collision();
@@ -53,6 +56,7 @@ void Stealth::Update(void)
 void Stealth::Draw(void)
 {
 	player_->Draw();
+	//StageManager::GetInstance().DrawObject();
 	DrawDebug();
 }
 //解放
@@ -68,7 +72,40 @@ bool Stealth::Release(void)
 
 void Stealth::Collision(void)
 {
+	//ステージマネージャ取得
+	auto& stage = StageManager::GetInstance();
 
+	//プレイヤーとオブジェクトの当たり判定
+	//--------------------------------------------------------
+	//プレイヤーの当たり判定座標をマップの配列番号に変換
+	auto pCol = stage.GetVector2MapPos(player_->GetCollisionPos().ToVector2());
+	
+	if (stage.IsCollisionObject(pCol))
+	{
+		auto type = stage.GetObjectType(pCol);
+		if (type == StageManager::OBJECT::OBSTACLE) { CollisionObstacle(); }
+		if (type == StageManager::OBJECT::THROUGH) { CollisionTrough(pCol); }
+		if (type == StageManager::OBJECT::EVENT) { CollisionEvent(pCol); }
+	}
+	if (stage.IsCollisionWall(pCol))
+	{
+		CollisionObstacle();
+	}
+}
+
+void Stealth::CollisionObstacle(void)
+{
+	player_->SetPos(prevPlayerPos_);
+}
+
+void Stealth::CollisionTrough(Vector2 pCol)
+{
+	if(StageManager::GetInstance().IsBottomObject(pCol)){ player_->SetPos(prevPlayerPos_); }
+}
+
+void Stealth::CollisionEvent(Vector2 pCol)
+{
+	OutputDebugString("イベントオブジェクト\n");
 }
 
 #pragma endregion

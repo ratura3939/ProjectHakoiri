@@ -1,6 +1,8 @@
 #include<DxLib.h>
+#include"../../Application.h"
 #include"../../Common/Vector2.h"
 #include"../../Manager/SceneManager.h"
+#include"../../Manager/StageManager.h"
 #include"../../Manager/Camera.h"
 
 #include"RoomBase.h"
@@ -62,12 +64,12 @@ bool RoomBase::Init(void)
 	//各性質の設定
 	SetParam();
 	//駒の大きさの設定
-	pieceSize_ = { pazzleSize_.x_ * static_cast<float>(UNIT_PAZZLE_SIZE_X),
-		pazzleSize_.y_ * static_cast<float>(UNIT_PAZZLE_SIZE_Y) };
+	pieceSize_ = { pazzleSize_.x_ * static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X),
+		pazzleSize_.y_ * static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y) };
 
 	//マップの大きさの設定
-	mapMaxSize_ = { mapSize_.x_ * UNIT_STEALTH_SIZE_X,
-		mapSize_.y_ * UNIT_STEALTH_SIZE_Y };
+	mapMaxSize_ = { mapSize_.x_ * StageManager::UNIT_STEALTH_SIZE_X,
+		mapSize_.y_ * StageManager::UNIT_STEALTH_SIZE_Y };
 
 
 	//正しく処理が終了したので
@@ -110,21 +112,52 @@ void RoomBase::DrawStealth(void)
 				mapchip_[mapchip],
 				false);
 
-			//objレイヤーの描画
 			mapchip = obj_[y][x];
 			if (mapchip != -1)		//画像が存在するとき
 			{
-				DrawGraph(pos.x_-cameraPos.x_,
-					pos.y_-cameraPos.y_,
+				DrawGraph(
+					pos.x_ - cameraPos.x_,
+					pos.y_ - cameraPos.y_,
 					mapchip_[mapchip],
 					true);
 			}
-			pos.x_ += UNIT_STEALTH_SIZE_X;
+
+			pos.x_ += StageManager::UNIT_STEALTH_SIZE_X;
 		}
 		pos.x_ = 0;
-		pos.y_ += UNIT_STEALTH_SIZE_Y;
+		pos.y_ += StageManager::UNIT_STEALTH_SIZE_Y;
 	}
 	
+}
+void RoomBase::DrawStealthObject(void)
+{
+	Vector2F pos = mapPos_;
+	pos.x_ += StageManager::UNIT_STEALTH_SIZE_X / 2;
+	pos.y_ += StageManager::UNIT_STEALTH_SIZE_Y / 2;
+	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
+
+	for (int y = 0; y < mapSize_.y_; y++)
+	{
+		for (int x = 0; x < mapSize_.x_; x++)
+		{
+			//objレイヤーの描画
+			int mapchip = obj_[y][x];
+			if (mapchip != -1)		//画像が存在するとき
+			{
+				DrawRotaGraph(
+					pos.x_ - cameraPos.x_,
+					pos.y_ - cameraPos.y_,
+					1.0f,
+					Application::SIE * 180,
+					mapchip_[mapchip],
+					true,
+					false);
+			}
+			pos.x_ += StageManager::UNIT_STEALTH_SIZE_X;
+		}
+		pos.x_ = StageManager::UNIT_STEALTH_SIZE_X / 2;
+		pos.y_ += StageManager::UNIT_STEALTH_SIZE_Y;
+	}
 }
 #pragma endregion
 
@@ -205,6 +238,23 @@ void RoomBase::SetIsDrawRoom(bool flag)
 Vector2F RoomBase::GetRoomSize(void) const
 {
 	return mapSize_;
+}
+int RoomBase::GetObj(Vector2 pos) const
+{
+	return obj_[pos.y_][pos.x_];
+}
+int RoomBase::GetMapchip(Vector2 pos) const
+{
+	return map_[pos.y_][pos.x_];
+}
+bool RoomBase::IsOneDownObj(Vector2 pos) const
+{
+	pos.y_++;
+	if (obj_[pos.y_][pos.x_] == -1)	//オブジェクトが何も入っていなかったら
+	{
+		return true;
+	}
+	return false;
 }
 #pragma endregion
 

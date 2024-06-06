@@ -65,10 +65,17 @@ public:
 	static constexpr int OBLONG_2_MAP_X = 60;
 	static constexpr int OBLONG_2_MAP_Y = 30;
 
+	//各モードにおける基本サイズ
+	static constexpr int UNIT_PAZZLE_SIZE_X = 64;
+	static constexpr int UNIT_PAZZLE_SIZE_Y = 64;
+	static constexpr int UNIT_STEALTH_SIZE_X = 32;
+	static constexpr int UNIT_STEALTH_SIZE_Y = 32;
+
 
 	bool Init(STAGENUM);	//初期化
 	void Update(GameScene::MODE mode);	//更新
 	void Draw(GameScene::MODE mode);	//描画
+	void DrawObject(void);	//描画
 	bool Release(void);	//解放
 
 	void MoveCursor(Utility::DIR dir);	//カーソルの移動
@@ -78,6 +85,12 @@ public:
 	
 	void ChangeModeInit(void);	//シーン切り替え時の初期化
 	Vector2F GetMapMaxSize(void)const;
+
+	bool IsCollisionObject(const Vector2 pMapPos)const;	//座標が何かのオブジェクトと衝突しているか
+	bool IsCollisionWall(const Vector2 pMapPos)const;	//座標が壁と衝突しているか
+	Vector2 GetVector2MapPos(const Vector2 pPos)const;	//座標をマップの配列に変換
+	OBJECT GetObjectType(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
+	bool IsBottomObject(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
 
 	//シングルトン化
 	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成

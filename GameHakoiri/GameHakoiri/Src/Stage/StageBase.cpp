@@ -165,10 +165,10 @@ bool StageBase::Init(void)
 			pzlPos_[roomKey_] = pos;
 
 			//座標の更新
-			pos.x_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_X);
+			pos.x_ += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X);
 		}
 		pos.x_ = static_cast<float>(Application::SCREEN_SIZE_X / 4);
-		pos.y_ += static_cast<float>(RoomBase::UNIT_PAZZLE_SIZE_Y);
+		pos.y_ += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y);
 	}
 
 	//初期のカーソル設定
@@ -208,6 +208,11 @@ bool StageBase::InitStealth(void)
 
 	//処理未遂
 	return false;
+}
+
+void StageBase::DrawObject(void)
+{
+	roomMng_[roomKey_]->DrawStealthObject();
 }
 
 #pragma region 更新
@@ -409,11 +414,46 @@ void StageBase::SetCursorType(CURSOR type)
 {
 	type_ = type;
 }
+
+//現在描画しているマップの最大サイズを取得
 Vector2F StageBase::GetNowDrawMapSize(void)
 {
 	Vector2F mapMax = roomMng_[roomKey_]->GetRoomSize() * 
-		Vector2F { ResourceManager::MAP_IMG_UNIT_X, ResourceManager::MAP_IMG_UNIT_Y };
+		Vector2F {StageManager::UNIT_STEALTH_SIZE_X, StageManager::UNIT_STEALTH_SIZE_Y};
 	return mapMax;
+}
+
+//指定した座標はオブジェクトがあるか
+bool StageBase::IsMapObj(Vector2 pMapPos)
+{
+	if (roomMng_[roomKey_]->GetObj(pMapPos) != -1)	//指定した場所にオブジェクトがあったら
+	{
+		return true;
+	}
+	return false;
+}
+int StageBase::GetObjNum(Vector2 pMapPos)
+{
+	return roomMng_[roomKey_]->GetObj(pMapPos);
+}
+int StageBase::GetMapNum(Vector2 pMapPos)
+{
+	return roomMng_[roomKey_]->GetMapchip(pMapPos);
+}
+StageManager::MAPCHIP StageBase::GetMapchipType(void)
+{
+	//Bathのマップチップを使用するのはBathRoomのみ
+	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::BATH) 
+	{ return StageManager::MAPCHIP::BATH; }
+	//Exteriaのマップチップを使用するのはEntranceRoomのみ
+	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::ENTRANCE) 
+	{ return StageManager::MAPCHIP::EXTERIA; }
+
+	return StageManager::MAPCHIP::INTERIA;
+}
+bool StageBase::CheckOneDownObject(Vector2 pMapPos)
+{
+	return roomMng_[roomKey_]->IsOneDownObj(pMapPos);
 }
 #pragma endregion
 

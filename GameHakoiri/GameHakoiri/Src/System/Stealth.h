@@ -15,8 +15,12 @@ public:
 
 private:
 	Player* player_;
+	Vector2F prevPlayerPos_;
 
 	void Collision(void);
+	void CollisionObstacle(void);
+	void CollisionTrough(Vector2 pCol);
+	void CollisionEvent(Vector2 pCol);
 	void ChangeRoom(void);
 
 	void DrawDebug(void);

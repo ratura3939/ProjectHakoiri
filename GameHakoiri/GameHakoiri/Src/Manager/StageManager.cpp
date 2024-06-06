@@ -84,6 +84,10 @@ void StageManager::Draw(GameScene::MODE mode)
 {
 	stage_->Draw(mode);
 }
+void StageManager::DrawObject(void)
+{
+	stage_->DrawObject();
+}
 //解放
 //********************************************************
 bool StageManager::Release(void)
@@ -127,6 +131,79 @@ Vector2F StageManager::GetMapMaxSize(void)const
 {
 	return stage_->GetNowDrawMapSize();
 }
+
+
+
+#pragma region 当たり判定に必要な奴
+
+bool StageManager::IsCollisionObject(const Vector2 pMapPos) const
+{
+	if (stage_->IsMapObj(pMapPos)) { return true; }
+	return false;
+}
+bool StageManager::IsCollisionWall(const Vector2 pMapPos) const
+{
+	auto map = stage_->GetMapNum(pMapPos);
+	auto mapchip = stage_->GetMapchipType();
+	auto sizeY = mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)].size();
+	for (int y = 0; y < sizeY; y++)
+	{
+		auto sizeX = mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y].size();
+		for (int x = 0; x < sizeX; x++)
+		{
+			if (map==mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y][x])
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+//座標をマップの配列に変換
+Vector2 StageManager::GetVector2MapPos(const Vector2 pPos) const
+{
+	Vector2 ret;
+	ret.x_ = pPos.x_ / UNIT_STEALTH_SIZE_X;
+	ret.y_ = pPos.y_ / UNIT_STEALTH_SIZE_Y;
+	return ret;
+}
+//オブジェクトのタイプを返却
+StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) const
+{
+	auto obj = stage_->GetObjNum(pMapPos);
+	auto mapchip = stage_->GetMapchipType();
+	OBJECT type = OBJECT::MAX;
+
+	//オブジェクトタイプ分のfor文
+	for (int i = 0; i < static_cast<int>(OBJECT::MAX); i++)
+	{
+		//オブジェクト判定用のCSVを１個ずつ回す。
+		auto sizeY = mapchipObj_[static_cast<int>(mapchip)][i].size();
+		for (int y = 0; y < sizeY; y++)
+		{
+			auto sizeX = mapchipObj_[static_cast<int>(mapchip)][i][y].size();
+			for (int x = 0; x < sizeX; x++)
+			{
+				if (obj == mapchipObj_[static_cast<int>(mapchip)][i][y][x])	//i=オブジェクト種類,x・y=CSV添字
+				{
+					return static_cast<OBJECT>(i);
+				}
+			}
+		}
+	}
+
+	return type;
+}
+//オブジェクトの一番下かを判定
+bool StageManager::IsBottomObject(const Vector2 pMapPos) const
+{
+	return stage_->CheckOneDownObject(pMapPos);
+}
+#pragma endregion
+
+
+
+
 #pragma region 読み込み
 
 void StageManager::LoadImg(void)

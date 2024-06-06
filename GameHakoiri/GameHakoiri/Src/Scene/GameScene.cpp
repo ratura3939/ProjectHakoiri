@@ -60,6 +60,7 @@ void GameScene::Update(void)
 		{
 			SetMode(MODE::STEALTH);
 			stl_->Init();
+			Update();	//Œ©‚¦•û’²®‚Ì‚½‚ß
 		}
 		break;
 	case GameScene::MODE::STEALTH:

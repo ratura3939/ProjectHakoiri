@@ -8,10 +8,6 @@ class RoomBase
 public:
 	//定数
 	static constexpr int ROOM_TYPES = 7;	//部屋の種類数
-	static constexpr int UNIT_PAZZLE_SIZE_X = 64;
-	static constexpr int UNIT_PAZZLE_SIZE_Y = 64;
-	static constexpr int UNIT_STEALTH_SIZE_X = 32;
-	static constexpr int UNIT_STEALTH_SIZE_Y = 32;
 
 	//列挙型
 	enum class TYPE
@@ -38,8 +34,11 @@ public:
 	bool Init(void);	//初期化
 	virtual void DrawPazzle(void);	//パズルシーンにおける部屋の描画
 	void DrawStealth(void);	//ステルスシーンにおける部屋の描画
+	void DrawStealthObject(void);	//ステルスシーンにおける部屋の描画(これはプレイヤーとの描画順の関係でステルスで呼ぶ）
 	bool Release(void);	//解放
 
+
+	//セッター・ゲッター
 	void SetRoomType(TYPE type);	//部屋の種類を設定
 	TYPE GetRoomType(void)const;			//部屋の種類を返却
 
@@ -55,9 +54,13 @@ public:
 	bool IsChange(void);			//IsChangeのゲッター
 	void SetIsChange(bool flag);	//IsChangeのセッター
 
-	void SetIsDrawRoom(bool flag);
+	void SetIsDrawRoom(bool flag);	//部屋を描画するかのフラグをセット
 
-	Vector2F GetRoomSize(void)const;
+	Vector2F GetRoomSize(void)const;//現在の部屋のサイズを取得
+
+	int GetObj(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
+	int GetMapchip(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
+	bool IsOneDownObj(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
 
 
 private:
@@ -67,8 +70,8 @@ private:
 	bool isChange_;	//パズルリセット時にすでに確定している場所であるかの判定
 	bool isDrawStealth_;	//ステルスシーンにおいて描画するかを決める
 
-	std::vector<std::vector<int>>/*::iterator*/ map_;
-	std::vector<std::vector<int>>/*::iterator*/ obj_;
+	std::vector<std::vector<int>> map_;
+	std::vector<std::vector<int>> obj_;
 	int* mapchip_;
 	
 

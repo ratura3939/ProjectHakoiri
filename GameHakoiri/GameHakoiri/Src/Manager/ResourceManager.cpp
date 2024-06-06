@@ -1,5 +1,7 @@
 #include <DxLib.h>
 #include "../Application.h"
+#include"StageManager.h"
+#include"../Object/CharacterBase.h"
 #include "Resource.h"
 #include "ResourceManager.h"
 
@@ -117,10 +119,10 @@ void ResourceManager::Init(void)
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
 		Application::PATH_CHARACTER + "player.png",
-		CHARACTER_ORIGIN_SIZE_X/CHARACTER_SIZE_X,
-		CHARACTER_ORIGIN_SIZE_Y/CHARACTER_SIZE_Y,
-		CHARACTER_SIZE_X,
-		CHARACTER_SIZE_Y
+		CHARACTER_ORIGIN_SIZE_X / CharacterBase::CHARACTER_SIZE_X,
+		CHARACTER_ORIGIN_SIZE_Y / CharacterBase::CHARACTER_SIZE_Y,
+		CharacterBase::CHARACTER_SIZE_X,
+		CharacterBase::CHARACTER_SIZE_Y
 		);
 	resourcesMap_.emplace(SRC::PLAYER_IMGS, move(res));
 
@@ -129,10 +131,10 @@ void ResourceManager::Init(void)
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
 		Application::PATH_MAPCHIP + "Bath.png",
-		BATH_MAPTHIP_X / MAP_IMG_UNIT_X,
-		BATH_MAPTHIP_Y / MAP_IMG_UNIT_Y,
-		MAP_IMG_UNIT_X,
-		MAP_IMG_UNIT_Y
+		BATH_MAPTHIP_X / StageManager::UNIT_STEALTH_SIZE_X,
+		BATH_MAPTHIP_Y / StageManager::UNIT_STEALTH_SIZE_Y,
+		StageManager::UNIT_STEALTH_SIZE_X,
+		StageManager::UNIT_STEALTH_SIZE_Y
 		);
 	resourcesMap_.emplace(SRC::BATH_MAPTHIP, move(res));
 
@@ -140,10 +142,10 @@ void ResourceManager::Init(void)
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
 		Application::PATH_MAPCHIP + "Exteria.png",
-		EXTERIA_MAPTHIP_X / MAP_IMG_UNIT_X,
-		EXTERIA_MAPTHIP_Y / MAP_IMG_UNIT_Y,
-		MAP_IMG_UNIT_X,
-		MAP_IMG_UNIT_Y
+		EXTERIA_MAPTHIP_X / StageManager::UNIT_STEALTH_SIZE_X,
+		EXTERIA_MAPTHIP_Y / StageManager::UNIT_STEALTH_SIZE_Y,
+		StageManager::UNIT_STEALTH_SIZE_X,
+		StageManager::UNIT_STEALTH_SIZE_Y
 		);
 	resourcesMap_.emplace(SRC::EXTERIA_MAPTHIP, move(res));
 
@@ -151,10 +153,10 @@ void ResourceManager::Init(void)
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
 		Application::PATH_MAPCHIP + "Interia.png",
-		INTERIA_MAPTHIP_X / MAP_IMG_UNIT_X,
-		INTERIA_MAPTHIP_Y / MAP_IMG_UNIT_Y,
-		MAP_IMG_UNIT_X,
-		MAP_IMG_UNIT_Y
+		INTERIA_MAPTHIP_X / StageManager::UNIT_STEALTH_SIZE_X,
+		INTERIA_MAPTHIP_Y / StageManager::UNIT_STEALTH_SIZE_Y,
+		StageManager::UNIT_STEALTH_SIZE_X,
+		StageManager::UNIT_STEALTH_SIZE_Y
 		);
 	resourcesMap_.emplace(SRC::INTERIA_MAPTHIP, move(res));
 #pragma endregion

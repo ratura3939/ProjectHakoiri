@@ -11,15 +11,8 @@ class ResourceManager
 public:
 
 	//使用する複数枚の画像（アニメーション）などの定数登録
-	static constexpr int PAZZLE_IMG_UNIT_X = 64;
-	static constexpr int PAZZLE_IMG_UNIT_Y = 64;
+	//static constexpr int MAP_TILE_SIZE_UNIT = 30;
 
-	static constexpr int MAP_IMG_UNIT_X = 32;
-	static constexpr int MAP_IMG_UNIT_Y = 32;
-	static constexpr int MAP_TILE_SIZE_UNIT = 30;
-
-	static constexpr int CHARACTER_SIZE_X = 32;
-	static constexpr int CHARACTER_SIZE_Y = 32;
 	static constexpr int CHARACTER_ORIGIN_SIZE_X = 96;
 	static constexpr int CHARACTER_ORIGIN_SIZE_Y = 128;
 

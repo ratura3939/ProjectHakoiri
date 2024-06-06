@@ -103,7 +103,6 @@ void Resource::LoadCsv(void)
 
 	if (!ifs)
 	{
-		OutputDebugString("ƒpƒYƒ‹‚Ìifstream‚Ì€”õ¸”s");
 		return;
 	}
 
