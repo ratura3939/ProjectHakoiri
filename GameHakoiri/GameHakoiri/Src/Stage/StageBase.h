@@ -59,6 +59,7 @@ public:
 	int GetMapNum(Vector2 pMapPos);		//座標にあるマップチップがが何かを返す
 	StageManager::MAPCHIP GetMapchipType(void);	//現在描画しているマップチップを返却
 	bool CheckOneDownObject(Vector2 pMapPos);	//一つ下のマップチップがオブジェクトかを示す。
+	void ChangeRoom(Vector2 pMapPos);	//部屋の切り替え
 
 private:
 	std::map<std::string, RoomBase*> roomMng_;			//部屋の情報一括管理
@@ -82,6 +83,8 @@ private:
 	bool IsOblong(std::string key);		//今いる場所が長方形か(鍵検索)
 	bool IsOblong(RoomBase::TYPE type);	//今いる場所が長方形か(種類検索)
 	bool IsDontMoveBlock(std::string key);	//移動不可なブロックかどうか
+	StageManager::DOOR SearchDoor(const Vector2 pMapPos);	//ドアの検索
+	StageManager::DOOR SplitRoom(const Vector2 pMapPos,const Vector2 size,const Vector2 startPos);	//部屋の分割
 
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
@@ -111,4 +114,6 @@ protected:
 	std::vector<std::vector<int>>* objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
 	int* roomImg_;		//パズルシーンの駒画像受け取り
 	int** mapchip_;		//ステルスシーンのマップチップ受け取り
+
+	StageManager::DOOR_Y doorSpare_;	//ドア判定縦長用
 };

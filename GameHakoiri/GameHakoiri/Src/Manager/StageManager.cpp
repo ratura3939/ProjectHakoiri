@@ -127,6 +127,11 @@ void StageManager::ChangeModeInit(void)
 {
 	if (!stage_->InitStealth()) { OutputDebugString("ƒXƒeƒ‹ƒX‰Šú‰»Ž¸”s\n"); }
 }
+//•”‰®‚ÌØ‚è‘Ö‚¦
+void StageManager::ChangeMap(Vector2 pMapPos)
+{
+	stage_->ChangeRoom(pMapPos);
+}
 Vector2F StageManager::GetMapMaxSize(void)const
 {
 	return stage_->GetNowDrawMapSize();

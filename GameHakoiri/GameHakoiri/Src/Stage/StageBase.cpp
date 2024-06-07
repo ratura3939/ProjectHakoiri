@@ -36,6 +36,7 @@ StageBase::StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX
 	mapchip_ = mapchip;
 
 	roomKey_ = "00";
+	doorSpare_ = StageManager::DOOR_Y::NONE;
 }
 //デストラクタ
 //********************************************************
@@ -389,6 +390,151 @@ void StageBase::CreateKey(int y, int x)
 	roomKey_ = key;
 }
 
+#pragma region ステルスのいろいろ
+
+//現在描画しているマップの最大サイズを取得
+//********************************************************
+Vector2F StageBase::GetNowDrawMapSize(void)
+{
+	Vector2F mapMax = roomMng_[roomKey_]->GetRoomSize() *
+		Vector2F {
+		StageManager::UNIT_STEALTH_SIZE_X, StageManager::UNIT_STEALTH_SIZE_Y
+	};
+	return mapMax;
+}
+
+//指定した座標はオブジェクトがあるか
+//********************************************************
+bool StageBase::IsMapObj(Vector2 pMapPos)
+{
+	if (roomMng_[roomKey_]->GetObj(pMapPos) != -1)	//指定した場所にオブジェクトがあったら
+	{
+		return true;
+	}
+	return false;
+}
+//指定された場所のオブジェクト取得
+//********************************************************
+int StageBase::GetObjNum(Vector2 pMapPos)
+{
+	return roomMng_[roomKey_]->GetObj(pMapPos);
+}
+//指定された場所のマップチップ取得
+//********************************************************
+int StageBase::GetMapNum(Vector2 pMapPos)
+{
+	return roomMng_[roomKey_]->GetMapchip(pMapPos);
+}
+//現在の部屋が使用するマップチップの種類を返す。
+//********************************************************
+StageManager::MAPCHIP StageBase::GetMapchipType(void)
+{
+	//Bathのマップチップを使用するのはBathRoomのみ
+	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::BATH)
+	{
+		return StageManager::MAPCHIP::BATH;
+	}
+	//Exteriaのマップチップを使用するのはEntranceRoomのみ
+	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::ENTRANCE)
+	{
+		return StageManager::MAPCHIP::EXTERIA;
+	}
+
+	return StageManager::MAPCHIP::INTERIA;
+}
+//一つ下にオブジェクトがあるかを調べる
+//********************************************************
+bool StageBase::CheckOneDownObject(Vector2 pMapPos)
+{
+	return roomMng_[roomKey_]->IsOneDownObj(pMapPos);
+}
+//部屋を変える
+//********************************************************
+void StageBase::ChangeRoom(Vector2 pMapPos)
+{
+	//ドアの位置取得
+	auto door = SearchDoor(pMapPos);
+	//部屋の移動量
+	Vector2 move = { 0,0 };
+	
+	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
+		roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::LIVING)
+	{
+
+	}
+	else
+	{
+
+	}
+
+	//移動先の部屋の鍵生成
+	CreateKey(move.y_, move.x_);
+}
+//ドアの位置検索
+//********************************************************
+StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
+{
+	//ドア位置保存用
+	StageManager::DOOR ret;
+	//player位置
+	Vector2 pPos = pMapPos;
+
+	//扉の位置を見つけるため部屋を分割。
+	auto size = roomMng_[roomKey_]->GetRoomSize().ToVector2();
+
+	size.x_ /= StageManager::SPLIT_ROOM_X;
+	size.y_ /= StageManager::SPLIT_ROOM_Y;
+
+	//探索初期位置
+	Vector2 startPos = { 0,0 };
+
+	ret = SplitRoom(pPos, size,startPos);
+
+	//縦長の場合は二回目の判定が必要
+	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
+		roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::LIVING)
+	{
+		//二回目の判定は一回目で分割した上中下をさらに分割し扉を特定する(部屋の一部をズームする感じ)
+		//プレイヤーの場所は一回目の分割の影響を受ける
+		pPos.y_ /= static_cast<int>(ret.y);
+
+		size.y_ /= static_cast<int>(StageManager::DOOR_Y::BOTTOM);	//サイズをさらに三分割
+
+		//判定初期位置を一回目のY部分基準(構造体の都合上-1でスタート位置にする）
+		startPos.y_ = StageManager::SPLIT_ROOM_Y * (static_cast<int>(ret.y) - 1);
+		StageManager::DOOR oblongSecond = SplitRoom(pPos, size, startPos);
+
+		doorSpare_ = oblongSecond.y;
+	}
+		
+	return ret;
+}
+StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)
+{
+	StageManager::DOOR ret;
+
+	//左右の区別
+	if (pMapPos.x_ < size.x_) { ret.x = StageManager::DOOR_X::LEFT; }
+	else { ret.x = StageManager::DOOR_X::RIGHT; }
+
+	//上中下の判断（数の大きい下から行う
+	//必ず下にはいるので初期値は下から
+	ret.y = StageManager::DOOR_Y::BOTTOM;
+
+	if (pMapPos.y_ < size.y_ * static_cast<int>(StageManager::DOOR_Y::MIDDLE))
+	{
+		ret.y = StageManager::DOOR_Y::MIDDLE;
+	}
+	if (pMapPos.y_ < size.y_ * static_cast<int>(StageManager::DOOR_Y::TOP))
+	{
+		ret.y = StageManager::DOOR_Y::TOP;
+	}
+
+	return ret;
+}
+#pragma endregion
+
+
 #pragma region 現在のカーソル位置取得
 
 Vector2 StageBase::GetNowCursorPos(void)
@@ -413,47 +559,6 @@ Vector2 StageBase::GetNowCursorPos(void)
 void StageBase::SetCursorType(CURSOR type)
 {
 	type_ = type;
-}
-
-//現在描画しているマップの最大サイズを取得
-Vector2F StageBase::GetNowDrawMapSize(void)
-{
-	Vector2F mapMax = roomMng_[roomKey_]->GetRoomSize() * 
-		Vector2F {StageManager::UNIT_STEALTH_SIZE_X, StageManager::UNIT_STEALTH_SIZE_Y};
-	return mapMax;
-}
-
-//指定した座標はオブジェクトがあるか
-bool StageBase::IsMapObj(Vector2 pMapPos)
-{
-	if (roomMng_[roomKey_]->GetObj(pMapPos) != -1)	//指定した場所にオブジェクトがあったら
-	{
-		return true;
-	}
-	return false;
-}
-int StageBase::GetObjNum(Vector2 pMapPos)
-{
-	return roomMng_[roomKey_]->GetObj(pMapPos);
-}
-int StageBase::GetMapNum(Vector2 pMapPos)
-{
-	return roomMng_[roomKey_]->GetMapchip(pMapPos);
-}
-StageManager::MAPCHIP StageBase::GetMapchipType(void)
-{
-	//Bathのマップチップを使用するのはBathRoomのみ
-	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::BATH) 
-	{ return StageManager::MAPCHIP::BATH; }
-	//Exteriaのマップチップを使用するのはEntranceRoomのみ
-	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::ENTRANCE) 
-	{ return StageManager::MAPCHIP::EXTERIA; }
-
-	return StageManager::MAPCHIP::INTERIA;
-}
-bool StageBase::CheckOneDownObject(Vector2 pMapPos)
-{
-	return roomMng_[roomKey_]->IsOneDownObj(pMapPos);
 }
 #pragma endregion
 

@@ -105,7 +105,7 @@ void Stealth::CollisionTrough(Vector2 pCol)
 
 void Stealth::CollisionEvent(Vector2 pCol)
 {
-	OutputDebugString("イベントオブジェクト\n");
+	StageManager::GetInstance().ChangeMap(pCol);
 }
 
 #pragma endregion

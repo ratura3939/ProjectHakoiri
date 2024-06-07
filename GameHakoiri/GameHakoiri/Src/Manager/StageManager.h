@@ -40,6 +40,28 @@ public:
 		MAX
 	};
 
+	//扉の位置
+	enum class DOOR_X
+	{
+		NONE,
+		LEFT,
+		RIGHT
+	};
+
+	enum class DOOR_Y
+	{
+		NONE,
+		TOP,
+		MIDDLE,
+		BOTTOM
+	};
+
+	struct DOOR
+	{
+		DOOR_X x;
+		DOOR_Y y;
+	};
+
 	//定数
 	//各ステージにおけるパズルのサイズ
 	static constexpr int TUTORIAL_PAZZLE_SIZE_X = 6;
@@ -71,6 +93,10 @@ public:
 	static constexpr int UNIT_STEALTH_SIZE_X = 32;
 	static constexpr int UNIT_STEALTH_SIZE_Y = 32;
 
+	//扉の位置検索の際の部屋の分割数
+	static constexpr int SPLIT_ROOM_X = 2;
+	static constexpr int SPLIT_ROOM_Y = 3;
+
 
 	bool Init(STAGENUM);	//初期化
 	void Update(GameScene::MODE mode);	//更新
@@ -84,7 +110,8 @@ public:
 	void SetFlash(bool flag);	//枠点滅
 	
 	void ChangeModeInit(void);	//シーン切り替え時の初期化
-	Vector2F GetMapMaxSize(void)const;
+	void ChangeMap(Vector2 pMapPos);	//部屋の切り替え
+	Vector2F GetMapMaxSize(void)const;	//マップの最大サイズを取得
 
 	bool IsCollisionObject(const Vector2 pMapPos)const;	//座標が何かのオブジェクトと衝突しているか
 	bool IsCollisionWall(const Vector2 pMapPos)const;	//座標が壁と衝突しているか
