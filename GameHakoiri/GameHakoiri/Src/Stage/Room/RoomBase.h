@@ -25,6 +25,13 @@ public:
 		, MAX
 	};
 
+	enum class ROOM_SHAPE
+	{
+		NOMAL,
+		OBLONG,
+		OBLONG_SIDE,
+	};
+
 	RoomBase(int roomImg, int sizeX, int sizeY,
 		std::vector<std::vector<int>> map, std::vector<std::vector<int>> obj,
 		int* mapchip);	//コンストラクタ

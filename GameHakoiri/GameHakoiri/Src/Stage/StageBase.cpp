@@ -1,5 +1,5 @@
 #include<DxLib.h>
-
+#include<iostream>
 
 #include"../Application.h"
 #include"../Utility/Utility.h"
@@ -456,19 +456,103 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 	auto door = SearchDoor(pMapPos);
 	//部屋の移動量
 	Vector2 move = { 0,0 };
+	//移動後の部屋を保持
+	Vector2 afterRoom;
+	//現在の部屋を保持
+	auto nowRoom = roomKey_;
+	//現在の部屋をroomKeyから逆算
+	//roomKey=(yx)なので10で割った時の商がY,余りがXを表す
+	afterRoom.y_ = stoi(nowRoom) / STRING_TO_INT;
+	afterRoom.x_ = stoi(nowRoom) % STRING_TO_INT;
 	
-	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
-		roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::LIVING)
+	//扉の位置による部屋の移動量を計算
+	if (door.y == StageManager::DOOR_Y::TOP) 
+	{ 
+		//一つ上の部屋に
+		move.y_--; 
+
+		//現在の場所が長方形だった場合
+		if (GetRoomShape(nowRoom)!=RoomBase::ROOM_SHAPE::NOMAL)	
+		{
+			//現在部屋が横長で、右上の扉だった場合
+			if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door.x == StageManager::DOOR_X::RIGHT)
+			{
+				//左右移動
+				move += MoveLeftOrRight(door.x);
+			}
+			//現在部屋が縦長で、左右の扉(上の下)だった場合
+			if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG && doorSpare_ == StageManager::DOOR_Y::BOTTOM)
+			{
+				//上への移動ではないため高さを戻す
+				move.y_++;
+				//左右移動
+				move += MoveLeftOrRight(door.x);
+			}
+		}
+	}	
+
+	else if (door.y == StageManager::DOOR_Y::BOTTOM) 
 	{
+		//一つ下の部屋に
+		move.y_++;
 
-	}
-	else
+		//現在部屋が横長で、右上の扉だった場合
+		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door.x == StageManager::DOOR_X::RIGHT)
+		{
+			//左右移動
+			move += MoveLeftOrRight(door.x);
+		}
+		//現在部屋が縦長
+		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG )
+		{
+			if (doorSpare_ == StageManager::DOOR_Y::BOTTOM)
+			{
+				//縦ニマスの部屋の下への移動なのでニマス分下げるため
+				move.y_++;
+			}
+			//左右の扉(下の上)だった場合
+			if (doorSpare_ == StageManager::DOOR_Y::TOP)
+			{
+				//左右移動
+				move += MoveLeftOrRight(door.x);
+			}
+		}
+	}	
+	else if (door.y == StageManager::DOOR_Y::MIDDLE)
 	{
-
+		//左右移動
+		move += MoveLeftOrRight(door.x);
+		//現在部屋が横長で、右上の扉だった場合
+		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door.x == StageManager::DOOR_X::RIGHT)
+		{
+			//左右移動
+			move += MoveLeftOrRight(door.x);
+		}
 	}
 
+	afterRoom += move;
+	MoveRoom(afterRoom, nowRoom);
+}
+void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
+{
 	//移動先の部屋の鍵生成
-	CreateKey(move.y_, move.x_);
+	CreateKey(after.y_, after.x_);
+	//移動先が部屋ではなかったら
+	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::NONE ||
+		roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::WALL)
+	{
+		roomKey_ = prvKey;
+		//何か移動不可だったことを知らせる処理が必要
+	}
+
+	//長方形の本体ではないほうに出たときの処理を書く
+}
+//左右移動
+//********************************************************
+Vector2 StageBase::MoveLeftOrRight(const StageManager::DOOR_X door)
+{
+	if (door == StageManager::DOOR_X::LEFT) { return { -1,0 }; }	//一つ左に
+	if (door == StageManager::DOOR_X::RIGHT) { return { 1,0 }; }	//一つ右に
 }
 //ドアの位置検索
 //********************************************************
@@ -478,6 +562,8 @@ StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 	StageManager::DOOR ret;
 	//player位置
 	Vector2 pPos = pMapPos;
+	//判定スペアのリセット
+	doorSpare_ = StageManager::DOOR_Y::NONE;
 
 	//扉の位置を見つけるため部屋を分割。
 	auto size = roomMng_[roomKey_]->GetRoomSize().ToVector2();
@@ -560,6 +646,10 @@ void StageBase::SetCursorType(CURSOR type)
 {
 	type_ = type;
 }
+StageManager::DOOR_Y StageBase::GetDoorSpare(void)
+{
+	return doorSpare_;
+}
 #pragma endregion
 
 
@@ -641,7 +731,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 
 #pragma region 長方形の二マス目だった時の処理
-	if (IsOblong(afterRoomType))
+	if (GetRoomShape(afterRoomType)!=RoomBase::ROOM_SHAPE::NOMAL)
 	{
 		RoomBase* r = nullptr;
 		switch (afterRoomType)
@@ -723,7 +813,7 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 	nowCursorKey = roomKey_;
 
 	//長方形用の二マス目のカーソル位置
-	if (IsOblong(nowCursorKey))	//長方形だった時
+	if (GetRoomShape(nowCursorKey) != RoomBase::ROOM_SHAPE::NOMAL)	//長方形だった時
 	{
 		//縦長か横長かを判断
 		switch (roomMng_[nowCursorKey]->GetRoomType())
@@ -748,7 +838,7 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 	afterMoveKey = roomKey_;
 
 	//長方形の追加分や変位を対応(この時点でのroomKeyはカーソルの移動後のマス)
-	if (IsOblong(nowCursorKey))
+	if (GetRoomShape(nowCursorKey) != RoomBase::ROOM_SHAPE::NOMAL)
 	{
 		//移動したい場所の中身チェック
 		cursor2.y_ += move.y_;
@@ -840,6 +930,8 @@ bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::st
 	return false;
 }
 
+
+
 #pragma endregion
 
 #pragma region 長方形判定
@@ -869,29 +961,34 @@ bool StageBase::CheckInstanceLeft(int y, int x, RoomBase* r)
 	return false;
 }
 
-//長方形であるか
-bool StageBase::IsOblong(std::string key)
+//部屋の形の種類を返却
+RoomBase::ROOM_SHAPE StageBase::GetRoomShape(std::string key)
 {
-	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
-		roomMng_[key]->GetRoomType() == RoomBase::TYPE::LIVING ||
-		roomMng_[key]->GetRoomType() == RoomBase::TYPE::OWN ||
-		roomMng_[key]->GetRoomType() == RoomBase::TYPE::ENTRANCE)
+	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::KITCHEN || roomMng_[key]->GetRoomType() == RoomBase::TYPE::LIVING)
 	{
-		return true;
+		return RoomBase::ROOM_SHAPE::OBLONG;
 	}
-	return false;
+
+	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::OWN || roomMng_[key]->GetRoomType() == RoomBase::TYPE::ENTRANCE)
+	{
+		return RoomBase::ROOM_SHAPE::OBLONG_SIDE;
+	}
+
+	return RoomBase::ROOM_SHAPE::NOMAL;
 }
-bool StageBase::IsOblong(RoomBase::TYPE type)
+
+RoomBase::ROOM_SHAPE StageBase::GetRoomShape(RoomBase::TYPE type)
 {
-	if (type == RoomBase::TYPE::KITCHEN ||
-		type == RoomBase::TYPE::LIVING ||
-		type == RoomBase::TYPE::OWN ||
-		type == RoomBase::TYPE::ENTRANCE)
-	{
-		return true;
-	}
-	return false;
+	if (type == RoomBase::TYPE::KITCHEN || type == RoomBase::TYPE::LIVING) 
+	{ return RoomBase::ROOM_SHAPE::OBLONG; }
+
+	if (type == RoomBase::TYPE::OWN || type == RoomBase::TYPE::ENTRANCE)
+	{ return RoomBase::ROOM_SHAPE::OBLONG_SIDE; }
+
+	return RoomBase::ROOM_SHAPE::NOMAL;
 }
+
+
 
 bool StageBase::IsDontMoveBlock(std::string key)
 {

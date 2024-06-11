@@ -30,6 +30,7 @@ public:
 
 	//定数
 	static constexpr int FRAME_INTERVAL = 15;
+	static constexpr int STRING_TO_INT = 10;
 
 	StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX, int pzlSizeY,
 		std::vector<std::vector<int>> map[], std::vector<std::vector<int>> obj[],
@@ -77,18 +78,26 @@ private:
 	bool MovePiece(const Vector2 csr,
 		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKey
 
+	void MoveRoom(const Vector2 after, const std::string prvKey);
+
+
 	//判定系
 	bool CheckInstanceUp(int y, int x, RoomBase* r);	//長方形の２コマ目かを判断およびインスタンスの生成
 	bool CheckInstanceLeft(int y, int x, RoomBase* r);
-	bool IsOblong(std::string key);		//今いる場所が長方形か(鍵検索)
-	bool IsOblong(RoomBase::TYPE type);	//今いる場所が長方形か(種類検索)
+	RoomBase::ROOM_SHAPE GetRoomShape(std::string key);	//部屋の形を検索(鍵検索)
+	RoomBase::ROOM_SHAPE GetRoomShape(RoomBase::TYPE type);	//部屋の形を検索(種類検索)
 	bool IsDontMoveBlock(std::string key);	//移動不可なブロックかどうか
+
+	Vector2 MoveLeftOrRight(const StageManager::DOOR_X door);	//左右の移動量を返却
 	StageManager::DOOR SearchDoor(const Vector2 pMapPos);	//ドアの検索
 	StageManager::DOOR SplitRoom(const Vector2 pMapPos,const Vector2 size,const Vector2 startPos);	//部屋の分割
+
+	
 
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
 	void SetCursorType(CURSOR type);
+	StageManager::DOOR_Y GetDoorSpare(void);	//縦長用の追加判定のドア検知を返却
 	
 	
 	//更新
@@ -115,5 +124,5 @@ protected:
 	int* roomImg_;		//パズルシーンの駒画像受け取り
 	int** mapchip_;		//ステルスシーンのマップチップ受け取り
 
-	StageManager::DOOR_Y doorSpare_;	//ドア判定縦長用
+	StageManager::DOOR_Y doorSpare_;	//ドア判定縦長用(正方形と横長はNONE)
 };
