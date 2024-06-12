@@ -50,7 +50,9 @@ StageBase::~StageBase(void)
 bool StageBase::Init(void)
 {
 	frameAnim_ = 0;
+	//フラグの初期化
 	SetFrameFlash(false);
+	SetIsMoveRoom(true);
 
 	//各ステージによる設定
 	SetParam();
@@ -413,6 +415,10 @@ bool StageBase::IsMapObj(Vector2 pMapPos)
 	}
 	return false;
 }
+bool StageBase::IsMoveRoom(void)
+{
+	return isMoveRoom_;
+}
 //指定された場所のオブジェクト取得
 //********************************************************
 int StageBase::GetObjNum(Vector2 pMapPos)
@@ -535,17 +541,46 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 }
 void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 {
+	SetIsMoveRoom(true);	//フラグリセット 移動できる前提
+
+	auto moveAfter = after;
 	//移動先の部屋の鍵生成
-	CreateKey(after.y_, after.x_);
+	CreateKey(moveAfter.y_, moveAfter.x_);
+
 	//移動先が部屋ではなかったら
 	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::NONE ||
 		roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::WALL)
 	{
 		roomKey_ = prvKey;
-		//何か移動不可だったことを知らせる処理が必要
+		SetIsMoveRoom(false);	//フラグセット
+
+		return;
 	}
 
-	//長方形の本体ではないほうに出たときの処理を書く
+	//長方形で実体ではないほうに出たとき
+	if (GetRoomShape(roomKey_) != RoomBase::ROOM_SHAPE::NOMAL)
+	{
+		auto type = roomMng_[roomKey_]->GetRoomType();
+		auto r = CreateInstance4Confirmation(type);
+		//縦長の実体調整
+		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG)
+		{
+			if (CheckInstanceUp(moveAfter.y_, moveAfter.x_, r))
+			{
+				moveAfter.y_--;
+				CreateKey(moveAfter.y_, moveAfter.x_);
+			}
+		}
+		//横長の実体調整
+		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG_SIDE)
+		{
+			if (CheckInstanceLeft(moveAfter.y_, moveAfter.x_, r))
+			{
+				moveAfter.x_--;
+				CreateKey(moveAfter.y_, moveAfter.x_);
+			}
+		}
+	}
 }
 //左右移動
 //********************************************************
@@ -595,6 +630,7 @@ StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 		
 	return ret;
 }
+//マップを六分割したときplayerがどこにイルカを返却
 StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)
 {
 	StageManager::DOOR ret;
@@ -641,6 +677,8 @@ Vector2 StageBase::GetNowCursorPos(void)
 	}
 	return cursor;
 }
+
+
 
 void StageBase::SetCursorType(CURSOR type)
 {
@@ -733,26 +771,8 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 #pragma region 長方形の二マス目だった時の処理
 	if (GetRoomShape(afterRoomType)!=RoomBase::ROOM_SHAPE::NOMAL)
 	{
-		RoomBase* r = nullptr;
-		switch (afterRoomType)
-		{
-		case RoomBase::TYPE::LIVING:
-			r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
-			r->Init();
-			break;
-		case RoomBase::TYPE::KITCHEN:
-			r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
-			r->Init();
-			break;
-		case RoomBase::TYPE::OWN:
-			r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
-			r->Init();
-			break;
-		case RoomBase::TYPE::ENTRANCE:
-			r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
-			r->Init();
-			break;
-		}
+		auto r = CreateInstance4Confirmation(afterRoomType);
+
 		//現在が長方形の本体かを確認
 		if (CheckInstanceUp(cursor.y_, cursor.x_, r)||
 			CheckInstanceLeft(cursor.y_, cursor.x_, r))
@@ -760,11 +780,11 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 			//保留のカーソルをキャンセル
 			roomMng_[afterMoveKey]->SetIsCursor(false);
 			//長方形に合わせた場所に移動
-			if (afterRoomType == RoomBase::TYPE::KITCHEN || afterRoomType == RoomBase::TYPE::LIVING)//{ cursor.y_--; }
+			if (afterRoomType == RoomBase::TYPE::KITCHEN || afterRoomType == RoomBase::TYPE::LIVING)
 			{
 				cursor.y_--;
 			}
-			if (afterRoomType == RoomBase::TYPE::ENTRANCE ||afterRoomType == RoomBase::TYPE::OWN)//{ cursor.x_--; }
+			if (afterRoomType == RoomBase::TYPE::ENTRANCE ||afterRoomType == RoomBase::TYPE::OWN)
 			{
 				cursor.x_--;
 			}
@@ -772,6 +792,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 			roomMng_[roomKey_]->SetIsCursor(true);
 		}
 
+		r->Release();
 		delete r;
 	}
 #pragma endregion
@@ -1014,6 +1035,36 @@ RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 	room->SetRoomType(r->GetRoomType());
 	room->SetIsDrawRoom(false);
 	return room;
+}
+void StageBase::SetIsMoveRoom(bool flag)
+{
+	isMoveRoom_ = flag;
+}
+//生成して取得したものは必ず用が終わったら消すこと！
+RoomBase* StageBase::CreateInstance4Confirmation(RoomBase::TYPE type)
+{
+	RoomBase* r = nullptr;
+
+	switch (type)
+	{
+	case RoomBase::TYPE::LIVING:
+		r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
+		r->Init();
+		break;
+	case RoomBase::TYPE::KITCHEN:
+		r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
+		r->Init();
+		break;
+	case RoomBase::TYPE::OWN:
+		r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
+		r->Init();
+		break;
+	case RoomBase::TYPE::ENTRANCE:
+		r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
+		r->Init();
+		break;
+	}
+	return r;
 }
 
 void StageBase::SetFrameFlash(bool flag)

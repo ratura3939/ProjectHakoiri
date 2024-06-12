@@ -118,6 +118,7 @@ public:
 	Vector2 GetVector2MapPos(const Vector2 pPos)const;	//座標をマップの配列に変換
 	OBJECT GetObjectType(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
 	bool IsBottomObject(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
+	bool IsMove(void);	//マップ移動をしたかどうかを返却
 
 	//シングルトン化
 	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成

@@ -204,6 +204,10 @@ bool StageManager::IsBottomObject(const Vector2 pMapPos) const
 {
 	return stage_->CheckOneDownObject(pMapPos);
 }
+bool StageManager::IsMove(void)
+{
+	return stage_->IsMoveRoom();
+}
 #pragma endregion
 
 
@@ -291,6 +295,8 @@ void StageManager::LoadCsv(void)
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
 	mapchipObj_[static_cast<int>(MAPCHIP::BATH)][static_cast<int>(OBJECT::THROUGH)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
+	mapchipObj_[static_cast<int>(MAPCHIP::BATH)][static_cast<int>(OBJECT::EVENT)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPCHIP_EVENT_CSV).dmcHandleIds_;
 
 	mapchipObj_[static_cast<int>(MAPCHIP::EXTERIA)][static_cast<int>(OBJECT::OBSTACLE)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;

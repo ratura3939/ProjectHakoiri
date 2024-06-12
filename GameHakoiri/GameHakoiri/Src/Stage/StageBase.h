@@ -56,6 +56,7 @@ public:
 	void DrawObject(void);				//オブジェクト描画
 	Vector2F GetNowDrawMapSize(void);	//現在描画しているマップの最大サイズを取得
 	bool IsMapObj(Vector2 pMapPos);		//座標にオブジェクトがあるかどうか
+	bool IsMoveRoom(void);				//部屋の移動が可能だったかを返す
 	int GetObjNum(Vector2 pMapPos);		//座標にあるオブジェクトが何かを返す
 	int GetMapNum(Vector2 pMapPos);		//座標にあるマップチップがが何かを返す
 	StageManager::MAPCHIP GetMapchipType(void);	//現在描画しているマップチップを返却
@@ -74,7 +75,10 @@ private:
 	int frame_[static_cast<int>(CURSOR::MAX)];	//カーソルフレームの画像を保持
 	bool frameFlash_;							//カーソルを点滅させるかどうか
 	int frameAnim_;								//カーソル点滅カウント用
+
+	bool isMoveRoom_;		//部屋の移動が可能かを示す
 	
+
 	bool MovePiece(const Vector2 csr,
 		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKey
 
@@ -89,15 +93,20 @@ private:
 	bool IsDontMoveBlock(std::string key);	//移動不可なブロックかどうか
 
 	Vector2 MoveLeftOrRight(const StageManager::DOOR_X door);	//左右の移動量を返却
-	StageManager::DOOR SearchDoor(const Vector2 pMapPos);	//ドアの検索
+	StageManager::DOOR SearchDoor(const Vector2 pMapPos);		//ドアの検索
 	StageManager::DOOR SplitRoom(const Vector2 pMapPos,const Vector2 size,const Vector2 startPos);	//部屋の分割
 
 	
 
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
+	void SetIsMoveRoom(bool flag);	//フラグのセット
+
+	//長方形２コマ目かを判断するために必要なインスタンスを生成する
+	RoomBase* CreateInstance4Confirmation(RoomBase::TYPE type);
+
 	void SetCursorType(CURSOR type);
-	StageManager::DOOR_Y GetDoorSpare(void);	//縦長用の追加判定のドア検知を返却
+	StageManager::DOOR_Y GetDoorSpare(void);			//縦長用の追加判定のドア検知を返却
 	
 	
 	//更新

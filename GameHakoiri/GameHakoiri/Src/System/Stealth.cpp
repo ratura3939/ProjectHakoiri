@@ -86,6 +86,8 @@ void Stealth::Collision(void)
 		if (type == StageManager::OBJECT::OBSTACLE) { CollisionObstacle(); }
 		if (type == StageManager::OBJECT::THROUGH) { CollisionTrough(pCol); }
 		if (type == StageManager::OBJECT::EVENT) { CollisionEvent(pCol); }
+		
+		pCol = stage.GetVector2MapPos(player_->GetCollisionPos().ToVector2());
 	}
 	if (stage.IsCollisionWall(pCol))
 	{
@@ -105,7 +107,22 @@ void Stealth::CollisionTrough(Vector2 pCol)
 
 void Stealth::CollisionEvent(Vector2 pCol)
 {
-	StageManager::GetInstance().ChangeMap(pCol);
+	StageManager::GetInstance().ChangeMap(pCol);	//部屋の移動処理
+	if (!StageManager::GetInstance().IsMove())		//移動できないとき
+	{
+		player_->SetPos(prevPlayerPos_);
+	}
+	else
+	{
+		//とりあえず移動したらステージの真ん中に（テスト用）
+		//カメラにマップのサイズを設定
+		auto& camera = Camera::GetInstance();
+		camera.SetMapSize(StageManager::GetInstance().GetMapMaxSize());
+
+		auto size = StageManager::GetInstance().GetMapMaxSize();
+		Vector2F pos = { size.x_ / 2,size.y_ / 2 };
+		player_->SetPos(pos);
+	}
 }
 
 #pragma endregion

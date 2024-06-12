@@ -279,6 +279,12 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::BATH_MAPCHIP_THROUGH_CSV, move(res));
 
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_OBSTACLE + "Bath/Event.csv"
+		);
+	resourcesMap_.emplace(SRC::BATH_MAPCHIP_EVENT_CSV, move(res));
+
 	//“à‘•
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
