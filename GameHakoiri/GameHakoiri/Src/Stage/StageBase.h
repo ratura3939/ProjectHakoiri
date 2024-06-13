@@ -60,8 +60,13 @@ public:
 	int GetObjNum(Vector2 pMapPos);		//座標にあるオブジェクトが何かを返す
 	int GetMapNum(Vector2 pMapPos);		//座標にあるマップチップがが何かを返す
 	StageManager::MAPCHIP GetMapchipType(void);	//現在描画しているマップチップを返却
+	RoomBase::ROOM_SHAPE GetNowShape(void);	//部屋の形を検索(鍵検索)
 	bool CheckOneDownObject(Vector2 pMapPos);	//一つ下のマップチップがオブジェクトかを示す。
-	void ChangeRoom(Vector2 pMapPos);	//部屋の切り替え
+	void ChangeRoom(Vector2 pMapPos);			//部屋の切り替え
+
+	StageManager::DOOR GetDoorPos(void)const;			//ドアの移動場所返却
+	StageManager::DOOR_Y GetDoorPosSecond(void)const;	//同上
+	bool GetIsSecondRoom(void)const;
 
 private:
 	std::map<std::string, RoomBase*> roomMng_;			//部屋の情報一括管理
@@ -77,6 +82,8 @@ private:
 	int frameAnim_;								//カーソル点滅カウント用
 
 	bool isMoveRoom_;		//部屋の移動が可能かを示す
+	StageManager::DOOR door_;	//移動に使用するドアの位置
+	bool isSecondRoom_;	//長方形の二マス目に出たか
 	
 
 	bool MovePiece(const Vector2 csr,
@@ -101,6 +108,7 @@ private:
 	//Get&Set
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
 	void SetIsMoveRoom(bool flag);	//フラグのセット
+	void SetIsSecondRoom(bool flag);	//フラグのセット
 
 	//長方形２コマ目かを判断するために必要なインスタンスを生成する
 	RoomBase* CreateInstance4Confirmation(RoomBase::TYPE type);

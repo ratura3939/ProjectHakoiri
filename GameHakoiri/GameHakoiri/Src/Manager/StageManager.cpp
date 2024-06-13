@@ -208,6 +208,22 @@ bool StageManager::IsMove(void)
 {
 	return stage_->IsMoveRoom();
 }
+RoomBase::ROOM_SHAPE StageManager::GetShape(void)
+{
+	return stage_->GetNowShape();
+}
+StageManager::DOOR StageManager::GetDoor(void) const
+{
+	return stage_->GetDoorPos();
+}
+StageManager::DOOR_Y StageManager::GetDoorSecond(void) const
+{
+	return stage_->GetDoorPosSecond();
+}
+bool StageManager::IsSecondEvidence(void) const
+{
+	return stage_->GetIsSecondRoom();
+}
 #pragma endregion
 
 

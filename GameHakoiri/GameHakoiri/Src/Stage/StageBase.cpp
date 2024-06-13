@@ -53,6 +53,7 @@ bool StageBase::Init(void)
 	//フラグの初期化
 	SetFrameFlash(false);
 	SetIsMoveRoom(true);
+	SetIsSecondRoom(false);
 
 	//各ステージによる設定
 	SetParam();
@@ -435,18 +436,23 @@ int StageBase::GetMapNum(Vector2 pMapPos)
 //********************************************************
 StageManager::MAPCHIP StageBase::GetMapchipType(void)
 {
+	auto type = roomMng_[roomKey_]->GetRoomType();
 	//Bathのマップチップを使用するのはBathRoomのみ
-	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::BATH)
+	if (type == RoomBase::TYPE::BATH)
 	{
 		return StageManager::MAPCHIP::BATH;
 	}
 	//Exteriaのマップチップを使用するのはEntranceRoomのみ
-	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::ENTRANCE)
+	if (type == RoomBase::TYPE::ENTRANCE)
 	{
 		return StageManager::MAPCHIP::EXTERIA;
 	}
 
 	return StageManager::MAPCHIP::INTERIA;
+}
+RoomBase::ROOM_SHAPE StageBase::GetNowShape(void)
+{
+	return GetRoomShape(roomKey_);
 }
 //一つ下にオブジェクトがあるかを調べる
 //********************************************************
@@ -459,7 +465,7 @@ bool StageBase::CheckOneDownObject(Vector2 pMapPos)
 void StageBase::ChangeRoom(Vector2 pMapPos)
 {
 	//ドアの位置取得
-	auto door = SearchDoor(pMapPos);
+	door_ = SearchDoor(pMapPos);
 	//部屋の移動量
 	Vector2 move = { 0,0 };
 	//移動後の部屋を保持
@@ -472,7 +478,7 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 	afterRoom.x_ = stoi(nowRoom) % STRING_TO_INT;
 	
 	//扉の位置による部屋の移動量を計算
-	if (door.y == StageManager::DOOR_Y::TOP) 
+	if (door_.y == StageManager::DOOR_Y::TOP) 
 	{ 
 		//一つ上の部屋に
 		move.y_--; 
@@ -481,10 +487,10 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 		if (GetRoomShape(nowRoom)!=RoomBase::ROOM_SHAPE::NOMAL)	
 		{
 			//現在部屋が横長で、右上の扉だった場合
-			if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door.x == StageManager::DOOR_X::RIGHT)
+			if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door_.x == StageManager::DOOR_X::RIGHT)
 			{
 				//左右移動
-				move += MoveLeftOrRight(door.x);
+				move += MoveLeftOrRight(door_.x);
 			}
 			//現在部屋が縦長で、左右の扉(上の下)だった場合
 			if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG && doorSpare_ == StageManager::DOOR_Y::BOTTOM)
@@ -492,21 +498,21 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 				//上への移動ではないため高さを戻す
 				move.y_++;
 				//左右移動
-				move += MoveLeftOrRight(door.x);
+				move += MoveLeftOrRight(door_.x);
 			}
 		}
 	}	
 
-	else if (door.y == StageManager::DOOR_Y::BOTTOM) 
+	else if (door_.y == StageManager::DOOR_Y::BOTTOM) 
 	{
 		//一つ下の部屋に
 		move.y_++;
 
 		//現在部屋が横長で、右上の扉だった場合
-		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door.x == StageManager::DOOR_X::RIGHT)
+		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door_.x == StageManager::DOOR_X::RIGHT)
 		{
 			//左右移動
-			move += MoveLeftOrRight(door.x);
+			move += MoveLeftOrRight(door_.x);
 		}
 		//現在部屋が縦長
 		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG )
@@ -520,28 +526,42 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 			if (doorSpare_ == StageManager::DOOR_Y::TOP)
 			{
 				//左右移動
-				move += MoveLeftOrRight(door.x);
+				move += MoveLeftOrRight(door_.x);
 			}
 		}
 	}	
-	else if (door.y == StageManager::DOOR_Y::MIDDLE)
+	else if (door_.y == StageManager::DOOR_Y::MIDDLE)
 	{
 		//左右移動
-		move += MoveLeftOrRight(door.x);
+		move += MoveLeftOrRight(door_.x);
 		//現在部屋が横長で、右上の扉だった場合
-		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door.x == StageManager::DOOR_X::RIGHT)
+		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door_.x == StageManager::DOOR_X::RIGHT)
 		{
 			//左右移動
-			move += MoveLeftOrRight(door.x);
+			move += MoveLeftOrRight(door_.x);
 		}
 	}
 
 	afterRoom += move;
 	MoveRoom(afterRoom, nowRoom);
 }
+//出るのに使用したドアの位置を渡す
+StageManager::DOOR StageBase::GetDoorPos(void) const
+{
+	return door_;
+}
+StageManager::DOOR_Y StageBase::GetDoorPosSecond(void) const
+{
+	return doorSpare_;
+}
+bool StageBase::GetIsSecondRoom(void)const
+{
+	return isSecondRoom_;
+}
 void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 {
 	SetIsMoveRoom(true);	//フラグリセット 移動できる前提
+	SetIsSecondRoom(false);
 
 	auto moveAfter = after;
 	//移動先の部屋の鍵生成
@@ -569,6 +589,7 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 			{
 				moveAfter.y_--;
 				CreateKey(moveAfter.y_, moveAfter.x_);
+				SetIsSecondRoom(true);
 			}
 		}
 		//横長の実体調整
@@ -578,6 +599,7 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 			{
 				moveAfter.x_--;
 				CreateKey(moveAfter.y_, moveAfter.x_);
+				SetIsSecondRoom(true);
 			}
 		}
 	}
@@ -617,9 +639,11 @@ StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 	{
 		//二回目の判定は一回目で分割した上中下をさらに分割し扉を特定する(部屋の一部をズームする感じ)
 		//プレイヤーの場所は一回目の分割の影響を受ける
-		pPos.y_ /= static_cast<int>(ret.y);
+		//playerを上限からの距離に設定
+		pPos.y_ -= size.y_ * (static_cast<int>(ret.y) - 1);
 
-		size.y_ /= static_cast<int>(StageManager::DOOR_Y::BOTTOM);	//サイズをさらに三分割
+		//移動の下限設定
+		size.y_ /= static_cast<int>(StageManager::DOOR_Y::BOTTOM);	//サイズを三分割
 
 		//判定初期位置を一回目のY部分基準(構造体の都合上-1でスタート位置にする）
 		startPos.y_ = StageManager::SPLIT_ROOM_Y * (static_cast<int>(ret.y) - 1);
@@ -1039,6 +1063,10 @@ RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 void StageBase::SetIsMoveRoom(bool flag)
 {
 	isMoveRoom_ = flag;
+}
+void StageBase::SetIsSecondRoom(bool flag)
+{
+	isSecondRoom_ = flag;
 }
 //生成して取得したものは必ず用が終わったら消すこと！
 RoomBase* StageBase::CreateInstance4Confirmation(RoomBase::TYPE type)

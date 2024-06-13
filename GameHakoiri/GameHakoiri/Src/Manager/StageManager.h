@@ -119,6 +119,10 @@ public:
 	OBJECT GetObjectType(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
 	bool IsBottomObject(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
 	bool IsMove(void);	//マップ移動をしたかどうかを返却
+	RoomBase::ROOM_SHAPE GetShape(void);
+	DOOR GetDoor(void)const;
+	DOOR_Y GetDoorSecond(void)const;
+	bool IsSecondEvidence(void)const;
 
 	//シングルトン化
 	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成
