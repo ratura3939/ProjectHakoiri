@@ -196,6 +196,25 @@ bool StageBase::Init(void)
 
 bool StageBase::InitStealth(void)
 {
+	//現在のカーソルを解除
+	roomMng_[roomKey_]->SetIsCursor(false);
+
+	//パズル描画の位置変更
+	Vector2F pos = { 0.0f,0.0f };
+
+	for (int y = 0; y < size_.y_; y++)
+	{
+		for (int x = 0; x < size_.x_; x++)
+		{
+			CreateKey(y, x);
+			pzlPos_[roomKey_] = pos;
+			//座標の更新
+			pos.x_ += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X);
+		}
+		pos.x_ = 0.0f;
+		pos.y_ += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y);
+	}
+
 	//初期位置の場所を示すルームキーを生成
 	for (int y = 0; y < size_.y_; y++)
 	{
@@ -204,6 +223,8 @@ bool StageBase::InitStealth(void)
 			CreateKey(y, x);
 			if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::OWN)
 			{
+				//現在地にカーソルセット
+				roomMng_[roomKey_]->SetIsCursor(true);
 				//正しく処理が終了したので
 				return true;
 			}
@@ -562,17 +583,23 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 {
 	SetIsMoveRoom(true);	//フラグリセット 移動できる前提
 	SetIsSecondRoom(false);
+	roomMng_[roomKey_]->SetIsCursor(false);
 
 	auto moveAfter = after;
+	
+
 	//移動先の部屋の鍵生成
 	CreateKey(moveAfter.y_, moveAfter.x_);
+	auto type = roomMng_[roomKey_]->GetRoomType();
+
 
 	//移動先が部屋ではなかったら
-	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::NONE ||
-		roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::WALL)
+	if (type == RoomBase::TYPE::NONE ||
+		type == RoomBase::TYPE::WALL)
 	{
 		roomKey_ = prvKey;
 		SetIsMoveRoom(false);	//フラグセット
+		roomMng_[roomKey_]->SetIsCursor(true);
 
 		return;
 	}
@@ -580,7 +607,7 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 	//長方形で実体ではないほうに出たとき
 	if (GetRoomShape(roomKey_) != RoomBase::ROOM_SHAPE::NOMAL)
 	{
-		auto type = roomMng_[roomKey_]->GetRoomType();
+		
 		auto r = CreateInstance4Confirmation(type);
 		//縦長の実体調整
 		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG)
@@ -603,6 +630,9 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 			}
 		}
 	}
+
+	//移動先にカーソルセット
+	roomMng_[roomKey_]->SetIsCursor(true);
 }
 //左右移動
 //********************************************************

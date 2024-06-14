@@ -158,7 +158,10 @@ bool StageManager::IsCollisionWall(const Vector2 pMapPos) const
 		{
 			if (map==mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y][x])
 			{
-				return true;
+				if (map != -1)
+				{
+					return true;
+				}
 			}
 		}
 	}

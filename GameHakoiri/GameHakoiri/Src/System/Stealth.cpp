@@ -49,6 +49,7 @@ void Stealth::Update(void)
 	prevPlayerPos_ = player_->GetPos();
 	player_->Update();
 
+
 	Collision();
 }
 //•`‰æ
@@ -58,6 +59,12 @@ void Stealth::Draw(void)
 	player_->Draw();
 	//StageManager::GetInstance().DrawObject();
 	DrawDebug();
+
+	auto& ins = InputManager::GetInstance();
+	if (ins.IsNew(KEY_INPUT_M))
+	{
+		StageManager::GetInstance().Draw(GameScene::MODE::PAZZLE);
+	}
 }
 //‰ð•ú
 //********************************************************
@@ -87,7 +94,7 @@ void Stealth::Collision(void)
 	}
 	else if (stage.IsCollisionObject(pCol))
 	{
-		auto type = stage.GetObjectType(pCol);
+	 	auto type = stage.GetObjectType(pCol);
 		if (type == StageManager::OBJECT::OBSTACLE) { CollisionObstacle(); }
 		if (type == StageManager::OBJECT::THROUGH) { CollisionTrough(pCol); }
 		if (type == StageManager::OBJECT::EVENT) { CollisionEvent(pCol); }
