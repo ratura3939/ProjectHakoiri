@@ -27,10 +27,11 @@ public:
 	enum class SRC
 	{
 		//画像
-		//カーソル
+		//システム
 		FRAME_IMG,
 		FRAME_OBLONG_IMG,
 		FRAME_OBLONG_2_IMG,
+		VISION_IMG,
 	
 		//部屋
 		BATH_IMG,

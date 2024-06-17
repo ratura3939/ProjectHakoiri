@@ -5,6 +5,10 @@
 class Player: public CharacterBase
 {
 public:
+
+	Player(void);
+	~Player(void)override;
+
 	void SetParam(void)override;
 	void Move(void)override;
 

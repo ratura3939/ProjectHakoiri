@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\EnemyBase.cpp" />
     <ClCompile Include="Src\Object\CharacterBase.cpp" />
     <ClCompile Include="Src\Manager\Camera.cpp" />
     <ClCompile Include="Src\Stage\SecondStage.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="Src\Stage\ThirdStage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\EnemyBase.h" />
     <ClInclude Include="Src\Object\CharacterBase.h" />
     <ClInclude Include="Src\Manager\Camera.h" />
     <ClInclude Include="Src\Stage\SecondStage.h" />

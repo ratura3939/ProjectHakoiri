@@ -29,7 +29,7 @@ void ResourceManager::Init(void)
 
 #pragma region IMG
 
-	//カーソル
+	//システム
 	// フレーム　１×１
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
@@ -48,6 +48,13 @@ void ResourceManager::Init(void)
 		Application::PATH_SYSTEM + "frame_oblong_2.png"
 		);
 	resourcesMap_.emplace(SRC::FRAME_OBLONG_2_IMG, move(res));
+
+	// 視覚
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "vision.png"
+		);
+	resourcesMap_.emplace(SRC::VISION_IMG, move(res));
 
 	//部屋（パズル）
 	//風呂

@@ -3,6 +3,14 @@
 #include"../Manager/InputManager.h"
 #include "Player.h"
 
+Player::Player(void)
+{
+}
+
+Player::~Player(void)
+{
+}
+
 void Player::SetParam(void)
 {
 	img_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::PLAYER_IMGS).handleIds_;

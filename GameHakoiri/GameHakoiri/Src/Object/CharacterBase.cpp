@@ -28,6 +28,7 @@ void CharacterBase::Init(void)
 	animIdx_ = ANIM_NUM * static_cast<int>(dir_) + ANIM_CENTER;
 	prvAnimIdx_ = ANIM_NUM * static_cast<int>(dir_);
 	animCnt_ = 0;
+	visionImg_= ResourceManager::GetInstance().Load(ResourceManager::SRC::VISION_IMG).handleId_;
 }
 
 void CharacterBase::Update(void)
@@ -40,10 +41,52 @@ void CharacterBase::Draw(void)
 {
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
+	//視界
+	auto pos = GetCollisionPos();
+	int rot = 45;
+	switch (dir_)
+	{
+	case CharacterBase::DIR::BOTTOM:
+		rot *= 4;
+		break;
+	case CharacterBase::DIR::LEFT:
+		rot *= 6;
+		break;
+	case CharacterBase::DIR::RIGHT:
+		rot *= 2;
+		break;
+	case CharacterBase::DIR::TOP:
+		rot *= 0;
+		break;
+	case CharacterBase::DIR::BOTTOM_LEFT:
+		rot *= 5;
+		break;
+	case CharacterBase::DIR::BOTTOM_RIGHT:
+		rot *= 3;
+		break;
+	case CharacterBase::DIR::TOP_LEFT:
+		rot *= 7;
+		break;
+	case CharacterBase::DIR::TOP_RIGHT:
+		rot *= 1;
+		break;
+	}
+
+	visionRot_ = static_cast<double>(rot);
+
+	DrawRotaGraph(pos.x_ - cameraPos.x_,
+		pos.y_ - cameraPos.y_ - (VISION_SIZE_Y / 2),
+		1.0f,
+		visionRot_ * Application::SIE / 180.0,
+		visionImg_,
+		true,
+		false);
+
+	//キャラクター
 	DrawRotaGraph(pos_.x_ - cameraPos.x_,
 		pos_.y_ - cameraPos.y_,
 		1.0f,
-		Application::SIE * 180.0 ,
+		0.0 * Application::SIE / 180.0,
 		img_[animIdx_],
 		true,
 		false);

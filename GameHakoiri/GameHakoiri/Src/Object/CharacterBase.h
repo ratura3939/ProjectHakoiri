@@ -6,6 +6,7 @@ class CharacterBase
 {
 public:
 
+	//8•ûŒü
 	enum class DIR
 	{
 		BOTTOM,
@@ -32,8 +33,11 @@ public:
 	static constexpr int CHARACTER_SIZE_Y = 32;
 	static constexpr int CHARACTER_HALF_Y = CHARACTER_SIZE_Y / 2;
 
+	static constexpr int VISION_SIZE_X = 454;
+	static constexpr int VISION_SIZE_Y = 310;
+
 	CharacterBase(void);
-	~CharacterBase(void);
+	virtual ~CharacterBase(void);
 
 	void Init(void);
 	virtual void Update(void);
@@ -52,6 +56,10 @@ protected:
 
 	//‰æ‘œ
 	int* img_;
+
+	int visionImg_;
+	double visionRot_;
+
 	//ˆÊ’u
 	Vector2F pos_;
 	//•ûŒü
