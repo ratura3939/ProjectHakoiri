@@ -58,7 +58,7 @@ protected:
 	int* img_;
 
 	int visionImg_;
-	double visionRot_;
+	double visionRot_[static_cast<int>(DIR::MAX)];
 
 	//ˆÊ’u
 	Vector2F pos_;

@@ -29,6 +29,7 @@ void CharacterBase::Init(void)
 	prvAnimIdx_ = ANIM_NUM * static_cast<int>(dir_);
 	animCnt_ = 0;
 	visionImg_= ResourceManager::GetInstance().Load(ResourceManager::SRC::VISION_IMG).handleId_;
+	
 }
 
 void CharacterBase::Update(void)
@@ -43,6 +44,8 @@ void CharacterBase::Draw(void)
 
 	//視界
 	auto pos = GetCollisionPos();
+
+	//定数化しよう
 	int rot = 45;
 	switch (dir_)
 	{
@@ -74,12 +77,16 @@ void CharacterBase::Draw(void)
 
 	visionRot_ = static_cast<double>(rot);
 
-	DrawRotaGraph(pos.x_ - cameraPos.x_,
-		pos.y_ - cameraPos.y_ - (VISION_SIZE_Y / 2),
+	DrawRotaGraph3(pos.x_ - cameraPos.x_,
+		pos.y_ - cameraPos.y_,
+		VISION_SIZE_X / 2, 
+		VISION_SIZE_Y,
+		1.0f,
 		1.0f,
 		visionRot_ * Application::SIE / 180.0,
 		visionImg_,
 		true,
+		false,
 		false);
 
 	//キャラクター
