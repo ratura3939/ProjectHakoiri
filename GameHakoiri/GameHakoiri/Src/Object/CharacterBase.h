@@ -36,6 +36,17 @@ public:
 	static constexpr int VISION_SIZE_X = 454;
 	static constexpr int VISION_SIZE_Y = 310;
 
+	static constexpr int ROT_UNIT = 45;
+
+	static constexpr int ROT_TOP=		0;
+	static constexpr int ROT_TOP_RGH =	1;
+	static constexpr int ROT_RGH =		2;
+	static constexpr int ROT_BTM_RGH =	3;
+	static constexpr int ROT_BTM =		4;
+	static constexpr int ROT_BTM_LFT =	5;
+	static constexpr int ROT_LFT =		6;
+	static constexpr int ROT_TOP_LFT =	7;
+
 	CharacterBase(void);
 	virtual ~CharacterBase(void);
 
@@ -50,7 +61,7 @@ public:
 
 private:
 	void Anim(void);
-
+	
 
 protected:
 
@@ -58,7 +69,7 @@ protected:
 	int* img_;
 
 	int visionImg_;
-	double visionRot_[static_cast<int>(DIR::MAX)];
+	double visionRot_;
 
 	//位置
 	Vector2F pos_;
@@ -74,7 +85,8 @@ protected:
 	void ResetAnim(DIR dir);
 	virtual void Move(void) = 0;	//動きの処理
 	void SetDir(DIR dir);		//方向の変換
-	DIR GetDir(void)const;		//方向の取得
+
+	DIR GetDir(void)const;
 	virtual void SetParam(void) = 0;//各パラメータ設定
 };
 

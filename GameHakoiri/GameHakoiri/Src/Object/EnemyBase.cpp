@@ -23,7 +23,7 @@ void EnemyBase::Draw(void)
 	
 	//éãäEÇÃï`âÊ
 	//â~å èëÇ´ÇΩÇ¢
-	Pie(nullptr, 1, 2, 3, 1, 2, 3, 3, 3);
+	DrawVision();
 
 	//éOäpå`ÅiâºÅj
 
@@ -41,4 +41,57 @@ void EnemyBase::Draw(void)
 
 void EnemyBase::Move(void)
 {
+}
+
+void EnemyBase::DrawVision(void)
+{
+	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
+
+	//éãäE
+	auto pos = GetCollisionPos();
+
+	//íËêîâªÇµÇÊÇ§
+	int rot = ROT_UNIT;
+	switch (dir_)
+	{
+	case DIR::BOTTOM:
+		rot *= ROT_BTM;
+		break;
+	case DIR::LEFT:
+		rot *= ROT_LFT;
+		break;
+	case DIR::RIGHT:
+		rot *= ROT_RGH;
+		break;
+	case DIR::TOP:
+		rot *= ROT_TOP;
+		break;
+	case DIR::BOTTOM_LEFT:
+		rot *= ROT_BTM_LFT;
+		break;
+	case DIR::BOTTOM_RIGHT:
+		rot *= ROT_BTM_RGH;
+		break;
+	case DIR::TOP_LEFT:
+		rot *= ROT_TOP_LFT;
+		break;
+	case DIR::TOP_RIGHT:
+		rot *= ROT_TOP_RGH;
+		break;
+	}
+
+	visionRot_ = static_cast<double>(rot);
+
+
+	DrawRotaGraph3(pos.x_ - cameraPos.x_,
+		pos.y_ - cameraPos.y_,
+		VISION_SIZE_X / 2,
+		VISION_SIZE_Y,
+		1.0f,
+		1.0f,
+		visionRot_ * Application::SIE / 180.0,
+		visionImg_,
+		true,
+		false,
+		false);
 }

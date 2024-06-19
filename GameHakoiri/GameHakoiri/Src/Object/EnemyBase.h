@@ -10,5 +10,9 @@ public:
 	void SetParam(void)override;
 	void Draw(void)override;
 	void Move(void)override;
+
+private:
+
+	void DrawVision(void);
 };
 
