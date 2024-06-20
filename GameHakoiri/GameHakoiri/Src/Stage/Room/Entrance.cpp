@@ -23,6 +23,6 @@ Entrance::~Entrance(void)
 void Entrance::SetParam(void)
 {
 	pazzleSize_ = { StageManager::OBLONG_2_PAZZLE_X,StageManager::OBLONG_2_PAZZLE_Y };
-	type_ = RoomBase::TYPE::ENTRANCE;
+	type_ = TYPE::ENTRANCE;
 	isDrawRoom_ = true;
 }

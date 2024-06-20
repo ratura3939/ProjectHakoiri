@@ -8,6 +8,8 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/Camera.h"
 #include"../Object/Player.h"
+#include"../Object/Enemy/Housemaid.h"
+#include"../Object/Enemy/Seneschal.h"
 #include"Stealth.h"
 
 //コンストラクタ
@@ -34,6 +36,9 @@ bool Stealth::Init(void)
 	player_ = new Player;
 	player_->Init();
 	prevPlayerPos_ = player_->GetPos();
+
+	EnemyInit();
+	SetEnemy();
 	
 	//正しく処理が終了したので
 	return true;
@@ -71,6 +76,13 @@ void Stealth::Draw(void)
 bool Stealth::Release(void)
 {
 	player_->Release();
+	for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)
+	{
+		enemyMng_[i]->Release();
+	}
+	useEnemy_.clear();
+	memorizePos_.clear();
+	memorizeType_.clear();
 	//正しく処理が終了したので
 	return true;
 }
@@ -118,9 +130,16 @@ void Stealth::CollisionEvent(Vector2 pCol)
 {
 	//ステージマネージャ取得
 	auto& stage = StageManager::GetInstance();
+	auto prevKey = stage.GetKey();
 
 	stage.ChangeMap(pCol);	//部屋の移動処理
-	if (!StageManager::GetInstance().IsMove())		//移動できないとき
+
+	if (stage.IsClear())
+	{
+		return;	//ゴールしてたら処理中断
+	}
+
+	if (!stage.IsMove())		//移動できないとき
 	{
 		player_->SetPos(prevPlayerPos_);
 	}
@@ -239,6 +258,12 @@ void Stealth::CollisionEvent(Vector2 pCol)
 				break;
 			}
 		}
+
+		//敵情報の保存
+		MemorizeEnemy(prevKey);
+		//敵の設定
+		SetEnemy();
+
 		//ターゲット設定
 		camera.SetTargetPos(pos.ToVector2F());
 		player_->SetPos(pos.ToVector2F());
@@ -267,5 +292,123 @@ void Stealth::DrawDebug(void)
 		pPos.x_,pPos.y_,pos.x_,pos.y_);
 
 
+}
+
+void Stealth::EnemyInit(void)
+{
+	for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)
+	{
+		//敵を三体ずつ生成
+		if (i < OBLONG_ENEMY_NUM)
+		{
+			enemyMng_[i] = new Housemaid;
+		}
+		else
+		{
+			enemyMng_[i] = new Seneschal;
+		}
+	}
+
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][1] =
+	{ (StageManager::NOMAL_MAP_X * StageManager::UNIT_STEALTH_SIZE_X) / 4,
+	(StageManager::NOMAL_MAP_Y * StageManager::UNIT_STEALTH_SIZE_Y) / 2 };
+}
+
+void Stealth::CreateEnemy(void)
+{
+	int rnd;
+	do
+	{
+		//乱数取得
+		rnd = rand();
+
+		//敵の総数で割った余りを取得
+		rnd %= OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX);
+	} while (enemyMng_[rnd]->IsUse());
+
+	//敵のフラグ等管理
+	enemyMng_[rnd]->SetIsUse(true);
+
+
+	//使用する敵のセット
+	useEnemy_.push_back(enemyMng_[rnd]);
+	
+}
+
+void Stealth::SetEnemyPos(void)
+{
+
+}
+
+void Stealth::SetEnemy(void)
+{
+
+	//ステージマネージャ取得
+	auto& stage = StageManager::GetInstance();
+	auto key = stage.GetKey();
+
+	//現在の部屋に敵の生成記録がなかった時
+	if (memorizePos_[key].empty())
+	{
+		//敵の生成
+		if (stage.GetShape() == RoomBase::ROOM_SHAPE::NOMAL)	
+		{
+			//正方形の場合
+			for (int i = 0; i < NOMAL_ENEMY_NUM; i++)
+			{
+				CreateEnemy();
+			}
+		}
+		else
+		{
+			//長方形の場合
+			for (int i = 0; i < OBLONG_ENEMY_NUM; i++)
+			{
+				CreateEnemy();
+			}
+		}
+	}
+	else
+	{
+		//生成記録があった場合
+		auto size = memorizePos_[key].size();
+		for (int m = 0; m < size; m++)	//敵の生成数分回す
+		{
+			for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)//敵の管理全体
+			{
+				if (memorizeType_[key][m] == enemyMng_[i]->GetType() &&	//保存されている種類と同じだったら
+					!enemyMng_[i]->IsUse())	//まだ使用されてなかったら
+				{
+					//敵のフラグ管理と位置の設定
+					enemyMng_[i]->SetPos(memorizePos_[key][m]);
+					enemyMng_[i]->SetIsUse(true);
+					//敵の格納
+					useEnemy_.push_back(enemyMng_[i]);
+					
+					return;
+				}
+			}
+		}
+	}
+}
+
+void Stealth::MemorizeEnemy(std::string key)
+{
+	auto size = useEnemy_.size();
+	for (int i = 0; i < size; i++)
+	{
+		//タイプとポジションの記録
+		memorizePos_[key].push_back(useEnemy_[i]->GetPos());
+		memorizeType_[key].push_back(useEnemy_[i]->GetType());
+		//役目を終えたので非使用に変換
+		useEnemy_[i]->SetIsUse(false);
+	}
+	useEnemy_.clear();
+
+	for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)
+	{
+		//使用フラグを全てリセット
+		enemyMng_[i]->SetIsUse(false);
+	}
 }
 

@@ -43,6 +43,21 @@ void EnemyBase::Move(void)
 {
 }
 
+void EnemyBase::SetIsUse(bool flag)
+{
+	isUse_ = flag;
+}
+
+bool EnemyBase::IsUse(void)
+{
+	return isUse_;
+}
+
+EnemyBase::TYPE EnemyBase::GetType(void)
+{
+	return type_;
+}
+
 void EnemyBase::DrawVision(void)
 {
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();

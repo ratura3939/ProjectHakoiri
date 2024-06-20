@@ -23,6 +23,6 @@ Living::~Living(void)
 void Living::SetParam(void)
 {
 	pazzleSize_ = { StageManager::OBLONG_PAZZLE_X,StageManager::OBLONG_PAZZLE_Y };
-	type_ = RoomBase::TYPE::LIVING;
+	type_ = TYPE::LIVING;
 	isDrawRoom_ = true;
 }

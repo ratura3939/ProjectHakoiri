@@ -56,20 +56,20 @@ void CharacterBase::Release(void)
 {
 }
 
-void CharacterBase::SetPos(Vector2F pos)
+void CharacterBase::SetPos(Position pos)
 {
 	pos_ = pos;
 }
 
-Vector2F CharacterBase::GetPos(void)const
+Position CharacterBase::GetPos(void)const
 {
 	return pos_;
 }
 
-Vector2F CharacterBase::GetCollisionPos(void) const
+Position CharacterBase::GetCollisionPos(void) const
 {
 	//åªç›ÇÃï˚å¸Ç…âûÇ∂ÇΩìñÇΩÇËîªíËÇï‘Ç∑ÅB
-	Vector2F colPos = pos_;
+	Position colPos = pos_;
 
 	switch (dir_)
 	{
@@ -86,16 +86,16 @@ Vector2F CharacterBase::GetCollisionPos(void) const
 		colPos.y_ -= CHARACTER_HALF_Y;
 		break;
 	case CharacterBase::DIR::BOTTOM_LEFT:
-		colPos += Vector2F{ -CHARACTER_HALF_X, CHARACTER_HALF_Y };
+		colPos += Position{ -CHARACTER_HALF_X, CHARACTER_HALF_Y };
 		break;
 	case CharacterBase::DIR::BOTTOM_RIGHT:
-		colPos += Vector2F{ CHARACTER_HALF_X, CHARACTER_HALF_Y };
+		colPos += Position{ CHARACTER_HALF_X, CHARACTER_HALF_Y };
 		break;
 	case CharacterBase::DIR::TOP_LEFT:
-		colPos += Vector2F{ -CHARACTER_HALF_X, -CHARACTER_HALF_Y };
+		colPos += Position{ -CHARACTER_HALF_X, -CHARACTER_HALF_Y };
 		break;
 	case CharacterBase::DIR::TOP_RIGHT:
-		colPos += Vector2F{ CHARACTER_HALF_X, -CHARACTER_HALF_Y };
+		colPos += Position{ CHARACTER_HALF_X, -CHARACTER_HALF_Y };
 		break;
 	}
 
@@ -103,10 +103,10 @@ Vector2F CharacterBase::GetCollisionPos(void) const
 	if (dir_ == DIR::LEFT) { colPos.x_ - static_cast<float>(CHARACTER_HALF_X); }
 	if (dir_ == DIR::RIGHT) { colPos.x_ + static_cast<float>(CHARACTER_HALF_X); }
 	if (dir_ == DIR::TOP) { colPos.y_ - static_cast<float>(CHARACTER_HALF_Y); }
-	if (dir_ == DIR::BOTTOM_LEFT) { colPos + Vector2F{ -CHARACTER_HALF_X, CHARACTER_HALF_Y }; }
-	if (dir_ == DIR::BOTTOM_RIGHT) { colPos + Vector2F{ CHARACTER_HALF_X, CHARACTER_HALF_Y }; }
-	if (dir_ == DIR::TOP_LEFT) { colPos + Vector2F{ -CHARACTER_HALF_X, -CHARACTER_HALF_Y }; }
-	if (dir_ == DIR::TOP_RIGHT) { colPos + Vector2F{ CHARACTER_HALF_X, -CHARACTER_HALF_Y }; }*/
+	if (dir_ == DIR::BOTTOM_LEFT) { colPos + Position{ -CHARACTER_HALF_X, CHARACTER_HALF_Y }; }
+	if (dir_ == DIR::BOTTOM_RIGHT) { colPos + Position{ CHARACTER_HALF_X, CHARACTER_HALF_Y }; }
+	if (dir_ == DIR::TOP_LEFT) { colPos + Position{ -CHARACTER_HALF_X, -CHARACTER_HALF_Y }; }
+	if (dir_ == DIR::TOP_RIGHT) { colPos + Position{ CHARACTER_HALF_X, -CHARACTER_HALF_Y }; }*/
 	return colPos;
 }
 

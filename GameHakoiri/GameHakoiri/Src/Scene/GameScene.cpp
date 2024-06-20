@@ -56,8 +56,9 @@ void GameScene::Update(void)
 	{
 	case GameScene::MODE::PAZZLE:
 		pzl_->Update();
-		if (pzl_->IsFinish())
+		if (pzl_->IsFinish())	//パズル終了したら
 		{
+			//ステルスシーンの初期化
 			SetMode(MODE::STEALTH);
 			stl_->Init();
 			Update();	//見え方調整のため
@@ -65,6 +66,10 @@ void GameScene::Update(void)
 		break;
 	case GameScene::MODE::STEALTH:
 		stl_->Update();
+		if (StageManager::GetInstance().IsClear())	//クリアしてたら
+		{
+			SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
+		}
 		camera.Update();
 		break;
 	}

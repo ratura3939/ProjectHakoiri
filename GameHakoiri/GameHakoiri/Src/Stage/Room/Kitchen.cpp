@@ -23,6 +23,6 @@ Kitchen::~Kitchen(void)
 void Kitchen::SetParam(void)
 {
 	pazzleSize_ = { StageManager::OBLONG_PAZZLE_X,StageManager::OBLONG_PAZZLE_Y };
-	type_ = RoomBase::TYPE::KITCHEN;
+	type_ = TYPE::KITCHEN;
 	isDrawRoom_ = true;
 }

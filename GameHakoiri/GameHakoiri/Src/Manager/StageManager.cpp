@@ -132,7 +132,7 @@ void StageManager::ChangeMap(Vector2 pMapPos)
 {
 	stage_->ChangeRoom(pMapPos);
 }
-Vector2F StageManager::GetMapMaxSize(void)const
+Position StageManager::GetMapMaxSize(void)const
 {
 	return stage_->GetNowDrawMapSize();
 }
@@ -215,6 +215,10 @@ RoomBase::ROOM_SHAPE StageManager::GetShape(void)
 {
 	return stage_->GetNowShape();
 }
+std::string StageManager::GetKey(void) const
+{
+	return stage_->GetKey();
+}
 StageManager::DOOR StageManager::GetDoor(void) const
 {
 	return stage_->GetDoorPos();
@@ -225,7 +229,11 @@ StageManager::DOOR_Y StageManager::GetDoorSecond(void) const
 }
 bool StageManager::IsSecondEvidence(void) const
 {
-	return stage_->GetIsSecondRoom();
+	return stage_->IsSecondRoom();
+}
+bool StageManager::IsClear(void) const
+{
+	return stage_->IsGoal();
 }
 #pragma endregion
 

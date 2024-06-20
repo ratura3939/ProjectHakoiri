@@ -45,17 +45,17 @@ void Camera::Relese(void)
 {
 }
 
-void Camera::SetTargetPos(const Vector2F pPos)
+void Camera::SetTargetPos(const Position pPos)
 {
 	targetPos_ = pPos;
 }
 
-void Camera::SetMapSize(const Vector2F mapsize)
+void Camera::SetMapSize(const Position mapsize)
 {
 	mapSize_ = mapsize;
 }
 
-Vector2F Camera::GetPos(void) const
+Position Camera::GetPos(void) const
 {
 	return pos_;
 }

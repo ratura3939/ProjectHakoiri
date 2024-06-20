@@ -12,18 +12,18 @@ public:
 	void Update(void);
 	void Relese(void);
 
-	void SetTargetPos(const Vector2F pPos);
-	void SetMapSize(const Vector2F mapsize);
-	Vector2F GetPos(void)const;
+	void SetTargetPos(const Position pPos);
+	void SetMapSize(const Position mapsize);
+	Position GetPos(void)const;
 
 private:
 
 	static Camera* instance_;
 
-	Vector2F pos_;
-	Vector2F localCenterPos_;
-	Vector2F targetPos_;
-	Vector2F mapSize_;
+	Position pos_;
+	Position localCenterPos_;
+	Position targetPos_;
+	Position mapSize_;
 
 	void MoveCamera(void);
 

@@ -98,7 +98,7 @@ void RoomBase::DrawStealth(void)
 	//マップを表示しないところは描画処理を行わない
 	if (!isDrawStealth_) { return; }
 
-	Vector2F pos = mapPos_;
+	Position pos = mapPos_;
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
 	for (int y = 0; y < mapSize_.y_; y++)
@@ -131,7 +131,7 @@ void RoomBase::DrawStealth(void)
 }
 void RoomBase::DrawStealthObject(void)
 {
-	Vector2F pos = mapPos_;
+	Position pos = mapPos_;
 	pos.x_ += StageManager::UNIT_STEALTH_SIZE_X / 2;
 	pos.y_ += StageManager::UNIT_STEALTH_SIZE_Y / 2;
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
@@ -189,11 +189,11 @@ RoomBase::TYPE RoomBase::GetRoomType(void)const
 
 #pragma region パズルのSetGet
 
-void RoomBase::SetPzlPos(Vector2F pos)
+void RoomBase::SetPzlPos(Position pos)
 {
 	pzlPos_ = pos;
 }
-Vector2F RoomBase::GetPzlPos(void)const
+Position RoomBase::GetPzlPos(void)const
 {
 	return pzlPos_;
 }
@@ -201,12 +201,12 @@ Vector2F RoomBase::GetPzlPos(void)const
 
 #pragma region マップのSetGet
 
-void RoomBase::SetMapPos(Vector2F pos)
+void RoomBase::SetMapPos(Position pos)
 {
 	mapPos_ = pos;
 }
 
-Vector2F RoomBase::GetMapPos(void)const
+Position RoomBase::GetMapPos(void)const
 {
 	return mapPos_;
 }
@@ -235,7 +235,7 @@ void RoomBase::SetIsDrawRoom(bool flag)
 {
 	isDrawRoom_ = flag;
 }
-Vector2F RoomBase::GetRoomSize(void) const
+Position RoomBase::GetRoomSize(void) const
 {
 	return mapSize_;
 }

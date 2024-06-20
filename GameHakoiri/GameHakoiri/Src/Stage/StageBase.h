@@ -43,6 +43,7 @@ public:
 	virtual bool Release(void);					//解放
 
 	void CreateKey(int y, int x);	//連想配列のキー生成
+	std::string GetKey(void)const;
 
 	//パズルシーン
 	Vector2 GetNowCursorPos(void);	//現在のカーソルの位置を取得
@@ -54,7 +55,7 @@ public:
 	//ステルスシーン
 	bool InitStealth(void);				//ステルスシーン移行時の初期化
 	void DrawObject(void);				//オブジェクト描画
-	Vector2F GetNowDrawMapSize(void);	//現在描画しているマップの最大サイズを取得
+	Position GetNowDrawMapSize(void);	//現在描画しているマップの最大サイズを取得
 	bool IsMapObj(Vector2 pMapPos);		//座標にオブジェクトがあるかどうか
 	bool IsMoveRoom(void);				//部屋の移動が可能だったかを返す
 	int GetObjNum(Vector2 pMapPos);		//座標にあるオブジェクトが何かを返す
@@ -66,7 +67,8 @@ public:
 
 	StageManager::DOOR GetDoorPos(void)const;			//ドアの移動場所返却
 	StageManager::DOOR_Y GetDoorPosSecond(void)const;	//同上
-	bool GetIsSecondRoom(void)const;
+	bool IsSecondRoom(void)const;
+	bool IsGoal(void)const;
 
 private:
 	std::map<std::string, RoomBase*> roomMng_;			//部屋の情報一括管理
@@ -74,7 +76,7 @@ private:
 	std::string roomKey_;								//連想配列のキー
 
 	
-	std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
+	std::map<std::string, Position>pzlPos_;	//駒の描画位置管理
 
 	CURSOR type_;		//カーソルが現在何を指しているかを保持
 	int frame_[static_cast<int>(CURSOR::MAX)];	//カーソルフレームの画像を保持
@@ -84,6 +86,7 @@ private:
 	bool isMoveRoom_;		//部屋の移動が可能かを示す
 	StageManager::DOOR door_;	//移動に使用するドアの位置
 	bool isSecondRoom_;	//長方形の二マス目に出たか
+	bool isGoal_;	//ゴールにたどり着いたか
 	
 
 	bool MovePiece(const Vector2 csr,
@@ -109,6 +112,7 @@ private:
 	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
 	void SetIsMoveRoom(bool flag);	//フラグのセット
 	void SetIsSecondRoom(bool flag);	//フラグのセット
+	void SetIsGoal(bool flag);
 
 	//長方形２コマ目かを判断するために必要なインスタンスを生成する
 	RoomBase* CreateInstance4Confirmation(RoomBase::TYPE type);

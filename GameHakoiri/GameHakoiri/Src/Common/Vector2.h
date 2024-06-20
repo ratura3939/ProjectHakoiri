@@ -10,7 +10,7 @@ public:
 	Vector2(int, int);
 	~Vector2(void);	//デストラクタ
 
-	Vector2F ToVector2F(void);	//Vector2Fへの変換
+	Position ToVector2F(void);	//Vector2Fへの変換
 
 	Vector2 operator+(const Vector2& vec)const { return { x_ + vec.x_,y_ + vec.y_ }; }
 	Vector2 operator-(const Vector2& vec)const { return { x_ - vec.x_,y_ - vec.y_ }; }

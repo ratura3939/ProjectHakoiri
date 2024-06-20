@@ -23,6 +23,6 @@ Own::~Own(void)
 void Own::SetParam(void)
 {
 	pazzleSize_ = { StageManager::OBLONG_2_PAZZLE_X,StageManager::OBLONG_2_PAZZLE_Y };
-	type_ = RoomBase::TYPE::OWN;
+	type_ = TYPE::OWN;
 	isDrawRoom_ = true;
 }

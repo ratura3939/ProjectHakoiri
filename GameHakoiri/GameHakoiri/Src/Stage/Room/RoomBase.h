@@ -30,6 +30,7 @@ public:
 		NOMAL,
 		OBLONG,
 		OBLONG_SIDE,
+		MAX
 	};
 
 	RoomBase(int roomImg, int sizeX, int sizeY,
@@ -49,11 +50,11 @@ public:
 	void SetRoomType(TYPE type);	//部屋の種類を設定
 	TYPE GetRoomType(void)const;			//部屋の種類を返却
 
-	void SetPzlPos(Vector2F pos);	//パズルの座標設定
-	Vector2F GetPzlPos(void)const;		//パズルの座標返却
+	void SetPzlPos(Position pos);	//パズルの座標設定
+	Position GetPzlPos(void)const;		//パズルの座標返却
 
-	void SetMapPos(Vector2F pos);	//マップの座標設定
-	Vector2F GetMapPos(void)const;		//マップの座標返却
+	void SetMapPos(Position pos);	//マップの座標設定
+	Position GetMapPos(void)const;		//マップの座標返却
 
 	void SetIsCursor(bool flag);	//カーソルフラグの設定
 	bool GetIsCursor(void)const;			//カーソルフラグの返却
@@ -63,7 +64,7 @@ public:
 
 	void SetIsDrawRoom(bool flag);	//部屋を描画するかのフラグをセット
 
-	Vector2F GetRoomSize(void)const;//現在の部屋のサイズを取得
+	Position GetRoomSize(void)const;//現在の部屋のサイズを取得
 
 	int GetObj(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
 	int GetMapchip(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
@@ -71,8 +72,8 @@ public:
 
 
 private:
-	Vector2F mapPos_;		//ステルスシーンにおけるmapの座標（必要かはわからん）
-	Vector2F mapMaxSize_;		//実際に描画するマップのサイズ
+	Position mapPos_;		//ステルスシーンにおけるmapの座標（必要かはわからん）
+	Position mapMaxSize_;		//実際に描画するマップのサイズ
 
 	bool isChange_;	//パズルリセット時にすでに確定している場所であるかの判定
 	bool isDrawStealth_;	//ステルスシーンにおいて描画するかを決める
@@ -87,12 +88,12 @@ protected:
 	TYPE type_;	//部屋の種類の識別子
 
 
-	Vector2F pzlPos_;		//パズルシーンにおける座標
-	Vector2F pieceSize_;	//実際に描画する駒のサイズ
-	Vector2F pazzleSize_;	//パズルシーンにおけるサイズ(〇×〇か）
+	Position pzlPos_;		//パズルシーンにおける座標
+	Position pieceSize_;	//実際に描画する駒のサイズ
+	Position pazzleSize_;	//パズルシーンにおけるサイズ(〇×〇か）
 	
 
-	Vector2F mapSize_;	//ステルスシーンにおけるマップのサイズ(〇×〇か）
+	Position mapSize_;	//ステルスシーンにおけるマップのサイズ(〇×〇か）
 
 	bool isCursor_;			//カーソルに選択されているかどうか
 

@@ -20,6 +20,6 @@ Bath::~Bath(void)
 void Bath::SetParam(void)
 {
 	pazzleSize_ = { StageManager::NOMAL_PAZZLE_X,StageManager::NOMAL_MAP_Y };
-	type_ = RoomBase::TYPE::BATH;
+	type_ = TYPE::BATH;
 	isDrawRoom_ = true;
 }

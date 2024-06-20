@@ -54,6 +54,7 @@ bool StageBase::Init(void)
 	SetFrameFlash(false);
 	SetIsMoveRoom(true);
 	SetIsSecondRoom(false);
+	SetIsGoal(false);
 
 	//各ステージによる設定
 	SetParam();
@@ -62,7 +63,7 @@ bool StageBase::Init(void)
 	//画像読み込み
 	LoadImgs();
 
-	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
+	Position pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
 		static_cast<float>(Application::SCREEN_SIZE_Y / 4) };
 
 
@@ -200,7 +201,7 @@ bool StageBase::InitStealth(void)
 	roomMng_[roomKey_]->SetIsCursor(false);
 
 	//パズル描画の位置変更
-	Vector2F pos = { 0.0f,0.0f };
+	Position pos = { 0.0f,0.0f };
 
 	for (int y = 0; y < size_.y_; y++)
 	{
@@ -414,14 +415,19 @@ void StageBase::CreateKey(int y, int x)
 	roomKey_ = key;
 }
 
+std::string StageBase::GetKey(void) const
+{
+	return roomKey_;
+}
+
 #pragma region ステルスのいろいろ
 
 //現在描画しているマップの最大サイズを取得
 //********************************************************
-Vector2F StageBase::GetNowDrawMapSize(void)
+Position StageBase::GetNowDrawMapSize(void)
 {
-	Vector2F mapMax = roomMng_[roomKey_]->GetRoomSize() *
-		Vector2F {
+	Position mapMax = roomMng_[roomKey_]->GetRoomSize() *
+		Position {
 		StageManager::UNIT_STEALTH_SIZE_X, StageManager::UNIT_STEALTH_SIZE_Y
 	};
 	return mapMax;
@@ -575,9 +581,13 @@ StageManager::DOOR_Y StageBase::GetDoorPosSecond(void) const
 {
 	return doorSpare_;
 }
-bool StageBase::GetIsSecondRoom(void)const
+bool StageBase::IsSecondRoom(void)const
 {
 	return isSecondRoom_;
+}
+bool StageBase::IsGoal(void) const
+{
+	return isGoal_;
 }
 void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 {
@@ -592,6 +602,12 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 	CreateKey(moveAfter.y_, moveAfter.x_);
 	auto type = roomMng_[roomKey_]->GetRoomType();
 
+	//移動先がゴールだったら
+	if (type == RoomBase::TYPE::GOAL)
+	{
+		SetIsGoal(true);
+		return;
+	}
 
 	//移動先が部屋ではなかったら
 	if (type == RoomBase::TYPE::NONE ||
@@ -1097,6 +1113,10 @@ void StageBase::SetIsMoveRoom(bool flag)
 void StageBase::SetIsSecondRoom(bool flag)
 {
 	isSecondRoom_ = flag;
+}
+void StageBase::SetIsGoal(bool flag)
+{
+	isGoal_ = flag;
 }
 //生成して取得したものは必ず用が終わったら消すこと！
 RoomBase* StageBase::CreateInstance4Confirmation(RoomBase::TYPE type)
