@@ -55,7 +55,7 @@ public:
 	//ステルスシーン
 	bool InitStealth(void);				//ステルスシーン移行時の初期化
 	void DrawObject(void);				//オブジェクト描画
-	Position GetNowDrawMapSize(void);	//現在描画しているマップの最大サイズを取得
+	Vector2F GetNowDrawMapSize(void);	//現在描画しているマップの最大サイズを取得
 	bool IsMapObj(Vector2 pMapPos);		//座標にオブジェクトがあるかどうか
 	bool IsMoveRoom(void);				//部屋の移動が可能だったかを返す
 	int GetObjNum(Vector2 pMapPos);		//座標にあるオブジェクトが何かを返す
@@ -76,7 +76,7 @@ private:
 	std::string roomKey_;								//連想配列のキー
 
 	
-	std::map<std::string, Position>pzlPos_;	//駒の描画位置管理
+	std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
 
 	CURSOR type_;		//カーソルが現在何を指しているかを保持
 	int frame_[static_cast<int>(CURSOR::MAX)];	//カーソルフレームの画像を保持

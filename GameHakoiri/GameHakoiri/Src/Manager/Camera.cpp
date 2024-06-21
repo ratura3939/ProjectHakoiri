@@ -45,17 +45,17 @@ void Camera::Relese(void)
 {
 }
 
-void Camera::SetTargetPos(const Position pPos)
+void Camera::SetTargetPos(const Vector2F pPos)
 {
 	targetPos_ = pPos;
 }
 
-void Camera::SetMapSize(const Position mapsize)
+void Camera::SetMapSize(const Vector2F mapsize)
 {
 	mapSize_ = mapsize;
 }
 
-Position Camera::GetPos(void) const
+Vector2F Camera::GetPos(void) const
 {
 	return pos_;
 }
@@ -71,17 +71,17 @@ void Camera::MoveCamera(void)
 
 	//カメラ差分移動(大きいー小さい）
 	//左移動
-	if (diff.x_ < cameraDir.x_) { pos_.x_ -= cameraDir.x_ - diff.x_; }
+	if (diff.x < cameraDir.x) { pos_.x -= cameraDir.x - diff.x; }
 	//右移動
-	if (diff.x_ > cameraDir.x_) { pos_.x_ += diff.x_ - cameraDir.x_; }
+	if (diff.x > cameraDir.x) { pos_.x += diff.x - cameraDir.x; }
 	//上移動
-	if (diff.y_ < cameraDir.y_) { pos_.y_ -= cameraDir.y_ - diff.y_; }
+	if (diff.y < cameraDir.y) { pos_.y -= cameraDir.y - diff.y; }
 	//下移動
-	if (diff.y_ > cameraDir.y_) { pos_.y_ += diff.y_ - cameraDir.y_; }
+	if (diff.y > cameraDir.y) { pos_.y += diff.y - cameraDir.y; }
 
 	//移動制限
-	if (pos_.x_ < 0) { pos_.x_ = 0; }
-	if (pos_.x_ + Application::SCREEN_SIZE_X > mapSize_.x_) { pos_.x_ = mapSize_.x_ - Application::SCREEN_SIZE_X; }
-	if (pos_.y_ < 0) { pos_.y_ = 0; }
-	if (pos_.y_ + Application::SCREEN_SIZE_Y > mapSize_.y_) { pos_.y_ = mapSize_.y_ - Application::SCREEN_SIZE_Y; }
+	if (pos_.x < 0) { pos_.x = 0; }
+	if (pos_.x + Application::SCREEN_SIZE_X > mapSize_.x) { pos_.x = mapSize_.x - Application::SCREEN_SIZE_X; }
+	if (pos_.y < 0) { pos_.y = 0; }
+	if (pos_.y + Application::SCREEN_SIZE_Y > mapSize_.y) { pos_.y = mapSize_.y - Application::SCREEN_SIZE_Y; }
 }

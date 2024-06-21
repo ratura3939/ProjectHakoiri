@@ -43,8 +43,8 @@ void CharacterBase::Draw(void)
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
 	//キャラクター
-	DrawRotaGraph(pos_.x_ - cameraPos.x_,
-		pos_.y_ - cameraPos.y_,
+	DrawRotaGraph(pos_.x - cameraPos.x,
+		pos_.y - cameraPos.y,
 		1.0f,
 		0.0 * Application::SIE / 180.0,
 		img_[animIdx_],
@@ -56,57 +56,48 @@ void CharacterBase::Release(void)
 {
 }
 
-void CharacterBase::SetPos(Position pos)
+void CharacterBase::SetPos(Vector2F pos)
 {
 	pos_ = pos;
 }
 
-Position CharacterBase::GetPos(void)const
+Vector2F CharacterBase::GetPos(void)const
 {
 	return pos_;
 }
 
-Position CharacterBase::GetCollisionPos(void) const
+Vector2F CharacterBase::GetCollisionPos(void) const
 {
 	//現在の方向に応じた当たり判定を返す。
-	Position colPos = pos_;
+	Vector2F colPos = pos_;
 
 	switch (dir_)
 	{
 	case CharacterBase::DIR::BOTTOM:
-		colPos.y_ += CHARACTER_HALF_Y;
+		colPos.y += CHARACTER_HALF_Y;
 		break;
 	case CharacterBase::DIR::LEFT:
-		colPos.x_ -= CHARACTER_HALF_X;
+		colPos.x -= CHARACTER_HALF_X;
 		break;
 	case CharacterBase::DIR::RIGHT:
-		colPos.x_ += CHARACTER_HALF_X;
+		colPos.x += CHARACTER_HALF_X;
 		break;
 	case CharacterBase::DIR::TOP:
-		colPos.y_ -= CHARACTER_HALF_Y;
+		colPos.y -= CHARACTER_HALF_Y;
 		break;
 	case CharacterBase::DIR::BOTTOM_LEFT:
-		colPos += Position{ -CHARACTER_HALF_X, CHARACTER_HALF_Y };
+		colPos += Vector2F{ -CHARACTER_HALF_X, CHARACTER_HALF_Y };
 		break;
 	case CharacterBase::DIR::BOTTOM_RIGHT:
-		colPos += Position{ CHARACTER_HALF_X, CHARACTER_HALF_Y };
+		colPos += Vector2F{ CHARACTER_HALF_X, CHARACTER_HALF_Y };
 		break;
 	case CharacterBase::DIR::TOP_LEFT:
-		colPos += Position{ -CHARACTER_HALF_X, -CHARACTER_HALF_Y };
+		colPos += Vector2F{ -CHARACTER_HALF_X, -CHARACTER_HALF_Y };
 		break;
 	case CharacterBase::DIR::TOP_RIGHT:
-		colPos += Position{ CHARACTER_HALF_X, -CHARACTER_HALF_Y };
+		colPos += Vector2F{ CHARACTER_HALF_X, -CHARACTER_HALF_Y };
 		break;
 	}
-
-	/*if (dir_ == DIR::BOTTOM) { colPos.y_ + static_cast<float>(CHARACTER_HALF_Y); }
-	if (dir_ == DIR::LEFT) { colPos.x_ - static_cast<float>(CHARACTER_HALF_X); }
-	if (dir_ == DIR::RIGHT) { colPos.x_ + static_cast<float>(CHARACTER_HALF_X); }
-	if (dir_ == DIR::TOP) { colPos.y_ - static_cast<float>(CHARACTER_HALF_Y); }
-	if (dir_ == DIR::BOTTOM_LEFT) { colPos + Position{ -CHARACTER_HALF_X, CHARACTER_HALF_Y }; }
-	if (dir_ == DIR::BOTTOM_RIGHT) { colPos + Position{ CHARACTER_HALF_X, CHARACTER_HALF_Y }; }
-	if (dir_ == DIR::TOP_LEFT) { colPos + Position{ -CHARACTER_HALF_X, -CHARACTER_HALF_Y }; }
-	if (dir_ == DIR::TOP_RIGHT) { colPos + Position{ CHARACTER_HALF_X, -CHARACTER_HALF_Y }; }*/
 	return colPos;
 }
 

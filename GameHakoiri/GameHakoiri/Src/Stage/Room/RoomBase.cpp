@@ -14,8 +14,8 @@ RoomBase::RoomBase(int roomImg, int sizeX, int sizeY,
 	int* mapchip)
 {
 	roomImg_ = roomImg;
-	mapSize_.x_ = sizeX;
-	mapSize_.y_ = sizeY;
+	mapSize_.x = sizeX;
+	mapSize_.y = sizeY;
 
 	map_ = map;
 	obj_ = obj;
@@ -64,12 +64,12 @@ bool RoomBase::Init(void)
 	//各性質の設定
 	SetParam();
 	//駒の大きさの設定
-	pieceSize_ = { pazzleSize_.x_ * static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X),
-		pazzleSize_.y_ * static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y) };
+	pieceSize_ = { pazzleSize_.x * static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X),
+		pazzleSize_.y * static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y) };
 
 	//マップの大きさの設定
-	mapMaxSize_ = { mapSize_.x_ * StageManager::UNIT_STEALTH_SIZE_X,
-		mapSize_.y_ * StageManager::UNIT_STEALTH_SIZE_Y };
+	mapMaxSize_ = { mapSize_.x * StageManager::UNIT_STEALTH_SIZE_X,
+		mapSize_.y * StageManager::UNIT_STEALTH_SIZE_Y };
 
 
 	//正しく処理が終了したので
@@ -87,7 +87,7 @@ void RoomBase::DrawPazzle(void)
 	if (!isDrawRoom_) { return; }
 
 	Vector2 pos = pzlPos_.ToVector2();
-	DrawGraph(pos.x_, pos.y_,
+	DrawGraph(pos.x, pos.y,
 		roomImg_, true);
 }
 
@@ -98,17 +98,17 @@ void RoomBase::DrawStealth(void)
 	//マップを表示しないところは描画処理を行わない
 	if (!isDrawStealth_) { return; }
 
-	Position pos = mapPos_;
+	Vector2F pos = mapPos_;
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
-	for (int y = 0; y < mapSize_.y_; y++)
+	for (int y = 0; y < mapSize_.y; y++)
 	{
-		for (int x = 0; x < mapSize_.x_; x++)
+		for (int x = 0; x < mapSize_.x; x++)
 		{
 			//mapレイヤーの描画
 			int mapchip = map_[y][x];
-			DrawGraph(pos.x_-cameraPos.x_,
-				pos.y_-cameraPos.y_,
+			DrawGraph(pos.x-cameraPos.x,
+				pos.y-cameraPos.y,
 				mapchip_[mapchip],
 				false);
 
@@ -116,47 +116,47 @@ void RoomBase::DrawStealth(void)
 			if (mapchip != -1)		//画像が存在するとき
 			{
 				DrawGraph(
-					pos.x_ - cameraPos.x_,
-					pos.y_ - cameraPos.y_,
+					pos.x - cameraPos.x,
+					pos.y - cameraPos.y,
 					mapchip_[mapchip],
 					true);
 			}
 
-			pos.x_ += StageManager::UNIT_STEALTH_SIZE_X;
+			pos.x += StageManager::UNIT_STEALTH_SIZE_X;
 		}
-		pos.x_ = 0;
-		pos.y_ += StageManager::UNIT_STEALTH_SIZE_Y;
+		pos.x = 0;
+		pos.y += StageManager::UNIT_STEALTH_SIZE_Y;
 	}
 	
 }
 void RoomBase::DrawStealthObject(void)
 {
-	Position pos = mapPos_;
-	pos.x_ += StageManager::UNIT_STEALTH_SIZE_X / 2;
-	pos.y_ += StageManager::UNIT_STEALTH_SIZE_Y / 2;
+	Vector2F pos = mapPos_;
+	pos.x += StageManager::UNIT_STEALTH_SIZE_X / 2;
+	pos.y += StageManager::UNIT_STEALTH_SIZE_Y / 2;
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
-	for (int y = 0; y < mapSize_.y_; y++)
+	for (int y = 0; y < mapSize_.y; y++)
 	{
-		for (int x = 0; x < mapSize_.x_; x++)
+		for (int x = 0; x < mapSize_.x; x++)
 		{
 			//objレイヤーの描画
 			int mapchip = obj_[y][x];
 			if (mapchip != -1)		//画像が存在するとき
 			{
 				DrawRotaGraph(
-					pos.x_ - cameraPos.x_,
-					pos.y_ - cameraPos.y_,
+					pos.x - cameraPos.x,
+					pos.y - cameraPos.y,
 					1.0f,
 					Application::SIE * 180,
 					mapchip_[mapchip],
 					true,
 					false);
 			}
-			pos.x_ += StageManager::UNIT_STEALTH_SIZE_X;
+			pos.x += StageManager::UNIT_STEALTH_SIZE_X;
 		}
-		pos.x_ = StageManager::UNIT_STEALTH_SIZE_X / 2;
-		pos.y_ += StageManager::UNIT_STEALTH_SIZE_Y;
+		pos.x = StageManager::UNIT_STEALTH_SIZE_X / 2;
+		pos.y += StageManager::UNIT_STEALTH_SIZE_Y;
 	}
 }
 #pragma endregion
@@ -189,11 +189,11 @@ RoomBase::TYPE RoomBase::GetRoomType(void)const
 
 #pragma region パズルのSetGet
 
-void RoomBase::SetPzlPos(Position pos)
+void RoomBase::SetPzlPos(Vector2F pos)
 {
 	pzlPos_ = pos;
 }
-Position RoomBase::GetPzlPos(void)const
+Vector2F RoomBase::GetPzlPos(void)const
 {
 	return pzlPos_;
 }
@@ -201,12 +201,12 @@ Position RoomBase::GetPzlPos(void)const
 
 #pragma region マップのSetGet
 
-void RoomBase::SetMapPos(Position pos)
+void RoomBase::SetMapPos(Vector2F pos)
 {
 	mapPos_ = pos;
 }
 
-Position RoomBase::GetMapPos(void)const
+Vector2F RoomBase::GetMapPos(void)const
 {
 	return mapPos_;
 }
@@ -235,22 +235,22 @@ void RoomBase::SetIsDrawRoom(bool flag)
 {
 	isDrawRoom_ = flag;
 }
-Position RoomBase::GetRoomSize(void) const
+Vector2F RoomBase::GetRoomSize(void) const
 {
 	return mapSize_;
 }
 int RoomBase::GetObj(Vector2 pos) const
 {
-	return obj_[pos.y_][pos.x_];
+	return obj_[pos.y][pos.x];
 }
 int RoomBase::GetMapchip(Vector2 pos) const
 {
-	return map_[pos.y_][pos.x_];
+	return map_[pos.y][pos.x];
 }
 bool RoomBase::IsOneDownObj(Vector2 pos) const
 {
-	pos.y_++;
-	if (obj_[pos.y_][pos.x_] == -1)	//オブジェクトが何も入っていなかったら
+	pos.y++;
+	if (obj_[pos.y][pos.x] == -1)	//オブジェクトが何も入っていなかったら
 	{
 		return true;
 	}

@@ -29,6 +29,6 @@ protected:
 
 private:
 
-	void DrawVision(void);
+	void DrawVision(Vector2F cameraPos);
 };
 

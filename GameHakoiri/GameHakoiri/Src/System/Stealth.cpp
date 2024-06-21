@@ -63,6 +63,10 @@ void Stealth::Draw(void)
 {
 	player_->Draw();
 	//StageManager::GetInstance().DrawObject();
+	for (auto& e : useEnemy_)
+	{
+		e->Draw();
+	}
 	DrawDebug();
 
 	auto& ins = InputManager::GetInstance();
@@ -171,7 +175,7 @@ void Stealth::CollisionEvent(Vector2 pCol)
 			case RoomBase::ROOM_SHAPE::OBLONG:
 				if (door.y == StageManager::DOOR_Y::TOP)
 				{
-					pos = { DOOR_DISTANCE,mapSize.y_ - INIT_ROOM_POS };	//マップ下方に出る
+					pos = { DOOR_DISTANCE,mapSize.y - INIT_ROOM_POS };	//マップ下方に出る
 				}
 				else if (door.y == StageManager::DOOR_Y::BOTTOM)
 				{
@@ -186,12 +190,12 @@ void Stealth::CollisionEvent(Vector2 pCol)
 					if (door.y == StageManager::DOOR_Y::TOP)
 					{
 						//右側の下出る
-						pos = { mapSize.x_ - DOOR_DISTANCE,mapSize.y_ - INIT_ROOM_POS };
+						pos = { mapSize.x - DOOR_DISTANCE,mapSize.y - INIT_ROOM_POS };
 					}
 					else if (door.y == StageManager::DOOR_Y::BOTTOM)
 					{
 						//右側の上に出る
-						pos = { mapSize.x_ - DOOR_DISTANCE,INIT_ROOM_POS };
+						pos = { mapSize.x - DOOR_DISTANCE,INIT_ROOM_POS };
 					}
 				}
 				else 
@@ -199,7 +203,7 @@ void Stealth::CollisionEvent(Vector2 pCol)
 					if (door.y == StageManager::DOOR_Y::TOP)
 					{
 						//左側の下に出る
-						pos = { DOOR_DISTANCE,mapSize.y_ - INIT_ROOM_POS };
+						pos = { DOOR_DISTANCE,mapSize.y - INIT_ROOM_POS };
 					}
 					else if (door.y == StageManager::DOOR_Y::BOTTOM)
 					{
@@ -221,7 +225,7 @@ void Stealth::CollisionEvent(Vector2 pCol)
 				//playerがどっちから来たかを判断
 				if (door.x == StageManager::DOOR_X::LEFT)
 				{
-					pos = { mapSize.x_ - INIT_ROOM_POS_SIDE,DOOR_DISTANCE };	//右に設定
+					pos = { mapSize.x - INIT_ROOM_POS_SIDE,DOOR_DISTANCE };	//右に設定
 				}
 				else if (door.x == StageManager::DOOR_X::RIGHT)
 				{
@@ -236,11 +240,11 @@ void Stealth::CollisionEvent(Vector2 pCol)
 					//playerがどっちから来たかを判断
 					if (door.x == StageManager::DOOR_X::LEFT)
 					{
-						pos = { mapSize.x_ - INIT_ROOM_POS_SIDE,mapSize.y_ - DOOR_DISTANCE };	//右下に設定
+						pos = { mapSize.x - INIT_ROOM_POS_SIDE,mapSize.y - DOOR_DISTANCE };	//右下に設定
 					}
 					else if (door.x == StageManager::DOOR_X::RIGHT)
 					{
-						pos = { INIT_ROOM_POS_SIDE,mapSize.y_ - DOOR_DISTANCE };	//左下に設定
+						pos = { INIT_ROOM_POS_SIDE,mapSize.y - DOOR_DISTANCE };	//左下に設定
 					}
 				}
 				else
@@ -248,7 +252,7 @@ void Stealth::CollisionEvent(Vector2 pCol)
 					//playerがどっちから来たかを判断
 					if (door.x == StageManager::DOOR_X::LEFT)
 					{
-						pos = { mapSize.x_ - INIT_ROOM_POS_SIDE,DOOR_DISTANCE };	//右上に設定
+						pos = { mapSize.x - INIT_ROOM_POS_SIDE,DOOR_DISTANCE };	//右上に設定
 					}
 					else if (door.x == StageManager::DOOR_X::RIGHT)
 					{
@@ -289,7 +293,7 @@ void Stealth::DrawDebug(void)
 
 	DrawFormatString(0, 0, 0xffffff,
 		"playerの座標＝(%.1f,%.1f)\nplayerの当たり判定＝(%.1f,%.1f)\n",
-		pPos.x_,pPos.y_,pos.x_,pos.y_);
+		pPos.x,pPos.y,pos.x,pos.y);
 
 
 }
@@ -307,11 +311,32 @@ void Stealth::EnemyInit(void)
 		{
 			enemyMng_[i] = new Seneschal;
 		}
+		enemyMng_[i]->Init();
 	}
 
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][1] =
-	{ (StageManager::NOMAL_MAP_X * StageManager::UNIT_STEALTH_SIZE_X) / 4,
-	(StageManager::NOMAL_MAP_Y * StageManager::UNIT_STEALTH_SIZE_Y) / 2 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][0] = { NX1,NY1 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][1] = { NX2,NY2 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][2] = { 0.0f,0.0f };
+
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][0] = { OBX1,OBY1 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][1] = { OBX2,OBY2 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][2] = { OBX3,OBY3 };
+
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][0] = { OB2X1,OB2Y1 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][1] = { OB2X2,OB2Y2 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][2] = { OB2X3,OB2Y3 };
+
+	/*initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][0] = NOMAL_POS_1;
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][1] = NOMAL_POS_2;
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][2] = { 0.0f,0.0f };
+
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][0] = OBLONG_POS_1;
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][1] = OBLONG_POS_2;
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][2] = OBLONG_POS_3;
+
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][0] = OBLONG_2_POS_1;
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][1] = OBLONG_2_POS_2;
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][2] = OBLONG_2_POS_3;*/
 }
 
 void Stealth::CreateEnemy(void)
@@ -335,9 +360,12 @@ void Stealth::CreateEnemy(void)
 	
 }
 
-void Stealth::SetEnemyPos(void)
+void Stealth::InitEnemyPos(const RoomBase::ROOM_SHAPE type)
 {
-
+	for (int i = 0; i < useEnemy_.size(); i++)
+	{
+		useEnemy_[i]->SetPos(initPos_[static_cast<int>(type)][i]);
+	}
 }
 
 void Stealth::SetEnemy(void)
@@ -350,13 +378,15 @@ void Stealth::SetEnemy(void)
 	//現在の部屋に敵の生成記録がなかった時
 	if (memorizePos_[key].empty())
 	{
+		auto type = stage.GetShape();
 		//敵の生成
-		if (stage.GetShape() == RoomBase::ROOM_SHAPE::NOMAL)	
+		if (type == RoomBase::ROOM_SHAPE::NOMAL)
 		{
 			//正方形の場合
 			for (int i = 0; i < NOMAL_ENEMY_NUM; i++)
 			{
 				CreateEnemy();
+				
 			}
 		}
 		else
@@ -367,6 +397,7 @@ void Stealth::SetEnemy(void)
 				CreateEnemy();
 			}
 		}
+		InitEnemyPos(type);
 	}
 	else
 	{
@@ -374,20 +405,25 @@ void Stealth::SetEnemy(void)
 		auto size = memorizePos_[key].size();
 		for (int m = 0; m < size; m++)	//敵の生成数分回す
 		{
-			for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)//敵の管理全体
-			{
-				if (memorizeType_[key][m] == enemyMng_[i]->GetType() &&	//保存されている種類と同じだったら
-					!enemyMng_[i]->IsUse())	//まだ使用されてなかったら
-				{
-					//敵のフラグ管理と位置の設定
-					enemyMng_[i]->SetPos(memorizePos_[key][m]);
-					enemyMng_[i]->SetIsUse(true);
-					//敵の格納
-					useEnemy_.push_back(enemyMng_[i]);
-					
-					return;
-				}
-			}
+			SearchSetEnemy(key, m);
+		}
+	}
+}
+
+void Stealth::SearchSetEnemy(std::string key, int num)
+{
+	for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)//敵の管理全体
+	{
+		if (memorizeType_[key][num] == enemyMng_[i]->GetType() &&	//保存されている種類と同じだったら
+			!enemyMng_[i]->IsUse())	//まだ使用されてなかったら
+		{
+			//敵のフラグ管理と位置の設定
+			enemyMng_[i]->SetPos(memorizePos_[key][num]);
+			enemyMng_[i]->SetIsUse(true);
+			//敵の格納
+			useEnemy_.push_back(enemyMng_[i]);
+
+			return;
 		}
 	}
 }

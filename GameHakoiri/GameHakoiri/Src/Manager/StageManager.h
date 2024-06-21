@@ -111,7 +111,7 @@ public:
 	
 	void ChangeModeInit(void);	//シーン切り替え時の初期化
 	void ChangeMap(Vector2 pMapPos);	//部屋の切り替え
-	Position GetMapMaxSize(void)const;	//マップの最大サイズを取得
+	Vector2F GetMapMaxSize(void)const;	//マップの最大サイズを取得
 
 	bool IsCollisionObject(const Vector2 pMapPos)const;	//座標が何かのオブジェクトと衝突しているか
 	bool IsCollisionWall(const Vector2 pMapPos)const;	//座標が壁と衝突しているか

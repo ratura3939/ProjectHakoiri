@@ -27,8 +27,8 @@ StageBase::StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX
 	int* roomImg, int* mapchip[])
 {
 	pzlCsv_ = pzlIt;
-	size_.x_ = pzlSizeX;
-	size_.y_ = pzlSizeY;
+	size_.x = pzlSizeX;
+	size_.y = pzlSizeY;
 
 	mapCsv_ = map;
 	objCsv_ = obj;
@@ -63,13 +63,13 @@ bool StageBase::Init(void)
 	//画像読み込み
 	LoadImgs();
 
-	Position pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
+	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
 		static_cast<float>(Application::SCREEN_SIZE_Y / 4) };
 
 
-	for (int y = 0; y < size_.y_; y++)
+	for (int y = 0; y < size_.y; y++)
 	{
-		for (int x = 0; x < size_.x_; x++)
+		for (int x = 0; x < size_.x; x++)
 		{
 			RoomBase* r = nullptr;
 
@@ -170,16 +170,16 @@ bool StageBase::Init(void)
 			pzlPos_[roomKey_] = pos;
 
 			//座標の更新
-			pos.x_ += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X);
+			pos.x += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X);
 		}
-		pos.x_ = static_cast<float>(Application::SCREEN_SIZE_X / 4);
-		pos.y_ += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y);
+		pos.x = static_cast<float>(Application::SCREEN_SIZE_X / 4);
+		pos.y += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y);
 	}
 
 	//初期のカーソル設定
-	for (int y = 0; y < size_.y_; y++)
+	for (int y = 0; y < size_.y; y++)
 	{
-		for (int x = 0; x < size_.x_; x++)
+		for (int x = 0; x < size_.x; x++)
 		{
 			CreateKey(y, x);
 			if (!IsDontMoveBlock(roomKey_) &&
@@ -201,25 +201,25 @@ bool StageBase::InitStealth(void)
 	roomMng_[roomKey_]->SetIsCursor(false);
 
 	//パズル描画の位置変更
-	Position pos = { 0.0f,0.0f };
+	Vector2F pos = { 0.0f,0.0f };
 
-	for (int y = 0; y < size_.y_; y++)
+	for (int y = 0; y < size_.y; y++)
 	{
-		for (int x = 0; x < size_.x_; x++)
+		for (int x = 0; x < size_.x; x++)
 		{
 			CreateKey(y, x);
 			pzlPos_[roomKey_] = pos;
 			//座標の更新
-			pos.x_ += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X);
+			pos.x += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X);
 		}
-		pos.x_ = 0.0f;
-		pos.y_ += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y);
+		pos.x = 0.0f;
+		pos.y += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y);
 	}
 
 	//初期位置の場所を示すルームキーを生成
-	for (int y = 0; y < size_.y_; y++)
+	for (int y = 0; y < size_.y; y++)
 	{
-		for (int x = 0; x < size_.x_; x++)
+		for (int x = 0; x < size_.x; x++)
 		{
 			CreateKey(y, x);
 			if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::OWN)
@@ -285,9 +285,9 @@ void StageBase::Draw(GameScene::MODE mode)
 		frameAnim_++;
 
 		//駒の描画
-		for (int y = 0; y < size_.y_; y++)
+		for (int y = 0; y < size_.y; y++)
 		{
-			for (int x = 0; x < size_.x_; x++)
+			for (int x = 0; x < size_.x; x++)
 			{
 				CreateKey(y, x);
 				roomMng_[roomKey_]->SetPzlPos(pzlPos_[roomKey_]);
@@ -318,7 +318,7 @@ void StageBase::Draw(GameScene::MODE mode)
 	{
 		Vector2 key = GetNowCursorPos();
 
-		CreateKey(key.y_, key.x_);
+		CreateKey(key.y, key.x);
 		switch (roomMng_[roomKey_]->GetRoomType())
 		{
 			// 空きスペース
@@ -354,7 +354,7 @@ void StageBase::Draw(GameScene::MODE mode)
 		if (roomMng_[roomKey_]->GetIsCursor())
 		{
 			//枠の描画
-			DrawGraph(pzlPos_[roomKey_].x_, pzlPos_[roomKey_].y_,
+			DrawGraph(pzlPos_[roomKey_].x, pzlPos_[roomKey_].y,
 				frame_[static_cast<int>(type_)], true);
 		}
 	}
@@ -380,9 +380,9 @@ bool StageBase::Release(void)
 {
 	//駒
 
-	for (int y = 0; y < size_.y_; y++)
+	for (int y = 0; y < size_.y; y++)
 	{
-		for (int x = 0; x < size_.x_; x++)
+		for (int x = 0; x < size_.x; x++)
 		{
 			CreateKey(y, x);
 			roomMng_[roomKey_]->Release();
@@ -424,10 +424,10 @@ std::string StageBase::GetKey(void) const
 
 //現在描画しているマップの最大サイズを取得
 //********************************************************
-Position StageBase::GetNowDrawMapSize(void)
+Vector2F StageBase::GetNowDrawMapSize(void)
 {
-	Position mapMax = roomMng_[roomKey_]->GetRoomSize() *
-		Position {
+	Vector2F mapMax = roomMng_[roomKey_]->GetRoomSize() *
+		Vector2F {
 		StageManager::UNIT_STEALTH_SIZE_X, StageManager::UNIT_STEALTH_SIZE_Y
 	};
 	return mapMax;
@@ -501,14 +501,14 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 	auto nowRoom = roomKey_;
 	//現在の部屋をroomKeyから逆算
 	//roomKey=(yx)なので10で割った時の商がY,余りがXを表す
-	afterRoom.y_ = stoi(nowRoom) / STRING_TO_INT;
-	afterRoom.x_ = stoi(nowRoom) % STRING_TO_INT;
+	afterRoom.y = stoi(nowRoom) / STRING_TO_INT;
+	afterRoom.x = stoi(nowRoom) % STRING_TO_INT;
 	
 	//扉の位置による部屋の移動量を計算
 	if (door_.y == StageManager::DOOR_Y::TOP) 
 	{ 
 		//一つ上の部屋に
-		move.y_--; 
+		move.y--; 
 
 		//現在の場所が長方形だった場合
 		if (GetRoomShape(nowRoom)!=RoomBase::ROOM_SHAPE::NOMAL)	
@@ -523,7 +523,7 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 			if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG && doorSpare_ == StageManager::DOOR_Y::BOTTOM)
 			{
 				//上への移動ではないため高さを戻す
-				move.y_++;
+				move.y++;
 				//左右移動
 				move += MoveLeftOrRight(door_.x);
 			}
@@ -533,7 +533,7 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 	else if (door_.y == StageManager::DOOR_Y::BOTTOM) 
 	{
 		//一つ下の部屋に
-		move.y_++;
+		move.y++;
 
 		//現在部屋が横長で、右上の扉だった場合
 		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door_.x == StageManager::DOOR_X::RIGHT)
@@ -547,7 +547,7 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 			if (doorSpare_ == StageManager::DOOR_Y::BOTTOM)
 			{
 				//縦ニマスの部屋の下への移動なのでニマス分下げるため
-				move.y_++;
+				move.y++;
 			}
 			//左右の扉(下の上)だった場合
 			if (doorSpare_ == StageManager::DOOR_Y::TOP)
@@ -599,7 +599,7 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 	
 
 	//移動先の部屋の鍵生成
-	CreateKey(moveAfter.y_, moveAfter.x_);
+	CreateKey(moveAfter.y, moveAfter.x);
 	auto type = roomMng_[roomKey_]->GetRoomType();
 
 	//移動先がゴールだったら
@@ -628,20 +628,20 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 		//縦長の実体調整
 		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG)
 		{
-			if (CheckInstanceUp(moveAfter.y_, moveAfter.x_, r))
+			if (CheckInstanceUp(moveAfter.y, moveAfter.x, r))
 			{
-				moveAfter.y_--;
-				CreateKey(moveAfter.y_, moveAfter.x_);
+				moveAfter.y--;
+				CreateKey(moveAfter.y, moveAfter.x);
 				SetIsSecondRoom(true);
 			}
 		}
 		//横長の実体調整
 		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG_SIDE)
 		{
-			if (CheckInstanceLeft(moveAfter.y_, moveAfter.x_, r))
+			if (CheckInstanceLeft(moveAfter.y, moveAfter.x, r))
 			{
-				moveAfter.x_--;
-				CreateKey(moveAfter.y_, moveAfter.x_);
+				moveAfter.x--;
+				CreateKey(moveAfter.y, moveAfter.x);
 				SetIsSecondRoom(true);
 			}
 		}
@@ -671,8 +671,8 @@ StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 	//扉の位置を見つけるため部屋を分割。
 	auto size = roomMng_[roomKey_]->GetRoomSize().ToVector2();
 
-	size.x_ /= StageManager::SPLIT_ROOM_X;
-	size.y_ /= StageManager::SPLIT_ROOM_Y;
+	size.x /= StageManager::SPLIT_ROOM_X;
+	size.y /= StageManager::SPLIT_ROOM_Y;
 
 	//探索初期位置
 	Vector2 startPos = { 0,0 };
@@ -686,13 +686,13 @@ StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 		//二回目の判定は一回目で分割した上中下をさらに分割し扉を特定する(部屋の一部をズームする感じ)
 		//プレイヤーの場所は一回目の分割の影響を受ける
 		//playerを上限からの距離に設定
-		pPos.y_ -= size.y_ * (static_cast<int>(ret.y) - 1);
+		pPos.y -= size.y * (static_cast<int>(ret.y) - 1);
 
 		//移動の下限設定
-		size.y_ /= static_cast<int>(StageManager::DOOR_Y::BOTTOM);	//サイズを三分割
+		size.y /= static_cast<int>(StageManager::DOOR_Y::BOTTOM);	//サイズを三分割
 
 		//判定初期位置を一回目のY部分基準(構造体の都合上-1でスタート位置にする）
-		startPos.y_ = StageManager::SPLIT_ROOM_Y * (static_cast<int>(ret.y) - 1);
+		startPos.y = StageManager::SPLIT_ROOM_Y * (static_cast<int>(ret.y) - 1);
 		StageManager::DOOR oblongSecond = SplitRoom(pPos, size, startPos);
 
 		doorSpare_ = oblongSecond.y;
@@ -706,18 +706,18 @@ StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 siz
 	StageManager::DOOR ret;
 
 	//左右の区別
-	if (pMapPos.x_ < size.x_) { ret.x = StageManager::DOOR_X::LEFT; }
+	if (pMapPos.x < size.x) { ret.x = StageManager::DOOR_X::LEFT; }
 	else { ret.x = StageManager::DOOR_X::RIGHT; }
 
 	//上中下の判断（数の大きい下から行う
 	//必ず下にはいるので初期値は下から
 	ret.y = StageManager::DOOR_Y::BOTTOM;
 
-	if (pMapPos.y_ < size.y_ * static_cast<int>(StageManager::DOOR_Y::MIDDLE))
+	if (pMapPos.y < size.y * static_cast<int>(StageManager::DOOR_Y::MIDDLE))
 	{
 		ret.y = StageManager::DOOR_Y::MIDDLE;
 	}
-	if (pMapPos.y_ < size.y_ * static_cast<int>(StageManager::DOOR_Y::TOP))
+	if (pMapPos.y < size.y * static_cast<int>(StageManager::DOOR_Y::TOP))
 	{
 		ret.y = StageManager::DOOR_Y::TOP;
 	}
@@ -734,9 +734,9 @@ Vector2 StageBase::GetNowCursorPos(void)
 	//現在のカーソルの位置を取得
 	Vector2 cursor;
 
-	for (int y = 0; y < size_.y_; y++)
+	for (int y = 0; y < size_.y; y++)
 	{
-		for (int x = 0; x < size_.x_; x++)
+		for (int x = 0; x < size_.x; x++)
 		{
 			CreateKey(y, x);
 			if (roomMng_[roomKey_]->GetIsCursor())
@@ -769,7 +769,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 	Vector2 cursor = GetNowCursorPos();
 
 	//現在のカーソルの解除
-	CreateKey(cursor.y_, cursor.x_);	
+	CreateKey(cursor.y, cursor.x);	
 	//実行前の位置を保存
 	std::string prevKey = roomKey_;
 	roomMng_[prevKey]->SetIsCursor(false);
@@ -789,8 +789,8 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 	case RoomBase::TYPE::WALL:
 		//ゴール
 	case RoomBase::TYPE::GOAL:
-		cursor.y_ += move.y_;
-		cursor.x_ += move.x_;
+		cursor.y += move.y;
+		cursor.x += move.x;
 		break;
 
 		//縦長
@@ -798,10 +798,10 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 	case RoomBase::TYPE::LIVING:
 		//台所
 	case RoomBase::TYPE::KITCHEN:
-		if (dir == Utility::DIR::DOWN) {cursor.y_ += move.y_ * 2;}
-		else{cursor.y_ += move.y_;}
+		if (dir == Utility::DIR::DOWN) {cursor.y += move.y * 2;}
+		else{cursor.y += move.y;}
 
-		cursor.x_ += move.x_;
+		cursor.x += move.x;
 		break;
 
 		//横長
@@ -810,16 +810,16 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 		//玄関
 	case RoomBase::TYPE::ENTRANCE:
-		if (dir == Utility::DIR::RIGHT) { cursor.x_ += move.x_ * 2; }
-		else { cursor.x_ += move.x_; }
+		if (dir == Utility::DIR::RIGHT) { cursor.x += move.x * 2; }
+		else { cursor.x += move.x; }
 
-		cursor.y_ += move.y_;
+		cursor.y += move.y;
 		break;
 	}
 	
 
 	//移動後
-	CreateKey(cursor.y_, cursor.x_);	//移動後のroomKey_の生成
+	CreateKey(cursor.y, cursor.x);	//移動後のroomKey_の生成
 	std::string afterMoveKey = roomKey_;		//移動後のroomKey_の生成保存
 
 	RoomBase::TYPE afterRoomType = roomMng_[afterMoveKey]->GetRoomType();
@@ -844,21 +844,21 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 		auto r = CreateInstance4Confirmation(afterRoomType);
 
 		//現在が長方形の本体かを確認
-		if (CheckInstanceUp(cursor.y_, cursor.x_, r)||
-			CheckInstanceLeft(cursor.y_, cursor.x_, r))
+		if (CheckInstanceUp(cursor.y, cursor.x, r)||
+			CheckInstanceLeft(cursor.y, cursor.x, r))
 		{
 			//保留のカーソルをキャンセル
 			roomMng_[afterMoveKey]->SetIsCursor(false);
 			//長方形に合わせた場所に移動
 			if (afterRoomType == RoomBase::TYPE::KITCHEN || afterRoomType == RoomBase::TYPE::LIVING)
 			{
-				cursor.y_--;
+				cursor.y--;
 			}
 			if (afterRoomType == RoomBase::TYPE::ENTRANCE ||afterRoomType == RoomBase::TYPE::OWN)
 			{
-				cursor.x_--;
+				cursor.x--;
 			}
-			CreateKey(cursor.y_, cursor.x_);	//roomKey_の再生成
+			CreateKey(cursor.y, cursor.x);	//roomKey_の再生成
 			roomMng_[roomKey_]->SetIsCursor(true);
 		}
 
@@ -869,8 +869,8 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 #pragma region 移動範囲外だった時
 
-	if ((cursor.x_ >= size_.x_)
-		|| (cursor.y_ >= size_.y_)
+	if ((cursor.x >= size_.x)
+		|| (cursor.y >= size_.y)
 		|| IsDontMoveBlock(afterMoveKey))
 	{
 		//移動前に戻す
@@ -900,7 +900,7 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 	//現在のカーソル位置
 	Vector2 cursor = GetNowCursorPos();
 	Vector2 cursor2 = GetNowCursorPos();
-	CreateKey(cursor.y_, cursor.x_);
+	CreateKey(cursor.y, cursor.x);
 	nowCursorKey = roomKey_;
 
 	//長方形用の二マス目のカーソル位置
@@ -911,30 +911,30 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 		{
 		case RoomBase::TYPE::LIVING:
 		case RoomBase::TYPE::KITCHEN:
-			cursor2.y_++;	//長方形の下用
+			cursor2.y++;	//長方形の下用
 			break;
 		case RoomBase::TYPE::OWN:
 		case RoomBase::TYPE::ENTRANCE:
-			cursor2.x_++;	//長方形の右用
+			cursor2.x++;	//長方形の右用
 			break;
 		}
-		CreateKey(cursor2.y_, cursor2.x_);
+		CreateKey(cursor2.y, cursor2.x);
 		nowCursorKey2 = roomKey_;
 	}
 	
 	//移動したい場所の中身チェック
-	cursor.y_ += move.y_;
-	cursor.x_ += move.x_;
-	CreateKey(cursor.y_, cursor.x_);
+	cursor.y += move.y;
+	cursor.x += move.x;
+	CreateKey(cursor.y, cursor.x);
 	afterMoveKey = roomKey_;
 
 	//長方形の追加分や変位を対応(この時点でのroomKeyはカーソルの移動後のマス)
 	if (GetRoomShape(nowCursorKey) != RoomBase::ROOM_SHAPE::NOMAL)
 	{
 		//移動したい場所の中身チェック
-		cursor2.y_ += move.y_;
-		cursor2.x_ += move.x_;
-		CreateKey(cursor2.y_, cursor2.x_);
+		cursor2.y += move.y;
+		cursor2.x += move.x;
+		CreateKey(cursor2.y, cursor2.x);
 		afterMoveKey2 = roomKey_;
 
 		switch (roomMng_[nowCursorKey]->GetRoomType())
@@ -1000,10 +1000,10 @@ bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::st
 	if (!IsDontMoveBlock(aft))
 	{
 		//移動先が範囲内であるか
-		if ((csr.x_ >= 0) &&
-			(csr.x_ < size_.x_) &&
-			(csr.y_ >= 0) &&
-			(csr.y_ < size_.y_))
+		if ((csr.x >= 0) &&
+			(csr.x < size_.x) &&
+			(csr.y >= 0) &&
+			(csr.y < size_.y))
 		{
 			//移動先がNONEだったら
 			if (roomMng_[aft]->GetRoomType() == RoomBase::TYPE::NONE)
@@ -1158,9 +1158,9 @@ void StageBase::ResetPazzl(void)
 	//入れ替え処理用の現在位置保存
 	std::string nowKey;
 
-	for (int y = 0; y < size_.y_; y++)
+	for (int y = 0; y < size_.y; y++)
 	{
-		for (int x = 0; x < size_.x_; x++)
+		for (int x = 0; x < size_.x; x++)
 		{
 			CreateKey(y, x);
 			nowKey = roomKey_;	
@@ -1169,9 +1169,9 @@ void StageBase::ResetPazzl(void)
 			if (roomMng_[nowKey]->GetRoomType() != resetRoom_[nowKey])
 			{
 				//現在の位置から初期のタイプの部屋があるかを確認
-				for (int i = 0; i < size_.y_; i++)
+				for (int i = 0; i < size_.y; i++)
 				{
-					for (int n = 0; n < size_.x_; n++)
+					for (int n = 0; n < size_.x; n++)
 					{
 						CreateKey(i, n);
 						//まだ確定していない場所で初期の部屋が見つかった場合
@@ -1191,9 +1191,9 @@ void StageBase::ResetPazzl(void)
 	}
 	
 	//確定を解除
-	for (int y = 0; y < size_.y_; y++)
+	for (int y = 0; y < size_.y; y++)
 	{
-		for (int x = 0; x < size_.x_; x++)
+		for (int x = 0; x < size_.x; x++)
 		{
 			CreateKey(y, x);
 			nowKey = roomKey_;

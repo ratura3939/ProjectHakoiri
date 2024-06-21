@@ -132,7 +132,7 @@ void StageManager::ChangeMap(Vector2 pMapPos)
 {
 	stage_->ChangeRoom(pMapPos);
 }
-Position StageManager::GetMapMaxSize(void)const
+Vector2F StageManager::GetMapMaxSize(void)const
 {
 	return stage_->GetNowDrawMapSize();
 }
@@ -171,8 +171,8 @@ bool StageManager::IsCollisionWall(const Vector2 pMapPos) const
 Vector2 StageManager::GetVector2MapPos(const Vector2 pPos) const
 {
 	Vector2 ret;
-	ret.x_ = pPos.x_ / UNIT_STEALTH_SIZE_X;
-	ret.y_ = pPos.y_ / UNIT_STEALTH_SIZE_Y;
+	ret.x = pPos.x / UNIT_STEALTH_SIZE_X;
+	ret.y = pPos.y / UNIT_STEALTH_SIZE_Y;
 	return ret;
 }
 //オブジェクトのタイプを返却

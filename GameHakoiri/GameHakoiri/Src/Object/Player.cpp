@@ -41,22 +41,22 @@ void Player::KeyboardContoroller(void)
 	//ˆÚ“®
 	if (ins.IsNew(KEY_INPUT_UP)) 
 	{
-		pos_.y_ -= move_; 
+		pos_.y -= move_; 
 		SetDir(CharacterBase::DIR::TOP);
 	}
 	if (ins.IsNew(KEY_INPUT_DOWN))
 	{
-		pos_.y_ += move_; 
+		pos_.y += move_; 
 		SetDir(CharacterBase::DIR::BOTTOM);
 	}
 	if (ins.IsNew(KEY_INPUT_LEFT)) 
 	{
-		pos_.x_ -= move_; 
+		pos_.x -= move_; 
 		SetDir(CharacterBase::DIR::LEFT);
 	}
 	if (ins.IsNew(KEY_INPUT_RIGHT)) 
 	{
-		pos_.x_ += move_; 
+		pos_.x += move_; 
 		SetDir(CharacterBase::DIR::RIGHT);
 	}
 

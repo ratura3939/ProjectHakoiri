@@ -2,6 +2,7 @@
 #include<vector>
 #include<map>
 #include"../Object/EnemyBase.h"
+#include"../Object/CharacterBase.h"
 #include"../Common/Vector2F.h"
 
 class Player;
@@ -18,7 +19,45 @@ public:
 	static constexpr int OBLONG_ENEMY_NUM = 3;	//長方形の部屋の敵の数
 	static constexpr int NOMAL_ENEMY_NUM = 2;	//正方形の部屋の敵の数
 
-	static constexpr Position NOMAL_POS_1={0.0f,0.0f};
+	//敵の初期位置
+
+	static constexpr float NX1 = 672.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float NY1 = 224.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float NX2 = 480.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float NY2 = 608.0f + CharacterBase::CHARACTER_HALF_Y;
+
+	static constexpr float OBX1= 480.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY1= 480.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX2= 160.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY2= 1056.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX3= 608.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY3= 1568.0f + CharacterBase::CHARACTER_HALF_Y;
+
+	static constexpr float OB2X1 = 960.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y1 = 736.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X2 = 448.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y2 = 480.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X3 = 1376.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y3 = 384.0f + CharacterBase::CHARACTER_HALF_Y;
+
+	/*static constexpr Vector2F NOMAL_POS_1=
+	{672.0f + CharacterBase::CHARACTER_HALF_X,224.0f + CharacterBase::CHARACTER_HALF_Y };
+	static constexpr Vector2F NOMAL_POS_2=
+	{480.0f + CharacterBase::CHARACTER_HALF_X,608.0f + CharacterBase::CHARACTER_HALF_Y };
+
+	static constexpr Vector2F OBLONG_POS_1=
+	{480.0f + CharacterBase::CHARACTER_HALF_X,480.0f + CharacterBase::CHARACTER_HALF_Y };
+	static constexpr Vector2F OBLONG_POS_2=
+	{160.0f + CharacterBase::CHARACTER_HALF_X,1056.0f + CharacterBase::CHARACTER_HALF_Y };
+	static constexpr Vector2F OBLONG_POS_3=
+	{608.0f + CharacterBase::CHARACTER_HALF_X,1568.0f + CharacterBase::CHARACTER_HALF_Y };
+
+	static constexpr Vector2F OBLONG_2_POS_1 =
+	{ 960.0f + CharacterBase::CHARACTER_HALF_X,736.0f + CharacterBase::CHARACTER_HALF_Y };
+	static constexpr Vector2F OBLONG_2_POS_2 =
+	{ 448.0f + CharacterBase::CHARACTER_HALF_X,480.0f + CharacterBase::CHARACTER_HALF_Y };
+	static constexpr Vector2F OBLONG_2_POS_3 =
+	{ 1376.0f + CharacterBase::CHARACTER_HALF_X,384.0f + CharacterBase::CHARACTER_HALF_Y };*/
 
 	Stealth(void);	//コンストラクタ
 	~Stealth(void);	//デストラクタ
@@ -30,13 +69,13 @@ public:
 
 private:
 	Player* player_;
-	Position prevPlayerPos_;
+	Vector2F prevPlayerPos_;
 
 	EnemyBase* enemyMng_[OBLONG_ENEMY_NUM*static_cast<int>(EnemyBase::TYPE::MAX)];	//敵の最大数＊種類を保持
 	std::vector<EnemyBase*> useEnemy_;		//使用する敵を保持する
 	std::map<std::string, std::vector<EnemyBase::TYPE>> memorizeType_;	//部屋ごとにおける生成した敵を保持
-	std::map<std::string, std::vector<Position>> memorizePos_;			//部屋ごとにおける生成した敵を保持
-	Position initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::MAX)][OBLONG_ENEMY_NUM];
+	std::map<std::string, std::vector<Vector2F>> memorizePos_;			//部屋ごとにおける生成した敵を保持
+	Vector2F initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::MAX)][OBLONG_ENEMY_NUM];
 
 	void Collision(void);
 	void CollisionObstacle(void);
@@ -47,7 +86,8 @@ private:
 	void DrawDebug(void);
 	void EnemyInit(void);
 	void CreateEnemy(void);
-	void SetEnemyPos(void);
+	void InitEnemyPos(const RoomBase::ROOM_SHAPE type);
 	void SetEnemy(void);
+	void SearchSetEnemy(std::string key, int num);
 	void MemorizeEnemy(std::string key);
 };

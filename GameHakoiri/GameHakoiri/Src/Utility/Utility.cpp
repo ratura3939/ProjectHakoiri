@@ -33,8 +33,8 @@ Vector2 Utility::Round(Vector2F value)	//floatŒ^‚ÌVector2F‚ğintŒ^‚ÌVector2‚ÉlÌ
 {
 	Vector2 ret;
 
-	ret.x_ = static_cast<int>(roundf(value.x_));
-	ret.y_ = static_cast<int>(roundf(value.y_));
+	ret.x = static_cast<int>(roundf(value.x));
+	ret.y = static_cast<int>(roundf(value.y));
 
 	return ret;
 }

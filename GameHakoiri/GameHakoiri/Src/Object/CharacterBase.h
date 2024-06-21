@@ -55,9 +55,9 @@ public:
 	virtual void Draw(void);
 	void Release(void);
 
-	void SetPos(Position pos);
-	Position GetPos(void)const;
-	Position GetCollisionPos(void)const;
+	void SetPos(Vector2F pos);
+	Vector2F GetPos(void)const;
+	Vector2F GetCollisionPos(void)const;
 
 private:
 	void Anim(void);
@@ -72,7 +72,7 @@ protected:
 	double visionRot_;
 
 	//ˆÊ’u
-	Position pos_;
+	Vector2F pos_;
 	//•ûŒü
 	DIR dir_;
 	//ˆÚ“®—Ê

@@ -200,8 +200,8 @@ void Pazzle::ChangeIsFinish(bool flag)
 //ƒjƒ…[ƒgƒ‰ƒ‹ó‘Ô‚Ì”»’è
 bool Pazzle::IsStickNeutral(Vector2 stick)
 {
-	if (neutralStick_.x_ == stick.x_ &&
-		neutralStick_.y_ == stick.y_)
+	if (neutralStick_.x == stick.x &&
+		neutralStick_.y == stick.y)
 	{
 		return true;
 	}
@@ -213,9 +213,9 @@ Utility::DIR Pazzle::MoveStick(Vector2 stick)
 {
 
 	//cŽ²‚Ì•û‚ªˆÚ“®—Ê‚ª‘½‚¢Žž
-	if (abs(stick.y_) > abs(stick.x_))
+	if (abs(stick.y) > abs(stick.x))
 	{
-		if (stick.y_ < 0)
+		if (stick.y < 0)
 		{
 			ChangeIsNeutral(false);
 			return Utility::DIR::UP;
@@ -228,7 +228,7 @@ Utility::DIR Pazzle::MoveStick(Vector2 stick)
 	}
 	else
 	{
-		if (stick.x_ > 0)
+		if (stick.x > 0)
 		{
 			ChangeIsNeutral(false);
 			return Utility::DIR::RIGHT;

@@ -23,14 +23,13 @@ void EnemyBase::Draw(void)
 	
 	//éãäEÇÃï`âÊ
 	//â~å èëÇ´ÇΩÇ¢
-	DrawVision();
+	DrawVision(cameraPos);
 
 	//éOäpå`ÅiâºÅj
 
 
-
-	DrawRotaGraph(pos_.x_ - cameraPos.x_,
-		pos_.y_ - cameraPos.y_,
+	DrawRotaGraph(pos_.x - cameraPos.x,
+		pos_.y - cameraPos.y,
 		1.0f,
 		Application::SIE * 180.0,
 		img_[animIdx_],
@@ -41,6 +40,7 @@ void EnemyBase::Draw(void)
 
 void EnemyBase::Move(void)
 {
+
 }
 
 void EnemyBase::SetIsUse(bool flag)
@@ -58,10 +58,8 @@ EnemyBase::TYPE EnemyBase::GetType(void)
 	return type_;
 }
 
-void EnemyBase::DrawVision(void)
+void EnemyBase::DrawVision(Vector2F cameraPos)
 {
-	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
-
 	//éãäE
 	auto pos = GetCollisionPos();
 
@@ -98,8 +96,8 @@ void EnemyBase::DrawVision(void)
 	visionRot_ = static_cast<double>(rot);
 
 
-	DrawRotaGraph3(pos.x_ - cameraPos.x_,
-		pos.y_ - cameraPos.y_,
+	DrawRotaGraph3(pos.x - cameraPos.x,
+		pos.y - cameraPos.y,
 		VISION_SIZE_X / 2,
 		VISION_SIZE_Y,
 		1.0f,
