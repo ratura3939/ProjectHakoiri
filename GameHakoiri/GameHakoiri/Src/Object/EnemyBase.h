@@ -12,6 +12,9 @@ public:
 		MAX
 	};
 
+	//定数
+	static constexpr int MOVE_UNIT = 32;	//敵の基礎移動量
+
 	EnemyBase(void);
 	~EnemyBase(void)override;
 
@@ -26,6 +29,7 @@ public:
 protected:
 	TYPE type_;	//敵のタイプを保持
 	bool isUse_;//すでに使用されているかを保持
+	int moveLimit_;	//一回での移動マス量
 
 private:
 

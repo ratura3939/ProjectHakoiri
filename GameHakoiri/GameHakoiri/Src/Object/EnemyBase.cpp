@@ -40,7 +40,8 @@ void EnemyBase::Draw(void)
 
 void EnemyBase::Move(void)
 {
-
+	//•ûŒüŒˆ‚ß
+	auto moveDir = rand()% static_cast<int>(DIR::MAX);
 }
 
 void EnemyBase::SetIsUse(bool flag)
