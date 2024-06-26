@@ -5,6 +5,7 @@
 #include"../Object/CharacterBase.h"
 #include"../Common/Vector2F.h"
 
+class CharacterBase;
 class Player;
 class EnemyBase;
 
@@ -68,8 +69,11 @@ public:
 	bool Release(void);	//解放
 
 private:
+	//インスタンス
 	Player* player_;
-	Vector2F prevPlayerPos_;
+
+	//判定
+	bool isEnemyMove_;	//敵が衝突し移動できていないか
 
 	EnemyBase* enemyMng_[OBLONG_ENEMY_NUM*static_cast<int>(EnemyBase::TYPE::MAX)];	//敵の最大数＊種類を保持
 	std::vector<EnemyBase*> useEnemy_;		//使用する敵を保持する
@@ -77,17 +81,21 @@ private:
 	std::map<std::string, std::vector<Vector2F>> memorizePos_;			//部屋ごとにおける生成した敵を保持
 	Vector2F initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::MAX)][OBLONG_ENEMY_NUM];
 
-	void Collision(void);
-	void CollisionObstacle(void);
-	void CollisionTrough(Vector2 pCol);
-	void CollisionEvent(Vector2 pCol);
-	void ChangeRoom(void);
+	void Collision(void);		//当たり判定総括
+	void CollisionMapchip(CharacterBase* character ,bool isPlayer);	//マップチップとの当たり判定
+	void CollisionObstacle(CharacterBase* character);			//通り抜け不可なマップチップ
+	void CollisionTrough(Vector2 pCol, CharacterBase* character);		//奥行きがあるマップチップ
+	void CollisionEvent(Vector2 pCol);		//イベントがあるマップチップか
+	void ChangeRoom(void);					//部屋の変更
 
 	void DrawDebug(void);
-	void EnemyInit(void);
-	void CreateEnemy(void);
-	void InitEnemyPos(const RoomBase::ROOM_SHAPE type);
-	void SetEnemy(void);
-	void SearchSetEnemy(std::string key, int num);
-	void MemorizeEnemy(std::string key);
+	void EnemyInit(void);		//敵の初期化
+	void CreateEnemy(void);		//敵の初期生成
+	void InitEnemyPos(const RoomBase::ROOM_SHAPE type);	//敵の初期位置設定
+	void SetEnemy(void);		//敵の配置
+	void SearchSetEnemy(std::string key, int num);	//指定した部屋に敵の生成記録があるかを判定
+	void MemorizeEnemy(std::string key);	//敵の記録を呼び出す
+
+	void SetIsEnemyMove(bool flag);
+	bool IsEnemyMove(void)const;
 };

@@ -1,16 +1,34 @@
 #include<Windows.h>
 #include<DxLib.h>
+#include"../Utility/Utility.h"
 #include"../Application.h"
 #include"../Manager/SceneManager.h"
 #include"../Manager/Camera.h"
+#include"../Manager/ResourceManager.h"
 #include "EnemyBase.h"
 
 EnemyBase::EnemyBase(void)
 {
+	moveDir_ = Utility::VECTOR_ZERO;
+	isMove_ = false;
+	moveStartPos_ = { 0.0f,0.0f };
 }
 
 EnemyBase::~EnemyBase(void)
 {
+}
+
+void EnemyBase::Init(void)
+{
+	CharacterBase::Init();
+	moveLimit_ = move_ * MOVE_UNIT;
+	visionImg_[static_cast<int>(VISION_STATE::FIND)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::VISION_FIND_IMG).handleId_;
+
+	visionImg_[static_cast<int>(VISION_STATE::MISSING)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::VISION_MISSING_IMG).handleId_;
+
+	state_ = VISION_STATE::MISSING;
 }
 
 void EnemyBase::SetParam(void)
@@ -38,11 +56,109 @@ void EnemyBase::Draw(void)
 	
 }
 
+//移動処理
 void EnemyBase::Move(void)
 {
-	//方向決め
-	auto moveDir = rand()% static_cast<int>(DIR::MAX);
+	//動いてないとき方向決め
+	if (!isMove_) { DecideDir(); }
+	//動いている状態に
+	SetIsMove(true);
+
+	pos_ += Vector2F{ moveDir_.x * speed_,moveDir_.y * speed_ };
+
+	auto diff = Utility::Distance(pos_.ToVector2(), moveStartPos_.ToVector2());
+
+	if (static_cast<int>(diff) > moveLimit_) { SetIsMove(false); }
 }
+
+//動く方向決め
+void EnemyBase::DecideDir(void)
+{
+	//スタートポジション設定
+	moveStartPos_ = pos_;
+
+	//方向決め
+	dir_ = static_cast<DIR>(rand() % static_cast<int>(DIR::MAX));
+	ResetAnim(dir_);
+
+	auto moveDir = Utility::VECTOR_ZERO;
+	//動く方向に応じた単位ベクトルと回転の角度の指定
+	int rot = ROT_UNIT;
+	switch (dir_)
+	{
+	case DIR::BOTTOM:
+		moveDir = { 0.0f,1.0f,0.0f };
+		rot *= ROT_BTM;
+		break;
+	case DIR::LEFT:
+		moveDir = { -1.0f,0.0f,0.0f };
+		rot *= ROT_LFT;
+		break;
+	case DIR::RIGHT:
+		moveDir = { 1.0f,0.0f,0.0f };
+		rot *= ROT_RGH;
+		break;
+	case DIR::TOP:
+		moveDir = { 0.0f,-1.0f,0.0f };
+		rot *= ROT_TOP;
+		break;
+	case DIR::BOTTOM_LEFT:
+		moveDir = { -1.0f,1.0f,0.0f };
+		rot *= ROT_BTM_LFT;
+		break;
+	case DIR::BOTTOM_RIGHT:
+		moveDir = { 1.0f,1.0f,0.0f };
+		rot *= ROT_BTM_RGH;
+		break;
+	case DIR::TOP_LEFT:
+		moveDir = { -1.0f,-1.0f,0.0f };
+		rot *= ROT_TOP_LFT;
+		break;
+	case DIR::TOP_RIGHT:
+		moveDir = { 1.0f,-1.0f,0.0f };
+		rot *= ROT_TOP_RGH;
+		break;
+	}
+
+	//単位行列
+	MATRIX mat = MGetIdent();
+	//移動方向の回転
+	moveDir_ = VTransform(moveDir, mat);
+
+	visionRot_ = static_cast<double>(rot);
+}
+
+//視界の描画
+void EnemyBase::DrawVision(Vector2F cameraPos)
+{
+	//視界
+	auto pos = GetCollisionPos();
+
+
+	DrawRotaGraph3(pos.x - cameraPos.x,
+		pos.y - cameraPos.y,
+		VISION_SIZE_X / 2,
+		VISION_SIZE_Y,
+		1.0f,
+		1.0f,
+		visionRot_ * Application::SIE / 180.0,
+		visionImg_[static_cast<int>(state_)],
+		true,
+		false,
+		false);
+}
+
+
+void EnemyBase::SetIsMove(bool flag)
+{
+	isMove_ = flag;
+}
+
+void EnemyBase::SetVisionState(VISION_STATE state)
+{
+	state_ = state;
+}
+
 
 void EnemyBase::SetIsUse(bool flag)
 {
@@ -57,55 +173,4 @@ bool EnemyBase::IsUse(void)
 EnemyBase::TYPE EnemyBase::GetType(void)
 {
 	return type_;
-}
-
-void EnemyBase::DrawVision(Vector2F cameraPos)
-{
-	//視界
-	auto pos = GetCollisionPos();
-
-	//定数化しよう
-	int rot = ROT_UNIT;
-	switch (dir_)
-	{
-	case DIR::BOTTOM:
-		rot *= ROT_BTM;
-		break;
-	case DIR::LEFT:
-		rot *= ROT_LFT;
-		break;
-	case DIR::RIGHT:
-		rot *= ROT_RGH;
-		break;
-	case DIR::TOP:
-		rot *= ROT_TOP;
-		break;
-	case DIR::BOTTOM_LEFT:
-		rot *= ROT_BTM_LFT;
-		break;
-	case DIR::BOTTOM_RIGHT:
-		rot *= ROT_BTM_RGH;
-		break;
-	case DIR::TOP_LEFT:
-		rot *= ROT_TOP_LFT;
-		break;
-	case DIR::TOP_RIGHT:
-		rot *= ROT_TOP_RGH;
-		break;
-	}
-
-	visionRot_ = static_cast<double>(rot);
-
-
-	DrawRotaGraph3(pos.x - cameraPos.x,
-		pos.y - cameraPos.y,
-		VISION_SIZE_X / 2,
-		VISION_SIZE_Y,
-		1.0f,
-		1.0f,
-		visionRot_ * Application::SIE / 180.0,
-		visionImg_,
-		true,
-		false,
-		false);
 }

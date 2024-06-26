@@ -54,7 +54,13 @@ void ResourceManager::Init(void)
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "vision.png"
 		);
-	resourcesMap_.emplace(SRC::VISION_IMG, move(res));
+	resourcesMap_.emplace(SRC::VISION_FIND_IMG, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "vision_2.png"
+		);
+	resourcesMap_.emplace(SRC::VISION_MISSING_IMG, move(res));
 
 	//部屋（パズル）
 	//風呂

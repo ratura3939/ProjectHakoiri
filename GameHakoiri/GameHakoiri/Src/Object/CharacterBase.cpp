@@ -10,6 +10,7 @@ CharacterBase::CharacterBase(void)
 {
 	img_ = nullptr;
 	pos_ = { 0,0 };
+	prevPos_ = { 0,0 };
 	dir_ = DIR::BOTTOM;
 	move_ = 1.0f;
 	animIdx_ = 0;
@@ -28,12 +29,11 @@ void CharacterBase::Init(void)
 	animIdx_ = ANIM_NUM * static_cast<int>(dir_) + ANIM_CENTER;
 	prvAnimIdx_ = ANIM_NUM * static_cast<int>(dir_);
 	animCnt_ = 0;
-	visionImg_= ResourceManager::GetInstance().Load(ResourceManager::SRC::VISION_IMG).handleId_;
-	
 }
 
 void CharacterBase::Update(void)
 {
+	SetPrevPos(pos_);
 	Move();
 	Anim();
 }
@@ -65,6 +65,18 @@ Vector2F CharacterBase::GetPos(void)const
 {
 	return pos_;
 }
+
+void CharacterBase::SetPrevPos(const Vector2F pos)
+{
+	prevPos_ = pos;
+}
+
+Vector2F CharacterBase::GetPrevPos() const
+{
+	return prevPos_;
+}
+
+
 
 Vector2F CharacterBase::GetCollisionPos(void) const
 {
@@ -138,6 +150,10 @@ void CharacterBase::ResetAnim(DIR dir)
 	prvAnimIdx_ = ANIM_NUM * static_cast<int>(dir);
 }
 
+void CharacterBase::Move(void)
+{
+}
+
 void CharacterBase::SetDir(DIR dir)
 {
 	dir_ = dir;
@@ -146,4 +162,8 @@ void CharacterBase::SetDir(DIR dir)
 CharacterBase::DIR CharacterBase::GetDir(void) const
 {
 	return dir_;
+}
+
+void CharacterBase::SetParam(void)
+{
 }

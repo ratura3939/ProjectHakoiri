@@ -38,3 +38,8 @@ Vector2 Utility::Round(Vector2F value)	//floatŒ^‚ÌVector2F‚ðintŒ^‚ÌVector2‚ÉŽlŽÌ
 
 	return ret;
 }
+
+double Utility::Distance(const Vector2& v1, const Vector2& v2)
+{
+	return sqrt(pow(v2.x - v1.x, 2) + pow(v2.y - v1.y, 2));
+}

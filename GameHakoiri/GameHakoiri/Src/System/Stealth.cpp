@@ -8,6 +8,7 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/Camera.h"
 #include"../Object/Player.h"
+#include"../Object/CharacterBase.h"
 #include"../Object/Enemy/Housemaid.h"
 #include"../Object/Enemy/Seneschal.h"
 #include"Stealth.h"
@@ -35,7 +36,6 @@ bool Stealth::Init(void)
 	camera.SetMapSize(StageManager::GetInstance().GetMapMaxSize());
 	player_ = new Player;
 	player_->Init();
-	prevPlayerPos_ = player_->GetPos();
 
 	EnemyInit();
 	SetEnemy();
@@ -51,7 +51,13 @@ void Stealth::Update(void)
 	auto& camera = SceneManager::GetInstance().GetCamera();
 	camera.SetTargetPos(player_->GetPos());
 
-	prevPlayerPos_ = player_->GetPos();
+	//enemy
+	for (auto& e : useEnemy_)
+	{
+		e->Update();
+	}
+
+	//player
 	player_->Update();
 
 
@@ -96,38 +102,69 @@ bool Stealth::Release(void)
 //当たり判定総括
 void Stealth::Collision(void)
 {
+	//プレイヤー
+	//--------------------------------------------------------
+	//toマップチップ
+	CollisionMapchip(player_,true);
+	
+	
+	//敵
+	//--------------------------------------------------------
+	for (auto& e : useEnemy_)
+	{
+		//toマップチップ
+		CollisionMapchip(e, false);
+		//敵が衝突しているとき
+		if (IsEnemyMove())
+		{
+			//敵を動き終了の状態に
+			e->SetIsMove(false);
+		}
+	}
+}
+
+
+void Stealth::CollisionMapchip(CharacterBase* character, bool isPlayer)
+{
+	//敵用のフラグリセット
+	SetIsEnemyMove(false);
+
 	//ステージマネージャ取得
 	auto& stage = StageManager::GetInstance();
+	//判定するキャラクター座標をマップ座標に変換
+	auto mapPos = stage.GetVector2MapPos(character->GetCollisionPos().ToVector2());
 
-	//プレイヤーとオブジェクトの当たり判定
-	//--------------------------------------------------------
-	//プレイヤーの当たり判定座標をマップの配列番号に変換
-	auto pCol = stage.GetVector2MapPos(player_->GetCollisionPos().ToVector2());
-	
-	if (stage.IsCollisionWall(pCol))
+	if (stage.IsCollisionWall(mapPos))
 	{
-		CollisionObstacle();
+		CollisionObstacle(character);
 	}
-	else if (stage.IsCollisionObject(pCol))
+	else if (stage.IsCollisionObject(mapPos))
 	{
-	 	auto type = stage.GetObjectType(pCol);
-		if (type == StageManager::OBJECT::OBSTACLE) { CollisionObstacle(); }
-		if (type == StageManager::OBJECT::THROUGH) { CollisionTrough(pCol); }
-		if (type == StageManager::OBJECT::EVENT) { CollisionEvent(pCol); }
+		auto type = stage.GetObjectType(mapPos);
+		if (type == StageManager::OBJECT::OBSTACLE) { CollisionObstacle(character); }
+		if (type == StageManager::OBJECT::THROUGH) { CollisionTrough(mapPos, character); }
+		//イベントマップチップはプリやーしか処理しない
+		if (type == StageManager::OBJECT::EVENT && isPlayer) { CollisionEvent(mapPos); }	
 
 		//pCol = stage.GetVector2MapPos(player_->GetCollisionPos().ToVector2());
 	}
-	
 }
 //通り抜け不可なオブジェクト
-void Stealth::CollisionObstacle(void)
+void Stealth::CollisionObstacle(CharacterBase* character)
 {
-	player_->SetPos(prevPlayerPos_);
+	character->SetPos(character->GetPrevPos());
+	//敵用のフラグセット
+	SetIsEnemyMove(true);
 }
 //最下段以外は通り抜け可能なオブジェクト
-void Stealth::CollisionTrough(Vector2 pCol)
+void Stealth::CollisionTrough(Vector2 pCol, CharacterBase* character)
 {
-	if(StageManager::GetInstance().IsBottomObject(pCol)){ player_->SetPos(prevPlayerPos_); }
+	if(StageManager::GetInstance().IsBottomObject(pCol))
+	{ 
+		character->SetPos(character->GetPrevPos()); 
+		//敵用のフラグセット
+		SetIsEnemyMove(true);
+	}
 }
 //扉などのイベントが起こるオブジェクト
 void Stealth::CollisionEvent(Vector2 pCol)
@@ -145,7 +182,7 @@ void Stealth::CollisionEvent(Vector2 pCol)
 
 	if (!stage.IsMove())		//移動できないとき
 	{
-		player_->SetPos(prevPlayerPos_);
+		player_->SetPos(player_->GetPrevPos());
 	}
 	else
 	{
@@ -431,6 +468,8 @@ void Stealth::SearchSetEnemy(std::string key, int num)
 void Stealth::MemorizeEnemy(std::string key)
 {
 	auto size = useEnemy_.size();
+	memorizePos_[key].clear();
+
 	for (int i = 0; i < size; i++)
 	{
 		//タイプとポジションの記録
@@ -446,5 +485,15 @@ void Stealth::MemorizeEnemy(std::string key)
 		//使用フラグを全てリセット
 		enemyMng_[i]->SetIsUse(false);
 	}
+}
+
+void Stealth::SetIsEnemyMove(bool flag)
+{
+	isEnemyMove_ = flag;
+}
+
+bool Stealth::IsEnemyMove(void) const
+{
+	return isEnemyMove_;
 }
 

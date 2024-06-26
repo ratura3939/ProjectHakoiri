@@ -50,13 +50,15 @@ public:
 	CharacterBase(void);
 	virtual ~CharacterBase(void);
 
-	void Init(void);
+	virtual void Init(void);
 	virtual void Update(void);
 	virtual void Draw(void);
 	void Release(void);
 
 	void SetPos(Vector2F pos);
 	Vector2F GetPos(void)const;
+	void SetPrevPos(const Vector2F pos);
+	Vector2F GetPrevPos()const;
 	Vector2F GetCollisionPos(void)const;
 
 private:
@@ -68,11 +70,10 @@ protected:
 	//画像
 	int* img_;
 
-	int visionImg_;
-	double visionRot_;
-
 	//位置
 	Vector2F pos_;
+	Vector2F prevPos_;
+
 	//方向
 	DIR dir_;
 	//移動量
@@ -83,10 +84,10 @@ protected:
 	int animCnt_;
 
 	void ResetAnim(DIR dir);
-	virtual void Move(void) = 0;	//動きの処理
+	virtual void Move(void);	//動きの処理
 	void SetDir(DIR dir);		//方向の変換
 
 	DIR GetDir(void)const;
-	virtual void SetParam(void) = 0;//各パラメータ設定
+	virtual void SetParam(void);//各パラメータ設定
 };
 
