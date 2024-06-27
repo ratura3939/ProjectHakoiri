@@ -1,5 +1,6 @@
 #include<Windows.h>
 #include<DxLib.h>
+#include<cmath>
 #include"../Utility/Utility.h"
 #include"../Application.h"
 #include"../Manager/SceneManager.h"
@@ -12,6 +13,14 @@ EnemyBase::EnemyBase(void)
 	moveDir_ = Utility::VECTOR_ZERO;
 	isMove_ = false;
 	moveStartPos_ = { 0.0f,0.0f };
+	isUse_ = false;
+	moveLimit_ = 0;
+	speed_ = 0.0f;
+	state_ = VISION_STATE::MISSING;
+	type_ = TYPE::MAX;
+	visionImg_[0] = 0;
+	visionImg_[1] = 0;
+	drawVisionRot_ = 0.0f;
 }
 
 EnemyBase::~EnemyBase(void)
@@ -29,6 +38,8 @@ void EnemyBase::Init(void)
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::VISION_MISSING_IMG).handleId_;
 
 	state_ = VISION_STATE::MISSING;
+
+	//DecideDir();
 }
 
 void EnemyBase::SetParam(void)
@@ -71,6 +82,37 @@ void EnemyBase::Move(void)
 	if (static_cast<int>(diff) > moveLimit_) { SetIsMove(false); }
 }
 
+//視野内にplayerがいるか
+bool EnemyBase::FindPlayer(Vector2F pPos) const
+{
+	//プレイヤーと敵の距離ベクトル
+	auto diff = pPos - pos_;
+
+	auto distance = std::pow(diff.x, 2.0f) + std::pow(diff.y, 2.0f);
+
+	if (distance <= (std::pow(VIEW_RANGE, 2.0f)))	//視界（円）判定
+	{
+		auto rot = atan2(moveDir_.x, -moveDir_.y);
+
+		//自分から見たplayerの角度を求める
+		float rad = atan2(diff.x, -diff.y);
+		//自分の視野角分の差分を合わせる。visionRotが360度計なのでRADに合わせる
+		float viewRad = rad - rot;
+
+		//求めた角度を360度計に
+		float viewDeg = static_cast<float>(Utility::DegIn360(Utility::Rad2DegF(viewRad)));
+
+		//視野内なら
+		if (viewDeg <= VIEW_ANGLE || viewDeg >= (360.0f - VIEW_ANGLE))
+		{
+			return true;
+		}
+		
+	}
+	//視野外なので
+	return false;
+}
+
 //動く方向決め
 void EnemyBase::DecideDir(void)
 {
@@ -84,6 +126,7 @@ void EnemyBase::DecideDir(void)
 	auto moveDir = Utility::VECTOR_ZERO;
 	//動く方向に応じた単位ベクトルと回転の角度の指定
 	int rot = ROT_UNIT;
+
 	switch (dir_)
 	{
 	case DIR::BOTTOM:
@@ -125,7 +168,7 @@ void EnemyBase::DecideDir(void)
 	//移動方向の回転
 	moveDir_ = VTransform(moveDir, mat);
 
-	visionRot_ = static_cast<double>(rot);
+	drawVisionRot_ = static_cast<double>(rot);
 }
 
 //視界の描画
@@ -134,14 +177,13 @@ void EnemyBase::DrawVision(Vector2F cameraPos)
 	//視界
 	auto pos = GetCollisionPos();
 
-
 	DrawRotaGraph3(pos.x - cameraPos.x,
 		pos.y - cameraPos.y,
 		VISION_SIZE_X / 2,
 		VISION_SIZE_Y,
 		1.0f,
 		1.0f,
-		visionRot_ * Application::SIE / 180.0,
+		drawVisionRot_*Utility::DEG2RAD,
 		visionImg_[static_cast<int>(state_)],
 		true,
 		false,

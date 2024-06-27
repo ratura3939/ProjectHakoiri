@@ -18,6 +18,14 @@
 Stealth::Stealth(void)
 {
 	player_ = nullptr;
+	enemyMng_[0] = nullptr;
+	enemyMng_[1] = nullptr;
+	enemyMng_[2] = nullptr;
+	enemyMng_[3] = nullptr;
+	enemyMng_[4] = nullptr;
+	enemyMng_[5] = nullptr;
+
+	isEnemyMove_ = false;
 }
 //デストラクタ
 //********************************************************
@@ -110,16 +118,43 @@ void Stealth::Collision(void)
 	
 	//敵
 	//--------------------------------------------------------
+	auto pPos = player_->GetPos();
 	for (auto& e : useEnemy_)
 	{
 		//toマップチップ
 		CollisionMapchip(e, false);
-		//敵が衝突しているとき
-		if (IsEnemyMove())
+		
+
+		e->SetVisionState(EnemyBase::VISION_STATE::MISSING);
+		//敵がplayerを発見できていないとき
+		if (!e->FindPlayer(pPos))
 		{
-			//敵を動き終了の状態に
-			e->SetIsMove(false);
+			//敵が衝突しているとき
+			if (IsEnemyMove())
+			{
+				//敵を動き終了の状態に
+				e->SetIsMove(false);
+			}
 		}
+		else
+		{
+			//間にさえぎるオブジェクトがなかった時
+			if (!CheckObjectPToE(pPos, e->GetPos()))
+			{
+				e->SetVisionState(EnemyBase::VISION_STATE::FIND);
+			}
+			else
+			{
+				//見つかっていないのでその時の動きを行う
+				//敵が衝突しているとき
+				if (IsEnemyMove())
+				{
+					//敵を動き終了の状態に
+					e->SetIsMove(false);
+				}
+			}
+		}
+		
 	}
 }
 
@@ -144,8 +179,17 @@ void Stealth::CollisionMapchip(CharacterBase* character, bool isPlayer)
 		if (type == StageManager::OBJECT::OBSTACLE) { CollisionObstacle(character); }
 		if (type == StageManager::OBJECT::THROUGH) { CollisionTrough(mapPos, character); }
 		//イベントマップチップはプリやーしか処理しない
-		if (type == StageManager::OBJECT::EVENT && isPlayer) { CollisionEvent(mapPos); }	
-
+		if (type == StageManager::OBJECT::EVENT)
+		{
+			if (isPlayer)
+			{
+				CollisionEvent(mapPos);
+			}
+			else
+			{
+				CollisionObstacle(character);
+			}
+		}
 		//pCol = stage.GetVector2MapPos(player_->GetCollisionPos().ToVector2());
 	}
 }
@@ -311,8 +355,14 @@ void Stealth::CollisionEvent(Vector2 pCol)
 	}
 }
 
+
 #pragma endregion
 
+
+bool Stealth::CheckObjectPToE(Vector2F pPos, Vector2F ePos)
+{
+	return false;
+}
 
 void Stealth::ChangeRoom(void/*いずれかは動く部屋の指定数をいれる*/)
 {
@@ -423,7 +473,6 @@ void Stealth::SetEnemy(void)
 			for (int i = 0; i < NOMAL_ENEMY_NUM; i++)
 			{
 				CreateEnemy();
-				
 			}
 		}
 		else
@@ -478,6 +527,7 @@ void Stealth::MemorizeEnemy(std::string key)
 		//役目を終えたので非使用に変換
 		useEnemy_[i]->SetIsUse(false);
 	}
+
 	useEnemy_.clear();
 
 	for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)

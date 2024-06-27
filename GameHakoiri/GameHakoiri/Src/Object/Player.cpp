@@ -3,6 +3,10 @@
 #include"../Manager/InputManager.h"
 #include "Player.h"
 
+
+#include"../Manager/SceneManager.h"
+#include"../Manager/Camera.h"
+
 Player::Player(void)
 {
 }

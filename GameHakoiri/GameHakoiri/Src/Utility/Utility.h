@@ -39,4 +39,21 @@ public:
 
 	//ベクトルの長さ取得
 	static double Distance(const Vector2& v1, const Vector2& v2);
+
+
+	// ラジアン(rad)から度(deg)
+	static double Rad2DegD(double rad);
+	static float Rad2DegF(float rad);
+	static int Rad2DegI(int rad);
+
+	// 度(deg)からラジアン(rad)
+	static double Deg2RadD(double deg);
+	static float Deg2RadF(float deg);
+	static int Deg2RadI(int deg);
+
+	// 0～360度の範囲に収める
+	static double DegIn360(double deg);
+
+	// 0(0)～2π(360度)の範囲に収める
+	static double RadIn2PI(double rad);
 };

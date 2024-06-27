@@ -43,3 +43,53 @@ double Utility::Distance(const Vector2& v1, const Vector2& v2)
 {
 	return sqrt(pow(v2.x - v1.x, 2) + pow(v2.y - v1.y, 2));
 }
+
+double Utility::Rad2DegD(double rad)
+{
+	return rad * (180.0 / DX_PI);
+}
+
+float Utility::Rad2DegF(float rad)
+{
+	return rad * (180.0f / DX_PI_F);
+}
+
+int Utility::Rad2DegI(int rad)
+{
+	return rad * Round(180.0f / DX_PI_F);
+}
+
+double Utility::Deg2RadD(double deg)
+{
+	return deg * (DX_PI / 180.0);
+}
+
+float Utility::Deg2RadF(float deg)
+{
+	return deg * (DX_PI_F / 180.0f);
+}
+
+int Utility::Deg2RadI(int deg)
+{
+	return deg * Round(DX_PI_F / 180.0f);
+}
+
+double Utility::DegIn360(double deg)
+{
+	deg = fmod(deg, 360.0);
+	if (deg < 0.0f)
+	{
+		deg += 360.0;
+	}
+	return deg;
+}
+
+double Utility::RadIn2PI(double rad)
+{
+	rad = fmod(rad, DX_TWO_PI);
+	if (rad < 0.0)
+	{
+		rad += DX_TWO_PI;
+	}
+	return rad;
+}

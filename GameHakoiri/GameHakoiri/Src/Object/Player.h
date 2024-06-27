@@ -11,8 +11,9 @@ public:
 
 	void SetParam(void)override;
 	void Move(void)override;
-
 private:
 	void KeyboardContoroller(void);	// キーボードの操作
 	void GamePadController(void);	// ゲームパッドの操作
+
+
 };

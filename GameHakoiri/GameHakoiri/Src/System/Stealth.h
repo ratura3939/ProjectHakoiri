@@ -83,9 +83,11 @@ private:
 
 	void Collision(void);		//当たり判定総括
 	void CollisionMapchip(CharacterBase* character ,bool isPlayer);	//マップチップとの当たり判定
-	void CollisionObstacle(CharacterBase* character);			//通り抜け不可なマップチップ
-	void CollisionTrough(Vector2 pCol, CharacterBase* character);		//奥行きがあるマップチップ
+	void CollisionObstacle(CharacterBase* character);				//通り抜け不可なマップチップ
+	void CollisionTrough(Vector2 pCol, CharacterBase* character);	//奥行きがあるマップチップ
 	void CollisionEvent(Vector2 pCol);		//イベントがあるマップチップか
+	
+	bool CheckObjectPToE(Vector2F pPos, Vector2F ePos);	//playerと敵との間にオブジェクトがあるかを調べる
 	void ChangeRoom(void);					//部屋の変更
 
 	void DrawDebug(void);
@@ -94,8 +96,8 @@ private:
 	void InitEnemyPos(const RoomBase::ROOM_SHAPE type);	//敵の初期位置設定
 	void SetEnemy(void);		//敵の配置
 	void SearchSetEnemy(std::string key, int num);	//指定した部屋に敵の生成記録があるかを判定
-	void MemorizeEnemy(std::string key);	//敵の記録を呼び出す
+	void MemorizeEnemy(std::string key);			//敵の記録
 
-	void SetIsEnemyMove(bool flag);
-	bool IsEnemyMove(void)const;
+	void SetIsEnemyMove(bool flag);	//敵が動きを停止したかをセット
+	bool IsEnemyMove(void)const;	//上記を返却
 };
