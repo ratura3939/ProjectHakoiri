@@ -358,9 +358,83 @@ void Stealth::CollisionEvent(Vector2 pCol)
 
 #pragma endregion
 
-
+//プレイヤーと敵との間に通り抜け不可なオブジェクトはあるのか
 bool Stealth::CheckObjectPToE(Vector2F pPos, Vector2F ePos)
 {
+	//双方向のベクトルを取得
+	//この２つはxyの符号が逆なだけ
+	auto EtoP = pPos - ePos;
+	auto PtoE = ePos - pPos;
+
+	//引数の座標を頂点に含む４角形を制作
+	// この４角形の範囲にあるオブジェクトを精査する
+	//４角形の始点（左上）と終点（右下）を制作
+	Vector2F stPos = { 0.0f,0.0f };
+	Vector2F edPos = { 0.0f,0.0f };
+
+	//プレイヤーが敵より左側にいるとき
+	if (pPos.x < ePos.x)
+	{
+		//始点のX座標にはプレイヤーのX座標を
+		stPos.x = pPos.x;
+		edPos.x = ePos.x;
+	}
+	else
+	{
+		//始点のX座標には敵のX座標を
+		stPos.x = ePos.x;
+		edPos.x = pPos.x;
+	}
+
+	//プレイヤーが敵より上にいるとき
+	if (pPos.y < ePos.y)
+	{
+		//始点のY座標にはプレイヤーのY座標を
+		stPos.y = pPos.y;
+		edPos.y = ePos.y;
+	}
+	else
+	{
+		//始点のY座標には敵のY座標を
+		stPos.y = ePos.y;
+		edPos.y = pPos.y;
+	}
+
+
+	//ステージマネージャ取得
+	auto& stage = StageManager::GetInstance();
+	//始点と終点をマップ座標に変換
+	auto stMapPos = stage.GetVector2MapPos(stPos.ToVector2());
+	auto edMapPos = stage.GetVector2MapPos(edPos.ToVector2());
+
+	//始点から終点までの矩形の中でどこにオブジェクトがあるかを調べる
+	//オブジェクトの位置全体保存用
+	std::vector<Vector2> objectPos;
+	//個別保存（for文)用
+	Vector2 obPos;
+
+	//始点から終点までのfor文
+	for (int y = stMapPos.y; y <= edMapPos.y; y++)
+	{
+		for (int x = stMapPos.x; x <= edMapPos.x; x++)
+		{
+			obPos = { x,y };
+			//通り抜け不可なものを記録していく
+			if (stage.GetObjectType(obPos) == StageManager::OBJECT::OBSTACLE)
+			{
+				objectPos.push_back(obPos);
+			}
+			else if (stage.GetObjectType(obPos) == StageManager::OBJECT::THROUGH)
+			{
+				if (stage.IsBottomObject(obPos))
+				{
+					objectPos.push_back(obPos);
+				}
+			}
+		}
+	}
+
+
 	return false;
 }
 
