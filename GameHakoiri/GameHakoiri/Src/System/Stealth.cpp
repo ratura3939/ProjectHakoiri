@@ -434,6 +434,13 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, Vector2F ePos)
 		}
 	}
 
+	//お互いからオブジェクトとのベクトルをとる
+
+	//内積をとる。結果が正のものを保存
+
+	//その中に同じものがあるかを判定
+
+	//あった場合記録
 
 	return false;
 }
