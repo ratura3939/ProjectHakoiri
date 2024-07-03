@@ -21,6 +21,7 @@ EnemyBase::EnemyBase(void)
 	visionImg_[0] = 0;
 	visionImg_[1] = 0;
 	drawVisionRot_ = 0.0f;
+	colObject_ = { 0,0 };
 }
 
 EnemyBase::~EnemyBase(void)
@@ -199,6 +200,21 @@ void EnemyBase::SetIsMove(bool flag)
 void EnemyBase::SetVisionState(VISION_STATE state)
 {
 	state_ = state;
+}
+
+void EnemyBase::SetColObject(const Vector2 obj)
+{
+	colObject_ = obj;
+}
+
+void EnemyBase::ResetColObject(void)
+{
+	colObject_ = { 0,0 };
+}
+
+Vector2 EnemyBase::GetColObject(void) const
+{
+	return colObject_;
 }
 
 

@@ -42,6 +42,9 @@ public:
 	TYPE GetType(void);			//敵の種類を獲得
 	void SetIsMove(bool flag);	//動いているかをセット	
 	void SetVisionState(VISION_STATE state);	//敵の視覚状態をセット
+	void SetColObject(const Vector2 obj);	//視界を遮るオブジェクトの位置（配列指数）をセット
+	void ResetColObject(void);				//視界を遮るオブジェクトの位置（配列指数）をリセット
+	Vector2 GetColObject(void)const;		//視界を遮るオブジェクトの位置（配列指数）をゲット
 
 protected:
 	TYPE type_;	//敵のタイプを保持
@@ -58,6 +61,7 @@ private:
 	VISION_STATE state_;	//敵の発見状態
 
 	bool isMove_;	//動いているか
+	Vector2 colObject_;	//敵の視界を遮るオブジェクトを保存
 
 	void DrawVision(Vector2F cameraPos);	//視界の描画
 	void DecideDir(void);					//方向決め

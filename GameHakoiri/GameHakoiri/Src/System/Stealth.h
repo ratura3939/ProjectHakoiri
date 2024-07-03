@@ -4,6 +4,7 @@
 #include"../Object/EnemyBase.h"
 #include"../Object/CharacterBase.h"
 #include"../Common/Vector2F.h"
+#include"../Utility/Utility.h"
 
 class CharacterBase;
 class Player;
@@ -87,7 +88,11 @@ private:
 	void CollisionTrough(Vector2 pCol, CharacterBase* character);	//奥行きがあるマップチップ
 	void CollisionEvent(Vector2 pCol);		//イベントがあるマップチップか
 	
-	bool CheckObjectPToE(Vector2F pPos, Vector2F ePos);	//playerと敵との間にオブジェクトがあるかを調べる
+	bool CheckObjectPToE(Vector2F pPos, CharacterBase* enemy);	//playerと敵との間にオブジェクトがあるかを調べる
+	std::vector<Vector2> GetWithinFieldOfViewObject(Vector2F pPos, Vector2F ePos);	//視野内のオブジェクトを取得
+	Utility::DIR GetObjToCharacterDir(double rad);		//オブジェクトから見たキャラクターの位置の判定
+	Vector2F GetJudgementPos(Vector2F pos, Utility::DIR dir);	//方向に応じた衝突判定に使用する位置を決める
+
 	void ChangeRoom(void);					//部屋の変更
 
 	void DrawDebug(void);

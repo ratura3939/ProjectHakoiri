@@ -139,7 +139,7 @@ void Stealth::Collision(void)
 		else
 		{
 			//間にさえぎるオブジェクトがなかった時
-			if (!CheckObjectPToE(pPos, e->GetPos()))
+			if (!CheckObjectPToE(pPos, e))
 			{
 				e->SetVisionState(EnemyBase::VISION_STATE::FIND);
 			}
@@ -359,16 +359,62 @@ void Stealth::CollisionEvent(Vector2 pCol)
 #pragma endregion
 
 //プレイヤーと敵との間に通り抜け不可なオブジェクトはあるのか
-bool Stealth::CheckObjectPToE(Vector2F pPos, Vector2F ePos)
+bool Stealth::CheckObjectPToE(Vector2F pPos, CharacterBase* enemy)
 {
 	//双方向のベクトルを取得
 	//この２つはxyの符号が逆なだけ
+	auto ePos = enemy->GetPos();
 	auto EtoP = pPos - ePos;
 	auto PtoE = ePos - pPos;
 
+	//まだ何も遮るものが見つかっていないときの処理
+	//視野内のオブジェクトを取得（配列系）
+	auto pMapPos = StageManager::GetInstance().GetVector2MapPos(pPos.ToVector2());
+	auto eMapPos = StageManager::GetInstance().GetVector2MapPos(ePos.ToVector2());
+	auto obj = GetWithinFieldOfViewObject(pMapPos, eMapPos);
+
+	for (auto& o : obj)
+	{
+		//オブジェクト位置を配列系から座標系に
+		o.x *= StageManager::UNIT_STEALTH_SIZE_X;
+		o.y *= StageManager::UNIT_STEALTH_SIZE_Y;
+
+		auto objPos = o.ToVector2F();
+
+		//キャラクターから見て右手前の位置は何かを決める
+		//マップチップから見て敵とpプレイヤーがどこにいるかを調べる
+		auto OtoP = pPos - objPos;
+		auto OtoE = ePos - objPos;
+
+		auto OtoPRad = atan2(OtoP.y, OtoP.x);
+		auto OtoPDir = GetObjToCharacterDir(OtoPRad);
+
+		auto OtoERad = atan2(OtoE.y, OtoE.x);
+		auto OtoEDir = GetObjToCharacterDir(OtoERad);
+
+		//自分から見てマップチップの右手前に当たるものとのベクトル
+		auto PtoO = GetJudgementPos(objPos, OtoPDir) - pPos;
+		auto EtoO = GetJudgementPos(objPos, OtoEDir) - ePos;
+
+		//内積をとる。結果が正のものを保存
+
+		//その中に同じものがあるかを判定
+
+		//あった場合記録
+	}
+	
+
+	return false;
+}
+
+
+//これらの引数はそれぞれの位置をマップ配列に変換したもの
+std::vector<Vector2> Stealth::GetWithinFieldOfViewObject(Vector2F pPos, Vector2F ePos)	
+{
 	//引数の座標を頂点に含む４角形を制作
 	// この４角形の範囲にあるオブジェクトを精査する
 	//４角形の始点（左上）と終点（右下）を制作
+	//この中身は配列の番号とする
 	Vector2F stPos = { 0.0f,0.0f };
 	Vector2F edPos = { 0.0f,0.0f };
 
@@ -434,15 +480,21 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, Vector2F ePos)
 		}
 	}
 
-	//お互いからオブジェクトとのベクトルをとる
+	return objectPos;
+}
 
-	//内積をとる。結果が正のものを保存
+Utility::DIR Stealth::GetObjToCharacterDir(double rad)
+{
+	Utility::DIR ret;
+	
 
-	//その中に同じものがあるかを判定
 
-	//あった場合記録
+	return ret;
+}
 
-	return false;
+Vector2F Stealth::GetJudgementPos(Vector2F pos, Utility::DIR dir)
+{
+	return Vector2F();
 }
 
 void Stealth::ChangeRoom(void/*いずれかは動く部屋の指定数をいれる*/)
