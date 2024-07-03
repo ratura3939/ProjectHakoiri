@@ -61,6 +61,11 @@ public:
 	static constexpr Vector2F OBLONG_2_POS_3 =
 	{ 1376.0f + CharacterBase::CHARACTER_HALF_X,384.0f + CharacterBase::CHARACTER_HALF_Y };*/
 
+	//ブロックから見た位置の角度設定
+	static constexpr float UNIT_DEG = 45.0f;
+	static constexpr float NOMAL_DEG = 90.0f;
+
+
 	Stealth(void);	//コンストラクタ
 	~Stealth(void);	//デストラクタ
 
@@ -88,7 +93,7 @@ private:
 	void CollisionTrough(Vector2 pCol, CharacterBase* character);	//奥行きがあるマップチップ
 	void CollisionEvent(Vector2 pCol);		//イベントがあるマップチップか
 	
-	bool CheckObjectPToE(Vector2F pPos, CharacterBase* enemy);	//playerと敵との間にオブジェクトがあるかを調べる
+	bool CheckObjectPToE(Vector2F pPos, EnemyBase* enemy);	//playerと敵との間にオブジェクトがあるかを調べる
 	std::vector<Vector2> GetWithinFieldOfViewObject(Vector2F pPos, Vector2F ePos);	//視野内のオブジェクトを取得
 	Utility::DIR GetObjToCharacterDir(double rad);		//オブジェクトから見たキャラクターの位置の判定
 	Vector2F GetJudgementPos(Vector2F pos, Utility::DIR dir);	//方向に応じた衝突判定に使用する位置を決める

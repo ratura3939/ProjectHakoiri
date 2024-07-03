@@ -148,7 +148,7 @@ void RoomBase::DrawStealthObject(void)
 					pos.x - cameraPos.x,
 					pos.y - cameraPos.y,
 					1.0f,
-					Application::SIE * 180,
+					Utility::DEG2RAD,
 					mapchip_[mapchip],
 					true,
 					false);

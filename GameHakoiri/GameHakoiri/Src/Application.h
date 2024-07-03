@@ -12,7 +12,6 @@ public:
 	static constexpr int SCREEN_SIZE_Y = 720;
 
 	static constexpr int FPS = 60;
-	static constexpr float SIE = 3.1415926535;
 
 	// データパス関連
 	//-------------------------------------------

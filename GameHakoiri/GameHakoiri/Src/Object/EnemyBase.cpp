@@ -31,7 +31,7 @@ EnemyBase::~EnemyBase(void)
 void EnemyBase::Init(void)
 {
 	CharacterBase::Init();
-	moveLimit_ = move_ * MOVE_UNIT;
+	moveLimit_ = static_cast<int>(move_) * MOVE_UNIT;
 	visionImg_[static_cast<int>(VISION_STATE::FIND)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::VISION_FIND_IMG).handleId_;
 
@@ -61,7 +61,7 @@ void EnemyBase::Draw(void)
 	DrawRotaGraph(pos_.x - cameraPos.x,
 		pos_.y - cameraPos.y,
 		1.0f,
-		Application::SIE * 180.0,
+		Utility::DEG2RAD,
 		img_[animIdx_],
 		true,
 		false);

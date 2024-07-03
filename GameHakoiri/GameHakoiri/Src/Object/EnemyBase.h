@@ -1,5 +1,6 @@
 #pragma once
 #include "CharacterBase.h"
+#include"../Common/Vector2.h"
 #include <DxLib.h>
 
 class EnemyBase :

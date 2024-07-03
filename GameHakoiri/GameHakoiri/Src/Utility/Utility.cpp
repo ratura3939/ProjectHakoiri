@@ -93,3 +93,8 @@ double Utility::RadIn2PI(double rad)
 	}
 	return rad;
 }
+
+float Utility::GetInnerProductF(Vector2F v1, Vector2F v2)
+{
+	return (v1.x * v2.x) + (v1.y * v2.y);
+}

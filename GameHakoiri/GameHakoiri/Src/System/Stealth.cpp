@@ -359,7 +359,7 @@ void Stealth::CollisionEvent(Vector2 pCol)
 #pragma endregion
 
 //プレイヤーと敵との間に通り抜け不可なオブジェクトはあるのか
-bool Stealth::CheckObjectPToE(Vector2F pPos, CharacterBase* enemy)
+bool Stealth::CheckObjectPToE(Vector2F pPos, EnemyBase* enemy)
 {
 	//双方向のベクトルを取得
 	//この２つはxyの符号が逆なだけ
@@ -373,13 +373,19 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, CharacterBase* enemy)
 	auto eMapPos = StageManager::GetInstance().GetVector2MapPos(ePos.ToVector2());
 	auto obj = GetWithinFieldOfViewObject(pMapPos, eMapPos);
 
+	std::vector<Vector2> RightObjectOfPlayer;
+	std::vector<Vector2> RightObjectOfEnemy;
+
+	//全てのオブジェクトとキャラクターの位置関係を調べる
+	//結果として得るのは内積をとって正の方向にあるものだけ
 	for (auto& o : obj)
 	{
 		//オブジェクト位置を配列系から座標系に
-		o.x *= StageManager::UNIT_STEALTH_SIZE_X;
-		o.y *= StageManager::UNIT_STEALTH_SIZE_Y;
+		auto objWorldPos = o;
+		objWorldPos.x *= StageManager::UNIT_STEALTH_SIZE_X;
+		objWorldPos.y *= StageManager::UNIT_STEALTH_SIZE_Y;
 
-		auto objPos = o.ToVector2F();
+		auto objPos = objWorldPos.ToVector2F();
 
 		//キャラクターから見て右手前の位置は何かを決める
 		//マップチップから見て敵とpプレイヤーがどこにいるかを調べる
@@ -396,14 +402,38 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, CharacterBase* enemy)
 		auto PtoO = GetJudgementPos(objPos, OtoPDir) - pPos;
 		auto EtoO = GetJudgementPos(objPos, OtoEDir) - ePos;
 
-		//内積をとる。結果が正のものを保存
-
-		//その中に同じものがあるかを判定
-
-		//あった場合記録
+		//内積をとる。結果が正のものを保存(配列系)
+		//プレイヤー視点
+		if (Utility::GetInnerProductF(PtoE, PtoO) > 0.0f)
+		{
+			RightObjectOfPlayer.push_back(o);
+		}
+		//敵視点
+		if (Utility::GetInnerProductF(EtoP, EtoO) > 0.0f)
+		{
+			RightObjectOfEnemy.push_back(o);
+		}
 	}
 	
+	//その中に同じものがあるかを判定
+	//それぞれのサイズを確認
+	auto PSize = RightObjectOfPlayer.size();
+	auto ESize = RightObjectOfEnemy.size();
+	for (int p = 0; p < PSize; p++)
+	{
+		for (int e = 0; e < ESize; e++)
+		{
+			//あった場合記録
+			if ((RightObjectOfPlayer[p].x == RightObjectOfEnemy[e].x) &&
+				(RightObjectOfPlayer[p].y == RightObjectOfEnemy[e].y))
+			{
+				enemy->SetColObject(RightObjectOfEnemy[e]);
+				return true;
+			}
+		}
+	}
 
+	
 	return false;
 }
 
@@ -482,19 +512,66 @@ std::vector<Vector2> Stealth::GetWithinFieldOfViewObject(Vector2F pPos, Vector2F
 
 	return objectPos;
 }
-
+//角度に応じてキャラクターがどの方向にいるかを割り当てる
 Utility::DIR Stealth::GetObjToCharacterDir(double rad)
 {
-	Utility::DIR ret;
+	Utility::DIR ret = Utility::DIR::MAX;
 	
+	auto deg = Utility::Rad2DegF(static_cast<float>(rad));
+	// 0度～360度以内に角度をおさめる
+	deg = static_cast<float>(Utility::DegIn360(deg));
 
+	//角度に応じてキャラクターがどの方向にいるかを割り当てる
+	if (deg<=UNIT_DEG || deg> UNIT_DEG + (NOMAL_DEG * 3))
+	{
+		ret = Utility::DIR::RIGHT;
+	}
+	else if (deg > UNIT_DEG && deg <= UNIT_DEG + NOMAL_DEG)
+	{
+		ret = Utility::DIR::UP;
+	}
+	else if (deg > UNIT_DEG + NOMAL_DEG && deg <= UNIT_DEG + (NOMAL_DEG*2))
+	{
+		ret = Utility::DIR::LEFT;
+	}
+	else if (deg > UNIT_DEG + (NOMAL_DEG * 2) && deg <= UNIT_DEG + (NOMAL_DEG * 3))
+	{
+		ret = Utility::DIR::DOWN;
+	}
 
 	return ret;
 }
 
 Vector2F Stealth::GetJudgementPos(Vector2F pos, Utility::DIR dir)
 {
-	return Vector2F();
+	auto objPos = pos;
+
+	switch (dir)
+	{
+	case Utility::DIR::UP:
+		objPos += 
+			Vector2F{ -StageManager::UNIT_STEALTH_SIZE_X / 2,-StageManager::UNIT_STEALTH_SIZE_Y / 2 };
+		break;
+	case Utility::DIR::RIGHT:
+		objPos +=
+			Vector2F{ StageManager::UNIT_STEALTH_SIZE_X / 2,-StageManager::UNIT_STEALTH_SIZE_Y / 2 };
+		break;
+	case Utility::DIR::DOWN:
+		objPos +=
+			Vector2F{ StageManager::UNIT_STEALTH_SIZE_X / 2,StageManager::UNIT_STEALTH_SIZE_Y / 2 };
+		break;
+	case Utility::DIR::LEFT:
+		objPos +=
+			Vector2F{ -StageManager::UNIT_STEALTH_SIZE_X / 2,StageManager::UNIT_STEALTH_SIZE_Y / 2 };
+		break;
+	case Utility::DIR::MAX:
+		OutputDebugString("方向が設定されていません\n");
+		break;
+	default:
+		break;
+	}
+
+	return objPos;
 }
 
 void Stealth::ChangeRoom(void/*いずれかは動く部屋の指定数をいれる*/)

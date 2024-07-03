@@ -1,5 +1,6 @@
 #include<DxLib.h>
 #include"../Application.h"
+#include"../Utility/Utility.h"
 #include"../Manager/ResourceManager.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/SceneManager.h"
@@ -46,7 +47,7 @@ void CharacterBase::Draw(void)
 	DrawRotaGraph(pos_.x - cameraPos.x,
 		pos_.y - cameraPos.y,
 		1.0f,
-		0.0 * Application::SIE / 180.0,
+		0.0 * Utility::DEG2RAD,
 		img_[animIdx_],
 		true,
 		false);

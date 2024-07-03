@@ -56,4 +56,6 @@ public:
 
 	// 0(0)`2ƒÎ(360“x)‚Ì”ÍˆÍ‚Éû‚ß‚é
 	static double RadIn2PI(double rad);
+
+	static float GetInnerProductF(Vector2F v1, Vector2F v2);
 };
