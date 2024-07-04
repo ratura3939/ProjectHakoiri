@@ -138,12 +138,8 @@ void Stealth::Collision(void)
 		}
 		else
 		{
-			//間にさえぎるオブジェクトがなかった時
-			if (!CheckObjectPToE(pPos, e))
-			{
-				e->SetVisionState(EnemyBase::VISION_STATE::FIND);
-			}
-			else
+			//間にさえぎるオブジェクトがある時
+			if (CheckObjectPToE(pPos, e))
 			{
 				//見つかっていないのでその時の動きを行う
 				//敵が衝突しているとき
@@ -152,6 +148,10 @@ void Stealth::Collision(void)
 					//敵を動き終了の状態に
 					e->SetIsMove(false);
 				}
+			}
+			else
+			{
+				e->SetVisionState(EnemyBase::VISION_STATE::FIND);
 			}
 		}
 		
@@ -374,7 +374,9 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, EnemyBase* enemy)
 	auto obj = GetWithinFieldOfViewObject(pMapPos, eMapPos);
 
 	std::vector<Vector2> RightObjectOfPlayer;
+	std::vector<Utility::DIR> ObjectToPlayerDir;
 	std::vector<Vector2> RightObjectOfEnemy;
+	std::vector<Utility::DIR> ObjectToEnemyDir;
 
 	//全てのオブジェクトとキャラクターの位置関係を調べる
 	//結果として得るのは内積をとって正の方向にあるものだけ
@@ -402,36 +404,79 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, EnemyBase* enemy)
 		auto PtoO = GetJudgementPos(objPos, OtoPDir) - pPos;
 		auto EtoO = GetJudgementPos(objPos, OtoEDir) - ePos;
 
-		//内積をとる。結果が正のものを保存(配列系)
-		//プレイヤー視点
-		if (Utility::GetInnerProductF(PtoE, PtoO) > 0.0f)
+		//外積計算
+		auto Pgaiseki = Utility::GetCrossProductF(PtoE, PtoO);
+		auto Egaiseki = Utility::GetCrossProductF(EtoP, EtoO);
+
+
+		//例外なくす用
+
+		Utility::DIR PspareDir = Utility::DIR::MAX;
+		Utility::DIR EspareDir = Utility::DIR::MAX;
+
+		PspareDir = CreateSpareLine(pPos, objWorldPos, OtoPDir);
+		EspareDir = CreateSpareLine(ePos, objWorldPos, OtoEDir);
+
+		if (PspareDir != Utility::DIR::MAX)
 		{
-			RightObjectOfPlayer.push_back(o);
-		}
-		//敵視点
-		if (Utility::GetInnerProductF(EtoP, EtoO) > 0.0f)
-		{
-			RightObjectOfEnemy.push_back(o);
-		}
-	}
-	
-	//その中に同じものがあるかを判定
-	//それぞれのサイズを確認
-	auto PSize = RightObjectOfPlayer.size();
-	auto ESize = RightObjectOfEnemy.size();
-	for (int p = 0; p < PSize; p++)
-	{
-		for (int e = 0; e < ESize; e++)
-		{
-			//あった場合記録
-			if ((RightObjectOfPlayer[p].x == RightObjectOfEnemy[e].x) &&
-				(RightObjectOfPlayer[p].y == RightObjectOfEnemy[e].y))
+			auto PtoO2 = GetJudgementPos(objWorldPos, PspareDir) - pPos;
+			auto Pgaiseki2 = (PtoE.x * PtoO2.y) - (PtoE.y * PtoO2.x);
+			if (Pgaiseki2 > 0.0f && Egaiseki > 0.0f)
 			{
-				enemy->SetColObject(RightObjectOfEnemy[e]);
 				return true;
 			}
 		}
+		if (EspareDir != Utility::DIR::MAX)
+		{
+			auto EtoO2 = GetJudgementPos(objWorldPos, EspareDir) - ePos;
+			auto Egaiseki2 = (EtoP.x * EtoO2.y) - (EtoP.y * EtoO2.x);
+			if (Pgaiseki > 0.0f && Egaiseki2 > 0.0f)
+			{
+				return true;
+			}
+		}
+
+		//お互い同じ方向に矩形がある時
+		if (Pgaiseki > 0.0f && Egaiseki > 0.0f)
+		{
+			return true;
+		}
+
+		//外積をとる。結果が正のものを保存(配列系)
+		//プレイヤー視点
+		//if (Utility::GetCrossProductF(PtoE, PtoO) > 0.0f)
+		//{
+		//	RightObjectOfPlayer.push_back(o);
+		//	ObjectToPlayerDir.push_back(OtoPDir);
+		//}
+		////敵視点
+		//if (Utility::GetCrossProductF(EtoP, EtoO) > 0.0f)
+		//{
+		//	RightObjectOfEnemy.push_back(o);
+		//	ObjectToEnemyDir.push_back(OtoEDir);
+		//}
 	}
+	
+	////その中に同じものがあるかを判定
+	////それぞれのサイズを確認
+	//auto PSize = RightObjectOfPlayer.size();
+	//auto ESize = RightObjectOfEnemy.size();
+	//for (int p = 0; p < PSize; p++)
+	//{
+	//	for (int e = 0; e < ESize; e++)
+	//	{
+	//		//あった場合記録
+	//		if ((RightObjectOfPlayer[p].x == RightObjectOfEnemy[e].x) &&
+	//			(RightObjectOfPlayer[p].y == RightObjectOfEnemy[e].y))
+	//		{
+	//			enemy->SetColObject(RightObjectOfEnemy[e]);
+	//			//位置関係を保存
+
+
+	//			return true;
+	//		}
+	//	}
+	//}
 
 	
 	return false;
@@ -528,7 +573,7 @@ Utility::DIR Stealth::GetObjToCharacterDir(double rad)
 	}
 	else if (deg > UNIT_DEG && deg <= UNIT_DEG + NOMAL_DEG)
 	{
-		ret = Utility::DIR::UP;
+		ret = Utility::DIR::DOWN;
 	}
 	else if (deg > UNIT_DEG + NOMAL_DEG && deg <= UNIT_DEG + (NOMAL_DEG*2))
 	{
@@ -536,7 +581,7 @@ Utility::DIR Stealth::GetObjToCharacterDir(double rad)
 	}
 	else if (deg > UNIT_DEG + (NOMAL_DEG * 2) && deg <= UNIT_DEG + (NOMAL_DEG * 3))
 	{
-		ret = Utility::DIR::DOWN;
+		ret = Utility::DIR::UP;
 	}
 
 	return ret;
@@ -572,6 +617,51 @@ Vector2F Stealth::GetJudgementPos(Vector2F pos, Utility::DIR dir)
 	}
 
 	return objPos;
+}
+
+Utility::DIR Stealth::CreateSpareLine(Vector2F charaPos, Vector2 obj, Utility::DIR dir)
+{
+	Utility::DIR ret = Utility::DIR::MAX;
+
+	//例外をなくすための敵側に二本目のベクトルを制作
+	if (charaPos.x < obj.x - (StageManager::UNIT_STEALTH_SIZE_X / 2))
+	{
+		if (dir != Utility::DIR::LEFT)
+		{
+			ret = Utility::DIR::LEFT;
+		}
+		else
+		{
+			if (charaPos.y < obj.y - (StageManager::UNIT_STEALTH_SIZE_Y / 2))
+			{
+				ret = Utility::DIR::UP;
+			}
+			else if (charaPos.y > obj.y + (StageManager::UNIT_STEALTH_SIZE_Y / 2))
+			{
+				ret = Utility::DIR::DOWN;
+			}
+		}
+	}
+	if (charaPos.x > obj.x + (StageManager::UNIT_STEALTH_SIZE_X / 2))
+	{
+		if (dir != Utility::DIR::RIGHT)
+		{
+			ret = Utility::DIR::RIGHT;
+		}
+		else
+		{
+			if (charaPos.y < obj.y - (StageManager::UNIT_STEALTH_SIZE_Y / 2))
+			{
+				ret = Utility::DIR::UP;
+			}
+			else if (charaPos.y > obj.y + (StageManager::UNIT_STEALTH_SIZE_Y / 2))
+			{
+				ret = Utility::DIR::DOWN;
+			}
+		}
+	}
+
+	return ret;
 }
 
 void Stealth::ChangeRoom(void/*いずれかは動く部屋の指定数をいれる*/)

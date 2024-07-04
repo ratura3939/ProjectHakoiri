@@ -58,4 +58,5 @@ public:
 	static double RadIn2PI(double rad);
 
 	static float GetInnerProductF(Vector2F v1, Vector2F v2);
+	static float GetCrossProductF(Vector2F v1, Vector2F v2);
 };

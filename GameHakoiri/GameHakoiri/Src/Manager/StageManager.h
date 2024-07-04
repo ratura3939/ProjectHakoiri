@@ -116,6 +116,7 @@ public:
 	bool IsCollisionObject(const Vector2 pMapPos)const;	//座標が何かのオブジェクトと衝突しているか
 	bool IsCollisionWall(const Vector2 pMapPos)const;	//座標が壁と衝突しているか
 	Vector2 GetVector2MapPos(const Vector2 pPos)const;	//座標をマップの配列に変換
+	Vector2 GetMapPos2Vector(const Vector2 pPos)const;	//マップの配列を座標に変換
 	OBJECT GetObjectType(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
 	bool IsBottomObject(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
 	bool IsMove(void);				//マップ移動をしたかどうかを返却

@@ -175,6 +175,11 @@ Vector2 StageManager::GetVector2MapPos(const Vector2 pPos) const
 	ret.y = pPos.y / UNIT_STEALTH_SIZE_Y;
 	return ret;
 }
+Vector2 StageManager::GetMapPos2Vector(const Vector2 pPos) const
+{
+
+	return Vector2{ pPos.x * UNIT_STEALTH_SIZE_X,pPos.y * UNIT_PAZZLE_SIZE_Y };
+}
 //オブジェクトのタイプを返却
 StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) const
 {

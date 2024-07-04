@@ -85,7 +85,11 @@ private:
 	std::vector<EnemyBase*> useEnemy_;		//使用する敵を保持する
 	std::map<std::string, std::vector<EnemyBase::TYPE>> memorizeType_;	//部屋ごとにおける生成した敵を保持
 	std::map<std::string, std::vector<Vector2F>> memorizePos_;			//部屋ごとにおける生成した敵を保持
-	Vector2F initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::MAX)][OBLONG_ENEMY_NUM];
+	Vector2F initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::MAX)][OBLONG_ENEMY_NUM];	//敵の初期化位置
+
+	//視界を遮られたときのオブジェクトとの位置関係を保存
+	std::map<Vector2, Utility::DIR>objToPlayerDir_;
+	std::map<Vector2, Utility::DIR>objToEnemyDir_;
 
 	void Collision(void);		//当たり判定総括
 	void CollisionMapchip(CharacterBase* character ,bool isPlayer);	//マップチップとの当たり判定
@@ -97,6 +101,7 @@ private:
 	std::vector<Vector2> GetWithinFieldOfViewObject(Vector2F pPos, Vector2F ePos);	//視野内のオブジェクトを取得
 	Utility::DIR GetObjToCharacterDir(double rad);		//オブジェクトから見たキャラクターの位置の判定
 	Vector2F GetJudgementPos(Vector2F pos, Utility::DIR dir);	//方向に応じた衝突判定に使用する位置を決める
+	Utility::DIR CreateSpareLine(Vector2F charaPos, Vector2 obj, Utility::DIR dir);	//例外を防ぐための予備
 
 	void ChangeRoom(void);					//部屋の変更
 

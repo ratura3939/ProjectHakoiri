@@ -1,4 +1,6 @@
 #include<tgmath.h>
+#include<DxLib.h>
+#include<math.h>
 #include"Vector2F.h"
 #include"Vector2.h"
 
