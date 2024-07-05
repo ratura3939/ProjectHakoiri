@@ -187,6 +187,11 @@ StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) const
 	auto mapchip = stage_->GetMapchipType();
 	OBJECT type = OBJECT::MAX;
 
+	if (obj == -1)
+	{
+		return type;
+	}
+
 	//オブジェクトタイプ分のfor文
 	for (int i = 0; i < static_cast<int>(OBJECT::MAX); i++)
 	{

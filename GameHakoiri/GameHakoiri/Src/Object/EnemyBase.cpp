@@ -8,6 +8,8 @@
 #include"../Manager/ResourceManager.h"
 #include "EnemyBase.h"
 
+#include"../Manager/InputManager.h"
+
 EnemyBase::EnemyBase(void)
 {
 	moveDir_ = Utility::VECTOR_ZERO;
@@ -71,6 +73,10 @@ void EnemyBase::Draw(void)
 //移動処理
 void EnemyBase::Move(void)
 {
+	/*MoveDebg();
+
+	return;*/
+
 	//動いてないとき方向決め
 	if (!isMove_) { DecideDir(); }
 	//動いている状態に
@@ -81,6 +87,34 @@ void EnemyBase::Move(void)
 	auto diff = Utility::Distance(pos_.ToVector2(), moveStartPos_.ToVector2());
 
 	if (static_cast<int>(diff) > moveLimit_) { SetIsMove(false); }
+}
+
+void EnemyBase::MoveDebg(void)
+{
+	auto& ins = InputManager::GetInstance();
+
+	if (ins.IsNew(KEY_INPUT_W))
+	{
+		dir_ = DIR::TOP;
+		pos_.y -= speed_;
+	}
+	if (ins.IsNew(KEY_INPUT_S))
+	{
+		dir_ = DIR::BOTTOM;
+		pos_.y += speed_;
+	}
+	if (ins.IsNew(KEY_INPUT_A))
+	{
+		dir_ = DIR::LEFT;
+		pos_.x -= speed_;
+	}
+	if (ins.IsNew(KEY_INPUT_D))
+	{
+		dir_ = DIR::RIGHT;
+		pos_.x += speed_;
+	}
+
+	DecideDirDebug();
 }
 
 //視野内にplayerがいるか
@@ -124,6 +158,56 @@ void EnemyBase::DecideDir(void)
 	dir_ = static_cast<DIR>(rand() % static_cast<int>(DIR::MAX));
 	ResetAnim(dir_);
 
+	auto moveDir = Utility::VECTOR_ZERO;
+	//動く方向に応じた単位ベクトルと回転の角度の指定
+	int rot = ROT_UNIT;
+
+	switch (dir_)
+	{
+	case DIR::BOTTOM:
+		moveDir = { 0.0f,1.0f,0.0f };
+		rot *= ROT_BTM;
+		break;
+	case DIR::LEFT:
+		moveDir = { -1.0f,0.0f,0.0f };
+		rot *= ROT_LFT;
+		break;
+	case DIR::RIGHT:
+		moveDir = { 1.0f,0.0f,0.0f };
+		rot *= ROT_RGH;
+		break;
+	case DIR::TOP:
+		moveDir = { 0.0f,-1.0f,0.0f };
+		rot *= ROT_TOP;
+		break;
+	case DIR::BOTTOM_LEFT:
+		moveDir = { -1.0f,1.0f,0.0f };
+		rot *= ROT_BTM_LFT;
+		break;
+	case DIR::BOTTOM_RIGHT:
+		moveDir = { 1.0f,1.0f,0.0f };
+		rot *= ROT_BTM_RGH;
+		break;
+	case DIR::TOP_LEFT:
+		moveDir = { -1.0f,-1.0f,0.0f };
+		rot *= ROT_TOP_LFT;
+		break;
+	case DIR::TOP_RIGHT:
+		moveDir = { 1.0f,-1.0f,0.0f };
+		rot *= ROT_TOP_RGH;
+		break;
+	}
+
+	//単位行列
+	MATRIX mat = MGetIdent();
+	//移動方向の回転
+	moveDir_ = VTransform(moveDir, mat);
+
+	drawVisionRot_ = static_cast<double>(rot);
+}
+
+void EnemyBase::DecideDirDebug(void)
+{
 	auto moveDir = Utility::VECTOR_ZERO;
 	//動く方向に応じた単位ベクトルと回転の角度の指定
 	int rot = ROT_UNIT;

@@ -35,6 +35,7 @@ public:
 	void SetParam(void)override;
 	void Draw(void)override;
 	void Move(void)override;
+	void MoveDebg(void);
 
 	bool FindPlayer(Vector2F pPos)const;	//Ž‹–ì“à‚Éplayer‚ª‚¢‚é‚©
 
@@ -66,6 +67,7 @@ private:
 
 	void DrawVision(Vector2F cameraPos);	//Ž‹ŠE‚Ì•`‰æ
 	void DecideDir(void);					//•ûŒüŒˆ‚ß
+	void DecideDirDebug(void);					//•ûŒüŒˆ‚ß
 					
 };
 

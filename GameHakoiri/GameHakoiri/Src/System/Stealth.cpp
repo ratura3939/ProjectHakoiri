@@ -1,4 +1,5 @@
 #include<DxLib.h>
+#include<math.h>
 
 #include"../Application.h"
 
@@ -114,6 +115,11 @@ void Stealth::Collision(void)
 	//--------------------------------------------------------
 	//toマップチップ
 	CollisionMapchip(player_,true);
+
+	if (StageManager::GetInstance().IsClear())
+	{
+		return;
+	}
 	
 	
 	//敵
@@ -138,6 +144,10 @@ void Stealth::Collision(void)
 		}
 		else
 		{
+			auto ePos = e->GetPos();
+			auto EtoP = pPos - ePos;
+			auto PtoE = ePos - pPos;
+
 			//間にさえぎるオブジェクトがある時
 			if (CheckObjectPToE(pPos, e))
 			{
@@ -406,7 +416,7 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, EnemyBase* enemy)
 
 		//外積計算
 		auto Pgaiseki = Utility::GetCrossProductF(PtoE, PtoO);
-		auto Egaiseki = Utility::GetCrossProductF(EtoP, EtoO);
+		auto Egaiseki = Utility::GetCrossProductF(EtoP, EtoO);	//おそらくこれ
 
 
 		//例外なくす用
@@ -420,8 +430,8 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, EnemyBase* enemy)
 		if (PspareDir != Utility::DIR::MAX)
 		{
 			auto PtoO2 = GetJudgementPos(objWorldPos, PspareDir) - pPos;
-			auto Pgaiseki2 = (PtoE.x * PtoO2.y) - (PtoE.y * PtoO2.x);
-			if (Pgaiseki2 > 0.0f && Egaiseki > 0.0f)
+			auto Pgaiseki2 = Utility::GetCrossProductF(PtoE, PtoO2);
+			if (IsSameSign(Pgaiseki2, Egaiseki))
 			{
 				return true;
 			}
@@ -429,15 +439,15 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, EnemyBase* enemy)
 		if (EspareDir != Utility::DIR::MAX)
 		{
 			auto EtoO2 = GetJudgementPos(objWorldPos, EspareDir) - ePos;
-			auto Egaiseki2 = (EtoP.x * EtoO2.y) - (EtoP.y * EtoO2.x);
-			if (Pgaiseki > 0.0f && Egaiseki2 > 0.0f)
+			auto Egaiseki2 = Utility::GetCrossProductF(EtoP, EtoO2);
+			if (IsSameSign(Pgaiseki, Egaiseki2))
 			{
 				return true;
 			}
 		}
 
 		//お互い同じ方向に矩形がある時
-		if (Pgaiseki > 0.0f && Egaiseki > 0.0f)
+		if (IsSameSign(Pgaiseki, Egaiseki))
 		{
 			return true;
 		}
@@ -484,49 +494,46 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, EnemyBase* enemy)
 
 
 //これらの引数はそれぞれの位置をマップ配列に変換したもの
-std::vector<Vector2> Stealth::GetWithinFieldOfViewObject(Vector2F pPos, Vector2F ePos)	
+std::vector<Vector2> Stealth::GetWithinFieldOfViewObject(Vector2 pMapPos, Vector2 eMapPos)	
 {
 	//引数の座標を頂点に含む４角形を制作
 	// この４角形の範囲にあるオブジェクトを精査する
 	//４角形の始点（左上）と終点（右下）を制作
 	//この中身は配列の番号とする
-	Vector2F stPos = { 0.0f,0.0f };
-	Vector2F edPos = { 0.0f,0.0f };
+	Vector2 stPos = { 0,0 };
+	Vector2 edPos = { 0,0 };
 
 	//プレイヤーが敵より左側にいるとき
-	if (pPos.x < ePos.x)
+	if (pMapPos.x < eMapPos.x)
 	{
 		//始点のX座標にはプレイヤーのX座標を
-		stPos.x = pPos.x;
-		edPos.x = ePos.x;
+		stPos.x = pMapPos.x;
+		edPos.x = eMapPos.x;
 	}
 	else
 	{
 		//始点のX座標には敵のX座標を
-		stPos.x = ePos.x;
-		edPos.x = pPos.x;
+		stPos.x = eMapPos.x;
+		edPos.x = pMapPos.x;
 	}
 
 	//プレイヤーが敵より上にいるとき
-	if (pPos.y < ePos.y)
+	if (pMapPos.y < eMapPos.y)
 	{
 		//始点のY座標にはプレイヤーのY座標を
-		stPos.y = pPos.y;
-		edPos.y = ePos.y;
+		stPos.y = pMapPos.y;
+		edPos.y = eMapPos.y;
 	}
 	else
 	{
 		//始点のY座標には敵のY座標を
-		stPos.y = ePos.y;
-		edPos.y = pPos.y;
+		stPos.y = eMapPos.y;
+		edPos.y = pMapPos.y;
 	}
 
 
 	//ステージマネージャ取得
 	auto& stage = StageManager::GetInstance();
-	//始点と終点をマップ座標に変換
-	auto stMapPos = stage.GetVector2MapPos(stPos.ToVector2());
-	auto edMapPos = stage.GetVector2MapPos(edPos.ToVector2());
 
 	//始点から終点までの矩形の中でどこにオブジェクトがあるかを調べる
 	//オブジェクトの位置全体保存用
@@ -535,9 +542,9 @@ std::vector<Vector2> Stealth::GetWithinFieldOfViewObject(Vector2F pPos, Vector2F
 	Vector2 obPos;
 
 	//始点から終点までのfor文
-	for (int y = stMapPos.y; y <= edMapPos.y; y++)
+	for (int y = stPos.y; y <= edPos.y; y++)
 	{
-		for (int x = stMapPos.x; x <= edMapPos.x; x++)
+		for (int x = stPos.x; x <= edPos.x; x++)
 		{
 			obPos = { x,y };
 			//通り抜け不可なものを記録していく
@@ -587,6 +594,7 @@ Utility::DIR Stealth::GetObjToCharacterDir(double rad)
 	return ret;
 }
 
+//オブジェクトのどこの点と判定するかを決める
 Vector2F Stealth::GetJudgementPos(Vector2F pos, Utility::DIR dir)
 {
 	auto objPos = pos;
@@ -619,6 +627,7 @@ Vector2F Stealth::GetJudgementPos(Vector2F pos, Utility::DIR dir)
 	return objPos;
 }
 
+//当たり判定予備の線
 Utility::DIR Stealth::CreateSpareLine(Vector2F charaPos, Vector2 obj, Utility::DIR dir)
 {
 	Utility::DIR ret = Utility::DIR::MAX;
@@ -672,15 +681,44 @@ void Stealth::ChangeRoom(void/*いずれかは動く部屋の指定数をいれる*/)
 	camera.SetMapSize(StageManager::GetInstance().GetMapMaxSize());
 }
 
+bool Stealth::IsSameSign(float v1, float v2) const
+{
+	if (v1 >= 0.0f)
+	{
+		if (v2 >= 0.0f)
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (v2 < 0.0f)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Stealth::IsStraght(Vector2F v1, Vector2F v2) const
+{
+	if (fabsf(v1.x) == fabs(v2.x) && fabs(v1.y) == fabs(v2.y))
+	{
+		return true;
+	}
+	return false;
+}
+
 void Stealth::DrawDebug(void)
 {
 	auto pos = player_->GetCollisionPos();
 	auto pPos = player_->GetPos();
+	auto pMapPos = StageManager::GetInstance().GetVector2MapPos(pPos.ToVector2());
 	
 
 	DrawFormatString(0, 0, 0xffffff,
-		"playerの座標＝(%.1f,%.1f)\nplayerの当たり判定＝(%.1f,%.1f)\n",
-		pPos.x,pPos.y,pos.x,pos.y);
+		"playerの座標＝(%.1f,%.1f)\nplayerの当たり判定＝(%.1f,%.1f)\nplayerの位置＝｛%d,%d}\n",
+		pPos.x,pPos.y,pos.x,pos.y,pMapPos.x,pMapPos.y);
 
 
 }

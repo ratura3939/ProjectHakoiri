@@ -45,10 +45,10 @@ void GameScene::Update(void)
 	auto& ins = InputManager::GetInstance();
 	auto& camera = SceneManager::GetInstance().GetCamera();
 
-	if (ins.IsTrgDown(KEY_INPUT_W))
+	/*if (ins.IsTrgDown(KEY_INPUT_W))
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);
-	}
+	}*/
 
 	StageManager::GetInstance().Update(GetMode());
 

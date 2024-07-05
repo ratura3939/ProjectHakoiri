@@ -98,14 +98,19 @@ private:
 	void CollisionEvent(Vector2 pCol);		//イベントがあるマップチップか
 	
 	bool CheckObjectPToE(Vector2F pPos, EnemyBase* enemy);	//playerと敵との間にオブジェクトがあるかを調べる
-	std::vector<Vector2> GetWithinFieldOfViewObject(Vector2F pPos, Vector2F ePos);	//視野内のオブジェクトを取得
+	std::vector<Vector2> GetWithinFieldOfViewObject(Vector2 pMapPos, Vector2 eMapPos);	//視野内のオブジェクトを取得
 	Utility::DIR GetObjToCharacterDir(double rad);		//オブジェクトから見たキャラクターの位置の判定
 	Vector2F GetJudgementPos(Vector2F pos, Utility::DIR dir);	//方向に応じた衝突判定に使用する位置を決める
 	Utility::DIR CreateSpareLine(Vector2F charaPos, Vector2 obj, Utility::DIR dir);	//例外を防ぐための予備
 
 	void ChangeRoom(void);					//部屋の変更
+	bool IsSameSign(float v1, float v2)const;
+	bool IsStraght(Vector2F v1, Vector2F v2)const;
 
 	void DrawDebug(void);
+
+
+
 	void EnemyInit(void);		//敵の初期化
 	void CreateEnemy(void);		//敵の初期生成
 	void InitEnemyPos(const RoomBase::ROOM_SHAPE type);	//敵の初期位置設定
