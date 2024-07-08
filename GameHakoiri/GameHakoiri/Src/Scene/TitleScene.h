@@ -12,5 +12,6 @@ public:
 	void Draw(void);	//描画
 	bool Release(void);	//解放
 private:
-
+	void KeyboardContoroller(void);	// キーボードの操作
+	void GamePadController(void);	// ゲームパッドの操作
 };

@@ -26,6 +26,7 @@ private:
 
 	void KeyboardContoroller(void);	// キーボードの操作
 	void GamePadController(void);	// ゲームパッドの操作
+
 	void ChangeIsSelect(bool flag);	//IsSelectの変更
 	void ChangeIsNeutral(bool flag);	//IsNeutralの変更
 	void ChangeIsFinish(bool flag);	//IsNeutralの変更

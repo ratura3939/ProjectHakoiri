@@ -26,10 +26,16 @@ bool EndingScene::Init(void)
 //********************************************************
 void EndingScene::Update(void)
 {
-	auto& ins = InputManager::GetInstance();
-	if (ins.IsTrgDown(KEY_INPUT_SPACE))
+	auto cnt = SceneManager::GetInstance().GetController();
+
+	switch (cnt)
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::TITLE , true);
+	case SceneManager::CONTROLLER::KEYBOARD:
+		KeyboardContoroller();
+		break;
+	case SceneManager::CONTROLLER::PAD:
+		GamePadController();
+		break;
 	}
 }
 //ï`âÊ
@@ -45,4 +51,23 @@ bool EndingScene::Release(void)
 {
 	//ê≥èÌÇ…èàóùÇ™çsÇÌÇÍÇΩÇÃÇ≈
 	return true;
+}
+
+void EndingScene::KeyboardContoroller(void)
+{
+	auto& ins = InputManager::GetInstance();
+	if (ins.IsTrgDown(KEY_INPUT_SPACE))
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::TITLE, true);
+	}
+}
+
+void EndingScene::GamePadController(void)
+{
+	InputManager& ins = InputManager::GetInstance();
+
+	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::TITLE, true);
+	}
 }

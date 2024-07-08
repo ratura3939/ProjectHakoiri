@@ -13,4 +13,6 @@ public:
 	bool Release(void);	//解放
 private:
 
+	void KeyboardContoroller(void);	// キーボードの操作
+	void GamePadController(void);	// ゲームパッドの操作
 };

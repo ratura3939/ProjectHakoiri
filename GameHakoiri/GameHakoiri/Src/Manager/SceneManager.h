@@ -21,6 +21,13 @@ public:
 		, MAX
 	};
 	
+
+	//コントローラー
+	enum class CONTROLLER
+	{
+		KEYBOARD,
+		PAD
+	};
 	
 	//メンバ関数
 	bool Init(void);	//初期化
@@ -33,6 +40,10 @@ public:
 	void SetStageNum(int);		//ステージナンバーの保管
 	int GetStageNum(void);		//ステージナンバーの譲渡
 
+	void SetController(CONTROLLER cnt);
+	void ChangeController(void);	//コントローラーの切り替え
+	CONTROLLER GetController(void)const;
+
 	// カメラの取得
 	Camera& GetCamera(void) const;
 
@@ -44,6 +55,7 @@ public:
 private:
 	SCENEID sceneID_;	//シーン切り替え
 	SCENEID nextSceneID_;	//次のシーンを保持
+	CONTROLLER controller_;	//使用中のコントローラーを保持
 	
 	bool isChangeScene_;	//シーン切り替え用の論理型
 

@@ -15,6 +15,8 @@ public:
 	bool Release(void);	//解放
 
 private:
-
 	int selectNum_;	//カーソル上のステージナンバーを保持
+
+	void KeyboardContoroller(void);	// キーボードの操作
+	void GamePadController(void);	// ゲームパッドの操作
 };

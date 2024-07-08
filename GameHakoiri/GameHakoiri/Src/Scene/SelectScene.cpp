@@ -28,12 +28,16 @@ bool SelectScene::Init(void)
 //********************************************************
 void SelectScene::Update(void)
 {
-	auto& ins = InputManager::GetInstance();
-	if (ins.IsTrgDown(KEY_INPUT_SPACE))
+	auto cnt = SceneManager::GetInstance().GetController();
+
+	switch (cnt)
 	{
-		//ステージナンバーを受け渡しシーン切り替え
-		SceneManager::GetInstance().SetStageNum(selectNum_);
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
+	case SceneManager::CONTROLLER::KEYBOARD:
+		KeyboardContoroller();
+		break;
+	case SceneManager::CONTROLLER::PAD:
+		GamePadController();
+		break;
 	}
 }
 //描画
@@ -49,4 +53,28 @@ bool SelectScene::Release(void)
 {
 	//正常に処理が行われたので
 	return true;
+}
+
+void SelectScene::KeyboardContoroller(void)
+{
+	auto& ins = InputManager::GetInstance();
+
+	if (ins.IsTrgDown(KEY_INPUT_SPACE))
+	{
+		//ステージナンバーを受け渡しシーン切り替え
+		SceneManager::GetInstance().SetStageNum(selectNum_);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
+	}
+}
+
+void SelectScene::GamePadController(void)
+{
+	auto& ins = InputManager::GetInstance();
+
+	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+	{
+		//ステージナンバーを受け渡しシーン切り替え
+		SceneManager::GetInstance().SetStageNum(selectNum_);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
+	}
 }

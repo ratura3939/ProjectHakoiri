@@ -35,6 +35,8 @@ Stealth::~Stealth(void)
 
 }
 
+
+
 //初期化
 //********************************************************
 bool Stealth::Init(void)
@@ -84,8 +86,8 @@ void Stealth::Draw(void)
 	}
 	DrawDebug();
 
-	auto& ins = InputManager::GetInstance();
-	if (ins.IsNew(KEY_INPUT_M))
+	
+	if (player_->IsDrawMap())
 	{
 		StageManager::GetInstance().Draw(GameScene::MODE::PAZZLE);
 	}
@@ -105,6 +107,8 @@ bool Stealth::Release(void)
 	//正しく処理が終了したので
 	return true;
 }
+
+
 
 #pragma region 当たり判定
 
@@ -451,43 +455,7 @@ bool Stealth::CheckObjectPToE(Vector2F pPos, EnemyBase* enemy)
 		{
 			return true;
 		}
-
-		//外積をとる。結果が正のものを保存(配列系)
-		//プレイヤー視点
-		//if (Utility::GetCrossProductF(PtoE, PtoO) > 0.0f)
-		//{
-		//	RightObjectOfPlayer.push_back(o);
-		//	ObjectToPlayerDir.push_back(OtoPDir);
-		//}
-		////敵視点
-		//if (Utility::GetCrossProductF(EtoP, EtoO) > 0.0f)
-		//{
-		//	RightObjectOfEnemy.push_back(o);
-		//	ObjectToEnemyDir.push_back(OtoEDir);
-		//}
 	}
-	
-	////その中に同じものがあるかを判定
-	////それぞれのサイズを確認
-	//auto PSize = RightObjectOfPlayer.size();
-	//auto ESize = RightObjectOfEnemy.size();
-	//for (int p = 0; p < PSize; p++)
-	//{
-	//	for (int e = 0; e < ESize; e++)
-	//	{
-	//		//あった場合記録
-	//		if ((RightObjectOfPlayer[p].x == RightObjectOfEnemy[e].x) &&
-	//			(RightObjectOfPlayer[p].y == RightObjectOfEnemy[e].y))
-	//		{
-	//			enemy->SetColObject(RightObjectOfEnemy[e]);
-	//			//位置関係を保存
-
-
-	//			return true;
-	//		}
-	//	}
-	//}
-
 	
 	return false;
 }
@@ -750,18 +718,6 @@ void Stealth::EnemyInit(void)
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][0] = { OB2X1,OB2Y1 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][1] = { OB2X2,OB2Y2 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][2] = { OB2X3,OB2Y3 };
-
-	/*initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][0] = NOMAL_POS_1;
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][1] = NOMAL_POS_2;
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][2] = { 0.0f,0.0f };
-
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][0] = OBLONG_POS_1;
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][1] = OBLONG_POS_2;
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][2] = OBLONG_POS_3;
-
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][0] = OBLONG_2_POS_1;
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][1] = OBLONG_2_POS_2;
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][2] = OBLONG_2_POS_3;*/
 }
 
 void Stealth::CreateEnemy(void)

@@ -5,6 +5,7 @@
 #include"../Object/CharacterBase.h"
 #include"../Common/Vector2F.h"
 #include"../Utility/Utility.h"
+#include"../Stage/Room/RoomBase.h"
 
 class CharacterBase;
 class Player;

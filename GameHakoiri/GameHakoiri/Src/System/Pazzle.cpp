@@ -3,6 +3,7 @@
 #include"../Utility/Utility.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/StageManager.h"
+#include"../Manager/SceneManager.h"
 #include"../Scene/GameScene.h"
 #include "Pazzle.h"	
 
@@ -30,8 +31,17 @@ void Pazzle::Update(void)
 	stage.SetFlash(isSelect_);
 	//StageMng経由でroomMngの変更を行う
 	//入力系
-	KeyboardContoroller();
-	GamePadController();
+	auto cnt = SceneManager::GetInstance().GetController();
+
+	switch (cnt)
+	{
+	case SceneManager::CONTROLLER::KEYBOARD:
+		KeyboardContoroller();
+		break;
+	case SceneManager::CONTROLLER::PAD:
+		GamePadController();
+		break;
+	}
 }
 
 #pragma region キーボード

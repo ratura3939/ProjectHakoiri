@@ -108,6 +108,22 @@ int SceneManager::GetStageNum(void)
 	return stageNum_;
 }
 
+void SceneManager::SetController(CONTROLLER cnt)
+{
+	controller_ = cnt;
+}
+
+void SceneManager::ChangeController(void)
+{
+	if (controller_ == CONTROLLER::KEYBOARD)controller_ = CONTROLLER::PAD;
+	else controller_ = CONTROLLER::KEYBOARD;
+}
+
+SceneManager::CONTROLLER SceneManager::GetController(void) const
+{
+	return controller_;
+}
+
 //ƒJƒƒ‰‚Ìæ“¾
 Camera& SceneManager::GetCamera(void) const
 {

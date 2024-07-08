@@ -47,6 +47,16 @@ public:
 	static constexpr int ROT_LFT =		6;
 	static constexpr int ROT_TOP_LFT =	7;
 
+	
+	static constexpr int DIR_RGH =		0;
+	static constexpr int DIR_BTM_RGH =	1;
+	static constexpr int DIR_BTM =		2;
+	static constexpr int DIR_BTM_LFT =	3;
+	static constexpr int DIR_LFT =		4;
+	static constexpr int DIR_TOP_LFT =	5;
+	static constexpr int DIR_TOP =		6;
+	static constexpr int DIR_TOP_RGH =	7;
+
 	CharacterBase(void);
 	virtual ~CharacterBase(void);
 
