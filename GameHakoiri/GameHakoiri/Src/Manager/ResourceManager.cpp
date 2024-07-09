@@ -62,6 +62,31 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::VISION_MISSING_IMG, move(res));
 
+	//OK
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "Select_Ok.png"
+		);
+	resourcesMap_.emplace(SRC::SELECT_OK_IMG, move(res));
+	//NO
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "Select_No.png"
+		);
+	resourcesMap_.emplace(SRC::SELECT_NO_IMG, move(res));
+	//選択
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "plate_Select.png"
+		);
+	resourcesMap_.emplace(SRC::PLATE_SELECT_IMG, move(res));
+	//操作方法変更部分
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "plate_Check.png"
+		);
+	resourcesMap_.emplace(SRC::PLATE_CHECK_IMG, move(res));
+
 	//部屋（パズル）
 	//風呂
 	res = make_unique<Resource>(

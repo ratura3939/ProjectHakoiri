@@ -1,5 +1,6 @@
 //#pragma once
 #include"SceneBase.h"
+#include"../Common/Vector2F.h"
 
 class TitleScene :public SceneBase
 {
@@ -12,6 +13,9 @@ public:
 	void Draw(void);	//描画
 	bool Release(void);	//解放
 private:
+
+	bool isNext_;
+
 	void KeyboardContoroller(void);	// キーボードの操作
 	void GamePadController(void);	// ゲームパッドの操作
 };
