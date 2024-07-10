@@ -57,12 +57,17 @@ void TitleScene::KeyboardContoroller(void)
 	}
 }
 
-void TitleScene::GamePadController(void)
+void TitleScene::GamePadController(void/*SceneManager* scn*/)
 {
 	InputManager& ins = InputManager::GetInstance();
 
+	//scnmng=scn;
+	//scn.èàóù
+
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
+		
+
 		SceneManager::GetInstance().SetController(SceneManager::CONTROLLER::PAD);
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
 	}
