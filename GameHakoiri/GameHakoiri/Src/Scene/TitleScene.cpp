@@ -1,6 +1,7 @@
 #include<DxLib.h>
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
+#include"../System/Plate.h"
 #include"TitleScene.h"
 
 
@@ -20,7 +21,8 @@ TitleScene::~TitleScene(void)
 //********************************************************
 bool TitleScene::Init(void)
 {
-
+	isCheck_ = false;
+	str_ = "NONE";
 	//正常に処理が行われたので
 	return true;
 }
@@ -28,8 +30,25 @@ bool TitleScene::Init(void)
 //********************************************************
 void TitleScene::Update(void)
 {
-	KeyboardContoroller();
-	GamePadController();
+	if (!isCheck_)
+	{
+		KeyboardContoroller();
+		GamePadController();
+	}
+	else
+	{
+		auto& plate = Plate::GetInstance();
+		plate.Update(Plate::TYPE::SELECT);
+		if (plate.IsFinish())
+		{
+
+			//プレートの一連の処理が終わっていたらシーン切り替え
+			if (plate.GetAnswer() == Plate::ANSWER::OK)
+				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
+			else isCheck_ = false;
+		}
+			
+	}
 }
 //描画
 //********************************************************
@@ -37,6 +56,8 @@ void TitleScene::Draw(void)
 {
 	DrawString(0, 0, "TitleScene",0xffffff, true);
 	DrawBox(50, 50, 500, 500, 0xffff00, true);
+
+	if (isCheck_) Plate::GetInstance().Draw(Plate::TYPE::SELECT,str_);
 }
 //解放
 //********************************************************
@@ -53,22 +74,20 @@ void TitleScene::KeyboardContoroller(void)
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
 		SceneManager::GetInstance().SetController(SceneManager::CONTROLLER::KEYBOARD);
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
+		isCheck_ = true;
+		Plate::GetInstance().SetState(Plate::STATE::GO);
+		str_ = "操作方法はキーボードで良いですか？";
 	}
 }
 
-void TitleScene::GamePadController(void/*SceneManager* scn*/)
+void TitleScene::GamePadController(void)
 {
 	InputManager& ins = InputManager::GetInstance();
 
-	//scnmng=scn;
-	//scn.処理
-
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
-		
-
 		SceneManager::GetInstance().SetController(SceneManager::CONTROLLER::PAD);
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
+		isCheck_ = true;
+		str_ = "操作方法はコントローラーで良いですか？";
 	}
 }

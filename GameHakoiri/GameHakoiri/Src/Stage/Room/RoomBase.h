@@ -70,6 +70,9 @@ public:
 	int GetMapchip(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
 	bool IsOneDownObj(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
 
+	bool IsClone(void)const;	//複製たいかどうか
+	void SetIsClone(bool flag);	//上記のセット
+
 
 private:
 	Vector2F mapPos_;		//ステルスシーンにおけるmapの座標（必要かはわからん）
@@ -99,6 +102,7 @@ protected:
 
 	int roomImg_;	//部屋の画像
 	bool isDrawRoom_;	//描画するか決める（長方形の二マス目用）
+	bool isClone_;	//本体じゃないかどうかを判断
 
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 };

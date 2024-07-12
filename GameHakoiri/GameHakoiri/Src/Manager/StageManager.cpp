@@ -122,6 +122,10 @@ void StageManager::SetFlash(bool flag)
 {
 	stage_->SetFrameFlash(flag);
 }
+bool StageManager::CanGoal(void)
+{
+	return stage_->CanGoal();
+}
 //ƒXƒeƒ‹ƒX‰Šú‰»
 void StageManager::ChangeModeInit(void)
 {

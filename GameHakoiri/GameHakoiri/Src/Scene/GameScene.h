@@ -1,5 +1,6 @@
 #pragma once
 #include"SceneBase.h"
+#include<string>
 
 class Pazzle;
 class Stealth;
@@ -35,4 +36,6 @@ private:
 
 	MODE mode_;	//現在のゲームのモードを保持
 
+	bool isCheck_;	//プレートを出すかどうか
+	std::string str_;
 };

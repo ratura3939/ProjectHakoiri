@@ -60,6 +60,7 @@ bool RoomBase::Init(void)
 	mapPos_ = { 0.0f,0.0f };
 	isCursor_ = false;
 	isChange_ = false;
+	isClone_ = false;
 
 	//Še«¿‚Ìİ’è
 	SetParam();
@@ -255,6 +256,14 @@ bool RoomBase::IsOneDownObj(Vector2 pos) const
 		return true;
 	}
 	return false;
+}
+bool RoomBase::IsClone(void) const
+{
+	return isClone_;
+}
+void RoomBase::SetIsClone(bool flag)
+{
+	isClone_ = flag;
 }
 #pragma endregion
 

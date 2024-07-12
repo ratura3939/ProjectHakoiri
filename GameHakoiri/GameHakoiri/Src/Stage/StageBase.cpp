@@ -66,6 +66,8 @@ bool StageBase::Init(void)
 	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
 		static_cast<float>(Application::SCREEN_SIZE_Y / 4) };
 
+	goalPos_ = { 0,0 };
+
 
 	for (int y = 0; y < size_.y; y++)
 	{
@@ -161,12 +163,14 @@ bool StageBase::Init(void)
 			case RoomBase::TYPE::GOAL:
 				r = new Goal(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)]);
 				r->Init();
+				goalPos_ = { x,y };
 				break;
 			}
 
 			CreateKey(y, x);
 			roomMng_[roomKey_] = r;//配列内に格納
 			resetRoom_[roomKey_] = r->GetRoomType();
+			resetRoomClone_[roomKey_] = r->IsClone();
 			pzlPos_[roomKey_] = pos;
 
 			//座標の更新
@@ -588,6 +592,18 @@ bool StageBase::IsSecondRoom(void)const
 bool StageBase::IsGoal(void) const
 {
 	return isGoal_;
+}
+//ゴールにつながる部屋があるかどうか
+bool StageBase::CanGoal(void)
+{
+	auto pos = goalPos_;
+	pos.y--;
+	CreateKey(pos.y, pos.x);
+	if (roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::NONE)
+	{
+		return true;
+	}
+	return false;
 }
 void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 {
@@ -1039,6 +1055,19 @@ bool StageBase::CheckInstanceUp(int y, int x, RoomBase* r)
 	CreateKey(y, x);	//元の場所のキーを生成
 	return false;
 }
+bool StageBase::CheckInstanceDown(int y, int x, RoomBase* r)
+{
+	y++;
+	CreateKey(y, x);	//配列一つ上のキーを生成
+	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
+	{
+		return true;
+	}
+	y--;
+	CreateKey(y, x);	//元の場所のキーを生成
+	return false;
+	return false;
+}
 bool StageBase::CheckInstanceLeft(int y, int x, RoomBase* r)
 {
 	x--;
@@ -1051,6 +1080,22 @@ bool StageBase::CheckInstanceLeft(int y, int x, RoomBase* r)
 	CreateKey(y, x);	//元の場所のキーを生成
 	return false;
 }
+
+bool StageBase::CheckInstanceRight(int y, int x, RoomBase* r)
+{
+	x++;
+	CreateKey(y, x);	//配列一つ左のキーを生成
+	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
+	{
+		return true;
+	}
+	x--;
+	CreateKey(y, x);	//元の場所のキーを生成
+	return false;
+	return false;
+}
+
+
 
 //部屋の形の種類を返却
 RoomBase::ROOM_SHAPE StageBase::GetRoomShape(std::string key)
@@ -1104,6 +1149,7 @@ RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 	room->Init();
 	room->SetRoomType(r->GetRoomType());
 	room->SetIsDrawRoom(false);
+	room->SetIsClone(true);
 	return room;
 }
 void StageBase::SetIsMoveRoom(bool flag)
@@ -1157,6 +1203,7 @@ void StageBase::ResetPazzl(void)
 {
 	//入れ替え処理用の現在位置保存
 	std::string nowKey;
+	
 
 	for (int y = 0; y < size_.y; y++)
 	{
@@ -1164,25 +1211,23 @@ void StageBase::ResetPazzl(void)
 		{
 			CreateKey(y, x);
 			nowKey = roomKey_;	
-
-			//初期と部屋が違った場合
-			if (roomMng_[nowKey]->GetRoomType() != resetRoom_[nowKey])
+			auto type = roomMng_[nowKey]->GetRoomType();
+			if (type != RoomBase::TYPE::WALL)
 			{
-				//現在の位置から初期のタイプの部屋があるかを確認
-				for (int i = 0; i < size_.y; i++)
+				auto shape = GetRoomShape(resetRoom_[nowKey]);
+				RoomBase* ret = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
+
+				//初期と部屋が違った場合
+				if (type != resetRoom_[nowKey])
 				{
-					for (int n = 0; n < size_.x; n++)
-					{
-						CreateKey(i, n);
-						//まだ確定していない場所で初期の部屋が見つかった場合
-						if (!roomMng_[roomKey_]->IsChange() &&
-							roomMng_[roomKey_]->GetRoomType() == resetRoom_[nowKey])
-						{
-							RoomBase* r = roomMng_[nowKey];
-							roomMng_[nowKey] = roomMng_[roomKey_];
-							roomMng_[roomKey_] = r;
-						}
-					}
+					//入れ替え
+					SwapPazzle(nowKey);
+				}
+				//初期の状態と違うとき（長方形の本体を置くべき場所に複製が来てしまったとき）
+				while (resetRoomClone_[nowKey] != roomMng_[nowKey]->IsClone())
+				{
+					//入れ替え
+					SwapPazzle(nowKey);
 				}
 			}
 			//確定済みに変更
@@ -1198,6 +1243,31 @@ void StageBase::ResetPazzl(void)
 			CreateKey(y, x);
 			nowKey = roomKey_;
 			roomMng_[nowKey]->SetIsChange(false);
+		}
+	}
+
+
+	debug();
+}
+
+void StageBase::SwapPazzle(std::string nowKey)
+{
+	//現在の位置から初期のタイプの部屋があるかを確認
+	for (int i = 0; i < size_.y; i++)
+	{
+		for (int n = 0; n < size_.x; n++)
+		{
+			CreateKey(i, n);
+			//まだ確定していない場所で初期の部屋が見つかった場合
+			if (!roomMng_[roomKey_]->IsChange() &&
+				roomMng_[roomKey_]->GetRoomType() == resetRoom_[nowKey] &&
+				roomKey_ != nowKey)
+			{
+				RoomBase* r = roomMng_[nowKey];
+				roomMng_[nowKey] = roomMng_[roomKey_];
+				roomMng_[roomKey_] = r;
+				break;
+			}
 		}
 	}
 }
@@ -1217,6 +1287,20 @@ void StageBase::LoadImgs(void)
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_IMG).handleId_;
 	frame_[static_cast<int>(CURSOR::OBLONG_2)] = 
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
+}
+void StageBase::debug(void)
+{
+	std::map<std::string, RoomBase::TYPE> resetAfter;
+	for (int y = 0; y < size_.y; y++)
+	{
+		for (int x = 0; x < size_.x; x++)
+		{
+			CreateKey(y, x);
+			resetAfter[roomKey_] = roomMng_[roomKey_]->GetRoomType();
+		}
+	}
+
+	OutputDebugString("確認用");
 }
 #pragma endregion
 

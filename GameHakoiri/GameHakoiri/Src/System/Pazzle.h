@@ -16,6 +16,7 @@ public:
 	bool IsSelect(void);	//IsSelectの取得
 	bool IsNeutral(void);	//IsSelectの取得
 	bool IsFinish(void);
+	void ChangeIsFinish(bool flag);	//IsNeutralの変更
 
 private:
 	bool isFinish_;		//パズルが完了したかどうか
@@ -29,7 +30,6 @@ private:
 
 	void ChangeIsSelect(bool flag);	//IsSelectの変更
 	void ChangeIsNeutral(bool flag);	//IsNeutralの変更
-	void ChangeIsFinish(bool flag);	//IsNeutralの変更
 	bool IsStickNeutral(Vector2 stick);	//スティックのニュートラルを返す
 	Utility::DIR MoveStick(Vector2 stick);	//どの方向にスティックが動いたかを返却
 };

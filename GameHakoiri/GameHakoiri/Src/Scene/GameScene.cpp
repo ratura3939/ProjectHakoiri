@@ -6,6 +6,7 @@
 #include"../Manager/Camera.h"
 #include"../System/Pazzle.h"
 #include"../System/Stealth.h"
+#include"../System/Plate.h"
 #include"GameScene.h"
 
 
@@ -34,6 +35,8 @@ bool GameScene::Init(void)
 	SetMode(MODE::PAZZLE);
 	pzl_ = new Pazzle;
 	stl_ = new Stealth;
+	isCheck_ = false;
+	str_ = "NONE";
 
 	//正常に処理が行われたので
 	return true;
@@ -44,34 +47,49 @@ void GameScene::Update(void)
 {
 	auto& ins = InputManager::GetInstance();
 	auto& camera = SceneManager::GetInstance().GetCamera();
+	auto& stage = StageManager::GetInstance();
 
-	/*if (ins.IsTrgDown(KEY_INPUT_W))
+	stage.Update(GetMode());
+
+	if (!isCheck_)
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);
-	}*/
-
-	StageManager::GetInstance().Update(GetMode());
-
-	switch (mode_)
+		switch (mode_)
+		{
+		case GameScene::MODE::PAZZLE:
+			pzl_->Update();
+			if (pzl_->IsFinish())	//パズル終了したら
+			{
+				//クリア可能なら
+				if (stage.CanGoal())
+				{
+					//ステルスシーンの初期化
+					SetMode(MODE::STEALTH);
+					stl_->Init();
+					Update();	//見え方調整のため
+				}
+				else
+				{
+					pzl_->ChangeIsFinish(false);
+					str_ = "この状態ではクリアできません。";
+					isCheck_ = true;
+				}
+			}
+			break;
+		case GameScene::MODE::STEALTH:
+			stl_->Update();
+			if (stage.IsClear())	//クリアしてたら
+			{
+				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
+			}
+			camera.Update();
+			break;
+		}
+	}
+	else
 	{
-	case GameScene::MODE::PAZZLE:
-		pzl_->Update();
-		if (pzl_->IsFinish())	//パズル終了したら
-		{
-			//ステルスシーンの初期化
-			SetMode(MODE::STEALTH);
-			stl_->Init();
-			Update();	//見え方調整のため
-		}
-		break;
-	case GameScene::MODE::STEALTH:
-		stl_->Update();
-		if (StageManager::GetInstance().IsClear())	//クリアしてたら
-		{
-			SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
-		}
-		camera.Update();
-		break;
+		auto& plate = Plate::GetInstance();
+		plate.Update(Plate::TYPE::CHECK);
+		if (plate.IsFinish() && plate.GetAnswer() == Plate::ANSWER::OK)	isCheck_ = false;
 	}
 
 }
@@ -81,6 +99,7 @@ void GameScene::Draw(void)
 {
 	StageManager::GetInstance().Draw(GetMode());
 	if (mode_ == MODE::STEALTH) { stl_->Draw(); }
+	if (isCheck_) Plate::GetInstance().Draw(Plate::TYPE::CHECK, str_);
 
 	DrawString(0, 0, "GameScene", 0xffffff, true);
 }

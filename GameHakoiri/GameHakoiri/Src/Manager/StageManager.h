@@ -109,6 +109,7 @@ public:
 	void PazzleReset(void);		//盤面リセット
 	void SetFlash(bool flag);	//枠点滅
 	
+	bool CanGoal(void);	//ゴール可能かを判断
 	void ChangeModeInit(void);	//シーン切り替え時の初期化
 	void ChangeMap(Vector2 pMapPos);	//部屋の切り替え
 	Vector2F GetMapMaxSize(void)const;	//マップの最大サイズを取得

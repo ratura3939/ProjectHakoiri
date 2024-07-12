@@ -1,4 +1,5 @@
 //#pragma once
+#include<string>
 #include"SceneBase.h"
 #include"../Common/Vector2F.h"
 
@@ -15,6 +16,8 @@ public:
 private:
 
 	bool isNext_;
+	bool isCheck_;
+	std::string str_;
 
 	void KeyboardContoroller(void);	// キーボードの操作
 	void GamePadController(void);	// ゲームパッドの操作

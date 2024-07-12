@@ -51,6 +51,7 @@ public:
 	void SetPiece(Vector2 move, Utility::DIR dir);	//駒の位置入れ替え yとxはカーソルの移動量
 	void SetFrameFlash(bool flag);					//枠点滅用
 	void ResetPazzl(void);							//パズルのリセット
+	void SwapPazzle(std::string nowKey);			//リセット時の駒入れ替え
 
 	//ステルスシーン
 	bool InitStealth(void);				//ステルスシーン移行時の初期化
@@ -69,11 +70,14 @@ public:
 	StageManager::DOOR_Y GetDoorPosSecond(void)const;	//同上
 	bool IsSecondRoom(void)const;
 	bool IsGoal(void)const;
+	bool CanGoal(void);
 
 private:
 	std::map<std::string, RoomBase*> roomMng_;			//部屋の情報一括管理
 	std::map<std::string, RoomBase::TYPE> resetRoom_;	//部屋のリセット用
+	std::map<std::string, bool> resetRoomClone_;	//部屋のリセット用
 	std::string roomKey_;								//連想配列のキー
+	Vector2 goalPos_;		//ゴールの位置記録
 
 	
 	std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
@@ -94,10 +98,14 @@ private:
 
 	void MoveRoom(const Vector2 after, const std::string prvKey);
 
+	
+
 
 	//判定系
-	bool CheckInstanceUp(int y, int x, RoomBase* r);	//長方形の２コマ目かを判断およびインスタンスの生成
-	bool CheckInstanceLeft(int y, int x, RoomBase* r);
+	bool CheckInstanceUp(int y, int x, RoomBase* r);	//長方形の２コマ目かを判断およびインスタンスの生成(縦長）
+	bool CheckInstanceDown(int y, int x, RoomBase* r);	
+	bool CheckInstanceLeft(int y, int x, RoomBase* r);	//長方形の２コマ目かを判断およびインスタンスの生成(横長）
+	bool CheckInstanceRight(int y, int x, RoomBase* r);
 	RoomBase::ROOM_SHAPE GetRoomShape(std::string key);	//部屋の形を検索(鍵検索)
 	RoomBase::ROOM_SHAPE GetRoomShape(RoomBase::TYPE type);	//部屋の形を検索(種類検索)
 	bool IsDontMoveBlock(std::string key);	//移動不可なブロックかどうか
@@ -130,6 +138,9 @@ private:
 	void DrawStealth(void);	//ステルス
 
 	void LoadImgs(void);	//画像読み込み
+
+
+	void debug(void);
 
 protected:
 	////各ステージのファイル名

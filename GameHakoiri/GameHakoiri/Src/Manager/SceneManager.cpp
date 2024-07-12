@@ -8,6 +8,7 @@
 #include"../Scene/ResultScene.h"
 #include"../Scene/EndingScene.h"
 #include"../Common/Fader.h"
+#include"../System/Plate.h"
 
 
 //シングルトン化(インスタンスの初期化)
@@ -53,6 +54,9 @@ bool SceneManager::Init(void)
 	fader_->SetFade(Fader::STATE::FADE_IN);
 	isChangeScene_ = true;
 
+	//プレートの生成
+	Plate::CreateInstance();
+
 	//正しく処理が終了したので
 	return true;
 }
@@ -88,6 +92,8 @@ bool SceneManager::Release(void)
 	//インスタンスの解放
 	ReleaseScene(sceneID_);
 	camera_.Relese();
+
+	Plate::GetInstance().Release();
 
 	delete fader_;
 	fader_ = nullptr;
