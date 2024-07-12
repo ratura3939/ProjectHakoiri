@@ -42,7 +42,6 @@ public:
 	virtual void Draw(GameScene::MODE mode);	//描画
 	virtual bool Release(void);					//解放
 
-	void CreateKey(int y, int x);	//連想配列のキー生成
 	std::string GetKey(void)const;
 
 	//パズルシーン
@@ -92,6 +91,8 @@ private:
 	bool isSecondRoom_;	//長方形の二マス目に出たか
 	bool isGoal_;	//ゴールにたどり着いたか
 	
+
+	void CreateKey(int y, int x);	//連想配列のキー生成
 
 	bool MovePiece(const Vector2 csr,
 		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKey

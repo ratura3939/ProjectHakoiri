@@ -220,6 +220,17 @@ bool StageBase::InitStealth(void)
 		pos.y += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y);
 	}
 
+
+	//以前のカーソルを非表示に
+	for (int y = 0; y < size_.y; y++)
+	{
+		for (int x = 0; x < size_.x; x++)
+		{
+			CreateKey(y, x);
+			roomMng_[roomKey_]->SetIsCursor(false);
+		}
+	}
+
 	//初期位置の場所を示すルームキーを生成
 	for (int y = 0; y < size_.y; y++)
 	{
@@ -299,7 +310,7 @@ void StageBase::Draw(GameScene::MODE mode)
 			}
 			
 		}
-		if (frameFlash_)
+ 		if (frameFlash_)
 		{
 			if (frameAnim_ % (Application::FPS / 2) < FRAME_INTERVAL)
 			{
@@ -394,12 +405,6 @@ bool StageBase::Release(void)
 			roomMng_[roomKey_] = nullptr;
 		}
 	}
-
-	for (int i = 0; i < static_cast<int>(CURSOR::MAX); i++)
-	{
-		DeleteGraph(frame_[i]);
-	}
-	
 
 	//正しく処理が終了したので
 	return true;

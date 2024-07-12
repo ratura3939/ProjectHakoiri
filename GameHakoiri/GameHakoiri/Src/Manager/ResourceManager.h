@@ -37,6 +37,9 @@ public:
 		SELECT_NO_IMG,
 		PLATE_SELECT_IMG,
 		PLATE_CHECK_IMG,
+		HP_BASE_IMG,
+		HP_CIRCLE_IMG,
+		HP_TEXT_IMG,
 	
 		//•”‰®
 		BATH_IMG,

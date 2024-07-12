@@ -52,7 +52,7 @@ void Plate::Init(void)
 	boxImg_[static_cast<int>(ANSWER::OK)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::SELECT_OK_IMG).handleId_;
 
-	frameImg_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
+	
 
 
 	Reset();
@@ -60,6 +60,8 @@ void Plate::Init(void)
 
 void Plate::Reset(void)
 {
+ 	frameImg_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
+
 	platePos_ = { Application::SCREEN_SIZE_X / 2,-PLATE_SIZE / 2 };
 	boxPos_[static_cast<int>(TYPE::SELECT)][static_cast<int>(ANSWER::OK)]
 		= { platePos_.x - DELTA_X,platePos_.y + DELTA_Y };

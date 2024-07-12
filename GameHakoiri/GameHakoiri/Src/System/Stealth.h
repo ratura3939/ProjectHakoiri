@@ -21,6 +21,7 @@ public:
 	static constexpr int INIT_ROOM_POS_SIDE = 32 * 2;	//部屋移動後の初期位置
 	static constexpr int OBLONG_ENEMY_NUM = 3;	//長方形の部屋の敵の数
 	static constexpr int NOMAL_ENEMY_NUM = 2;	//正方形の部屋の敵の数
+	static constexpr float DAMAGE = 0.5f;		//ダメージ
 
 	//敵の初期位置
 
@@ -43,24 +44,6 @@ public:
 	static constexpr float OB2X3 = 1376.0f + CharacterBase::CHARACTER_HALF_X;
 	static constexpr float OB2Y3 = 384.0f + CharacterBase::CHARACTER_HALF_Y;
 
-	/*static constexpr Vector2F NOMAL_POS_1=
-	{672.0f + CharacterBase::CHARACTER_HALF_X,224.0f + CharacterBase::CHARACTER_HALF_Y };
-	static constexpr Vector2F NOMAL_POS_2=
-	{480.0f + CharacterBase::CHARACTER_HALF_X,608.0f + CharacterBase::CHARACTER_HALF_Y };
-
-	static constexpr Vector2F OBLONG_POS_1=
-	{480.0f + CharacterBase::CHARACTER_HALF_X,480.0f + CharacterBase::CHARACTER_HALF_Y };
-	static constexpr Vector2F OBLONG_POS_2=
-	{160.0f + CharacterBase::CHARACTER_HALF_X,1056.0f + CharacterBase::CHARACTER_HALF_Y };
-	static constexpr Vector2F OBLONG_POS_3=
-	{608.0f + CharacterBase::CHARACTER_HALF_X,1568.0f + CharacterBase::CHARACTER_HALF_Y };
-
-	static constexpr Vector2F OBLONG_2_POS_1 =
-	{ 960.0f + CharacterBase::CHARACTER_HALF_X,736.0f + CharacterBase::CHARACTER_HALF_Y };
-	static constexpr Vector2F OBLONG_2_POS_2 =
-	{ 448.0f + CharacterBase::CHARACTER_HALF_X,480.0f + CharacterBase::CHARACTER_HALF_Y };
-	static constexpr Vector2F OBLONG_2_POS_3 =
-	{ 1376.0f + CharacterBase::CHARACTER_HALF_X,384.0f + CharacterBase::CHARACTER_HALF_Y };*/
 
 	//ブロックから見た位置の角度設定
 	static constexpr float UNIT_DEG = 45.0f;
@@ -75,12 +58,15 @@ public:
 	void Draw(void);	//描画
 	bool Release(void);	//解放
 
+	bool IsFailde(void);
+
 private:
 	//インスタンス
 	Player* player_;
 
 	//判定
 	bool isEnemyMove_;	//敵が衝突し移動できていないか
+	bool isFailed_;
 
 	EnemyBase* enemyMng_[OBLONG_ENEMY_NUM*static_cast<int>(EnemyBase::TYPE::MAX)];	//敵の最大数＊種類を保持
 	std::vector<EnemyBase*> useEnemy_;		//使用する敵を保持する

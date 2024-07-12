@@ -87,6 +87,27 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::PLATE_CHECK_IMG, move(res));
 
+	//HP表示の下地
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "HpBase.png"
+		);
+	resourcesMap_.emplace(SRC::HP_BASE_IMG, move(res));
+
+	//HPを表す円
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "HpCircle.png"
+		);
+	resourcesMap_.emplace(SRC::HP_CIRCLE_IMG, move(res));
+
+	//HPのテキスト
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "HpText.png"
+		);
+	resourcesMap_.emplace(SRC::HP_TEXT_IMG, move(res));
+
 	//部屋（パズル）
 	//風呂
 	res = make_unique<Resource>(

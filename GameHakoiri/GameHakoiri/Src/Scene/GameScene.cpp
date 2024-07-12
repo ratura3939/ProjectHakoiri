@@ -81,6 +81,10 @@ void GameScene::Update(void)
 			{
 				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
 			}
+			if (stl_->IsFailde())	//クリアしてたら
+			{
+				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
+			}
 			camera.Update();
 			break;
 		}

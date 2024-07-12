@@ -2,6 +2,7 @@
 #include"../Manager/ResourceManager.h"
 #include"../Manager/InputManager.h"
 #include"../System/Stealth.h"
+#include"../Application.h"
 #include "Player.h"
 
 
@@ -22,6 +23,12 @@ void Player::SetParam(void)
 	dir_ = CharacterBase::DIR::BOTTOM;
 	pos_ = { 990.0f,270.0f };
 	move_ = 2.0f;
+
+	hpPos_ = { Application::SCREEN_SIZE_X - HP_SIZE / 2,HP_SIZE / 2 };
+	hp_ = HP;
+	hpBaseImg_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::HP_BASE_IMG).handleId_;
+	hpCircleImg_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::HP_CIRCLE_IMG).handleId_;
+	hpText_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::HP_TEXT_IMG).handleId_;
 }
 
 void Player::Move(void)
@@ -48,9 +55,48 @@ void Player::Move(void)
 	}
 }
 
+void Player::Draw(void)
+{
+	CharacterBase::Draw();
+
+
+	//枠
+	DrawRotaGraph(hpPos_.x,
+		hpPos_.y,
+		1.0f,
+		0.0 * Utility::DEG2RAD,
+		hpBaseImg_,
+		true,
+		false);
+	//HPそのもの
+	DrawCircleGauge(hpPos_.x,
+		hpPos_.y,
+		hp_,
+		hpCircleImg_,
+		0.0);
+	//HPテキスト
+	DrawRotaGraph(hpPos_.x,
+		hpPos_.y,
+		1.0f,
+		0.0 * Utility::DEG2RAD,
+		hpText_,
+		true,
+		false);
+}
+
 bool Player::IsDrawMap(void) const
 {
 	return isDrawMap_;
+}
+
+float Player::GetHp(void) const
+{
+	return hp_;
+}
+
+void Player::Damage(void)
+{
+	hp_ -= Stealth::DAMAGE;
 }
 
 void Player::KeyboardContoroller(void)
@@ -94,7 +140,10 @@ void Player::KeyboardContoroller(void)
 	}
 
 	//マップの描画切り替え
-	if (ins.IsTrgDown(KEY_INPUT_M))ChangeIsDrawMap();
+	if (ins.IsTrgDown(KEY_INPUT_M))
+	{
+		ChangeIsDrawMap();
+	}
 }
 
 void Player::GamePadController(void)

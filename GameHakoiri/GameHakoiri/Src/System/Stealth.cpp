@@ -51,6 +51,8 @@ bool Stealth::Init(void)
 	EnemyInit();
 	SetEnemy();
 	
+	isFailed_ = false;
+
 	//³‚µ‚­ˆ—‚ªI—¹‚µ‚½‚Ì‚Å
 	return true;
 }
@@ -73,20 +75,27 @@ void Stealth::Update(void)
 
 
 	Collision();
+
+	if (player_->GetHp() <= 0.0f)
+	{
+		isFailed_ = true;
+	}
 }
 //•`‰æ
 //********************************************************
 void Stealth::Draw(void)
 {
-	player_->Draw();
+	
 	//StageManager::GetInstance().DrawObject();
 	for (auto& e : useEnemy_)
 	{
 		e->Draw();
 	}
+
+	player_->Draw();
+
 	DrawDebug();
 
-	
 	if (player_->IsDrawMap())
 	{
 		StageManager::GetInstance().Draw(GameScene::MODE::PAZZLE);
@@ -106,6 +115,11 @@ bool Stealth::Release(void)
 	memorizeType_.clear();
 	//³‚µ‚­ˆ—‚ªI—¹‚µ‚½‚Ì‚Å
 	return true;
+}
+
+bool Stealth::IsFailde(void)
+{
+	return isFailed_;
 }
 
 
@@ -166,6 +180,7 @@ void Stealth::Collision(void)
 			else
 			{
 				e->SetVisionState(EnemyBase::VISION_STATE::FIND);
+				player_->Damage();
 			}
 		}
 		
