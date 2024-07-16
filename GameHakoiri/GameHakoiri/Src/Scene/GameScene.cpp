@@ -77,13 +77,16 @@ void GameScene::Update(void)
 			break;
 		case GameScene::MODE::STEALTH:
 			stl_->Update();
+			auto mng = SceneManager::GetInstance();
 			if (stage.IsClear())	//クリアしてたら
 			{
+				SceneManager::GetInstance().ClearStage(mng.GetStageNum() - 1);
 				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
+				return;
 			}
 			if (stl_->IsFailde())	//クリアしてたら
 			{
-				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
+				mng.ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
 			}
 			camera.Update();
 			break;
@@ -103,7 +106,7 @@ void GameScene::Draw(void)
 {
 	StageManager::GetInstance().Draw(GetMode());
 	if (mode_ == MODE::STEALTH) { stl_->Draw(); }
-	if (isCheck_) Plate::GetInstance().Draw(Plate::TYPE::CHECK, str_);
+	if (isCheck_) Plate::GetInstance().Draw(Plate::TYPE::CHECK, str_, false);
 
 	DrawString(0, 0, "GameScene", 0xffffff, true);
 }

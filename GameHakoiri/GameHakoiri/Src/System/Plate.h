@@ -55,7 +55,7 @@ public:
 	void UpdateGo(TYPE type);
 	void UpdateStop(TYPE type);
 	void UpdateBack(TYPE type);
-	void Draw(TYPE type,std::string str);
+	void Draw(TYPE type,std::string str,bool strLong);
 
 	void DrawDebug(TYPE type);
 

@@ -51,6 +51,8 @@ public:
 	static bool CreateInstance(void);	//外部から静的インスタンスを生成
 	static SceneManager& GetInstance(void);	//インスタンスの取得
 	
+	void ClearStage(int stageNum);
+	bool IsClearStage(int stageNum);
 
 private:
 	SCENEID sceneID_;	//シーン切り替え
@@ -66,11 +68,14 @@ private:
 
 
 	int stageNum_;	//選択したステージナンバー保存用
+	bool clearStage_[3];	//クリアしたステージを保存
 
 	//メンバ関数
 	void DoChangeScene(void);		//シーン切り替え(フェードなし)
 	void Fade(void);	//フェード実施用関数
 	void ReleaseScene(SCENEID);	//シーンの解放
+
+	void SetChangeScene(const bool flag);
 
 	//シングルトン化
 	SceneManager(Camera& _camera);	//コンストラクタ

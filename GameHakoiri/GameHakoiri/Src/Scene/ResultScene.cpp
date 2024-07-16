@@ -59,7 +59,7 @@ void ResultScene::KeyboardContoroller(void)
 	auto& ins = InputManager::GetInstance();
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::ENDING, true);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
 	}
 }
 
@@ -69,6 +69,6 @@ void ResultScene::GamePadController(void)
 
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::ENDING, true);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
 	}
 }

@@ -47,7 +47,6 @@ void TitleScene::Update(void)
 				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
 			else isCheck_ = false;
 		}
-			
 	}
 }
 //描画
@@ -57,7 +56,7 @@ void TitleScene::Draw(void)
 	DrawString(0, 0, "TitleScene",0xffffff, true);
 	DrawBox(50, 50, 500, 500, 0xffff00, true);
 
-	if (isCheck_) Plate::GetInstance().Draw(Plate::TYPE::SELECT,str_);
+	if (isCheck_) Plate::GetInstance().Draw(Plate::TYPE::SELECT, str_, true);
 }
 //解放
 //********************************************************
@@ -76,7 +75,7 @@ void TitleScene::KeyboardContoroller(void)
 		SceneManager::GetInstance().SetController(SceneManager::CONTROLLER::KEYBOARD);
 		isCheck_ = true;
 		Plate::GetInstance().SetState(Plate::STATE::GO);
-		str_ = "操作方法はキーボードで良いですか？";
+		str_ = "操作方法はキーボードで良いですか？\n\n※操作方法を変更する場合はこのタイトルまで戻る必要があります";
 	}
 }
 
@@ -88,6 +87,6 @@ void TitleScene::GamePadController(void)
 	{
 		SceneManager::GetInstance().SetController(SceneManager::CONTROLLER::PAD);
 		isCheck_ = true;
-		str_ = "操作方法はコントローラーで良いですか？";
+		str_ = "操作方法はコントローラーで良いですか？\n\n※操作方法を変更する場合はこのタイトルまで戻る必要があります";
 	}
 }

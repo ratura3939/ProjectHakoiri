@@ -108,6 +108,41 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::HP_TEXT_IMG, move(res));
 
+	//セレクトステージ１
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "Stage1.png"
+		);
+	resourcesMap_.emplace(SRC::STAGE_1_IMG, move(res));
+
+	//セレクトステージ２
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "Stage2.png"
+		);
+	resourcesMap_.emplace(SRC::STAGE_2_IMG, move(res));
+
+	//セレクトステージ３
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "Stage3.png"
+		);
+	resourcesMap_.emplace(SRC::STAGE_3_IMG, move(res));
+
+	//タイトルに戻る
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "BackTitle.png"
+		);
+	resourcesMap_.emplace(SRC::BACK_TITLE_IMG, move(res));
+
+	//チェック
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "Check.png"
+		);
+	resourcesMap_.emplace(SRC::CHECK_IMG, move(res));
+
 	//部屋（パズル）
 	//風呂
 	res = make_unique<Resource>(

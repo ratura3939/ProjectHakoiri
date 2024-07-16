@@ -20,7 +20,7 @@ SceneManager::SceneManager(Camera& _camera) : camera_(_camera)
 {
 	sceneID_ = SCENEID::NONE;
 	nextSceneID_ = SCENEID::NONE;
-	isChangeScene_ = false;
+	//isChangeScene_ = false;
 	scene_ = nullptr;
 	fader_ = nullptr;
 }
@@ -52,10 +52,14 @@ bool SceneManager::Init(void)
 
 	//タイトルをフェードインで表示
 	fader_->SetFade(Fader::STATE::FADE_IN);
-	isChangeScene_ = true;
+	SetChangeScene(true);
 
 	//プレートの生成
 	Plate::CreateInstance();
+
+	clearStage_[0] = false;
+	clearStage_[1] = false;
+	clearStage_[2] = false;
 
 	//正しく処理が終了したので
 	return true;
@@ -145,7 +149,7 @@ void SceneManager::ChangeScene(SCENEID next,bool isToFade)
 	if (isToFade)
 	{
 		fader_->SetFade(Fader::STATE::FADE_OUT);
-		isChangeScene_ = true;
+		SetChangeScene(true);
 	}
 	else
 	{
@@ -219,7 +223,7 @@ void SceneManager::Fade(void)
 			//フェードの終了
 			fader_->SetFade(Fader::STATE::NONE);
 			//切り替え終了
-			isChangeScene_ = false;
+ 			SetChangeScene(false);
 		}
 		break;
 	}
@@ -235,6 +239,10 @@ void SceneManager::ReleaseScene(SCENEID sceneID)
 		delete scene_;
 		scene_ = nullptr;
 	}
+}
+void SceneManager::SetChangeScene(const bool flag)
+{
+	isChangeScene_ = flag;
 }
 //外部から静的インスタンスを生成
 //********************************************************
@@ -258,4 +266,14 @@ bool SceneManager::CreateInstance(void)
 SceneManager& SceneManager::GetInstance(void)
 {
 	return *instance_;
+}
+
+void SceneManager::ClearStage(int stageNum)
+{
+	clearStage_[stageNum] = true;
+}
+
+bool SceneManager::IsClearStage(int stageNum)
+{
+	return clearStage_[stageNum];
 }

@@ -353,6 +353,7 @@ void StageManager::LoadCsv(void)
 	mapchipObj_[static_cast<int>(MAPCHIP::INTERIA)][static_cast<int>(OBJECT::EVENT)] =
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPCHIP_EVENT_CSV).dmcHandleIds_;
 }
+
 #pragma endregion
 
 

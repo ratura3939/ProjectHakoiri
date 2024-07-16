@@ -159,9 +159,12 @@ void Plate::UpdateBack(TYPE type)
 	}
 }
 
-void Plate::Draw(TYPE type, std::string str)
+void Plate::Draw(TYPE type, std::string str,bool strLong)
 {
 	DrawDebug(type);
+
+	int strTune = 4;
+	if (strLong)strTune = 2;
 
 	//ボードの表示
 	DrawRotaGraph(platePos_.x, platePos_.y,
@@ -173,7 +176,7 @@ void Plate::Draw(TYPE type, std::string str)
 
 	//文章の表示
 	auto size = str.length();
-	auto pos = Vector2F{ platePos_.x - PLATE_SIZE / 4,platePos_.y };
+	auto pos = Vector2F{ platePos_.x - PLATE_SIZE / strTune,platePos_.y };
 	DrawFormatString(pos.x, pos.y, 0x000000, "%s", str.c_str());
 
 	//ボタンの表示

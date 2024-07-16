@@ -40,6 +40,11 @@ public:
 		HP_BASE_IMG,
 		HP_CIRCLE_IMG,
 		HP_TEXT_IMG,
+		STAGE_1_IMG,
+		STAGE_2_IMG,
+		STAGE_3_IMG,
+		BACK_TITLE_IMG,
+		CHECK_IMG,
 	
 		//•”‰®
 		BATH_IMG,

@@ -161,6 +161,7 @@ private:
 	void LoadCsv(void);
 
 
+
 	//シングルトン化
 	StageManager(void);	//コンストラクタ
 	StageManager(const StageManager&);	//コピーコンストラクタ
