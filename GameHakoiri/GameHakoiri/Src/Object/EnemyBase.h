@@ -12,6 +12,7 @@ public:
 	{
 		HOUSEMADE,
 		SENESCHAL,
+		OLDMAN,
 		MAX
 	};
 

@@ -12,6 +12,7 @@
 #include"../Object/CharacterBase.h"
 #include"../Object/Enemy/Housemaid.h"
 #include"../Object/Enemy/Seneschal.h"
+#include"../Object/Enemy/Oldman.h"
 #include"Stealth.h"
 
 //コンストラクタ
@@ -697,11 +698,12 @@ void Stealth::DrawDebug(void)
 	auto pos = player_->GetCollisionPos();
 	auto pPos = player_->GetPos();
 	auto pMapPos = StageManager::GetInstance().GetVector2MapPos(pPos.ToVector2());
+	auto hp = player_->GetHp();
 	
 
-	DrawFormatString(0, 0, 0xffffff,
-		"playerの座標＝(%.1f,%.1f)\nplayerの当たり判定＝(%.1f,%.1f)\nplayerの位置＝｛%d,%d}\n",
-		pPos.x,pPos.y,pos.x,pos.y,pMapPos.x,pMapPos.y);
+	DrawFormatString(0, 0, 0xff0000,
+		"playerの座標＝(%.1f,%.1f)\nplayerの当たり判定＝(%.1f,%.1f)\nplayerの位置＝｛%d,%d}\nHP=%.1f",
+		pPos.x,pPos.y,pos.x,pos.y,pMapPos.x,pMapPos.y,hp);
 
 
 }
@@ -710,14 +712,18 @@ void Stealth::EnemyInit(void)
 {
 	for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)
 	{
-		//敵を三体ずつ生成
+		//敵を2体ずつ生成
 		if (i < OBLONG_ENEMY_NUM)
 		{
 			enemyMng_[i] = new Housemaid;
 		}
-		else
+		else if (i < OBLONG_ENEMY_NUM * 2)
 		{
 			enemyMng_[i] = new Seneschal;
+		}
+		else
+		{
+			enemyMng_[i] = new Oldman;
 		}
 		enemyMng_[i]->Init();
 	}
@@ -725,14 +731,23 @@ void Stealth::EnemyInit(void)
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][0] = { NX1,NY1 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][1] = { NX2,NY2 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][2] = { 0.0f,0.0f };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][3] = { 0.0f,0.0f };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][4] = { 0.0f,0.0f };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][5] = { 0.0f,0.0f };
 
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][0] = { OBX1,OBY1 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][1] = { OBX2,OBY2 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][2] = { OBX3,OBY3 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][3] = { OBX4,OBY4 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][4] = { OBX5,OBY5 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][5] = { OBX6,OBY6 };
 
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][0] = { OB2X1,OB2Y1 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][1] = { OB2X2,OB2Y2 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][2] = { OB2X3,OB2Y3 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][3] = { OB2X4,OB2Y4 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][4] = { OB2X5,OB2Y5 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG_SIDE)][5] = { OB2X6,OB2Y6 };
 }
 
 void Stealth::CreateEnemy(void)

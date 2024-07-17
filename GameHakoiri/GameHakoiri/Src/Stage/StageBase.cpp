@@ -260,19 +260,9 @@ void StageBase::DrawObject(void)
 
 void StageBase::Update(GameScene::MODE mode)
 {
-	switch (mode)
-	{
-	case GameScene::MODE::STEALTH:
-		UpdateStealth();
-		break;
-	default:
-		break;
-	}
+	
 }
 
-void StageBase::UpdateStealth(void)
-{
-}
 #pragma endregion
 
 

@@ -12,6 +12,13 @@ public:
 	static constexpr float UNIT_DIR_DEG = 45.0f;
 	static constexpr float HP = 100.0f;
 	static constexpr float HP_SIZE = 128.0f;
+	static constexpr float DASH = 2.0f;
+	static constexpr float USE_STAMINA = 2.0f;
+	static constexpr float STAMINA_MAX = 128.0f;
+	static constexpr float STAMINA_BOX = 32.0f;
+	static constexpr float STAMINA_RECOVERY = 0.5f;
+	static constexpr int RED = 0xff0000;
+	static constexpr int ORENGE = 0xffa500;
 
 	Player(void);
 	~Player(void)override;
@@ -31,6 +38,14 @@ private:
 
 	void ChangeIsDrawMap(void);	//マップを描画するかの選択
 
+	void RecoveryStamina(void);	//スタミナの回復
+
+	bool isDash_;	//ダッシュが可能か
+	float dash_;	//ダッシュの倍率
+	float stamina_;//ダッシュに使用するスタミナ
+	int staminaColor_;	//スタミナゲージのカラー
+
+	//HPバー表示
 	float hp_;
 	Vector2F hpPos_;
 	int hpBaseImg_;

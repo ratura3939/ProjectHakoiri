@@ -72,7 +72,8 @@ void Pazzle::KeyboardContoroller(void)
 		if (ins.IsTrgDown(KEY_INPUT_LEFT))	{stage.MoveCursor(Utility::DIR::LEFT);}
 		if (ins.IsTrgDown(KEY_INPUT_RIGHT))	{stage.MoveCursor(Utility::DIR::RIGHT);}
 		//カーソル決定受付
-		if (ins.IsTrgDown(KEY_INPUT_SPACE))	{ChangeIsSelect(true);}
+		if (ins.IsTrgDown(KEY_INPUT_SPACE))	{
+		ChangeIsSelect(true);}
 	}
 	else
 	{

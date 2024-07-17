@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Enemy\Oldman.cpp" />
     <ClCompile Include="Src\System\Plate.cpp" />
     <ClCompile Include="Src\Object\Enemy\Seneschal.cpp" />
     <ClCompile Include="Src\Object\Enemy\Housemaid.cpp" />
@@ -63,6 +64,7 @@
     <ClCompile Include="Src\Stage\ThirdStage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Enemy\Oldman.h" />
     <ClInclude Include="Src\System\Plate.h" />
     <ClInclude Include="Src\Object\Enemy\Seneschal.h" />
     <ClInclude Include="Src\Object\Enemy\Housemaid.h" />

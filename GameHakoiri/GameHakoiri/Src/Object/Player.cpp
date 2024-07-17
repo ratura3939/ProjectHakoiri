@@ -24,6 +24,11 @@ void Player::SetParam(void)
 	pos_ = { 990.0f,270.0f };
 	move_ = 2.0f;
 
+	isDash_ = true;
+	dash_ = 1.0f;
+	stamina_ = STAMINA_MAX;
+	staminaColor_ = ORENGE;
+
 	hpPos_ = { Application::SCREEN_SIZE_X - HP_SIZE / 2,HP_SIZE / 2 };
 	hp_ = HP;
 	hpBaseImg_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::HP_BASE_IMG).handleId_;
@@ -37,6 +42,9 @@ void Player::Move(void)
 	auto prevDir = GetDir();
 
 	auto cnt = SceneManager::GetInstance().GetController();
+
+	//ダッシュの初期化
+	dash_ = 1.0f;
 
 	switch (cnt)
 	{
@@ -53,12 +61,27 @@ void Player::Move(void)
 	{
 		ResetAnim(GetDir());
 	}
+
+	//スタミナの回復
+	RecoveryStamina();
 }
 
 void Player::Draw(void)
 {
 	CharacterBase::Draw();
 
+
+	//スタミナ
+	Vector2F staminaPos = { hpPos_.x - HP_SIZE / 2,hpPos_.y + HP_SIZE / 2 };
+
+	//ベースの描画
+	DrawBox(staminaPos.x, staminaPos.y,
+		staminaPos.x + STAMINA_MAX, staminaPos.y + STAMINA_BOX,
+		0x000000, true);
+	//スタミナの描画
+	DrawBox(staminaPos.x, staminaPos.y,
+		staminaPos.x + stamina_, staminaPos.y + STAMINA_BOX,
+		staminaColor_, true);
 
 	//枠
 	DrawRotaGraph(hpPos_.x,
@@ -105,22 +128,36 @@ void Player::KeyboardContoroller(void)
 
 	bool IsMoveY = false;
 
+	//ダッシュON
+	if (ins.IsNew(KEY_INPUT_SPACE))
+	{
+		if (stamina_ >= USE_STAMINA && isDash_)
+		{
+			dash_ = DASH;
+			stamina_ -= USE_STAMINA;
+			if (stamina_ < USE_STAMINA)
+			{
+				isDash_ = false;
+				staminaColor_ = RED;
+			}
+		}
+	}
 	//移動
 	if (ins.IsNew(KEY_INPUT_UP)) 
 	{
-		pos_.y -= move_; 
+		pos_.y -= move_ * dash_;
 		SetDir(CharacterBase::DIR::TOP);
 		IsMoveY = true;
 	}
 	if (ins.IsNew(KEY_INPUT_DOWN))
 	{
-		pos_.y += move_; 
+		pos_.y += move_ * dash_;
 		SetDir(CharacterBase::DIR::BOTTOM);
 		IsMoveY = true;
 	}
 	if (ins.IsNew(KEY_INPUT_LEFT)) 
 	{
-		pos_.x -= move_; 
+		pos_.x -= move_ * dash_;
 		SetDir(CharacterBase::DIR::LEFT);
 		if (IsMoveY)
 		{
@@ -130,7 +167,7 @@ void Player::KeyboardContoroller(void)
 	}
 	if (ins.IsNew(KEY_INPUT_RIGHT)) 
 	{
-		pos_.x += move_; 
+		pos_.x += move_ * dash_;
 		SetDir(CharacterBase::DIR::RIGHT);
 		if (IsMoveY)
 		{
@@ -150,6 +187,21 @@ void Player::GamePadController(void)
 {
 	InputManager& ins = InputManager::GetInstance();
 
+	//ダッシュON
+	if (ins.IsPadBtnNew(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+	{
+		if (stamina_ >= USE_STAMINA && isDash_)
+		{
+			dash_ = DASH;
+			stamina_ -= USE_STAMINA;
+			if (stamina_ < USE_STAMINA)
+			{
+				isDash_ = false;
+				staminaColor_ = RED;
+			}
+		}
+	}
+
 	// 左スティックの横軸
 	auto leftStickX = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLX;
 	// 左スティックの縦軸
@@ -158,11 +210,11 @@ void Player::GamePadController(void)
 	Vector2 inputStick = { leftStickX,leftStickY };
 
 	//移動
-	if (inputStick.x > 0)pos_.x += move_;
-	else if (inputStick.x < 0)pos_.x -= move_;
+	if (inputStick.x > 0)pos_.x += move_ * dash_;
+	else if (inputStick.x < 0)pos_.x -= move_ * dash_;
 
-	if (inputStick.y > 0)pos_.y += move_;
-	else  if (inputStick.y < 0) pos_.y -= move_;
+	if (inputStick.y > 0)pos_.y += move_ * dash_;
+	else  if (inputStick.y < 0) pos_.y -= move_ * dash_;
 
 	//方向決め
 	auto stickRad = static_cast<float>(atan2(static_cast<double>(inputStick.y), static_cast<double>(inputStick.x)));
@@ -232,4 +284,15 @@ void Player::ChangeIsDrawMap(void)
 {
 	if (isDrawMap_)isDrawMap_ = false;
 	else isDrawMap_ = true;
+}
+
+void Player::RecoveryStamina(void)
+{
+	stamina_ += STAMINA_RECOVERY;
+	if (stamina_ > STAMINA_MAX)
+	{
+		stamina_ = STAMINA_MAX;
+		isDash_ = true;
+		staminaColor_ = ORENGE;
+	}
 }

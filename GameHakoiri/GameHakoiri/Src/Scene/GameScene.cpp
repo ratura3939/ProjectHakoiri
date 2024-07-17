@@ -62,6 +62,9 @@ void GameScene::Update(void)
 				//クリア可能なら
 				if (stage.CanGoal())
 				{
+					//フラッシュの停止
+					stage.SetFlash(false);
+
 					//ステルスシーンの初期化
 					SetMode(MODE::STEALTH);
 					stl_->Init();
@@ -77,11 +80,11 @@ void GameScene::Update(void)
 			break;
 		case GameScene::MODE::STEALTH:
 			stl_->Update();
-			auto mng = SceneManager::GetInstance();
+			auto& mng = SceneManager::GetInstance();
 			if (stage.IsClear())	//クリアしてたら
 			{
-				SceneManager::GetInstance().ClearStage(mng.GetStageNum() - 1);
-				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
+				mng.ClearStage(mng.GetStageNum() - 1);
+				mng.ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
 				return;
 			}
 			if (stl_->IsFailde())	//クリアしてたら

@@ -19,9 +19,9 @@ public:
 	static constexpr int DOOR_DISTANCE = 32 * 15;	//ドアの位置は端からマップチップ15マス分の位置にある
 	static constexpr int INIT_ROOM_POS = 32 * 4;	//部屋移動後の初期位置
 	static constexpr int INIT_ROOM_POS_SIDE = 32 * 2;	//部屋移動後の初期位置
-	static constexpr int OBLONG_ENEMY_NUM = 3;	//長方形の部屋の敵の数
+	static constexpr int OBLONG_ENEMY_NUM = 6;	//長方形の部屋の敵の数
 	static constexpr int NOMAL_ENEMY_NUM = 2;	//正方形の部屋の敵の数
-	static constexpr float DAMAGE = 0.5f;		//ダメージ
+	static constexpr float DAMAGE = 0.1f;		//ダメージ
 
 	//敵の初期位置
 
@@ -30,19 +30,33 @@ public:
 	static constexpr float NX2 = 480.0f + CharacterBase::CHARACTER_HALF_X;
 	static constexpr float NY2 = 608.0f + CharacterBase::CHARACTER_HALF_Y;
 
-	static constexpr float OBX1= 480.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY1= 480.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OBX2= 160.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY2= 1056.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OBX3= 608.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY3= 1568.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX1= 256.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY1= 256.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX2= 768.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY2= 480.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX3= 256.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY3= 1056.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX4 = 768.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY4 = 1056.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX5 = 224.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY5 = 1568.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX6 = 768.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY6 = 1568.0f + CharacterBase::CHARACTER_HALF_Y;
 
-	static constexpr float OB2X1 = 960.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y1 = 736.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OB2X2 = 448.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y2 = 480.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OB2X3 = 1376.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y3 = 384.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X1 = 352.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y1 = 256.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X2 = 768.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y2 = 384.0f + CharacterBase::CHARACTER_HALF_Y;
+
+	static constexpr float OB2X3 = 480.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y3 = 736.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X4 = 1536.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y4 = 288.0f + CharacterBase::CHARACTER_HALF_Y;
+
+	static constexpr float OB2X5 = 1216.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y5 = 480.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X6 = 1664.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y6 = 800.0f + CharacterBase::CHARACTER_HALF_Y;
 
 
 	//ブロックから見た位置の角度設定
