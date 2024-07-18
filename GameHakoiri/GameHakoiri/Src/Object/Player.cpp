@@ -70,17 +70,18 @@ void Player::Draw(void)
 {
 	CharacterBase::Draw();
 
-
+	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 	//スタミナ
-	Vector2F staminaPos = { hpPos_.x - HP_SIZE / 2,hpPos_.y + HP_SIZE / 2 };
+	Vector2F staminaPos = { pos_.x - (CharacterBase::CHARACTER_HALF_X + STAMINA_MAX / 2),
+		pos_.y - (CharacterBase::CHARACTER_HALF_Y + STAMINA_BOX) };
 
 	//ベースの描画
-	DrawBox(staminaPos.x, staminaPos.y,
-		staminaPos.x + STAMINA_MAX, staminaPos.y + STAMINA_BOX,
+	DrawBox(staminaPos.x - cameraPos.x, staminaPos.y - cameraPos.y,
+		staminaPos.x + STAMINA_MAX - cameraPos.x, staminaPos.y + STAMINA_BOX - cameraPos.y,
 		0x000000, true);
 	//スタミナの描画
-	DrawBox(staminaPos.x, staminaPos.y,
-		staminaPos.x + stamina_, staminaPos.y + STAMINA_BOX,
+	DrawBox(staminaPos.x - cameraPos.x, staminaPos.y - cameraPos.y,
+		staminaPos.x + stamina_ - cameraPos.x, staminaPos.y + STAMINA_BOX - cameraPos.y,
 		staminaColor_, true);
 
 	//枠

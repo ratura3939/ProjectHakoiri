@@ -25,6 +25,7 @@ public:
 	static const std::string PATH_MAPCHIP;
 	static const std::string PATH_ROOM;
 	static const std::string PATH_SYSTEM;
+	static const std::string PATH_MANUAL;
 	static const std::string PATH_SOUND;
 	static const std::string PATH_BGM;
 

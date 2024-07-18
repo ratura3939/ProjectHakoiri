@@ -15,7 +15,7 @@ public:
 	static constexpr float DASH = 2.0f;
 	static constexpr float USE_STAMINA = 2.0f;
 	static constexpr float STAMINA_MAX = 128.0f;
-	static constexpr float STAMINA_BOX = 32.0f;
+	static constexpr float STAMINA_BOX = 16.0f;
 	static constexpr float STAMINA_RECOVERY = 0.5f;
 	static constexpr int RED = 0xff0000;
 	static constexpr int ORENGE = 0xffa500;

@@ -1,4 +1,6 @@
-//#pragma once
+#pragma once
+
+#include"../Scene/GameScene.h"
 
 //前方宣言
 class Fader;
@@ -26,7 +28,8 @@ public:
 	enum class CONTROLLER
 	{
 		KEYBOARD,
-		PAD
+		PAD,
+		MAX
 	};
 	
 	//メンバ関数
@@ -54,6 +57,9 @@ public:
 	void ClearStage(int stageNum);
 	bool IsClearStage(int stageNum);
 
+	void SetManual(GameScene::MODE mode);
+	void Reset(void);
+
 private:
 	SCENEID sceneID_;	//シーン切り替え
 	SCENEID nextSceneID_;	//次のシーンを保持
@@ -69,6 +75,11 @@ private:
 
 	int stageNum_;	//選択したステージナンバー保存用
 	bool clearStage_[3];	//クリアしたステージを保存
+
+
+	//マニュアル関係
+	bool isManual_;	//マニュアルを出すかどうか
+	bool firstManual_[static_cast<int>(GameScene::MODE::MAX)];
 
 	//メンバ関数
 	void DoChangeScene(void);		//シーン切り替え(フェードなし)

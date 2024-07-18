@@ -68,8 +68,8 @@ public:
 	static constexpr int TUTORIAL_PAZZLE_SIZE_Y = 6;
 	static constexpr int FIRST_PAZZLE_SIZE_X = 6;
 	static constexpr int FIRST_PAZZLE_SIZE_Y = 6;
-	static constexpr int SECOND_PAZZLE_SIZE_X = 6;
-	static constexpr int SECOND_PAZZLE_SIZE_Y = 6;
+	static constexpr int SECOND_PAZZLE_SIZE_X = 11;
+	static constexpr int SECOND_PAZZLE_SIZE_Y = 10;
 	static constexpr int THIRD_PAZZLE_SIZE_X = 6;
 	static constexpr int THIRD_PAZZLE_SIZE_Y = 6;
 	//•”‰®‚ÌŽí—Þ•Ê‚ÌƒpƒYƒ‹‚É‚¨‚¯‚é‘å‚«‚³

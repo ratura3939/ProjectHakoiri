@@ -21,7 +21,7 @@ public:
 	static constexpr int INIT_ROOM_POS_SIDE = 32 * 2;	//部屋移動後の初期位置
 	static constexpr int OBLONG_ENEMY_NUM = 6;	//長方形の部屋の敵の数
 	static constexpr int NOMAL_ENEMY_NUM = 2;	//正方形の部屋の敵の数
-	static constexpr float DAMAGE = 0.1f;		//ダメージ
+	static constexpr float DAMAGE = 0.2f;		//ダメージ
 
 	//敵の初期位置
 

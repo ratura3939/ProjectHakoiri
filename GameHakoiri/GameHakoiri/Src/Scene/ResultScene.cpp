@@ -1,6 +1,8 @@
 #include<DxLib.h>
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
+#include"../Manager/ResourceManager.h"
+#include"../Application.h"
 #include"ResultScene.h"
 
 
@@ -20,6 +22,8 @@ ResultScene::~ResultScene(void)
 //********************************************************
 bool ResultScene::Init(void)
 {
+	auto& rsM = ResourceManager::GetInstance();
+	backSelectImg_= rsM.Load(ResourceManager::SRC::BACK_SELECT_IMG).handleId_;
 	//ê≥èÌÇ…èàóùÇ™çsÇÌÇÍÇΩÇÃÇ≈
 	return true;
 }
@@ -43,8 +47,7 @@ void ResultScene::Update(void)
 //********************************************************
 void ResultScene::Draw(void)
 {
-	DrawString(0, 0, "ResultScene", 0xffffff, true);
-	DrawBox(50, 50, 500, 500, 0x00ffff, true);
+	DrawGraph(Application::SCREEN_SIZE_X / 4, Application::SCREEN_SIZE_Y - 256, backSelectImg_, true);
 }
 //âï˙
 //********************************************************

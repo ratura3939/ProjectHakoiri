@@ -15,6 +15,7 @@ const std::string Application::PATH_CHARACTER = "Data/Img/Character/";
 const std::string Application::PATH_MAPCHIP = "Data/Img/Map/";
 const std::string Application::PATH_ROOM = "Data/Img/Room/";
 const std::string Application::PATH_SYSTEM = "Data/Img/System/";
+const std::string Application::PATH_MANUAL = "Data/Img/Manual/";
 const std::string Application::PATH_SOUND = "Data/Snd/";
 const std::string Application::PATH_BGM = "Data/Snd/Bgm/";
 

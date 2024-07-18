@@ -36,6 +36,6 @@ private:
 
 	MODE mode_;	//現在のゲームのモードを保持
 
-	bool isCheck_;	//プレートを出すかどうか
+	bool isPlate_;	//プレートを出すかどうか
 	std::string str_;
 };

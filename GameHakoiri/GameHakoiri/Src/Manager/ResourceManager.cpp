@@ -143,6 +143,106 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::CHECK_IMG, move(res));
 
+	//タイトル
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "Title.png"
+		);
+	resourcesMap_.emplace(SRC::TITLE_IMG, move(res));
+
+	//Thanks
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "thanks.png"
+		);
+	resourcesMap_.emplace(SRC::THANK_IMG, move(res));
+
+	//スタート
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "start.png"
+		);
+	resourcesMap_.emplace(SRC::START_IMG, move(res));
+
+	//セレクトへ戻る
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "BackSelect.png"
+		);
+	resourcesMap_.emplace(SRC::BACK_SELECT_IMG, move(res));
+
+	//成功
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "clear.png"
+		);
+	resourcesMap_.emplace(SRC::CLEAER_IMG, move(res));
+
+	//失敗
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_SYSTEM + "faild.png"
+		);
+	resourcesMap_.emplace(SRC::FAILD_IMG, move(res));
+
+	//操作説明
+	//パズル１
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Pazzle_1.png"
+		);
+	resourcesMap_.emplace(SRC::PZL_MNL_1_IMG, move(res));
+
+	//パズル②
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Pazzle_2.png"
+		);
+	resourcesMap_.emplace(SRC::PZL_MNL_2_IMG, move(res));
+
+	//ステルス①
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Stealth_1.png"
+		);
+	resourcesMap_.emplace(SRC::STL_MNL_1_IMG, move(res));
+
+	//ステルス②
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Stealth_2.png"
+		);
+	resourcesMap_.emplace(SRC::STL_MNL_2_IMG, move(res));
+
+	//キーボードパズル
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Keybord_Pazzle.png"
+		);
+	resourcesMap_.emplace(SRC::KBD_PZL_IMG, move(res));
+
+	//キーボードステルス
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Keybord_Stealth.png"
+		);
+	resourcesMap_.emplace(SRC::KBD_STL_IMG, move(res));
+
+	//パッドパズル
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Pad_Pazzle.png"
+		);
+	resourcesMap_.emplace(SRC::PAD_PZL_IMG, move(res));
+
+	//パッドステルス
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Pad_Stealth.png"
+		);
+	resourcesMap_.emplace(SRC::PAD_STL_IMG, move(res));
+
+
 	//部屋（パズル）
 	//風呂
 	res = make_unique<Resource>(
@@ -265,6 +365,14 @@ void ResourceManager::Init(void)
 		Application::PATH_PAZZLE + "Stage_First.csv"
 		);
 	resourcesMap_.emplace(SRC::FIRST_PAZZLE_CSV, move(res));
+
+	//パズル
+	//ステージ①
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_PAZZLE + "Stage_Second.csv"
+		);
+	resourcesMap_.emplace(SRC::SECOND_PAZZLE_CSV, move(res));
 
 
 	//マップ

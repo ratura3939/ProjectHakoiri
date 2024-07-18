@@ -54,7 +54,10 @@ bool StageManager::Init(STAGENUM num)
 			roomImg_, mapTile_);
 		break;
 	case StageManager::STAGENUM::SECOND:
-
+		stage_ = new SecondStage(stageCsv_[static_cast<int>(STAGENUM::SECOND)].begin(),
+			SECOND_PAZZLE_SIZE_X, SECOND_PAZZLE_SIZE_Y,
+			mapCsv_, objCsv_,
+			roomImg_, mapTile_);
 		break;
 	case StageManager::STAGENUM::THIRD:
 
@@ -294,6 +297,8 @@ void StageManager::LoadCsv(void)
 	//ÉpÉYÉã
 	stageCsv_[static_cast<int>(STAGENUM::FIRST)] = 
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::FIRST_PAZZLE_CSV).dmcHandleIds_;
+	stageCsv_[static_cast<int>(STAGENUM::SECOND)] =
+		ResourceManager::GetInstance().Load(ResourceManager::SRC::SECOND_PAZZLE_CSV).dmcHandleIds_;
 
 	//ïîâÆÅimap&obj)
 	mapCsv_[static_cast<int>(RoomBase::TYPE::BATH)] =

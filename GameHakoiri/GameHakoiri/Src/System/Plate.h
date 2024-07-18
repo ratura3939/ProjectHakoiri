@@ -57,7 +57,6 @@ public:
 	void UpdateBack(TYPE type);
 	void Draw(TYPE type,std::string str,bool strLong);
 
-	void DrawDebug(TYPE type);
 
 	void Release(void);
 

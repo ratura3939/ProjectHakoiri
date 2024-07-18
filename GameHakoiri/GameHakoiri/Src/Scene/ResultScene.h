@@ -12,6 +12,8 @@ public:
 	void Draw(void);	//描画
 	bool Release(void);	//解放
 private:
+	int resultImg_[2];
+	int backSelectImg_;
 
 	void KeyboardContoroller(void);	// キーボードの操作
 	void GamePadController(void);	// ゲームパッドの操作

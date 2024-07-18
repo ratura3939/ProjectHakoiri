@@ -9,6 +9,7 @@
 #include"../Scene/EndingScene.h"
 #include"../Common/Fader.h"
 #include"../System/Plate.h"
+#include"../System/Manual.h"
 
 
 //シングルトン化(インスタンスの初期化)
@@ -23,6 +24,7 @@ SceneManager::SceneManager(Camera& _camera) : camera_(_camera)
 	//isChangeScene_ = false;
 	scene_ = nullptr;
 	fader_ = nullptr;
+	isManual_ = false;
 }
 //コピーコンストラクタ
 //********************************************************
@@ -56,10 +58,16 @@ bool SceneManager::Init(void)
 
 	//プレートの生成
 	Plate::CreateInstance();
+	//マニュアルの生成
+	Manual::CreateInstance();
 
 	clearStage_[0] = false;
 	clearStage_[1] = false;
 	clearStage_[2] = false;
+
+	isManual_ = false;
+	firstManual_[0] = false;
+	firstManual_[1] = false;
 
 	//正しく処理が終了したので
 	return true;
@@ -77,15 +85,29 @@ void SceneManager::Update(void)
 	}
 	else
 	{
-		scene_->Update();
+		if (isManual_)
+		{
+			Manual::GetInstance().Update();
+			if (Manual::GetInstance().IsFinish())isManual_ = false;
+		}
+		else
+		{
+			scene_->Update();
+		}
 	}
 }
 //描画
 //********************************************************
 void SceneManager::Draw(void)
 {
-	
-	scene_->Draw();
+	if (isManual_)
+	{
+		Manual::GetInstance().Draw();
+	}
+	else
+	{
+		scene_->Draw();
+	}
 	//フェード
 	fader_->Draw();
 }
@@ -276,4 +298,25 @@ void SceneManager::ClearStage(int stageNum)
 bool SceneManager::IsClearStage(int stageNum)
 {
 	return clearStage_[stageNum];
+}
+
+void SceneManager::SetManual(GameScene::MODE mode)
+{
+	if (!firstManual_[static_cast<int>(mode)])
+	{
+		firstManual_[static_cast<int>(mode)] = true;
+		Manual::GetInstance().SetManual(mode, controller_);
+		isManual_ = true;
+	}
+}
+
+void SceneManager::Reset(void)
+{
+	isManual_ = false;
+	firstManual_[0] = false;
+	firstManual_[1] = false;
+
+	clearStage_[0] = false;
+	clearStage_[1] = false;
+	clearStage_[2] = false;
 }

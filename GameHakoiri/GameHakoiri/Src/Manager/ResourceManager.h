@@ -45,6 +45,22 @@ public:
 		STAGE_3_IMG,
 		BACK_TITLE_IMG,
 		CHECK_IMG,
+		TITLE_IMG,
+		THANK_IMG,
+		START_IMG,
+		BACK_SELECT_IMG,
+		CLEAER_IMG,
+		FAILD_IMG,
+
+		//操作説明
+		PZL_MNL_1_IMG,
+		PZL_MNL_2_IMG,
+		STL_MNL_1_IMG,
+		STL_MNL_2_IMG,
+		KBD_PZL_IMG,
+		KBD_STL_IMG,
+		PAD_PZL_IMG,
+		PAD_STL_IMG,
 	
 		//部屋
 		BATH_IMG,
@@ -69,6 +85,7 @@ public:
 		//Csv
 		//パズル
 		FIRST_PAZZLE_CSV,
+		SECOND_PAZZLE_CSV,
 
 		//マップ
 		BATH_MAP_CSV,

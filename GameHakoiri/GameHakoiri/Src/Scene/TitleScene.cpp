@@ -1,7 +1,10 @@
 #include<DxLib.h>
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
+#include"../Manager/ResourceManager.h"
 #include"../System/Plate.h"
+#include"../Application.h"
+#include"../Utility/Utility.h"
 #include"TitleScene.h"
 
 
@@ -23,6 +26,11 @@ bool TitleScene::Init(void)
 {
 	isCheck_ = false;
 	str_ = "NONE";
+
+	auto& rsM = ResourceManager::GetInstance();
+	titleImg_= rsM.Load(ResourceManager::SRC::TITLE_IMG).handleId_;
+	startImg_ = rsM.Load(ResourceManager::SRC::START_IMG).handleId_;
+	startEx_ = 0.7f;
 	//正常に処理が行われたので
 	return true;
 }
@@ -34,6 +42,9 @@ void TitleScene::Update(void)
 	{
 		KeyboardContoroller();
 		GamePadController();
+
+		startEx_ += 0.01f;
+		if (startEx_ > START_EX_F)startEx_ = START_EX_S;
 	}
 	else
 	{
@@ -53,8 +64,19 @@ void TitleScene::Update(void)
 //********************************************************
 void TitleScene::Draw(void)
 {
-	DrawString(0, 0, "TitleScene",0xffffff, true);
-	DrawBox(50, 50, 500, 500, 0xffff00, true);
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 4,
+		1.0,
+		0.0 * Utility::DEG2RAD,
+		titleImg_,
+		true,
+		false);
+
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y -256,
+		startEx_,
+		0.0 * Utility::DEG2RAD,
+		startImg_,
+		true,
+		false);
 
 	if (isCheck_) Plate::GetInstance().Draw(Plate::TYPE::SELECT, str_, true);
 }
@@ -76,6 +98,14 @@ void TitleScene::KeyboardContoroller(void)
 		isCheck_ = true;
 		Plate::GetInstance().SetState(Plate::STATE::GO);
 		str_ = "操作方法はキーボードで良いですか？\n\n※操作方法を変更する場合はこのタイトルまで戻る必要があります";
+	}
+
+	if (ins.IsNew(KEY_INPUT_R) &&
+		ins.IsNew(KEY_INPUT_E) &&
+		ins.IsNew(KEY_INPUT_S) &&
+		ins.IsNew(KEY_INPUT_T))
+	{
+		SceneManager::GetInstance().Reset();
 	}
 }
 

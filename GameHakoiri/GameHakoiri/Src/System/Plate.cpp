@@ -161,8 +161,6 @@ void Plate::UpdateBack(TYPE type)
 
 void Plate::Draw(TYPE type, std::string str,bool strLong)
 {
-	DrawDebug(type);
-
 	int strTune = 4;
 	if (strLong)strTune = 2;
 
@@ -202,16 +200,6 @@ void Plate::Draw(TYPE type, std::string str,bool strLong)
 			true,
 			false);
 	}
-}
-
-void Plate::DrawDebug(TYPE type)
-{
-	DrawFormatString(0, 50, 0xff0000, "platePos={%.1f,%.1f}\nOKPos={%.1f,%.1f}\nNOPos={%.1f,%.1f}",
-		platePos_.x,platePos_.y,
-		boxPos_[static_cast<int>(type)][static_cast<int>(ANSWER::OK)].x,
-			boxPos_[static_cast<int>(type)][static_cast<int>(ANSWER::OK)].y,
-				boxPos_[static_cast<int>(type)][static_cast<int>(ANSWER::NO)].x,
-					boxPos_[static_cast<int>(type)][static_cast<int>(ANSWER::NO)].y);
 }
 
 void Plate::Release(void)

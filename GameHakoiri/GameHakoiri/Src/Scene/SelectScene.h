@@ -12,6 +12,9 @@ public:
 	static constexpr int STAGE_NUM = 3;
 	static constexpr int BACK_TITLE_X = 512;
 	static constexpr int BACK_TITLE_Y = 256;
+	static constexpr float ROT_MAX = 10.0f;
+	static constexpr float ROT_MIN = -10.0f;
+	static constexpr float ROT_UNIT = 0.5f;
 
 	SelectScene(void);	//コンストラクタ
 	~SelectScene(void);	//デストラクタ
@@ -24,6 +27,8 @@ public:
 private:
 	int selectNum_;	//カーソル上のステージナンバーを保持
 	int stageNumImg_[STAGE_NUM];	//ステージ選択の画像
+	float stageNumRot_[STAGE_NUM];	//ステージ選択の画像
+	bool rotDecre_;
 	Vector2 stageNumPos_[STAGE_NUM];//位置
 
 	int checkImg_;	//チェックマーク
@@ -39,4 +44,5 @@ private:
 	void GamePadController(void);	// ゲームパッドの操作
 
 	void SetSelectBack(const bool flag);
+	void ResetRot(void);
 };

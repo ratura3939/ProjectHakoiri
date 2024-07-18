@@ -64,7 +64,7 @@ bool StageBase::Init(void)
 	LoadImgs();
 
 	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
-		static_cast<float>(Application::SCREEN_SIZE_Y / 4) };
+		static_cast<float>(Application::SCREEN_SIZE_Y / 8) };
 
 	goalPos_ = { 0,0 };
 

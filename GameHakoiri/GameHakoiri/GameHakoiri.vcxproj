@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Manager\SoundManager.cpp" />
+    <ClCompile Include="Src\System\Manual.cpp" />
     <ClCompile Include="Src\Object\Enemy\Oldman.cpp" />
     <ClCompile Include="Src\System\Plate.cpp" />
     <ClCompile Include="Src\Object\Enemy\Seneschal.cpp" />
@@ -64,6 +66,8 @@
     <ClCompile Include="Src\Stage\ThirdStage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Manager\SoundManager.h" />
+    <ClInclude Include="Src\System\Manual.h" />
     <ClInclude Include="Src\Object\Enemy\Oldman.h" />
     <ClInclude Include="Src\System\Plate.h" />
     <ClInclude Include="Src\Object\Enemy\Seneschal.h" />

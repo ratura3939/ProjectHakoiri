@@ -35,8 +35,11 @@ bool GameScene::Init(void)
 	SetMode(MODE::PAZZLE);
 	pzl_ = new Pazzle;
 	stl_ = new Stealth;
-	isCheck_ = false;
+	isPlate_ = false;
 	str_ = "NONE";
+
+	//マニュアルのセット
+	SceneManager::GetInstance().SetManual(MODE::PAZZLE);
 
 	//正常に処理が行われたので
 	return true;
@@ -51,7 +54,7 @@ void GameScene::Update(void)
 
 	stage.Update(GetMode());
 
-	if (!isCheck_)
+	if (!isPlate_)
 	{
 		switch (mode_)
 		{
@@ -69,12 +72,13 @@ void GameScene::Update(void)
 					SetMode(MODE::STEALTH);
 					stl_->Init();
 					Update();	//見え方調整のため
+					SceneManager::GetInstance().SetManual(MODE::STEALTH);
 				}
 				else
 				{
 					pzl_->ChangeIsFinish(false);
 					str_ = "この状態ではクリアできません。";
-					isCheck_ = true;
+					isPlate_ = true;
 				}
 			}
 			break;
@@ -99,9 +103,8 @@ void GameScene::Update(void)
 	{
 		auto& plate = Plate::GetInstance();
 		plate.Update(Plate::TYPE::CHECK);
-		if (plate.IsFinish() && plate.GetAnswer() == Plate::ANSWER::OK)	isCheck_ = false;
+		if (plate.IsFinish() && plate.GetAnswer() == Plate::ANSWER::OK)	isPlate_ = false;
 	}
-
 }
 //描画
 //********************************************************
@@ -109,9 +112,7 @@ void GameScene::Draw(void)
 {
 	StageManager::GetInstance().Draw(GetMode());
 	if (mode_ == MODE::STEALTH) { stl_->Draw(); }
-	if (isCheck_) Plate::GetInstance().Draw(Plate::TYPE::CHECK, str_, false);
-
-	DrawString(0, 0, "GameScene", 0xffffff, true);
+	if (isPlate_) Plate::GetInstance().Draw(Plate::TYPE::CHECK, str_, false);
 }
 //解放
 //********************************************************

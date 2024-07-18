@@ -28,6 +28,8 @@ bool SelectScene::Init(void)
 	selectNum_ = 0;
 	selectBack_ = false;
 
+	ResetRot();
+
 	stageNumImg_[0]= ResourceManager::GetInstance().Load(ResourceManager::SRC::STAGE_1_IMG).handleId_;
 	stageNumImg_[1]= ResourceManager::GetInstance().Load(ResourceManager::SRC::STAGE_2_IMG).handleId_;
 	stageNumImg_[2]= ResourceManager::GetInstance().Load(ResourceManager::SRC::STAGE_3_IMG).handleId_;
@@ -60,12 +62,22 @@ void SelectScene::Update(void)
 		GamePadController();
 		break;
 	}	
+
+	if (rotDecre_)
+	{
+		stageNumRot_[selectNum_] -= ROT_UNIT;
+		if (stageNumRot_[selectNum_] < ROT_MIN)rotDecre_ = false;
+	}
+	else
+	{
+		stageNumRot_[selectNum_] += ROT_UNIT;
+		if (stageNumRot_[selectNum_] > ROT_MAX)rotDecre_ = true;
+	}
 }
 //描画
 //********************************************************
 void SelectScene::Draw(void)
 {
-	DrawString(0, 0, "SelectScene", 0xffffff, true);
 
 	auto& stg = SceneManager::GetInstance();
 
@@ -73,7 +85,7 @@ void SelectScene::Draw(void)
 	for (int i = 0; i < STAGE_NUM; i++)
 	{
 		DrawRotaGraph(stageNumPos_[i].x, stageNumPos_[i].y,
-			1.0f, 0.0f * Utility::DEG2RAD,
+			1.0f, stageNumRot_[i] * Utility::DEG2RAD,
 			stageNumImg_[i], true, false);
 		if (stg.IsClearStage(i))
 		{
@@ -98,7 +110,7 @@ void SelectScene::Draw(void)
 	else
 	{
 		DrawRotaGraph(stageNumPos_[selectNum_].x, stageNumPos_[selectNum_].y,
-			4.0f, 0.0f * Utility::DEG2RAD,
+			4.0f, stageNumRot_[selectNum_] * Utility::DEG2RAD,
 			frame_[0], true, false);
 	}
 }
@@ -114,6 +126,7 @@ void SelectScene::KeyboardContoroller(void)
 {
 	auto& ins = InputManager::GetInstance();
 
+	auto prevSelect = selectNum_;
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
 		if (!selectBack_)
@@ -138,6 +151,7 @@ void SelectScene::KeyboardContoroller(void)
 		selectNum_--;
 		if (selectNum_ < 0)selectNum_ = 0;
 	}
+	if (prevSelect != selectNum_)ResetRot();
 	//動きによって下段にいるか上段にいるかを設定
 	if (ins.IsTrgDown(KEY_INPUT_DOWN))selectBack_ = true;
 	if (ins.IsTrgDown(KEY_INPUT_UP))selectBack_ = false;
@@ -166,6 +180,7 @@ void SelectScene::GamePadController(void)
 	// 左スティックの縦軸
 	auto leftStickY = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLY;
 
+	auto prevSelect = selectNum_;
 	//左右移動
 	if (prevStick_.x == 0)
 	{
@@ -179,6 +194,7 @@ void SelectScene::GamePadController(void)
 			selectNum_--;
 			if (selectNum_ < 0)selectNum_ = 0;
 		}
+		if (prevSelect != selectNum_)ResetRot();
 	}
 	//Y軸移動
 	if (prevStick_.y == 0)
@@ -194,4 +210,12 @@ void SelectScene::GamePadController(void)
 void SelectScene::SetSelectBack(const bool flag)
 {
 	selectBack_ = flag;
+}
+
+void SelectScene::ResetRot(void)
+{
+	stageNumRot_[0] = 0.0f;
+	stageNumRot_[1] = 0.0f;
+	stageNumRot_[2] = 0.0f;
+	rotDecre_ = false;
 }
