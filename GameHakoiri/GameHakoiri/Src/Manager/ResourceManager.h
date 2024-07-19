@@ -59,8 +59,10 @@ public:
 		STL_MNL_2_IMG,
 		KBD_PZL_IMG,
 		KBD_STL_IMG,
+		KBD_PZL_STR_IMG,
 		PAD_PZL_IMG,
 		PAD_STL_IMG,
+		PAD_PZL_STR_IMG,
 	
 		//部屋
 		BATH_IMG,
@@ -76,6 +78,7 @@ public:
 
 		//キャラクター
 		PLAYER_IMGS,
+		PLAYER_1_IMGS,
 
 		//マップ
 		BATH_MAPTHIP,
@@ -86,6 +89,7 @@ public:
 		//パズル
 		FIRST_PAZZLE_CSV,
 		SECOND_PAZZLE_CSV,
+		THIRD_PAZZLE_CSV,
 
 		//マップ
 		BATH_MAP_CSV,
@@ -119,6 +123,9 @@ public:
 
 		//BGM
 		TITLE_BGM,
+		SELECT_BGM,
+		PAZZLE_BGM,
+		STEALTH_BGM,
 
 		//エフェクト
 		HIT_EFFECT,

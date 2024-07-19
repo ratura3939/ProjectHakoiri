@@ -855,8 +855,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 		auto r = CreateInstance4Confirmation(afterRoomType);
 
 		//現在が長方形の本体かを確認
-		if (CheckInstanceUp(cursor.y, cursor.x, r)||
-			CheckInstanceLeft(cursor.y, cursor.x, r))
+		if (roomMng_[afterMoveKey]->IsClone())
 		{
 			//保留のカーソルをキャンセル
 			roomMng_[afterMoveKey]->SetIsCursor(false);

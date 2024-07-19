@@ -12,6 +12,7 @@ public:
 	static constexpr int SCREEN_SIZE_Y = 720;
 
 	static constexpr int FPS = 60;
+	static constexpr float frameRate = 1000 / 60;
 
 	// データパス関連
 	//-------------------------------------------
@@ -39,6 +40,9 @@ public:
 	static Application& GetInstance(void);	//インスタンスの取得
 
 private:
+
+	int currentFrame_;
+	int lastFrame_;
 
 	//シングルトン化
 	Application(void);	//コンストラクタ

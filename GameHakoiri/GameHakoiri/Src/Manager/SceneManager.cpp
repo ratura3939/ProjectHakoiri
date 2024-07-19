@@ -10,6 +10,7 @@
 #include"../Common/Fader.h"
 #include"../System/Plate.h"
 #include"../System/Manual.h"
+#include"SoundManager.h"
 
 
 //シングルトン化(インスタンスの初期化)
@@ -42,6 +43,8 @@ void SceneManager::Destroy(void)
 //********************************************************
 bool SceneManager::Init(void)
 {
+	SoundManager::CreateInstance();
+
 	//シーン管理
 	sceneID_ = SCENEID::NONE;
 	nextSceneID_ = SCENEID::TITLE;
@@ -120,7 +123,7 @@ bool SceneManager::Release(void)
 	camera_.Relese();
 
 	Plate::GetInstance().Release();
-
+	
 	delete fader_;
 	fader_ = nullptr;
 	instance_ = nullptr;
@@ -298,6 +301,20 @@ void SceneManager::ClearStage(int stageNum)
 bool SceneManager::IsClearStage(int stageNum)
 {
 	return clearStage_[stageNum];
+}
+
+bool SceneManager::IsClearStageNow(void)
+{
+	return clearStage_[stageNum_ - 1];
+}
+
+bool SceneManager::CheckAllClear(void)
+{
+	for (int i = 0; i < STAGE_ALL; i++)
+	{
+		if (!clearStage_[i])return false;
+	}
+	return true;
 }
 
 void SceneManager::SetManual(GameScene::MODE mode)

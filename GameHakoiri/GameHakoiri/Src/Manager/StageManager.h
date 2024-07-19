@@ -3,6 +3,7 @@
 #include"../Utility/Utility.h"
 #include"../Scene/GameScene.h"
 #include"../Stage/Room/RoomBase.h"
+#include"../Manager/SceneManager.h"
 
 class GameScene;
 class StageBase;
@@ -68,10 +69,10 @@ public:
 	static constexpr int TUTORIAL_PAZZLE_SIZE_Y = 6;
 	static constexpr int FIRST_PAZZLE_SIZE_X = 6;
 	static constexpr int FIRST_PAZZLE_SIZE_Y = 6;
-	static constexpr int SECOND_PAZZLE_SIZE_X = 11;
-	static constexpr int SECOND_PAZZLE_SIZE_Y = 10;
+	static constexpr int SECOND_PAZZLE_SIZE_X = 7;
+	static constexpr int SECOND_PAZZLE_SIZE_Y = 7;
 	static constexpr int THIRD_PAZZLE_SIZE_X = 6;
-	static constexpr int THIRD_PAZZLE_SIZE_Y = 6;
+	static constexpr int THIRD_PAZZLE_SIZE_Y = 7;
 	//部屋の種類別のパズルにおける大きさ
 	static constexpr int NOMAL_PAZZLE_X = 1;
 	static constexpr int NOMAL_PAZZLE_Y = 1;
@@ -96,6 +97,11 @@ public:
 	//扉の位置検索の際の部屋の分割数
 	static constexpr int SPLIT_ROOM_X = 2;
 	static constexpr int SPLIT_ROOM_Y = 3;
+
+	//マニュアル
+	static constexpr int MANUAL_SIZE = 256;
+	static constexpr int MANUAL_FLASH = 40;
+	static constexpr int MANUAL_FLASH_MAX = 3000;
 
 
 	bool Init(STAGENUM);				//初期化
@@ -143,6 +149,8 @@ private:
 
 	//IMG
 	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];
+	int manualImg_[static_cast<int>(SceneManager::CONTROLLER::MAX)];
+	int manualFlash_;
 	
 	//Csv
 	//パズルステージ保持

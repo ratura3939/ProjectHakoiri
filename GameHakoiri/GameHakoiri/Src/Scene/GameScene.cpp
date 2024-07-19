@@ -3,6 +3,7 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/StageManager.h"
 #include"../Manager/InputManager.h"
+#include"../Manager/SoundManager.h"
 #include"../Manager/Camera.h"
 #include"../System/Pazzle.h"
 #include"../System/Stealth.h"
@@ -38,6 +39,7 @@ bool GameScene::Init(void)
 	isPlate_ = false;
 	str_ = "NONE";
 
+	SoundManager::GetInstance().PlayBgmOfPazzle();
 	//マニュアルのセット
 	SceneManager::GetInstance().SetManual(MODE::PAZZLE);
 
@@ -68,6 +70,10 @@ void GameScene::Update(void)
 					//フラッシュの停止
 					stage.SetFlash(false);
 
+					//BGM
+					SoundManager::GetInstance().StopBgmOfPazzle();
+					SoundManager::GetInstance().PlayBgmOfStealth();
+
 					//ステルスシーンの初期化
 					SetMode(MODE::STEALTH);
 					stl_->Init();
@@ -87,12 +93,22 @@ void GameScene::Update(void)
 			auto& mng = SceneManager::GetInstance();
 			if (stage.IsClear())	//クリアしてたら
 			{
-				mng.ClearStage(mng.GetStageNum() - 1);
-				mng.ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
+				mng.ClearStage(mng.GetStageNum() - 1);	//フラグセット
+				if (mng.CheckAllClear())
+				{
+					SoundManager::GetInstance().StopBgmOfStealth();
+					mng.ChangeScene(SceneManager::SCENEID::ENDING, true);	//シーン遷移
+				}
+				else
+				{
+					SoundManager::GetInstance().StopBgmOfStealth();
+					mng.ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
+				}
 				return;
 			}
 			if (stl_->IsFailde())	//クリアしてたら
 			{
+				SoundManager::GetInstance().StopBgmOfStealth();
 				mng.ChangeScene(SceneManager::SCENEID::RESULT, true);	//シーン遷移
 			}
 			camera.Update();

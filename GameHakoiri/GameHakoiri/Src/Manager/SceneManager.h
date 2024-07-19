@@ -31,6 +31,8 @@ public:
 		PAD,
 		MAX
 	};
+
+	static constexpr int STAGE_ALL = 3;
 	
 	//メンバ関数
 	bool Init(void);	//初期化
@@ -56,6 +58,8 @@ public:
 	
 	void ClearStage(int stageNum);
 	bool IsClearStage(int stageNum);
+	bool IsClearStageNow(void);
+	bool CheckAllClear(void);
 
 	void SetManual(GameScene::MODE mode);
 	void Reset(void);
@@ -74,7 +78,7 @@ private:
 
 
 	int stageNum_;	//選択したステージナンバー保存用
-	bool clearStage_[3];	//クリアしたステージを保存
+	bool clearStage_[STAGE_ALL];	//クリアしたステージを保存
 
 
 	//マニュアル関係

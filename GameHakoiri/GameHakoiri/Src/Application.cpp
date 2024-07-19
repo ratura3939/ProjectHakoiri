@@ -63,6 +63,8 @@ bool Application::Init(void)
 		return false;	//初期化失敗のためシステム終了
 	}
 
+	currentFrame_ = 0;
+	lastFrame_ = 0;
 	//正しく処理が終了したので
 	return true;
 }
@@ -77,8 +79,17 @@ void Application::Run(void)
 	{
 		//ゲームメイン処理
 		//------------------------------------------------------------------------
-		InputManager::GetInstance().Update();
-		instance.Update();	//更新
+
+		Sleep(1);	//システムに処理を返す
+		currentFrame_ = GetNowCount();
+
+
+		if (currentFrame_ - lastFrame_ >= frameRate)
+		{
+			lastFrame_ = currentFrame_;
+			InputManager::GetInstance().Update();
+			instance.Update();	//更新
+		}
 
 		//描画処理
 		//------------------------------------------------------------------------

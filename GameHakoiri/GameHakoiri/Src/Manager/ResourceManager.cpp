@@ -1,4 +1,4 @@
-#include <DxLib.h>
+ï»¿#include <DxLib.h>
 #include "../Application.h"
 #include"StageManager.h"
 #include"../Object/CharacterBase.h"
@@ -29,27 +29,27 @@ void ResourceManager::Init(void)
 
 #pragma region IMG
 
-	//ƒVƒXƒeƒ€
-	// ƒtƒŒ[ƒ€@‚P~‚P
+	//ã‚·ã‚¹ãƒ†ãƒ 
+	// ãƒ•ãƒ¬ãƒ¼ãƒ ã€€ï¼‘Ã—ï¼‘
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "frame.png"
 		);
 	resourcesMap_.emplace(SRC::FRAME_IMG, move(res));
-	// ƒtƒŒ[ƒ€@‚P~‚Q
+	// ãƒ•ãƒ¬ãƒ¼ãƒ ã€€ï¼‘Ã—ï¼’
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "frame_oblong.png"
 		);
 	resourcesMap_.emplace(SRC::FRAME_OBLONG_IMG, move(res));
-	// ƒtƒŒ[ƒ€@‚Q~‚P
+	// ãƒ•ãƒ¬ãƒ¼ãƒ ã€€ï¼’Ã—ï¼‘
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "frame_oblong_2.png"
 		);
 	resourcesMap_.emplace(SRC::FRAME_OBLONG_2_IMG, move(res));
 
-	// ‹Šo
+	// è¦–è¦š
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "vision.png"
@@ -74,76 +74,76 @@ void ResourceManager::Init(void)
 		Application::PATH_SYSTEM + "Select_No.png"
 		);
 	resourcesMap_.emplace(SRC::SELECT_NO_IMG, move(res));
-	//‘I‘ğ
+	//é¸æŠ
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "plate_Select.png"
 		);
 	resourcesMap_.emplace(SRC::PLATE_SELECT_IMG, move(res));
-	//‘€ì•û–@•ÏX•”•ª
+	//æ“ä½œæ–¹æ³•å¤‰æ›´éƒ¨åˆ†
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "plate_Check.png"
 		);
 	resourcesMap_.emplace(SRC::PLATE_CHECK_IMG, move(res));
 
-	//HP•\¦‚Ì‰º’n
+	//HPè¡¨ç¤ºã®ä¸‹åœ°
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "HpBase.png"
 		);
 	resourcesMap_.emplace(SRC::HP_BASE_IMG, move(res));
 
-	//HP‚ğ•\‚·‰~
+	//HPã‚’è¡¨ã™å††
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "HpCircle.png"
 		);
 	resourcesMap_.emplace(SRC::HP_CIRCLE_IMG, move(res));
 
-	//HP‚ÌƒeƒLƒXƒg
+	//HPã®ãƒ†ã‚­ã‚¹ãƒˆ
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "HpText.png"
 		);
 	resourcesMap_.emplace(SRC::HP_TEXT_IMG, move(res));
 
-	//ƒZƒŒƒNƒgƒXƒe[ƒW‚P
+	//ã‚»ãƒ¬ã‚¯ãƒˆã‚¹ãƒ†ãƒ¼ã‚¸ï¼‘
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "Stage1.png"
 		);
 	resourcesMap_.emplace(SRC::STAGE_1_IMG, move(res));
 
-	//ƒZƒŒƒNƒgƒXƒe[ƒW‚Q
+	//ã‚»ãƒ¬ã‚¯ãƒˆã‚¹ãƒ†ãƒ¼ã‚¸ï¼’
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "Stage2.png"
 		);
 	resourcesMap_.emplace(SRC::STAGE_2_IMG, move(res));
 
-	//ƒZƒŒƒNƒgƒXƒe[ƒW‚R
+	//ã‚»ãƒ¬ã‚¯ãƒˆã‚¹ãƒ†ãƒ¼ã‚¸ï¼“
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "Stage3.png"
 		);
 	resourcesMap_.emplace(SRC::STAGE_3_IMG, move(res));
 
-	//ƒ^ƒCƒgƒ‹‚É–ß‚é
+	//ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã‚‹
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "BackTitle.png"
 		);
 	resourcesMap_.emplace(SRC::BACK_TITLE_IMG, move(res));
 
-	//ƒ`ƒFƒbƒN
+	//ãƒã‚§ãƒƒã‚¯
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "Check.png"
 		);
 	resourcesMap_.emplace(SRC::CHECK_IMG, move(res));
 
-	//ƒ^ƒCƒgƒ‹
+	//ã‚¿ã‚¤ãƒˆãƒ«
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "Title.png"
@@ -157,148 +157,162 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::THANK_IMG, move(res));
 
-	//ƒXƒ^[ƒg
+	//ã‚¹ã‚¿ãƒ¼ãƒˆ
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "start.png"
 		);
 	resourcesMap_.emplace(SRC::START_IMG, move(res));
 
-	//ƒZƒŒƒNƒg‚Ö–ß‚é
+	//ã‚»ãƒ¬ã‚¯ãƒˆã¸æˆ»ã‚‹
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "BackSelect.png"
 		);
 	resourcesMap_.emplace(SRC::BACK_SELECT_IMG, move(res));
 
-	//¬Œ÷
+	//æˆåŠŸ
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_SYSTEM + "clear.png"
 		);
 	resourcesMap_.emplace(SRC::CLEAER_IMG, move(res));
 
-	//¸”s
+	//å¤±æ•—
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
-		Application::PATH_SYSTEM + "faild.png"
+		Application::PATH_SYSTEM + "failde.png"
 		);
 	resourcesMap_.emplace(SRC::FAILD_IMG, move(res));
 
-	//‘€ìà–¾
-	//ƒpƒYƒ‹‚P
+	//æ“ä½œèª¬æ˜
+	//ãƒ‘ã‚ºãƒ«ï¼‘
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_MANUAL + "Pazzle_1.png"
 		);
 	resourcesMap_.emplace(SRC::PZL_MNL_1_IMG, move(res));
 
-	//ƒpƒYƒ‹‡A
+	//ãƒ‘ã‚ºãƒ«â‘¡
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_MANUAL + "Pazzle_2.png"
 		);
 	resourcesMap_.emplace(SRC::PZL_MNL_2_IMG, move(res));
 
-	//ƒXƒeƒ‹ƒX‡@
+	//ã‚¹ãƒ†ãƒ«ã‚¹â‘ 
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_MANUAL + "Stealth_1.png"
 		);
 	resourcesMap_.emplace(SRC::STL_MNL_1_IMG, move(res));
 
-	//ƒXƒeƒ‹ƒX‡A
+	//ã‚¹ãƒ†ãƒ«ã‚¹â‘¡
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_MANUAL + "Stealth_2.png"
 		);
 	resourcesMap_.emplace(SRC::STL_MNL_2_IMG, move(res));
 
-	//ƒL[ƒ{[ƒhƒpƒYƒ‹
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‘ã‚ºãƒ«
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_MANUAL + "Keybord_Pazzle.png"
 		);
 	resourcesMap_.emplace(SRC::KBD_PZL_IMG, move(res));
 
-	//ƒL[ƒ{[ƒhƒXƒeƒ‹ƒX
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚¹ãƒ†ãƒ«ã‚¹
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_MANUAL + "Keybord_Stealth.png"
 		);
 	resourcesMap_.emplace(SRC::KBD_STL_IMG, move(res));
 
-	//ƒpƒbƒhƒpƒYƒ‹
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‘ã‚ºãƒ«æ™‚æ–‡ç« 
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Keybord_Pazzle_String.png"
+		);
+	resourcesMap_.emplace(SRC::KBD_PZL_STR_IMG, move(res));
+
+	//ãƒ‘ãƒƒãƒ‰ãƒ‘ã‚ºãƒ«
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_MANUAL + "Pad_Pazzle.png"
 		);
 	resourcesMap_.emplace(SRC::PAD_PZL_IMG, move(res));
 
-	//ƒpƒbƒhƒXƒeƒ‹ƒX
+	//ãƒ‘ãƒƒãƒ‰ã‚¹ãƒ†ãƒ«ã‚¹
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_MANUAL + "Pad_Stealth.png"
 		);
 	resourcesMap_.emplace(SRC::PAD_STL_IMG, move(res));
 
+	//ãƒ‘ãƒƒãƒ‰ãƒ‘ã‚ºãƒ«æ™‚æ–‡ç« 
+	res = make_unique<Resource>(
+		Resource::TYPE::IMG,
+		Application::PATH_MANUAL + "Pad_Pazzle_String.png"
+		);
+	resourcesMap_.emplace(SRC::PAD_PZL_STR_IMG, move(res));
 
-	//•”‰®iƒpƒYƒ‹j
-	//•—˜C
+
+	//éƒ¨å±‹ï¼ˆãƒ‘ã‚ºãƒ«ï¼‰
+	//é¢¨å‘‚
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Bath.png"
 		);
 	resourcesMap_.emplace(SRC::BATH_IMG, move(res));
-	//ŒºŠÖ
+	//ç„é–¢
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Entrance.png"
 		);
 	resourcesMap_.emplace(SRC::ENTRANCE_IMG, move(res));
-	//ƒS[ƒ‹
+	//ã‚´ãƒ¼ãƒ«
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Goal.png"
 		);
 	resourcesMap_.emplace(SRC::GOAL_IMG, move(res));
-	//‘äŠ
+	//å°æ‰€
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Kitchen.png"
 		);
 	resourcesMap_.emplace(SRC::KITCHEN_IMG, move(res));
-	//‹ŠÔ
+	//å±…é–“
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Living.png"
 		);
 	resourcesMap_.emplace(SRC::LIVING_IMG, move(res));
-	//‚È‚µ
+	//ãªã—
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "None.png"
 		);
 	resourcesMap_.emplace(SRC::NONE_IMG, move(res));
-	//©º
+	//è‡ªå®¤
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Own.png"
 		);
 	resourcesMap_.emplace(SRC::OWN_IMG, move(res));
-	//•¨’u
+	//ç‰©ç½®
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Strage.png"
 		);
 	resourcesMap_.emplace(SRC::STRAGE_IMG, move(res));
-	//•Ç
+	//å£
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Wall.png"
 		);
 	resourcesMap_.emplace(SRC::WALL_IMG, move(res));
-	//˜aº
+	//å’Œå®¤
 	res = make_unique<Resource>(
 		Resource::TYPE::IMG,
 		Application::PATH_ROOM + "Wasitu.png"
@@ -308,8 +322,19 @@ void ResourceManager::Init(void)
 
 
 #pragma region IMGS
-	//ƒLƒƒƒ‰ƒNƒ^[
-	//ƒvƒŒƒCƒ„[
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+
+	res = make_unique<Resource>(
+		Resource::TYPE::IMGS,
+		Application::PATH_CHARACTER + "Player_1.png",
+		CHARACTER_ORIGIN_SIZE_X / CharacterBase::CHARACTER_SIZE_X,
+		8,
+		CharacterBase::CHARACTER_SIZE_X,
+		CharacterBase::CHARACTER_SIZE_Y
+		);
+	resourcesMap_.emplace(SRC::PLAYER_1_IMGS, move(res));
+
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
 		Application::PATH_CHARACTER + "player.png",
@@ -318,10 +343,12 @@ void ResourceManager::Init(void)
 		CharacterBase::CHARACTER_SIZE_X,
 		CharacterBase::CHARACTER_SIZE_Y
 		);
+
+
 	resourcesMap_.emplace(SRC::PLAYER_IMGS, move(res));
 
 
-	//•—˜Cƒ}ƒbƒvƒ`ƒbƒv
+	//é¢¨å‘‚ãƒãƒƒãƒ—ãƒãƒƒãƒ—
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
 		Application::PATH_MAPCHIP + "Bath.png",
@@ -332,7 +359,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::BATH_MAPTHIP, move(res));
 
-	//ŠO‘•ƒ}ƒbƒvƒ`ƒbƒv
+	//å¤–è£…ãƒãƒƒãƒ—ãƒãƒƒãƒ—
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
 		Application::PATH_MAPCHIP + "Exteria.png",
@@ -343,7 +370,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::EXTERIA_MAPTHIP, move(res));
 
-	//“à‘•ƒ}ƒbƒvƒ`ƒbƒv
+	//å†…è£…ãƒãƒƒãƒ—ãƒãƒƒãƒ—
 	res = make_unique<Resource>(
 		Resource::TYPE::IMGS,
 		Application::PATH_MAPCHIP + "Interia.png",
@@ -358,25 +385,31 @@ void ResourceManager::Init(void)
 
 #pragma region CSV
 
-	//ƒpƒYƒ‹
-	//ƒXƒe[ƒW‡@
+	//ãƒ‘ã‚ºãƒ«
+	//ã‚¹ãƒ†ãƒ¼ã‚¸â‘ 
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_PAZZLE + "Stage_First.csv"
 		);
 	resourcesMap_.emplace(SRC::FIRST_PAZZLE_CSV, move(res));
 
-	//ƒpƒYƒ‹
-	//ƒXƒe[ƒW‡@
+	//ã‚¹ãƒ†ãƒ¼ã‚¸â‘¡
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_PAZZLE + "Stage_Second.csv"
 		);
 	resourcesMap_.emplace(SRC::SECOND_PAZZLE_CSV, move(res));
 
+	//ã‚¹ãƒ†ãƒ¼ã‚¸â‚
+	res = make_unique<Resource>(
+		Resource::TYPE::CSV,
+		Application::PATH_PAZZLE + "Stage_Third.csv"
+		);
+	resourcesMap_.emplace(SRC::THIRD_PAZZLE_CSV, move(res));
 
-	//ƒ}ƒbƒv
-	//•—˜C
+
+	//ãƒãƒƒãƒ—
+	//é¢¨å‘‚
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_MAP + "Bath_Map.csv"
@@ -389,7 +422,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::BATH_OBJ_CSV, move(res));
 
-	//ŒºŠÖ
+	//ç„é–¢
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_MAP + "Entrance_Map.csv"
@@ -402,7 +435,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::ENTRANCE_OBJ_CSV, move(res));
 
-	//‘äŠ
+	//å°æ‰€
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_MAP + "Kitchen_Map.csv"
@@ -415,7 +448,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::KITCHEN_OBJ_CSV, move(res));
 
-	//‹ŠÔ
+	//å±…é–“
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_MAP + "Living_Map.csv"
@@ -428,7 +461,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::LIVING_OBJ_CSV, move(res));
 
-	//©º
+	//è‡ªå®¤
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_MAP + "Own_Map.csv"
@@ -441,7 +474,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::OWN_OBJ_CSV, move(res));
 
-	//•¨’u
+	//ç‰©ç½®
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_MAP + "Strage_Map.csv"
@@ -454,7 +487,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::STRAGE_OBJ_CSV, move(res));
 
-	//˜aº
+	//å’Œå®¤
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_MAP + "Wasitu_Map.csv"
@@ -467,8 +500,8 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::WASITU_OBJ_CSV, move(res));
 
-	//áŠQ•¨”»’è—p‚Ì‚â‚Â
-	//•—˜C
+	//éšœå®³ç‰©åˆ¤å®šç”¨ã®ã‚„ã¤
+	//é¢¨å‘‚
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_OBSTACLE + "Bath/Obstacle.csv"
@@ -487,7 +520,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::BATH_MAPCHIP_EVENT_CSV, move(res));
 
-	//“à‘•
+	//å†…è£…
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_OBSTACLE + "Interia/Obstacle.csv"
@@ -506,7 +539,7 @@ void ResourceManager::Init(void)
 		);
 	resourcesMap_.emplace(SRC::INTERIA_MAPCHIP_EVENT_CSV, move(res));
 
-	//ŠO‘•
+	//å¤–è£…
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
 		Application::PATH_OBSTACLE + "Exteria/Obstacle.csv"
@@ -528,8 +561,8 @@ void ResourceManager::Init(void)
 
 #pragma region SOUND
 
-	////Œø‰Ê‰¹
-	//// Œˆ’è‰¹
+	////åŠ¹æœéŸ³
+	//// æ±ºå®šéŸ³
 	//res = make_unique<Resource>(
 	//	Resource::TYPE::SOUND,
 	//	Application::PATH_SOUND + "push_enter.mp3"
@@ -539,12 +572,33 @@ void ResourceManager::Init(void)
 
 
 	////BGM
-	////ƒ^ƒCƒgƒ‹
-	//res = make_unique<Resource>(
-	//	Resource::TYPE::SOUND,
-	//	Application::PATH_BGM + "Title_2.mp3"
-	//);
-	//resourcesMap_.emplace(SRC::TITLE_BGM, move(res));
+	//ã‚¿ã‚¤ãƒˆãƒ«
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_BGM + "Title.mp3"
+	);
+	resourcesMap_.emplace(SRC::TITLE_BGM, move(res));
+
+	//ã‚»ãƒ¬ã‚¯ãƒˆ
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_BGM + "Select.mp3"
+		);
+	resourcesMap_.emplace(SRC::SELECT_BGM, move(res));
+
+	//ãƒ‘ã‚ºãƒ«
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_BGM + "Pazzle.mp3"
+		);
+	resourcesMap_.emplace(SRC::PAZZLE_BGM, move(res));
+
+	//ã‚¹ãƒ†ãƒ«ã‚¹
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_BGM + "Stealth.mp3"
+		);
+	resourcesMap_.emplace(SRC::STEALTH_BGM, move(res));
 #pragma endregion
 }
 
@@ -571,7 +625,7 @@ const Resource& ResourceManager::Load(SRC src)
 	Resource& res = _Load(src);
 	if (res.resType_ == Resource::TYPE::NONE)
 	{
-		//–¢“o˜^
+		//æœªç™»éŒ²
 		return unregistered;
 	}
 	//Resource ret = *res;
@@ -607,7 +661,7 @@ Resource& ResourceManager::_Load(SRC src)
 	const auto& rPair = resourcesMap_.find(src);
 	if (rPair == resourcesMap_.end())
 	{
-		// “o˜^‚³‚ê‚Ä‚¢‚È‚¢
+		// ç™»éŒ²ã•ã‚Œã¦ã„ãªã„
 		return unregistered;
 	}
 

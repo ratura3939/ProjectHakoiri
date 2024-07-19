@@ -1,6 +1,9 @@
 #include<DxLib.h>
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
+#include"../Manager/ResourceManager.h"
+#include"../Application.h"
+#include"../Utility/Utility.h"
 #include"EndingScene.h"
 
 
@@ -19,6 +22,12 @@ EndingScene::~EndingScene(void)
 //********************************************************
 bool EndingScene::Init(void)
 {
+	auto& rsM = ResourceManager::GetInstance();
+
+	endImg_= rsM.Load(ResourceManager::SRC::THANK_IMG).handleId_;
+	backTitleImg_ = rsM.Load(ResourceManager::SRC::BACK_TITLE_IMG).handleId_;
+
+	endEx_ = EX_S;
 	//³í‚Éˆ—‚ªs‚í‚ê‚½‚Ì‚Å
 	return true;
 }
@@ -37,13 +46,25 @@ void EndingScene::Update(void)
 		GamePadController();
 		break;
 	}
+
+	endEx_ += 0.01f;
+	if (endEx_ > EX_F)endEx_ = EX_S;
 }
 //•`‰æ
 //********************************************************
 void EndingScene::Draw(void)
 {
 	DrawString(0, 0, "EndingScene", 0xffffff, true);
-	DrawBox(50, 50, 500, 500, 0xffffff, true);
+
+	//TahnkyouForPlaying‚Ì•`‰æ
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2 - THANK_SIZE / 2, Application::SCREEN_SIZE_Y / 2 - THANK_SIZE / 2,
+		endEx_, 0.0f * Utility::DEG2RAD,
+		endImg_, true, false);
+
+	//ƒ^ƒCƒgƒ‹‚É–ß‚é‚Ì•`‰æ
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y - BACK_TITLE_Y / 2,
+		1.0f, 0.0f * Utility::DEG2RAD,
+		backTitleImg_, true, false);
 }
 //‰ð•ú
 //********************************************************

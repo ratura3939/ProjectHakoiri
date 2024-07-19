@@ -2,6 +2,7 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/ResourceManager.h"
+#include"../Manager/SoundManager.h"
 #include"../System/Plate.h"
 #include"../Application.h"
 #include"../Utility/Utility.h"
@@ -31,6 +32,8 @@ bool TitleScene::Init(void)
 	titleImg_= rsM.Load(ResourceManager::SRC::TITLE_IMG).handleId_;
 	startImg_ = rsM.Load(ResourceManager::SRC::START_IMG).handleId_;
 	startEx_ = 0.7f;
+
+	SoundManager::GetInstance().PlayBgmOfTitle();
 	//正常に処理が行われたので
 	return true;
 }
@@ -55,7 +58,11 @@ void TitleScene::Update(void)
 
 			//プレートの一連の処理が終わっていたらシーン切り替え
 			if (plate.GetAnswer() == Plate::ANSWER::OK)
+			{
+				SoundManager::GetInstance().StopBgmOfTitle();
 				SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
+			}
+				
 			else isCheck_ = false;
 		}
 	}

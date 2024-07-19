@@ -6,7 +6,8 @@
 #include"../Stage/FirstStage.h"
 #include"../Stage/SecondStage.h"
 #include"../Stage/ThirdStage.h"
-
+#include"../Application.h"
+#include"../Utility/Utility.h"
 
 #include"StageManager.h"
 
@@ -60,7 +61,10 @@ bool StageManager::Init(STAGENUM num)
 			roomImg_, mapTile_);
 		break;
 	case StageManager::STAGENUM::THIRD:
-
+		stage_ = new SecondStage(stageCsv_[static_cast<int>(STAGENUM::THIRD)].begin(),
+			THIRD_PAZZLE_SIZE_X, THIRD_PAZZLE_SIZE_Y,
+			mapCsv_, objCsv_,
+			roomImg_, mapTile_);
 		break;
 	default:
 		break;
@@ -72,6 +76,8 @@ bool StageManager::Init(STAGENUM num)
 		return false;
 	}
 
+	manualFlash_ = 0;
+
 	//正しく処理が終了したので
 	return true;
 }
@@ -80,12 +86,33 @@ bool StageManager::Init(STAGENUM num)
 void StageManager::Update(GameScene::MODE mode)
 {
 	stage_->Update(mode);
+
+	if (mode == GameScene::MODE::PAZZLE)
+	{
+		manualFlash_++;
+		if (manualFlash_ > MANUAL_FLASH_MAX)manualFlash_ = 0;
+	}
 }
 //描画
 //********************************************************
 void StageManager::Draw(GameScene::MODE mode)
 {
 	stage_->Draw(mode);
+
+	if (mode == GameScene::MODE::PAZZLE)
+	{
+		auto cnt = SceneManager::GetInstance().GetController();
+
+		if (manualFlash_ % Application::FPS < MANUAL_FLASH)
+		{
+			DrawRotaGraph(Application::SCREEN_SIZE_X - MANUAL_SIZE / 2, MANUAL_SIZE / 2,
+				0.5f,
+				0.0f * Utility::DEG2RAD,
+				manualImg_[static_cast<int>(cnt)],
+				true,
+				false);
+		}
+	}
 }
 void StageManager::DrawObject(void)
 {
@@ -261,102 +288,115 @@ bool StageManager::IsClear(void) const
 
 void StageManager::LoadImg(void)
 {
+	auto& rsM = ResourceManager::GetInstance();
+
 	//部屋
 	roomImg_[static_cast<int>(RoomBase::TYPE::BATH)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::BATH_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::ENTRANCE_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::GOAL_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::GOAL_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::KITCHEN_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::LIVING_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::NONE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::NONE_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::NONE_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::OWN)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::OWN_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::STRAGE_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::WALL)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::WALL_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::WALL_IMG).handleId_;
 	roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::WASITU_IMG).handleId_;
+		rsM.Load(ResourceManager::SRC::WASITU_IMG).handleId_;
 
 	//マップチップ
 	mapTile_[static_cast<int>(MAPCHIP::BATH)]=
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPTHIP).handleIds_;
+		rsM.Load(ResourceManager::SRC::BATH_MAPTHIP).handleIds_;
 	mapTile_[static_cast<int>(MAPCHIP::EXTERIA)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPTHIP).handleIds_;
+		rsM.Load(ResourceManager::SRC::EXTERIA_MAPTHIP).handleIds_;
 	mapTile_[static_cast<int>(MAPCHIP::INTERIA)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPTHIP).handleIds_;
+		rsM.Load(ResourceManager::SRC::INTERIA_MAPTHIP).handleIds_;
+
+	//パズル時操作方法
+	manualImg_[static_cast<int>(SceneManager::CONTROLLER::KEYBOARD)] = 
+		rsM.Load(ResourceManager::SRC::KBD_PZL_STR_IMG).handleId_;
+
+	manualImg_[static_cast<int>(SceneManager::CONTROLLER::PAD)] =
+		rsM.Load(ResourceManager::SRC::PAD_PZL_STR_IMG).handleId_;
 }
 
 void StageManager::LoadCsv(void)
 {
+	auto& rsM = ResourceManager::GetInstance();
+
 	//パズル
 	stageCsv_[static_cast<int>(STAGENUM::FIRST)] = 
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::FIRST_PAZZLE_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::FIRST_PAZZLE_CSV).dmcHandleIds_;
 	stageCsv_[static_cast<int>(STAGENUM::SECOND)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::SECOND_PAZZLE_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::SECOND_PAZZLE_CSV).dmcHandleIds_;
+	stageCsv_[static_cast<int>(STAGENUM::THIRD)] =
+		rsM.Load(ResourceManager::SRC::THIRD_PAZZLE_CSV).dmcHandleIds_;
 
 	//部屋（map&obj)
 	mapCsv_[static_cast<int>(RoomBase::TYPE::BATH)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAP_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::BATH_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::BATH)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_OBJ_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::BATH_OBJ_CSV).dmcHandleIds_;
 
 	mapCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_MAP_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::ENTRANCE_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::ENTRANCE_OBJ_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::ENTRANCE_OBJ_CSV).dmcHandleIds_;
 
 	mapCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_MAP_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::KITCHEN_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::KITCHEN_OBJ_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::KITCHEN_OBJ_CSV).dmcHandleIds_;
 
 	mapCsv_[static_cast<int>(RoomBase::TYPE::LIVING)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_MAP_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::LIVING_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::LIVING)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::LIVING_OBJ_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::LIVING_OBJ_CSV).dmcHandleIds_;
 
 	mapCsv_[static_cast<int>(RoomBase::TYPE::OWN)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_MAP_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::OWN_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::OWN)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::OWN_OBJ_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::OWN_OBJ_CSV).dmcHandleIds_;
 
 	mapCsv_[static_cast<int>(RoomBase::TYPE::STORAGE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_MAP_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::STRAGE_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::STORAGE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::STRAGE_OBJ_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::STRAGE_OBJ_CSV).dmcHandleIds_;
 
 	mapCsv_[static_cast<int>(RoomBase::TYPE::WASITU)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::WASITU_MAP_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::WASITU_MAP_CSV).dmcHandleIds_;
 	objCsv_[static_cast<int>(RoomBase::TYPE::WASITU)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::WASITU_OBJ_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::WASITU_OBJ_CSV).dmcHandleIds_;
 
 	//当たり判定
 	mapchipObj_[static_cast<int>(MAPCHIP::BATH)][static_cast<int>(OBJECT::OBSTACLE)]=
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::BATH_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
 	mapchipObj_[static_cast<int>(MAPCHIP::BATH)][static_cast<int>(OBJECT::THROUGH)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::BATH_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
 	mapchipObj_[static_cast<int>(MAPCHIP::BATH)][static_cast<int>(OBJECT::EVENT)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::BATH_MAPCHIP_EVENT_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::BATH_MAPCHIP_EVENT_CSV).dmcHandleIds_;
 
 	mapchipObj_[static_cast<int>(MAPCHIP::EXTERIA)][static_cast<int>(OBJECT::OBSTACLE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::EXTERIA_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
 	mapchipObj_[static_cast<int>(MAPCHIP::EXTERIA)][static_cast<int>(OBJECT::THROUGH)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::EXTERIA_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
 	mapchipObj_[static_cast<int>(MAPCHIP::EXTERIA)][static_cast<int>(OBJECT::EVENT)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::EXTERIA_MAPCHIP_EVENT_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::EXTERIA_MAPCHIP_EVENT_CSV).dmcHandleIds_;
 
 	mapchipObj_[static_cast<int>(MAPCHIP::INTERIA)][static_cast<int>(OBJECT::OBSTACLE)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::INTERIA_MAPCHIP_OBSTACLE_CSV).dmcHandleIds_;
 	mapchipObj_[static_cast<int>(MAPCHIP::INTERIA)][static_cast<int>(OBJECT::THROUGH)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::INTERIA_MAPCHIP_THROUGH_CSV).dmcHandleIds_;
 	mapchipObj_[static_cast<int>(MAPCHIP::INTERIA)][static_cast<int>(OBJECT::EVENT)] =
-		ResourceManager::GetInstance().Load(ResourceManager::SRC::INTERIA_MAPCHIP_EVENT_CSV).dmcHandleIds_;
+		rsM.Load(ResourceManager::SRC::INTERIA_MAPCHIP_EVENT_CSV).dmcHandleIds_;
 }
 
 #pragma endregion

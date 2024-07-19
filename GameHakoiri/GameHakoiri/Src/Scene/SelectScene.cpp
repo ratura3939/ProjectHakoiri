@@ -2,6 +2,7 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/ResourceManager.h"
+#include"../Manager/SoundManager.h"
 #include"../Utility/Utility.h"
 #include"../Application.h"
 #include"../System/Plate.h"
@@ -44,6 +45,10 @@ bool SelectScene::Init(void)
 	stageNumPos_[1] = { Application::SCREEN_SIZE_X / 2,Application::SCREEN_SIZE_Y / 4 };
 	stageNumPos_[2] = { Application::SCREEN_SIZE_X / 4 + Application::SCREEN_SIZE_X / 2,
 		Application::SCREEN_SIZE_Y / 4 };
+
+
+	SoundManager::GetInstance().PlayBgmOfSelect();
+
 	//正常に処理が行われたので
 	return true;
 }
@@ -131,12 +136,14 @@ void SelectScene::KeyboardContoroller(void)
 	{
 		if (!selectBack_)
 		{
+			SoundManager::GetInstance().StopBgmOfSelect();
 			//ステージナンバーを受け渡しシーン切り替え
 			SceneManager::GetInstance().SetStageNum(selectNum_ + 1);
 			SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
 		}
 		else
 		{
+			SoundManager::GetInstance().StopBgmOfSelect();
 			SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::TITLE, true);
 		}
 	}
@@ -165,12 +172,14 @@ void SelectScene::GamePadController(void)
 	{
 		if (!selectBack_)
 		{
+			SoundManager::GetInstance().StopBgmOfSelect();
 			//ステージナンバーを受け渡しシーン切り替え
 			SceneManager::GetInstance().SetStageNum(selectNum_ + 1);
 			SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
 		}
 		else
 		{
+			SoundManager::GetInstance().StopBgmOfSelect();
 			SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::TITLE, true);
 		}
 	}

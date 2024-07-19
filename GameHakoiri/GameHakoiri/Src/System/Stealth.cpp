@@ -95,7 +95,7 @@ void Stealth::Draw(void)
 
 	player_->Draw();
 
-	DrawDebug();
+	//DrawDebug();
 
 	if (player_->IsDrawMap())
 	{

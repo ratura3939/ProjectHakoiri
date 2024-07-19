@@ -2,6 +2,7 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/ResourceManager.h"
+#include"../Utility/Utility.h"
 #include"../Application.h"
 #include"ResultScene.h"
 
@@ -23,7 +24,13 @@ ResultScene::~ResultScene(void)
 bool ResultScene::Init(void)
 {
 	auto& rsM = ResourceManager::GetInstance();
+	result_ = SceneManager::GetInstance().IsClearStageNow();
+
 	backSelectImg_= rsM.Load(ResourceManager::SRC::BACK_SELECT_IMG).handleId_;
+	resultImg_[static_cast<int>(false)] = rsM.Load(ResourceManager::SRC::FAILD_IMG).handleId_;
+	resultImg_[static_cast<int>(true)] = rsM.Load(ResourceManager::SRC::CLEAER_IMG).handleId_;
+
+	flash_ = 0;
 	//³í‚Éˆ—‚ªs‚í‚ê‚½‚Ì‚Å
 	return true;
 }
@@ -42,12 +49,25 @@ void ResultScene::Update(void)
 		GamePadController();
 		break;
 	}
+
+	flash_++;
+	if (flash_ > RESULT_FLASH_MAX)flash_ = 0;
 }
 //•`‰æ
 //********************************************************
 void ResultScene::Draw(void)
 {
-	DrawGraph(Application::SCREEN_SIZE_X / 4, Application::SCREEN_SIZE_Y - 256, backSelectImg_, true);
+	DrawGraph(Application::SCREEN_SIZE_X / 4, Application::SCREEN_SIZE_Y - RESULT_SIZE_X, backSelectImg_, true);
+
+	if (flash_ % Application::FPS < RESULT_FLASH)
+	{
+		DrawRotaGraph(Application::SCREEN_SIZE_X / 2 - RESULT_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2 - RESULT_SIZE_Y / 2,
+			1.0f,
+			0.0f * Utility::DEG2RAD,
+			resultImg_[static_cast<int>(result_)],
+			true,
+			false);
+	}
 }
 //‰ð•ú
 //********************************************************
