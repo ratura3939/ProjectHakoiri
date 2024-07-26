@@ -43,6 +43,8 @@ bool StageManager::Init(STAGENUM num)
 	LoadImg();
 	LoadCsv();
 
+	SetIsDrawPazzleManual(true);
+
 	switch (num_)
 	{
 	case StageManager::STAGENUM::TUTORIAL:
@@ -99,7 +101,7 @@ void StageManager::Draw(GameScene::MODE mode)
 {
 	stage_->Draw(mode);
 
-	if (mode == GameScene::MODE::PAZZLE)
+	if (mode == GameScene::MODE::PAZZLE && isDrawPazzleManual_)
 	{
 		auto cnt = SceneManager::GetInstance().GetController();
 
@@ -278,6 +280,10 @@ bool StageManager::IsSecondEvidence(void) const
 bool StageManager::IsClear(void) const
 {
 	return stage_->IsGoal();
+}
+void StageManager::SetIsDrawPazzleManual(bool flag)
+{
+	isDrawPazzleManual_ = flag;
 }
 #pragma endregion
 

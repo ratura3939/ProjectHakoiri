@@ -56,6 +56,7 @@ void Pazzle::KeyboardContoroller(void)
 	if (ins.IsTrgDown(KEY_INPUT_V))
 	{
 		ChangeIsFinish(true);
+		stage.SetIsDrawPazzleManual(false);
 		return;
 	}
 
@@ -103,6 +104,7 @@ void Pazzle::GamePadController(void)
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
 	{
 		ChangeIsFinish(true);
+		stage.SetIsDrawPazzleManual(false);
 		return;
 	}
 

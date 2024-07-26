@@ -134,6 +134,8 @@ public:
 	bool IsSecondEvidence(void)const;//長方形の本体じゃない方を通ったか
 	bool IsClear(void)const;		//クリアしたか
 
+	void SetIsDrawPazzleManual(bool flag);			//パズルの操作説明描画の設定
+
 	//シングルトン化
 	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成
 	static StageManager& GetInstance(void);	//インスタンスの取得
@@ -146,6 +148,9 @@ private:
 	STAGENUM num_;	//生成するステージ番号を保持
 
 	Vector2 dir_[static_cast<int>(Utility::DIR::MAX)];
+
+
+	bool isDrawPazzleManual_;	//パズルの操作説明を描画するかどうか
 
 	//IMG
 	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];

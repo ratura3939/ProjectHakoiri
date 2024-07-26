@@ -56,6 +56,24 @@ void GameScene::Update(void)
 
 	stage.Update(GetMode());
 
+	//プレートの描画が終了し次に行く状態だったら
+	if (!isPlate_ && goToNext_)
+	{
+		//フラッシュの停止
+		stage.SetFlash(false);
+
+		//BGM
+		SoundManager::GetInstance().StopBgmOfPazzle();
+		SoundManager::GetInstance().PlayBgmOfStealth();
+
+		//ステルスシーンの初期化
+		SetMode(MODE::STEALTH);
+		stl_->Init();
+		SceneManager::GetInstance().SetManual(MODE::STEALTH);
+		goToNext_ = false;
+		Update();	//見え方調整のため
+	}
+
 	if (!isPlate_)
 	{
 		switch (mode_)
@@ -67,18 +85,9 @@ void GameScene::Update(void)
 				//クリア可能なら
 				if (stage.CanGoal())
 				{
-					//フラッシュの停止
-					stage.SetFlash(false);
-
-					//BGM
-					SoundManager::GetInstance().StopBgmOfPazzle();
-					SoundManager::GetInstance().PlayBgmOfStealth();
-
-					//ステルスシーンの初期化
-					SetMode(MODE::STEALTH);
-					stl_->Init();
-					Update();	//見え方調整のため
-					SceneManager::GetInstance().SetManual(MODE::STEALTH);
+					str_ = "この状態で進めますか？\n※進めるとパズル操作には戻れません。";
+					goToNext_ = true;
+					isPlate_ = true;
 				}
 				else
 				{
@@ -118,8 +127,23 @@ void GameScene::Update(void)
 	else
 	{
 		auto& plate = Plate::GetInstance();
-		plate.Update(Plate::TYPE::CHECK);
-		if (plate.IsFinish() && plate.GetAnswer() == Plate::ANSWER::OK)	isPlate_ = false;
+		if (goToNext_)
+		{
+			plate.Update(Plate::TYPE::SELECT);
+		}
+		else
+		{
+			plate.Update(Plate::TYPE::CHECK);
+		}
+		if (plate.IsFinish())
+		{
+			isPlate_ = false;
+			if (plate.GetAnswer() == Plate::ANSWER::NO)
+			{
+				pzl_->ChangeIsFinish(false);
+				goToNext_ = false;
+			}
+		}
 	}
 }
 //描画
@@ -128,7 +152,8 @@ void GameScene::Draw(void)
 {
 	StageManager::GetInstance().Draw(GetMode());
 	if (mode_ == MODE::STEALTH) { stl_->Draw(); }
-	if (isPlate_) Plate::GetInstance().Draw(Plate::TYPE::CHECK, str_, false);
+	if (isPlate_ && !goToNext_) Plate::GetInstance().Draw(Plate::TYPE::CHECK, str_, false);
+	if (isPlate_ && goToNext_) Plate::GetInstance().Draw(Plate::TYPE::SELECT, str_, false);
 }
 //解放
 //********************************************************

@@ -37,5 +37,6 @@ private:
 	MODE mode_;	//現在のゲームのモードを保持
 
 	bool isPlate_;	//プレートを出すかどうか
-	std::string str_;
+	bool goToNext_;	//ステルスにシーン遷移しようとしている
+	std::string str_;	//プレートに表示する文章
 };
