@@ -15,6 +15,7 @@ public:
 
 	static constexpr int CHARACTER_ORIGIN_SIZE_X = 96;
 	static constexpr int CHARACTER_ORIGIN_SIZE_Y = 128;
+	static constexpr int CHARACTER_ORIGIN_SIZE_Y_2 = 256;
 
 	static constexpr int BATH_MAPTHIP_X = 512;
 	static constexpr int BATH_MAPTHIP_Y = 1216;
@@ -79,6 +80,8 @@ public:
 		//キャラクター
 		PLAYER_IMGS,
 		PLAYER_1_IMGS,
+		SENESCHAI_IMGS,
+		OLDMAN_IMGS,
 
 		//マップ
 		BATH_MAPTHIP,

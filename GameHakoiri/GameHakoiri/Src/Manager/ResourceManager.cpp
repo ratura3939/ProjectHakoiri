@@ -329,7 +329,7 @@ void ResourceManager::Init(void)
 		Resource::TYPE::IMGS,
 		Application::PATH_CHARACTER + "Player_1.png",
 		CHARACTER_ORIGIN_SIZE_X / CharacterBase::CHARACTER_SIZE_X,
-		8,
+		CHARACTER_ORIGIN_SIZE_Y_2 / CharacterBase::CHARACTER_SIZE_Y,
 		CharacterBase::CHARACTER_SIZE_X,
 		CharacterBase::CHARACTER_SIZE_Y
 		);
@@ -346,6 +346,30 @@ void ResourceManager::Init(void)
 
 
 	resourcesMap_.emplace(SRC::PLAYER_IMGS, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::IMGS,
+		Application::PATH_CHARACTER + "Hayate.png",
+		CHARACTER_ORIGIN_SIZE_X / CharacterBase::CHARACTER_SIZE_X,
+		CHARACTER_ORIGIN_SIZE_Y_2 / CharacterBase::CHARACTER_SIZE_Y,
+		CharacterBase::CHARACTER_SIZE_X,
+		CharacterBase::CHARACTER_SIZE_Y
+		);
+
+
+	resourcesMap_.emplace(SRC::SENESCHAI_IMGS, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::IMGS,
+		Application::PATH_CHARACTER + "Oldman.png",
+		CHARACTER_ORIGIN_SIZE_X / CharacterBase::CHARACTER_SIZE_X,
+		CHARACTER_ORIGIN_SIZE_Y_2 / CharacterBase::CHARACTER_SIZE_Y,
+		CharacterBase::CHARACTER_SIZE_X,
+		CharacterBase::CHARACTER_SIZE_Y
+		);
+
+
+	resourcesMap_.emplace(SRC::OLDMAN_IMGS, move(res));
 
 
 	//風呂マップチップ
