@@ -1,4 +1,4 @@
-#include<DxLib.h>
+ï»¿#include<DxLib.h>
 #include<iostream>
 
 #include"../Application.h"
@@ -20,7 +20,7 @@
 
 #include"StageBase.h"
 
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //********************************************************
 StageBase::StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX, int pzlSizeY,
 	std::vector<std::vector<int>> map[], std::vector<std::vector<int>> obj[],
@@ -38,29 +38,29 @@ StageBase::StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX
 	roomKey_ = "00";
 	doorSpare_ = StageManager::DOOR_Y::NONE;
 }
-//ƒfƒXƒgƒ‰ƒNƒ^
+//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //********************************************************
 StageBase::~StageBase(void)
 {
 
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 //********************************************************
 bool StageBase::Init(void)
 {
 	frameAnim_ = 0;
-	//ƒtƒ‰ƒO‚Ì‰Šú‰»
+	//ãƒ•ãƒ©ã‚°ã®åˆæœŸåŒ–
 	SetFrameFlash(false);
 	SetIsMoveRoom(true);
 	SetIsSecondRoom(false);
 	SetIsGoal(false);
 
-	//ŠeƒXƒe[ƒW‚É‚æ‚éİ’è
+	//å„ã‚¹ãƒ†ãƒ¼ã‚¸ã«ã‚ˆã‚‹è¨­å®š
 	SetParam();
-	//ƒpƒYƒ‹”z’u‚Ì“Ç‚İ‚İ
+	//ãƒ‘ã‚ºãƒ«é…ç½®ã®èª­ã¿è¾¼ã¿
 	//LoadPazzle();
-	//‰æ‘œ“Ç‚İ‚İ
+	//ç”»åƒèª­ã¿è¾¼ã¿
 	LoadImgs();
 
 	Vector2F pos{ static_cast<float>(Application::SCREEN_SIZE_X / 4),
@@ -77,13 +77,13 @@ bool StageBase::Init(void)
 
 			switch (static_cast<RoomBase::TYPE>(pzlCsv_[y][x]))
 			{
-			//‹ó‚«ƒXƒy[ƒX
+			//ç©ºãã‚¹ãƒšãƒ¼ã‚¹
 			case RoomBase::TYPE::NONE: 
 				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
 				r->Init();
 				break;
 
-			//©º
+			//è‡ªå®¤
 			case RoomBase::TYPE::OWN: 
 				r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)],
 					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y,
@@ -91,10 +91,10 @@ bool StageBase::Init(void)
 					objCsv_[static_cast<int>(RoomBase::TYPE::OWN)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
-				//‚à‚µ¶¬‚µ‚½‚à‚Ì‚ª’·•ûŒ`‚Ì‚QƒRƒ}–Ú‚¾‚Á‚½‚ç
+				//ã‚‚ã—ç”Ÿæˆã—ãŸã‚‚ã®ãŒé•·æ–¹å½¢ã®ï¼’ã‚³ãƒç›®ã ã£ãŸã‚‰
 				if (CheckInstanceLeft(y, x, r)){ r = GetSecondRoomInstance(r); }
 				break;
-			//˜aº
+			//å’Œå®¤
 			case RoomBase::TYPE::WASITU:
 				r = new Wasitu(roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)],
 					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
@@ -103,7 +103,7 @@ bool StageBase::Init(void)
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
 				break;
-			//‹ŠÔ
+			//å±…é–“
 			case RoomBase::TYPE::LIVING:
 				r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)],
 					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y,
@@ -111,10 +111,10 @@ bool StageBase::Init(void)
 					objCsv_[static_cast<int>(RoomBase::TYPE::LIVING)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
-				//‚à‚µ¶¬‚µ‚½‚à‚Ì‚ª’·•ûŒ`‚Ì‚QƒRƒ}–Ú‚¾‚Á‚½‚ç
+				//ã‚‚ã—ç”Ÿæˆã—ãŸã‚‚ã®ãŒé•·æ–¹å½¢ã®ï¼’ã‚³ãƒç›®ã ã£ãŸã‚‰
 				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
-			//•—˜C
+			//é¢¨å‘‚
 			case RoomBase::TYPE::BATH: 
 				r = new Bath(roomImg_[static_cast<int>(RoomBase::TYPE::BATH)],
 					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
@@ -123,7 +123,7 @@ bool StageBase::Init(void)
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::BATH)]);
 				r->Init();
 				break;
-			//•¨’u
+			//ç‰©ç½®
 			case RoomBase::TYPE::STORAGE:
 				r = new Storage(roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)],
 					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
@@ -132,7 +132,7 @@ bool StageBase::Init(void)
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
 				break;
-			//‘äŠ
+			//å°æ‰€
 			case RoomBase::TYPE::KITCHEN: 
 				r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
 					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y,
@@ -140,10 +140,10 @@ bool StageBase::Init(void)
 					objCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
 				r->Init();
-				//‚à‚µ¶¬‚µ‚½‚à‚Ì‚ª’·•ûŒ`‚Ì‚QƒRƒ}–Ú‚¾‚Á‚½‚ç
+				//ã‚‚ã—ç”Ÿæˆã—ãŸã‚‚ã®ãŒé•·æ–¹å½¢ã®ï¼’ã‚³ãƒç›®ã ã£ãŸã‚‰
 				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
-			//ŒºŠÖ
+			//ç„é–¢
 			case RoomBase::TYPE::ENTRANCE: 
 				r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
 					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y,
@@ -151,15 +151,15 @@ bool StageBase::Init(void)
 					objCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::EXTERIA)]);
 				r->Init();
-				//‚à‚µ¶¬‚µ‚½‚à‚Ì‚ª’·•ûŒ`‚Ì‚QƒRƒ}–Ú‚¾‚Á‚½‚ç
+				//ã‚‚ã—ç”Ÿæˆã—ãŸã‚‚ã®ãŒé•·æ–¹å½¢ã®ï¼’ã‚³ãƒç›®ã ã£ãŸã‚‰
 				if (CheckInstanceLeft(y, x, r)) { r = GetSecondRoomInstance(r); }
 				break;
-			//•Ç
+			//å£
 			case RoomBase::TYPE::WALL:	
 				r = new Wall(roomImg_[static_cast<int>(RoomBase::TYPE::WALL)]);
 				r->Init();
 				break;
-			//ƒS[ƒ‹
+			//ã‚´ãƒ¼ãƒ«
 			case RoomBase::TYPE::GOAL:
 				r = new Goal(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)]);
 				r->Init();
@@ -168,19 +168,19 @@ bool StageBase::Init(void)
 			}
 
 			CreateKey(y, x);
-			roomMng_[roomKey_] = r;//”z—ñ“à‚ÉŠi”[
+			roomMng_[roomKey_] = r;//é…åˆ—å†…ã«æ ¼ç´
 			resetRoom_[roomKey_] = r->GetRoomType();
 			resetRoomClone_[roomKey_] = r->IsClone();
 			pzlPos_[roomKey_] = pos;
 
-			//À•W‚ÌXV
+			//åº§æ¨™ã®æ›´æ–°
 			pos.x += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X);
 		}
 		pos.x = static_cast<float>(Application::SCREEN_SIZE_X / 4);
 		pos.y += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_Y);
 	}
 
-	//‰Šú‚ÌƒJ[ƒ\ƒ‹İ’è
+	//åˆæœŸã®ã‚«ãƒ¼ã‚½ãƒ«è¨­å®š
 	for (int y = 0; y < size_.y; y++)
 	{
 		for (int x = 0; x < size_.x; x++)
@@ -190,21 +190,21 @@ bool StageBase::Init(void)
 				roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::NONE)
 			{
 				roomMng_[roomKey_]->SetIsCursor(true);
-				//³‚µ‚­ˆ—‚ªI—¹‚µ‚½‚Ì‚Å
+				//æ­£ã—ãå‡¦ç†ãŒçµ‚äº†ã—ãŸã®ã§
 				return true;
 			}
 		}
 	}
-	//³‚µ‚­ˆ—‚ªI—¹‚µ‚½‚Ì‚Å
+	//æ­£ã—ãå‡¦ç†ãŒçµ‚äº†ã—ãŸã®ã§
 	return true;
 }
 
 bool StageBase::InitStealth(void)
 {
-	//Œ»İ‚ÌƒJ[ƒ\ƒ‹‚ğ‰ğœ
+	//ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ã‚’è§£é™¤
 	roomMng_[roomKey_]->SetIsCursor(false);
 
-	//ƒpƒYƒ‹•`‰æ‚ÌˆÊ’u•ÏX
+	//ãƒ‘ã‚ºãƒ«æç”»ã®ä½ç½®å¤‰æ›´
 	Vector2F pos = { 0.0f,0.0f };
 
 	for (int y = 0; y < size_.y; y++)
@@ -213,7 +213,7 @@ bool StageBase::InitStealth(void)
 		{
 			CreateKey(y, x);
 			pzlPos_[roomKey_] = pos;
-			//À•W‚ÌXV
+			//åº§æ¨™ã®æ›´æ–°
 			pos.x += static_cast<float>(StageManager::UNIT_PAZZLE_SIZE_X);
 		}
 		pos.x = 0.0f;
@@ -221,7 +221,7 @@ bool StageBase::InitStealth(void)
 	}
 
 
-	//ˆÈ‘O‚ÌƒJ[ƒ\ƒ‹‚ğ”ñ•\¦‚É
+	//ä»¥å‰ã®ã‚«ãƒ¼ã‚½ãƒ«ã‚’éè¡¨ç¤ºã«
 	for (int y = 0; y < size_.y; y++)
 	{
 		for (int x = 0; x < size_.x; x++)
@@ -231,7 +231,7 @@ bool StageBase::InitStealth(void)
 		}
 	}
 
-	//‰ŠúˆÊ’u‚ÌêŠ‚ğ¦‚·ƒ‹[ƒ€ƒL[‚ğ¶¬
+	//åˆæœŸä½ç½®ã®å ´æ‰€ã‚’ç¤ºã™ãƒ«ãƒ¼ãƒ ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	for (int y = 0; y < size_.y; y++)
 	{
 		for (int x = 0; x < size_.x; x++)
@@ -239,15 +239,15 @@ bool StageBase::InitStealth(void)
 			CreateKey(y, x);
 			if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::OWN)
 			{
-				//Œ»İ’n‚ÉƒJ[ƒ\ƒ‹ƒZƒbƒg
+				//ç¾åœ¨åœ°ã«ã‚«ãƒ¼ã‚½ãƒ«ã‚»ãƒƒãƒˆ
 				roomMng_[roomKey_]->SetIsCursor(true);
-				//³‚µ‚­ˆ—‚ªI—¹‚µ‚½‚Ì‚Å
+				//æ­£ã—ãå‡¦ç†ãŒçµ‚äº†ã—ãŸã®ã§
 				return true;
 			}
 		}
 	}
 
-	//ˆ—–¢‹
+	//å‡¦ç†æœªé‚
 	return false;
 }
 
@@ -256,7 +256,7 @@ void StageBase::DrawObject(void)
 	roomMng_[roomKey_]->DrawStealthObject();
 }
 
-#pragma region XV
+#pragma region æ›´æ–°
 
 void StageBase::Update(GameScene::MODE mode)
 {
@@ -267,7 +267,7 @@ void StageBase::Update(GameScene::MODE mode)
 
 
 
-#pragma region •`‰æ
+#pragma region æç”»
 
 void StageBase::Draw(GameScene::MODE mode)
 {
@@ -283,13 +283,13 @@ void StageBase::Draw(GameScene::MODE mode)
 		break;
 	}
 }
-#pragma region ƒpƒYƒ‹ƒV[ƒ“
+#pragma region ãƒ‘ã‚ºãƒ«ã‚·ãƒ¼ãƒ³
 
 	void StageBase::DrawPazzle(void)
 	{		
 		frameAnim_++;
 
-		//‹î‚Ì•`‰æ
+		//é§’ã®æç”»
 		for (int y = 0; y < size_.y; y++)
 		{
 			for (int x = 0; x < size_.x; x++)
@@ -304,20 +304,20 @@ void StageBase::Draw(GameScene::MODE mode)
 		{
 			if (frameAnim_ % (Application::FPS / 2) < FRAME_INTERVAL)
 			{
-				//˜g‚Ì•`‰æ
+				//æ ã®æç”»
 				DrawCursor();
 			}
 		}
 		else
 		{
-			//˜g‚Ì•`‰æ
+			//æ ã®æç”»
 			DrawCursor();
 		}
 	}
 
 	#pragma endregion
 
-#pragma region ƒJ[ƒ\ƒ‹
+#pragma region ã‚«ãƒ¼ã‚½ãƒ«
 
 	void StageBase::DrawCursor(void)
 	{
@@ -326,39 +326,39 @@ void StageBase::Draw(GameScene::MODE mode)
 		CreateKey(key.y, key.x);
 		switch (roomMng_[roomKey_]->GetRoomType())
 		{
-			// ‹ó‚«ƒXƒy[ƒX
+			// ç©ºãã‚¹ãƒšãƒ¼ã‚¹
 		case RoomBase::TYPE::NONE:
-			//˜aº
+			//å’Œå®¤
 		case RoomBase::TYPE::WASITU:
-			//•—˜C
+			//é¢¨å‘‚
 		case RoomBase::TYPE::BATH:
-			//•¨’u
+			//ç‰©ç½®
 		case RoomBase::TYPE::STORAGE:
-			//•Ç
+			//å£
 		case RoomBase::TYPE::WALL:
-			//ƒS[ƒ‹
+			//ã‚´ãƒ¼ãƒ«
 		case RoomBase::TYPE::GOAL:
 			SetCursorType(CURSOR::NORMAL);
 			break;
-			//c’·
-			//‹ŠÔ
+			//ç¸¦é•·
+			//å±…é–“
 		case RoomBase::TYPE::LIVING:
-			//‘äŠ
+			//å°æ‰€
 		case RoomBase::TYPE::KITCHEN:
 			SetCursorType(CURSOR::OBLONG);
 			break;
 
-			//‰¡’·
-			//©º
+			//æ¨ªé•·
+			//è‡ªå®¤
 		case RoomBase::TYPE::OWN:
-			//ŒºŠÖ
+			//ç„é–¢
 		case RoomBase::TYPE::ENTRANCE:
 			SetCursorType(CURSOR::OBLONG_2);
 			break;
 		}
 		if (roomMng_[roomKey_]->GetIsCursor())
 		{
-			//˜g‚Ì•`‰æ
+			//æ ã®æç”»
 			DrawGraph(pzlPos_[roomKey_].x, pzlPos_[roomKey_].y,
 				frame_[static_cast<int>(type_)], true);
 		}
@@ -368,7 +368,7 @@ void StageBase::Draw(GameScene::MODE mode)
 	
 #pragma endregion
 
-#pragma region ƒXƒeƒ‹ƒX
+#pragma region ã‚¹ãƒ†ãƒ«ã‚¹
 
 	void StageBase::DrawStealth(void)
 	{
@@ -379,11 +379,11 @@ void StageBase::Draw(GameScene::MODE mode)
 
 #pragma endregion
 
-//‰ğ•ú
+//è§£æ”¾
 //********************************************************
 bool StageBase::Release(void)
 {
-	//‹î
+	//é§’
 
 	for (int y = 0; y < size_.y; y++)
 	{
@@ -396,17 +396,17 @@ bool StageBase::Release(void)
 		}
 	}
 
-	//³‚µ‚­ˆ—‚ªI—¹‚µ‚½‚Ì‚Å
+	//æ­£ã—ãå‡¦ç†ãŒçµ‚äº†ã—ãŸã®ã§
 	return true;
 }
 
-//ƒXƒe[ƒW‚²‚Æ‚Ìƒpƒ‰ƒ[ƒ^İ’è
+//ã‚¹ãƒ†ãƒ¼ã‚¸ã”ã¨ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 //********************************************************
 void StageBase::SetParam(void)
 {
-	//‚±‚ÌŠÖ”‚Í”h¶æ‚²‚Æ‚Ì‚à‚Ì‚È‚Ì‚ÅŠÖŒW‚È‚µ
+	//ã“ã®é–¢æ•°ã¯æ´¾ç”Ÿå…ˆã”ã¨ã®ã‚‚ã®ãªã®ã§é–¢ä¿‚ãªã—
 }
-//˜A‘z”z—ñ‚ÌƒL[¶¬
+//é€£æƒ³é…åˆ—ã®ã‚­ãƒ¼ç”Ÿæˆ
 //********************************************************
 void StageBase::CreateKey(int y, int x)
 {
@@ -419,9 +419,9 @@ std::string StageBase::GetKey(void) const
 	return roomKey_;
 }
 
-#pragma region ƒXƒeƒ‹ƒX‚Ì‚¢‚ë‚¢‚ë
+#pragma region ã‚¹ãƒ†ãƒ«ã‚¹ã®ã„ã‚ã„ã‚
 
-//Œ»İ•`‰æ‚µ‚Ä‚¢‚éƒ}ƒbƒv‚ÌÅ‘åƒTƒCƒY‚ğæ“¾
+//ç¾åœ¨æç”»ã—ã¦ã„ã‚‹ãƒãƒƒãƒ—ã®æœ€å¤§ã‚µã‚¤ã‚ºã‚’å–å¾—
 //********************************************************
 Vector2F StageBase::GetNowDrawMapSize(void)
 {
@@ -432,11 +432,11 @@ Vector2F StageBase::GetNowDrawMapSize(void)
 	return mapMax;
 }
 
-//w’è‚µ‚½À•W‚ÍƒIƒuƒWƒFƒNƒg‚ª‚ ‚é‚©
+//æŒ‡å®šã—ãŸåº§æ¨™ã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚‹ã‹
 //********************************************************
 bool StageBase::IsMapObj(Vector2 pMapPos)
 {
-	if (roomMng_[roomKey_]->GetObj(pMapPos) != -1)	//w’è‚µ‚½êŠ‚ÉƒIƒuƒWƒFƒNƒg‚ª‚ ‚Á‚½‚ç
+	if (roomMng_[roomKey_]->GetObj(pMapPos) != -1)	//æŒ‡å®šã—ãŸå ´æ‰€ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã£ãŸã‚‰
 	{
 		return true;
 	}
@@ -446,29 +446,29 @@ bool StageBase::IsMoveRoom(void)
 {
 	return isMoveRoom_;
 }
-//w’è‚³‚ê‚½êŠ‚ÌƒIƒuƒWƒFƒNƒgæ“¾
+//æŒ‡å®šã•ã‚ŒãŸå ´æ‰€ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå–å¾—
 //********************************************************
 int StageBase::GetObjNum(Vector2 pMapPos)
 {
 	return roomMng_[roomKey_]->GetObj(pMapPos);
 }
-//w’è‚³‚ê‚½êŠ‚Ìƒ}ƒbƒvƒ`ƒbƒvæ“¾
+//æŒ‡å®šã•ã‚ŒãŸå ´æ‰€ã®ãƒãƒƒãƒ—ãƒãƒƒãƒ—å–å¾—
 //********************************************************
 int StageBase::GetMapNum(Vector2 pMapPos)
 {
 	return roomMng_[roomKey_]->GetMapchip(pMapPos);
 }
-//Œ»İ‚Ì•”‰®‚ªg—p‚·‚éƒ}ƒbƒvƒ`ƒbƒv‚Ìí—Ş‚ğ•Ô‚·B
+//ç¾åœ¨ã®éƒ¨å±‹ãŒä½¿ç”¨ã™ã‚‹ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®ç¨®é¡ã‚’è¿”ã™ã€‚
 //********************************************************
 StageManager::MAPCHIP StageBase::GetMapchipType(void)
 {
 	auto type = roomMng_[roomKey_]->GetRoomType();
-	//Bath‚Ìƒ}ƒbƒvƒ`ƒbƒv‚ğg—p‚·‚é‚Ì‚ÍBathRoom‚Ì‚İ
+	//Bathã®ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã‚’ä½¿ç”¨ã™ã‚‹ã®ã¯BathRoomã®ã¿
 	if (type == RoomBase::TYPE::BATH)
 	{
 		return StageManager::MAPCHIP::BATH;
 	}
-	//Exteria‚Ìƒ}ƒbƒvƒ`ƒbƒv‚ğg—p‚·‚é‚Ì‚ÍEntranceRoom‚Ì‚İ
+	//Exteriaã®ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã‚’ä½¿ç”¨ã™ã‚‹ã®ã¯EntranceRoomã®ã¿
 	if (type == RoomBase::TYPE::ENTRANCE)
 	{
 		return StageManager::MAPCHIP::EXTERIA;
@@ -480,50 +480,50 @@ RoomBase::ROOM_SHAPE StageBase::GetNowShape(void)
 {
 	return GetRoomShape(roomKey_);
 }
-//ˆê‚Â‰º‚ÉƒIƒuƒWƒFƒNƒg‚ª‚ ‚é‚©‚ğ’²‚×‚é
+//ä¸€ã¤ä¸‹ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚‹ã‹ã‚’èª¿ã¹ã‚‹
 //********************************************************
 bool StageBase::CheckOneDownObject(Vector2 pMapPos)
 {
 	return roomMng_[roomKey_]->IsOneDownObj(pMapPos);
 }
-//•”‰®‚ğ•Ï‚¦‚é
+//éƒ¨å±‹ã‚’å¤‰ãˆã‚‹
 //********************************************************
 void StageBase::ChangeRoom(Vector2 pMapPos)
 {
-	//ƒhƒA‚ÌˆÊ’uæ“¾
+	//ãƒ‰ã‚¢ã®ä½ç½®å–å¾—
 	door_ = SearchDoor(pMapPos);
-	//•”‰®‚ÌˆÚ“®—Ê
+	//éƒ¨å±‹ã®ç§»å‹•é‡
 	Vector2 move = { 0,0 };
-	//ˆÚ“®Œã‚Ì•”‰®‚ğ•Û
+	//ç§»å‹•å¾Œã®éƒ¨å±‹ã‚’ä¿æŒ
 	Vector2 afterRoom;
-	//Œ»İ‚Ì•”‰®‚ğ•Û
+	//ç¾åœ¨ã®éƒ¨å±‹ã‚’ä¿æŒ
 	auto nowRoom = roomKey_;
-	//Œ»İ‚Ì•”‰®‚ğroomKey‚©‚ç‹tZ
-	//roomKey=(yx)‚È‚Ì‚Å10‚ÅŠ„‚Á‚½‚Ì¤‚ªY,—]‚è‚ªX‚ğ•\‚·
+	//ç¾åœ¨ã®éƒ¨å±‹ã‚’roomKeyã‹ã‚‰é€†ç®—
+	//roomKey=(yx)ãªã®ã§10ã§å‰²ã£ãŸæ™‚ã®å•†ãŒY,ä½™ã‚ŠãŒXã‚’è¡¨ã™
 	afterRoom.y = stoi(nowRoom) / STRING_TO_INT;
 	afterRoom.x = stoi(nowRoom) % STRING_TO_INT;
 	
-	//”à‚ÌˆÊ’u‚É‚æ‚é•”‰®‚ÌˆÚ“®—Ê‚ğŒvZ
+	//æ‰‰ã®ä½ç½®ã«ã‚ˆã‚‹éƒ¨å±‹ã®ç§»å‹•é‡ã‚’è¨ˆç®—
 	if (door_.y == StageManager::DOOR_Y::TOP) 
 	{ 
-		//ˆê‚Âã‚Ì•”‰®‚É
+		//ä¸€ã¤ä¸Šã®éƒ¨å±‹ã«
 		move.y--; 
 
-		//Œ»İ‚ÌêŠ‚ª’·•ûŒ`‚¾‚Á‚½ê‡
+		//ç¾åœ¨ã®å ´æ‰€ãŒé•·æ–¹å½¢ã ã£ãŸå ´åˆ
 		if (GetRoomShape(nowRoom)!=RoomBase::ROOM_SHAPE::NOMAL)	
 		{
-			//Œ»İ•”‰®‚ª‰¡’·‚ÅA‰Eã‚Ì”à‚¾‚Á‚½ê‡
+			//ç¾åœ¨éƒ¨å±‹ãŒæ¨ªé•·ã§ã€å³ä¸Šã®æ‰‰ã ã£ãŸå ´åˆ
 			if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door_.x == StageManager::DOOR_X::RIGHT)
 			{
-				//¶‰EˆÚ“®
+				//å·¦å³ç§»å‹•
 				move += MoveLeftOrRight(door_.x);
 			}
-			//Œ»İ•”‰®‚ªc’·‚ÅA¶‰E‚Ì”à(ã‚Ì‰º)‚¾‚Á‚½ê‡
+			//ç¾åœ¨éƒ¨å±‹ãŒç¸¦é•·ã§ã€å·¦å³ã®æ‰‰(ä¸Šã®ä¸‹)ã ã£ãŸå ´åˆ
 			if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG && doorSpare_ == StageManager::DOOR_Y::BOTTOM)
 			{
-				//ã‚Ö‚ÌˆÚ“®‚Å‚Í‚È‚¢‚½‚ß‚‚³‚ğ–ß‚·
+				//ä¸Šã¸ã®ç§»å‹•ã§ã¯ãªã„ãŸã‚é«˜ã•ã‚’æˆ»ã™
 				move.y++;
-				//¶‰EˆÚ“®
+				//å·¦å³ç§»å‹•
 				move += MoveLeftOrRight(door_.x);
 			}
 		}
@@ -531,39 +531,39 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 
 	else if (door_.y == StageManager::DOOR_Y::BOTTOM) 
 	{
-		//ˆê‚Â‰º‚Ì•”‰®‚É
+		//ä¸€ã¤ä¸‹ã®éƒ¨å±‹ã«
 		move.y++;
 
-		//Œ»İ•”‰®‚ª‰¡’·‚ÅA‰Eã‚Ì”à‚¾‚Á‚½ê‡
+		//ç¾åœ¨éƒ¨å±‹ãŒæ¨ªé•·ã§ã€å³ä¸Šã®æ‰‰ã ã£ãŸå ´åˆ
 		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door_.x == StageManager::DOOR_X::RIGHT)
 		{
-			//¶‰EˆÚ“®
+			//å·¦å³ç§»å‹•
 			move += MoveLeftOrRight(door_.x);
 		}
-		//Œ»İ•”‰®‚ªc’·
+		//ç¾åœ¨éƒ¨å±‹ãŒç¸¦é•·
 		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG )
 		{
 			if (doorSpare_ == StageManager::DOOR_Y::BOTTOM)
 			{
-				//cƒjƒ}ƒX‚Ì•”‰®‚Ì‰º‚Ö‚ÌˆÚ“®‚È‚Ì‚Åƒjƒ}ƒX•ª‰º‚°‚é‚½‚ß
+				//ç¸¦ãƒ‹ãƒã‚¹ã®éƒ¨å±‹ã®ä¸‹ã¸ã®ç§»å‹•ãªã®ã§ãƒ‹ãƒã‚¹åˆ†ä¸‹ã’ã‚‹ãŸã‚
 				move.y++;
 			}
-			//¶‰E‚Ì”à(‰º‚Ìã)‚¾‚Á‚½ê‡
+			//å·¦å³ã®æ‰‰(ä¸‹ã®ä¸Š)ã ã£ãŸå ´åˆ
 			if (doorSpare_ == StageManager::DOOR_Y::TOP)
 			{
-				//¶‰EˆÚ“®
+				//å·¦å³ç§»å‹•
 				move += MoveLeftOrRight(door_.x);
 			}
 		}
 	}	
 	else if (door_.y == StageManager::DOOR_Y::MIDDLE)
 	{
-		//¶‰EˆÚ“®
+		//å·¦å³ç§»å‹•
 		move += MoveLeftOrRight(door_.x);
-		//Œ»İ•”‰®‚ª‰¡’·‚ÅA‰Eã‚Ì”à‚¾‚Á‚½ê‡
+		//ç¾åœ¨éƒ¨å±‹ãŒæ¨ªé•·ã§ã€å³ä¸Šã®æ‰‰ã ã£ãŸå ´åˆ
 		if (GetRoomShape(nowRoom) == RoomBase::ROOM_SHAPE::OBLONG_SIDE && door_.x == StageManager::DOOR_X::RIGHT)
 		{
-			//¶‰EˆÚ“®
+			//å·¦å³ç§»å‹•
 			move += MoveLeftOrRight(door_.x);
 		}
 	}
@@ -571,7 +571,7 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 	afterRoom += move;
 	MoveRoom(afterRoom, nowRoom);
 }
-//o‚é‚Ì‚Ég—p‚µ‚½ƒhƒA‚ÌˆÊ’u‚ğ“n‚·
+//å‡ºã‚‹ã®ã«ä½¿ç”¨ã—ãŸãƒ‰ã‚¢ã®ä½ç½®ã‚’æ¸¡ã™
 StageManager::DOOR StageBase::GetDoorPos(void) const
 {
 	return door_;
@@ -588,55 +588,67 @@ bool StageBase::IsGoal(void) const
 {
 	return isGoal_;
 }
-//ƒS[ƒ‹‚É‚Â‚È‚ª‚é•”‰®‚ª‚ ‚é‚©‚Ç‚¤‚©
+//ã‚´ãƒ¼ãƒ«ã«ã¤ãªãŒã‚‹éƒ¨å±‹ãŒã‚ã‚‹ã‹ã©ã†ã‹
 bool StageBase::CanGoal(void)
 {
 	auto pos = goalPos_;
+	//ã‚´ãƒ¼ãƒ«ãƒã‚¹ã®ä¸€ã¤ä¸Šã«éƒ¨å±‹ãŒã‚ã‚‹ã‹ã‚’ç¢ºèª
 	pos.y--;
 	CreateKey(pos.y, pos.x);
 	if (roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::NONE)
 	{
-		return true;
+		//ä¸Šã«ãƒã‚¹ãŒã‚ã£ãŸå ´åˆ
+		//ãã®ãƒã‚¹ã®å·¦å³ã¨ä¸Šã®â‚æ–¹å‘ã®ã„ãšã‚Œã‹ã«éƒ¨å±‹ãŒã‚ã‚‹ã‹ã‚’ç¢ºèªï¼ˆå…¨ã¦ã®ãƒ‘ã‚ºãƒ«ã¯ç©ºããŒãƒ‹ãƒã‚¹ãªã®ã§ï¼‰
+		auto flag = CheckAroundRoomAnything(pos);
+
+		//å¿µã®ãŸã‚å…ƒã«æˆ»ã™
+		pos.y++;
+		CreateKey(pos.y, pos.x);
+		return flag;
 	}
+	//å¿µã®ãŸã‚å…ƒã«æˆ»ã™
+	pos.y++;
+	CreateKey(pos.y, pos.x);
+
 	return false;
 }
 void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 {
-	SetIsMoveRoom(true);	//ƒtƒ‰ƒOƒŠƒZƒbƒg ˆÚ“®‚Å‚«‚é‘O’ñ
+	SetIsMoveRoom(true);	//ãƒ•ãƒ©ã‚°ãƒªã‚»ãƒƒãƒˆ ç§»å‹•ã§ãã‚‹å‰æ
 	SetIsSecondRoom(false);
 	roomMng_[roomKey_]->SetIsCursor(false);
 
 	auto moveAfter = after;
 	
 
-	//ˆÚ“®æ‚Ì•”‰®‚ÌŒ®¶¬
+	//ç§»å‹•å…ˆã®éƒ¨å±‹ã®éµç”Ÿæˆ
 	CreateKey(moveAfter.y, moveAfter.x);
 	auto type = roomMng_[roomKey_]->GetRoomType();
 
-	//ˆÚ“®æ‚ªƒS[ƒ‹‚¾‚Á‚½‚ç
+	//ç§»å‹•å…ˆãŒã‚´ãƒ¼ãƒ«ã ã£ãŸã‚‰
 	if (type == RoomBase::TYPE::GOAL)
 	{
 		SetIsGoal(true);
 		return;
 	}
 
-	//ˆÚ“®æ‚ª•”‰®‚Å‚Í‚È‚©‚Á‚½‚ç
+	//ç§»å‹•å…ˆãŒéƒ¨å±‹ã§ã¯ãªã‹ã£ãŸã‚‰
 	if (type == RoomBase::TYPE::NONE ||
 		type == RoomBase::TYPE::WALL)
 	{
 		roomKey_ = prvKey;
-		SetIsMoveRoom(false);	//ƒtƒ‰ƒOƒZƒbƒg
+		SetIsMoveRoom(false);	//ãƒ•ãƒ©ã‚°ã‚»ãƒƒãƒˆ
 		roomMng_[roomKey_]->SetIsCursor(true);
 
 		return;
 	}
 
-	//’·•ûŒ`‚ÅÀ‘Ì‚Å‚Í‚È‚¢‚Ù‚¤‚Éo‚½‚Æ‚«
+	//é•·æ–¹å½¢ã§å®Ÿä½“ã§ã¯ãªã„ã»ã†ã«å‡ºãŸã¨ã
 	if (GetRoomShape(roomKey_) != RoomBase::ROOM_SHAPE::NOMAL)
 	{
 		
 		auto r = CreateInstance4Confirmation(type);
-		//c’·‚ÌÀ‘Ì’²®
+		//ç¸¦é•·ã®å®Ÿä½“èª¿æ•´
 		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG)
 		{
 			if (CheckInstanceUp(moveAfter.y, moveAfter.x, r))
@@ -646,7 +658,7 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 				SetIsSecondRoom(true);
 			}
 		}
-		//‰¡’·‚ÌÀ‘Ì’²®
+		//æ¨ªé•·ã®å®Ÿä½“èª¿æ•´
 		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG_SIDE)
 		{
 			if (CheckInstanceLeft(moveAfter.y, moveAfter.x, r))
@@ -658,51 +670,51 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 		}
 	}
 
-	//ˆÚ“®æ‚ÉƒJ[ƒ\ƒ‹ƒZƒbƒg
+	//ç§»å‹•å…ˆã«ã‚«ãƒ¼ã‚½ãƒ«ã‚»ãƒƒãƒˆ
 	roomMng_[roomKey_]->SetIsCursor(true);
 }
-//¶‰EˆÚ“®
+//å·¦å³ç§»å‹•
 //********************************************************
 Vector2 StageBase::MoveLeftOrRight(const StageManager::DOOR_X door)
 {
-	if (door == StageManager::DOOR_X::LEFT) { return { -1,0 }; }	//ˆê‚Â¶‚É
-	if (door == StageManager::DOOR_X::RIGHT) { return { 1,0 }; }	//ˆê‚Â‰E‚É
+	if (door == StageManager::DOOR_X::LEFT) { return { -1,0 }; }	//ä¸€ã¤å·¦ã«
+	if (door == StageManager::DOOR_X::RIGHT) { return { 1,0 }; }	//ä¸€ã¤å³ã«
 }
-//ƒhƒA‚ÌˆÊ’uŒŸõ
+//ãƒ‰ã‚¢ã®ä½ç½®æ¤œç´¢
 //********************************************************
 StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 {
-	//ƒhƒAˆÊ’u•Û‘¶—p
+	//ãƒ‰ã‚¢ä½ç½®ä¿å­˜ç”¨
 	StageManager::DOOR ret;
-	//playerˆÊ’u
+	//playerä½ç½®
 	Vector2 pPos = pMapPos;
-	//”»’èƒXƒyƒA‚ÌƒŠƒZƒbƒg
+	//åˆ¤å®šã‚¹ãƒšã‚¢ã®ãƒªã‚»ãƒƒãƒˆ
 	doorSpare_ = StageManager::DOOR_Y::NONE;
 
-	//”à‚ÌˆÊ’u‚ğŒ©‚Â‚¯‚é‚½‚ß•”‰®‚ğ•ªŠ„B
+	//æ‰‰ã®ä½ç½®ã‚’è¦‹ã¤ã‘ã‚‹ãŸã‚éƒ¨å±‹ã‚’åˆ†å‰²ã€‚
 	auto size = roomMng_[roomKey_]->GetRoomSize().ToVector2();
 
 	size.x /= StageManager::SPLIT_ROOM_X;
 	size.y /= StageManager::SPLIT_ROOM_Y;
 
-	//’Tõ‰ŠúˆÊ’u
+	//æ¢ç´¢åˆæœŸä½ç½®
 	Vector2 startPos = { 0,0 };
 
 	ret = SplitRoom(pPos, size,startPos);
 
-	//c’·‚Ìê‡‚Í“ñ‰ñ–Ú‚Ì”»’è‚ª•K—v
+	//ç¸¦é•·ã®å ´åˆã¯äºŒå›ç›®ã®åˆ¤å®šãŒå¿…è¦
 	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
 		roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::LIVING)
 	{
-		//“ñ‰ñ–Ú‚Ì”»’è‚Íˆê‰ñ–Ú‚Å•ªŠ„‚µ‚½ã’†‰º‚ğ‚³‚ç‚É•ªŠ„‚µ”à‚ğ“Á’è‚·‚é(•”‰®‚Ìˆê•”‚ğƒY[ƒ€‚·‚éŠ´‚¶)
-		//ƒvƒŒƒCƒ„[‚ÌêŠ‚Íˆê‰ñ–Ú‚Ì•ªŠ„‚Ì‰e‹¿‚ğó‚¯‚é
-		//player‚ğãŒÀ‚©‚ç‚Ì‹——£‚Éİ’è
+		//äºŒå›ç›®ã®åˆ¤å®šã¯ä¸€å›ç›®ã§åˆ†å‰²ã—ãŸä¸Šä¸­ä¸‹ã‚’ã•ã‚‰ã«åˆ†å‰²ã—æ‰‰ã‚’ç‰¹å®šã™ã‚‹(éƒ¨å±‹ã®ä¸€éƒ¨ã‚’ã‚ºãƒ¼ãƒ ã™ã‚‹æ„Ÿã˜)
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å ´æ‰€ã¯ä¸€å›ç›®ã®åˆ†å‰²ã®å½±éŸ¿ã‚’å—ã‘ã‚‹
+		//playerã‚’ä¸Šé™ã‹ã‚‰ã®è·é›¢ã«è¨­å®š
 		pPos.y -= size.y * (static_cast<int>(ret.y) - 1);
 
-		//ˆÚ“®‚Ì‰ºŒÀİ’è
-		size.y /= static_cast<int>(StageManager::DOOR_Y::BOTTOM);	//ƒTƒCƒY‚ğO•ªŠ„
+		//ç§»å‹•ã®ä¸‹é™è¨­å®š
+		size.y /= static_cast<int>(StageManager::DOOR_Y::BOTTOM);	//ã‚µã‚¤ã‚ºã‚’ä¸‰åˆ†å‰²
 
-		//”»’è‰ŠúˆÊ’u‚ğˆê‰ñ–Ú‚ÌY•”•ªŠî€(\‘¢‘Ì‚Ì“s‡ã-1‚ÅƒXƒ^[ƒgˆÊ’u‚É‚·‚éj
+		//åˆ¤å®šåˆæœŸä½ç½®ã‚’ä¸€å›ç›®ã®Yéƒ¨åˆ†åŸºæº–(æ§‹é€ ä½“ã®éƒ½åˆä¸Š-1ã§ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®ã«ã™ã‚‹ï¼‰
 		startPos.y = StageManager::SPLIT_ROOM_Y * (static_cast<int>(ret.y) - 1);
 		StageManager::DOOR oblongSecond = SplitRoom(pPos, size, startPos);
 
@@ -711,17 +723,17 @@ StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 		
 	return ret;
 }
-//ƒ}ƒbƒv‚ğ˜Z•ªŠ„‚µ‚½‚Æ‚«player‚ª‚Ç‚±‚ÉƒCƒ‹ƒJ‚ğ•Ô‹p
+//ãƒãƒƒãƒ—ã‚’å…­åˆ†å‰²ã—ãŸã¨ãplayerãŒã©ã“ã«ã‚¤ãƒ«ã‚«ã‚’è¿”å´
 StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)
 {
 	StageManager::DOOR ret;
 
-	//¶‰E‚Ì‹æ•Ê
+	//å·¦å³ã®åŒºåˆ¥
 	if (pMapPos.x < size.x) { ret.x = StageManager::DOOR_X::LEFT; }
 	else { ret.x = StageManager::DOOR_X::RIGHT; }
 
-	//ã’†‰º‚Ì”»’fi”‚Ì‘å‚«‚¢‰º‚©‚çs‚¤
-	//•K‚¸‰º‚É‚Í‚¢‚é‚Ì‚Å‰Šú’l‚Í‰º‚©‚ç
+	//ä¸Šä¸­ä¸‹ã®åˆ¤æ–­ï¼ˆæ•°ã®å¤§ãã„ä¸‹ã‹ã‚‰è¡Œã†
+	//å¿…ãšä¸‹ã«ã¯ã„ã‚‹ã®ã§åˆæœŸå€¤ã¯ä¸‹ã‹ã‚‰
 	ret.y = StageManager::DOOR_Y::BOTTOM;
 
 	if (pMapPos.y < size.y * static_cast<int>(StageManager::DOOR_Y::MIDDLE))
@@ -738,11 +750,11 @@ StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 siz
 #pragma endregion
 
 
-#pragma region Œ»İ‚ÌƒJ[ƒ\ƒ‹ˆÊ’uæ“¾
+#pragma region ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å–å¾—
 
 Vector2 StageBase::GetNowCursorPos(void)
 {
-	//Œ»İ‚ÌƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğæ“¾
+	//ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’å–å¾—
 	Vector2 cursor;
 
 	for (int y = 0; y < size_.y; y++)
@@ -772,42 +784,42 @@ StageManager::DOOR_Y StageBase::GetDoorSpare(void)
 #pragma endregion
 
 
-#pragma region ƒJ[ƒ\ƒ‹‚ÌˆÚ“®
+#pragma region ã‚«ãƒ¼ã‚½ãƒ«ã®ç§»å‹•
 
 void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 {
-	//Œ»İ‚ÌƒJ[ƒ\ƒ‹ˆÊ’u
+	//ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®
 	Vector2 cursor = GetNowCursorPos();
 
-	//Œ»İ‚ÌƒJ[ƒ\ƒ‹‚Ì‰ğœ
+	//ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ã®è§£é™¤
 	CreateKey(cursor.y, cursor.x);	
-	//Às‘O‚ÌˆÊ’u‚ğ•Û‘¶
+	//å®Ÿè¡Œå‰ã®ä½ç½®ã‚’ä¿å­˜
 	std::string prevKey = roomKey_;
 	roomMng_[prevKey]->SetIsCursor(false);
 
-	//ƒJ[ƒ\ƒ‹ˆÊ’u‚ÌŒ»İ’n‚©‚ç‚ÌˆÚ“®
+	//ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®ç¾åœ¨åœ°ã‹ã‚‰ã®ç§»å‹•
 	switch (roomMng_[prevKey]->GetRoomType())
 	{
-		//‹ó‚«ƒXƒy[ƒX
+		//ç©ºãã‚¹ãƒšãƒ¼ã‚¹
 	case RoomBase::TYPE::NONE:
-		//˜aº
+		//å’Œå®¤
 	case RoomBase::TYPE::WASITU:
-		//•—˜C
+		//é¢¨å‘‚
 	case RoomBase::TYPE::BATH:
-		//•¨’u
+		//ç‰©ç½®
 	case RoomBase::TYPE::STORAGE:
-		//•Ç
+		//å£
 	case RoomBase::TYPE::WALL:
-		//ƒS[ƒ‹
+		//ã‚´ãƒ¼ãƒ«
 	case RoomBase::TYPE::GOAL:
 		cursor.y += move.y;
 		cursor.x += move.x;
 		break;
 
-		//c’·
-		//‹ŠÔ
+		//ç¸¦é•·
+		//å±…é–“
 	case RoomBase::TYPE::LIVING:
-		//‘äŠ
+		//å°æ‰€
 	case RoomBase::TYPE::KITCHEN:
 		if (dir == Utility::DIR::DOWN) {cursor.y += move.y * 2;}
 		else{cursor.y += move.y;}
@@ -815,11 +827,11 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 		cursor.x += move.x;
 		break;
 
-		//‰¡’·
-		//©º
+		//æ¨ªé•·
+		//è‡ªå®¤
 	case RoomBase::TYPE::OWN:
 
-		//ŒºŠÖ
+		//ç„é–¢
 	case RoomBase::TYPE::ENTRANCE:
 		if (dir == Utility::DIR::RIGHT) { cursor.x += move.x * 2; }
 		else { cursor.x += move.x; }
@@ -829,19 +841,19 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 	}
 	
 
-	//ˆÚ“®Œã
-	CreateKey(cursor.y, cursor.x);	//ˆÚ“®Œã‚ÌroomKey_‚Ì¶¬
-	std::string afterMoveKey = roomKey_;		//ˆÚ“®Œã‚ÌroomKey_‚Ì¶¬•Û‘¶
+	//ç§»å‹•å¾Œ
+	CreateKey(cursor.y, cursor.x);	//ç§»å‹•å¾Œã®roomKey_ã®ç”Ÿæˆ
+	std::string afterMoveKey = roomKey_;		//ç§»å‹•å¾Œã®roomKey_ã®ç”Ÿæˆä¿å­˜
 
 	RoomBase::TYPE afterRoomType = roomMng_[afterMoveKey]->GetRoomType();
 
-#pragma region ˆÚ“®Œã‚ªNONE‚¾‚Á‚½,Œ»İOFF
+#pragma region ç§»å‹•å¾ŒãŒNONEã ã£ãŸæ™‚,ç¾åœ¨OFF
 	//if (afterRoomType == RoomBase::TYPE::NONE)
 	//{
-	//	//’Ç‰Á‚ÅˆÚ“®
+	//	//è¿½åŠ ã§ç§»å‹•
 	//	cursor.y_ += move.y_;
 	//	cursor.x_ += move.x_;
-	//	//’Ç‰ÁˆÚ“®æ‚ÌƒL[ŠÖŒW
+	//	//è¿½åŠ ç§»å‹•å…ˆã®ã‚­ãƒ¼é–¢ä¿‚
 	//	CreateKey(cursor.y_, cursor.x_);	
 	//	std::string afterMoveKey = roomKey_;
 	//	afterRoomType = roomMng_[afterMoveKey]->GetRoomType();
@@ -849,17 +861,17 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 #pragma endregion
 
 
-#pragma region ’·•ûŒ`‚Ì“ñƒ}ƒX–Ú‚¾‚Á‚½‚Ìˆ—
+#pragma region é•·æ–¹å½¢ã®äºŒãƒã‚¹ç›®ã ã£ãŸæ™‚ã®å‡¦ç†
 	if (GetRoomShape(afterRoomType)!=RoomBase::ROOM_SHAPE::NOMAL)
 	{
 		auto r = CreateInstance4Confirmation(afterRoomType);
 
-		//Œ»İ‚ª’·•ûŒ`‚Ì–{‘Ì‚©‚ğŠm”F
+		//ç¾åœ¨ãŒé•·æ–¹å½¢ã®æœ¬ä½“ã‹ã‚’ç¢ºèª
 		if (roomMng_[afterMoveKey]->IsClone())
 		{
-			//•Û—¯‚ÌƒJ[ƒ\ƒ‹‚ğƒLƒƒƒ“ƒZƒ‹
+			//ä¿ç•™ã®ã‚«ãƒ¼ã‚½ãƒ«ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 			roomMng_[afterMoveKey]->SetIsCursor(false);
-			//’·•ûŒ`‚É‡‚í‚¹‚½êŠ‚ÉˆÚ“®
+			//é•·æ–¹å½¢ã«åˆã‚ã›ãŸå ´æ‰€ã«ç§»å‹•
 			if (afterRoomType == RoomBase::TYPE::KITCHEN || afterRoomType == RoomBase::TYPE::LIVING)
 			{
 				cursor.y--;
@@ -868,7 +880,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 			{
 				cursor.x--;
 			}
-			CreateKey(cursor.y, cursor.x);	//roomKey_‚ÌÄ¶¬
+			CreateKey(cursor.y, cursor.x);	//roomKey_ã®å†ç”Ÿæˆ
 			roomMng_[roomKey_]->SetIsCursor(true);
 		}
 
@@ -877,71 +889,71 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 	}
 #pragma endregion
 
-#pragma region ˆÚ“®”ÍˆÍŠO‚¾‚Á‚½
+#pragma region ç§»å‹•ç¯„å›²å¤–ã ã£ãŸæ™‚
 
 	if ((cursor.x >= size_.x)
 		|| (cursor.y >= size_.y)
 		|| IsDontMoveBlock(afterMoveKey))
 	{
-		//ˆÚ“®‘O‚É–ß‚·
+		//ç§»å‹•å‰ã«æˆ»ã™
 		roomMng_[prevKey]->SetIsCursor(true);
 	}
 	else
 	{
-		//’·•ûŒ`‚É‚æ‚é•Ï‰»‚ª‚ ‚é‚©‚à‚È‚Ì‚ÅKEY‚Í•Û—¯‚Ì‚à‚Ì‚ğg—p
+		//é•·æ–¹å½¢ã«ã‚ˆã‚‹å¤‰åŒ–ãŒã‚ã‚‹ã‹ã‚‚ãªã®ã§KEYã¯ä¿ç•™ã®ã‚‚ã®ã‚’ä½¿ç”¨
 		roomMng_[roomKey_]->SetIsCursor(true);
 	}
 #pragma endregion
 }
 #pragma endregion
 
-#pragma region ‹î‚Ì“ü‚ê‘Ö‚¦
+#pragma region é§’ã®å…¥ã‚Œæ›¿ãˆ
 
-//‹î‚Ì“ü‚ê‚©‚¦€”õ
+//é§’ã®å…¥ã‚Œã‹ãˆæº–å‚™
 void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 {
-	std::string nowCursorKey;	//Œ»İ‚ÌƒJ[ƒ\ƒ‹
-	std::string nowCursorKey2;	//Œ»İ‚ÌƒJ[ƒ\ƒ‹(’·•ûŒ`—p)
-	std::string afterMoveKey;	//ˆÚ“®Œã‚Ìƒ}ƒX
-	std::string afterMoveKey2;	//’·•ûŒ`‚Ì“ñƒRƒ}–Ú‚ÌˆÚ“®Œã‚ğ¦‚·
+	std::string nowCursorKey;	//ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«
+	std::string nowCursorKey2;	//ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«(é•·æ–¹å½¢ç”¨)
+	std::string afterMoveKey;	//ç§»å‹•å¾Œã®ãƒã‚¹
+	std::string afterMoveKey2;	//é•·æ–¹å½¢ã®äºŒã‚³ãƒç›®ã®ç§»å‹•å¾Œã‚’ç¤ºã™
 
-	bool isSecondPvs = false;	//“ñƒRƒ}–Ú‚ÌˆÚ“®‚ª—Dæ‚©
+	bool isSecondPvs = false;	//äºŒã‚³ãƒç›®ã®ç§»å‹•ãŒå„ªå…ˆã‹
 
-	//Œ»İ‚ÌƒJ[ƒ\ƒ‹ˆÊ’u
+	//ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®
 	Vector2 cursor = GetNowCursorPos();
 	Vector2 cursor2 = GetNowCursorPos();
 	CreateKey(cursor.y, cursor.x);
 	nowCursorKey = roomKey_;
 
-	//’·•ûŒ`—p‚Ì“ñƒ}ƒX–Ú‚ÌƒJ[ƒ\ƒ‹ˆÊ’u
-	if (GetRoomShape(nowCursorKey) != RoomBase::ROOM_SHAPE::NOMAL)	//’·•ûŒ`‚¾‚Á‚½
+	//é•·æ–¹å½¢ç”¨ã®äºŒãƒã‚¹ç›®ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®
+	if (GetRoomShape(nowCursorKey) != RoomBase::ROOM_SHAPE::NOMAL)	//é•·æ–¹å½¢ã ã£ãŸæ™‚
 	{
-		//c’·‚©‰¡’·‚©‚ğ”»’f
+		//ç¸¦é•·ã‹æ¨ªé•·ã‹ã‚’åˆ¤æ–­
 		switch (roomMng_[nowCursorKey]->GetRoomType())
 		{
 		case RoomBase::TYPE::LIVING:
 		case RoomBase::TYPE::KITCHEN:
-			cursor2.y++;	//’·•ûŒ`‚Ì‰º—p
+			cursor2.y++;	//é•·æ–¹å½¢ã®ä¸‹ç”¨
 			break;
 		case RoomBase::TYPE::OWN:
 		case RoomBase::TYPE::ENTRANCE:
-			cursor2.x++;	//’·•ûŒ`‚Ì‰E—p
+			cursor2.x++;	//é•·æ–¹å½¢ã®å³ç”¨
 			break;
 		}
 		CreateKey(cursor2.y, cursor2.x);
 		nowCursorKey2 = roomKey_;
 	}
 	
-	//ˆÚ“®‚µ‚½‚¢êŠ‚Ì’†gƒ`ƒFƒbƒN
+	//ç§»å‹•ã—ãŸã„å ´æ‰€ã®ä¸­èº«ãƒã‚§ãƒƒã‚¯
 	cursor.y += move.y;
 	cursor.x += move.x;
 	CreateKey(cursor.y, cursor.x);
 	afterMoveKey = roomKey_;
 
-	//’·•ûŒ`‚Ì’Ç‰Á•ª‚â•ÏˆÊ‚ğ‘Î‰(‚±‚Ì“_‚Å‚ÌroomKey‚ÍƒJ[ƒ\ƒ‹‚ÌˆÚ“®Œã‚Ìƒ}ƒX)
+	//é•·æ–¹å½¢ã®è¿½åŠ åˆ†ã‚„å¤‰ä½ã‚’å¯¾å¿œ(ã“ã®æ™‚ç‚¹ã§ã®roomKeyã¯ã‚«ãƒ¼ã‚½ãƒ«ã®ç§»å‹•å¾Œã®ãƒã‚¹)
 	if (GetRoomShape(nowCursorKey) != RoomBase::ROOM_SHAPE::NOMAL)
 	{
-		//ˆÚ“®‚µ‚½‚¢êŠ‚Ì’†gƒ`ƒFƒbƒN
+		//ç§»å‹•ã—ãŸã„å ´æ‰€ã®ä¸­èº«ãƒã‚§ãƒƒã‚¯
 		cursor2.y += move.y;
 		cursor2.x += move.x;
 		CreateKey(cursor2.y, cursor2.x);
@@ -960,10 +972,10 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 		}
 	}
 
-	///“ü‚ê‘Ö‚¦
+	///å…¥ã‚Œæ›¿ãˆ
 	switch (roomMng_[nowCursorKey]->GetRoomType())
 	{
-		//ˆêƒ}ƒX
+		//ä¸€ãƒã‚¹
 	case RoomBase::TYPE::NONE:
 	case RoomBase::TYPE::WASITU:
 	case RoomBase::TYPE::BATH:
@@ -974,7 +986,7 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 		MovePiece(cursor,nowCursorKey,afterMoveKey);
 		break;
 
-		//’·•ûŒ`
+		//é•·æ–¹å½¢
 	case RoomBase::TYPE::LIVING:
 	case RoomBase::TYPE::KITCHEN:
 	case RoomBase::TYPE::OWN:
@@ -982,20 +994,20 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 
 		if (isSecondPvs)
 		{
-			if (!MovePiece(cursor2, nowCursorKey2, afterMoveKey2)) { return; }	//ˆÚ“®‚ªs‚í‚ê‚È‚©‚Á‚½‚Ì‚Åˆ—I—¹
-			//’·•ûŒ`‚Ì“ñƒ}ƒX–Ú‚ªˆÚ“®‚³‚ê‚È‚©‚Á‚½ê‡
+			if (!MovePiece(cursor2, nowCursorKey2, afterMoveKey2)) { return; }	//ç§»å‹•ãŒè¡Œã‚ã‚Œãªã‹ã£ãŸã®ã§å‡¦ç†çµ‚äº†
+			//é•·æ–¹å½¢ã®äºŒãƒã‚¹ç›®ãŒç§»å‹•ã•ã‚Œãªã‹ã£ãŸå ´åˆ
 			if (!MovePiece(cursor, nowCursorKey, afterMoveKey))
 			{
-				//‚Ğ‚Æ‚Â‘O‚Ìè‡‚ğ‚È‚©‚Á‚½‚±‚Æ‚É
+				//ã²ã¨ã¤å‰ã®æ‰‹é †ã‚’ãªã‹ã£ãŸã“ã¨ã«
 				MovePiece(cursor2, afterMoveKey2, nowCursorKey2);
 			}
 		}
 		else
 		{
-			if (!MovePiece(cursor, nowCursorKey, afterMoveKey)) { return; }		//ˆÚ“®‚ªs‚í‚ê‚È‚©‚Á‚½‚Ì‚Åˆ—I—¹
+			if (!MovePiece(cursor, nowCursorKey, afterMoveKey)) { return; }		//ç§»å‹•ãŒè¡Œã‚ã‚Œãªã‹ã£ãŸã®ã§å‡¦ç†çµ‚äº†
 			if (!MovePiece(cursor2, nowCursorKey2, afterMoveKey2))
 			{
-				//‚Ğ‚Æ‚Â‘O‚Ìè‡‚ğ‚È‚©‚Á‚½‚±‚Æ‚É
+				//ã²ã¨ã¤å‰ã®æ‰‹é †ã‚’ãªã‹ã£ãŸã“ã¨ã«
 				MovePiece(cursor, afterMoveKey, nowCursorKey);
 			}
 		}
@@ -1003,31 +1015,31 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 	}
 }
 
-//“ü‚ê‘Ö‚¦
+//å…¥ã‚Œæ›¿ãˆ
 bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::string aft)
 {
-	//ˆÚ“®æ‚ª•ÇEƒS[ƒ‹‚Å‚È‚¢‚©
+	//ç§»å‹•å…ˆãŒå£ãƒ»ã‚´ãƒ¼ãƒ«ã§ãªã„ã‹
 	if (!IsDontMoveBlock(aft))
 	{
-		//ˆÚ“®æ‚ª”ÍˆÍ“à‚Å‚ ‚é‚©
+		//ç§»å‹•å…ˆãŒç¯„å›²å†…ã§ã‚ã‚‹ã‹
 		if ((csr.x >= 0) &&
 			(csr.x < size_.x) &&
 			(csr.y >= 0) &&
 			(csr.y < size_.y))
 		{
-			//ˆÚ“®æ‚ªNONE‚¾‚Á‚½‚ç
+			//ç§»å‹•å…ˆãŒNONEã ã£ãŸã‚‰
 			if (roomMng_[aft]->GetRoomType() == RoomBase::TYPE::NONE)
 			{
-				//•”‰®‚Ì“ü‚ê‘Ö‚¦
+				//éƒ¨å±‹ã®å…¥ã‚Œæ›¿ãˆ
 				RoomBase* change = roomMng_[bfr];
 				roomMng_[bfr] = roomMng_[aft];
 				roomMng_[aft] = change;
-				//ˆÚ“®‚ªs‚í‚ê‚½‚Ì‚Å
+				//ç§»å‹•ãŒè¡Œã‚ã‚ŒãŸã®ã§
 				return true;
 			}
 		}
 	}
-	//ˆÚ“®‚ªs‚í‚ê‚È‚©‚Á‚½‚Ì‚Å
+	//ç§»å‹•ãŒè¡Œã‚ã‚Œãªã‹ã£ãŸã®ã§
 	return false;
 }
 
@@ -1035,63 +1047,63 @@ bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::st
 
 #pragma endregion
 
-#pragma region ’·•ûŒ`”»’è
-//ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì¶¬i‰Šú‰»‚Ég—pj
+#pragma region é•·æ–¹å½¢åˆ¤å®š
+//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ç”Ÿæˆï¼ˆåˆæœŸåŒ–ã«ä½¿ç”¨ï¼‰
 bool StageBase::CheckInstanceUp(int y, int x, RoomBase* r)
 {
 	y--;
-	CreateKey(y, x);	//”z—ñˆê‚Âã‚ÌƒL[‚ğ¶¬
+	CreateKey(y, x);	//é…åˆ—ä¸€ã¤ä¸Šã®ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
 	{
 		return true;
 	}
 	y++;
-	CreateKey(y, x);	//Œ³‚ÌêŠ‚ÌƒL[‚ğ¶¬
+	CreateKey(y, x);	//å…ƒã®å ´æ‰€ã®ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	return false;
 }
 bool StageBase::CheckInstanceDown(int y, int x, RoomBase* r)
 {
 	y++;
-	CreateKey(y, x);	//”z—ñˆê‚Âã‚ÌƒL[‚ğ¶¬
+	CreateKey(y, x);	//é…åˆ—ä¸€ã¤ä¸Šã®ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
 	{
 		return true;
 	}
 	y--;
-	CreateKey(y, x);	//Œ³‚ÌêŠ‚ÌƒL[‚ğ¶¬
+	CreateKey(y, x);	//å…ƒã®å ´æ‰€ã®ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	return false;
 	return false;
 }
 bool StageBase::CheckInstanceLeft(int y, int x, RoomBase* r)
 {
 	x--;
-	CreateKey(y, x);	//”z—ñˆê‚Â¶‚ÌƒL[‚ğ¶¬
+	CreateKey(y, x);	//é…åˆ—ä¸€ã¤å·¦ã®ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
 	{
 		return true;
 	}
 	x++;
-	CreateKey(y, x);	//Œ³‚ÌêŠ‚ÌƒL[‚ğ¶¬
+	CreateKey(y, x);	//å…ƒã®å ´æ‰€ã®ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	return false;
 }
 
 bool StageBase::CheckInstanceRight(int y, int x, RoomBase* r)
 {
 	x++;
-	CreateKey(y, x);	//”z—ñˆê‚Â¶‚ÌƒL[‚ğ¶¬
+	CreateKey(y, x);	//é…åˆ—ä¸€ã¤å·¦ã®ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
 	{
 		return true;
 	}
 	x--;
-	CreateKey(y, x);	//Œ³‚ÌêŠ‚ÌƒL[‚ğ¶¬
+	CreateKey(y, x);	//å…ƒã®å ´æ‰€ã®ã‚­ãƒ¼ã‚’ç”Ÿæˆ
 	return false;
 	return false;
 }
 
 
 
-//•”‰®‚ÌŒ`‚Ìí—Ş‚ğ•Ô‹p
+//éƒ¨å±‹ã®å½¢ã®ç¨®é¡ã‚’è¿”å´
 RoomBase::ROOM_SHAPE StageBase::GetRoomShape(std::string key)
 {
 	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::KITCHEN || roomMng_[key]->GetRoomType() == RoomBase::TYPE::LIVING)
@@ -1125,7 +1137,7 @@ bool StageBase::IsDontMoveBlock(std::string key)
 	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::GOAL ||
 		roomMng_[key]->GetRoomType() == RoomBase::TYPE::WALL)
 	{
-		//ˆÚ“®•s‰Â‚ÌƒuƒƒbƒN‚È‚Ì‚Å
+		//ç§»å‹•ä¸å¯ã®ãƒ–ãƒ­ãƒƒã‚¯ãªã®ã§
 		return true;
 	}
 	return false;
@@ -1133,9 +1145,9 @@ bool StageBase::IsDontMoveBlock(std::string key)
 
 #pragma endregion
 
-#pragma region ’·•ûŒ`‚Ì‚QƒRƒ}–Ú‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+#pragma region é•·æ–¹å½¢ã®ï¼’ã‚³ãƒç›®ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 
-//‚QƒRƒ}–Ú‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÍNONE‚Å’u‚«ƒ^ƒCƒv‚ğƒCƒWƒ‹
+//ï¼’ã‚³ãƒç›®ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯NONEã§ç½®ãã‚¿ã‚¤ãƒ—ã‚’ã‚¤ã‚¸ãƒ«
 RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
 {
 	RoomBase* room;
@@ -1158,7 +1170,7 @@ void StageBase::SetIsGoal(bool flag)
 {
 	isGoal_ = flag;
 }
-//¶¬‚µ‚Äæ“¾‚µ‚½‚à‚Ì‚Í•K‚¸—p‚ªI‚í‚Á‚½‚çÁ‚·‚±‚ÆI
+//ç”Ÿæˆã—ã¦å–å¾—ã—ãŸã‚‚ã®ã¯å¿…ãšç”¨ãŒçµ‚ã‚ã£ãŸã‚‰æ¶ˆã™ã“ã¨ï¼
 RoomBase* StageBase::CreateInstance4Confirmation(RoomBase::TYPE type)
 {
 	RoomBase* r = nullptr;
@@ -1191,11 +1203,11 @@ void StageBase::SetFrameFlash(bool flag)
 }
 #pragma endregion
 
-#pragma region ƒŠƒZƒbƒg
+#pragma region ãƒªã‚»ãƒƒãƒˆ
 
 void StageBase::ResetPazzl(void)
 {
-	//“ü‚ê‘Ö‚¦ˆ——p‚ÌŒ»İˆÊ’u•Û‘¶
+	//å…¥ã‚Œæ›¿ãˆå‡¦ç†ç”¨ã®ç¾åœ¨ä½ç½®ä¿å­˜
 	std::string nowKey;
 	
 
@@ -1211,25 +1223,25 @@ void StageBase::ResetPazzl(void)
 				auto shape = GetRoomShape(resetRoom_[nowKey]);
 				RoomBase* ret = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
 
-				//‰Šú‚Æ•”‰®‚ªˆá‚Á‚½ê‡
+				//åˆæœŸã¨éƒ¨å±‹ãŒé•ã£ãŸå ´åˆ
 				if (type != resetRoom_[nowKey])
 				{
-					//“ü‚ê‘Ö‚¦
+					//å…¥ã‚Œæ›¿ãˆ
 					SwapPazzle(nowKey);
 				}
-				//‰Šú‚Ìó‘Ô‚Æˆá‚¤‚Æ‚«i’·•ûŒ`‚Ì–{‘Ì‚ğ’u‚­‚×‚«êŠ‚É•¡»‚ª—ˆ‚Ä‚µ‚Ü‚Á‚½‚Æ‚«j
+				//åˆæœŸã®çŠ¶æ…‹ã¨é•ã†ã¨ãï¼ˆé•·æ–¹å½¢ã®æœ¬ä½“ã‚’ç½®ãã¹ãå ´æ‰€ã«è¤‡è£½ãŒæ¥ã¦ã—ã¾ã£ãŸã¨ãï¼‰
 				while (resetRoomClone_[nowKey] != roomMng_[nowKey]->IsClone())
 				{
-					//“ü‚ê‘Ö‚¦
+					//å…¥ã‚Œæ›¿ãˆ
 					SwapPazzle(nowKey);
 				}
 			}
-			//Šm’èÏ‚İ‚É•ÏX
+			//ç¢ºå®šæ¸ˆã¿ã«å¤‰æ›´
 			roomMng_[nowKey]->SetIsChange(true);
 		}
 	}
 	
-	//Šm’è‚ğ‰ğœ
+	//ç¢ºå®šã‚’è§£é™¤
 	for (int y = 0; y < size_.y; y++)
 	{
 		for (int x = 0; x < size_.x; x++)
@@ -1239,20 +1251,17 @@ void StageBase::ResetPazzl(void)
 			roomMng_[nowKey]->SetIsChange(false);
 		}
 	}
-
-
-	debug();
 }
 
 void StageBase::SwapPazzle(std::string nowKey)
 {
-	//Œ»İ‚ÌˆÊ’u‚©‚ç‰Šú‚Ìƒ^ƒCƒv‚Ì•”‰®‚ª‚ ‚é‚©‚ğŠm”F
+	//ç¾åœ¨ã®ä½ç½®ã‹ã‚‰åˆæœŸã®ã‚¿ã‚¤ãƒ—ã®éƒ¨å±‹ãŒã‚ã‚‹ã‹ã‚’ç¢ºèª
 	for (int i = 0; i < size_.y; i++)
 	{
 		for (int n = 0; n < size_.x; n++)
 		{
 			CreateKey(i, n);
-			//‚Ü‚¾Šm’è‚µ‚Ä‚¢‚È‚¢êŠ‚Å‰Šú‚Ì•”‰®‚ªŒ©‚Â‚©‚Á‚½ê‡
+			//ã¾ã ç¢ºå®šã—ã¦ã„ãªã„å ´æ‰€ã§åˆæœŸã®éƒ¨å±‹ãŒè¦‹ã¤ã‹ã£ãŸå ´åˆ
 			if (!roomMng_[roomKey_]->IsChange() &&
 				roomMng_[roomKey_]->GetRoomType() == resetRoom_[nowKey] &&
 				roomKey_ != nowKey)
@@ -1266,15 +1275,44 @@ void StageBase::SwapPazzle(std::string nowKey)
 	}
 }
 
+bool StageBase::CheckAroundRoomAnything(Vector2 nowPos)
+{
+	//ç¾åœ¨ã®éƒ¨å±‹ä¿å­˜ç”¨
+	std::string nowKey = roomKey_;
+
+	auto pos = nowPos;
+	int i = 0;
+
+	//ä¸Šå·¦å³ã‚’ç¢ºèª
+	do
+	{
+		pos = nowPos;
+		if (i == 0)pos.y--;
+		else if (i == 1)pos.x++;
+		else if (i == 2)pos.x--;
+		CreateKey(pos.y, pos.x);
+
+		//ã‚´ãƒ¼ãƒ«ï¼†å£ï¼†NONEä»¥å¤–ãŒã‚ã‚‹å ´åˆ
+		if (!IsDontMoveBlock(roomKey_) && roomMng_[roomKey_]->GetRoomType() != RoomBase::TYPE::NONE)
+		{
+			return true;
+		}
+		i++;
+
+	}while (i < 3);
+
+	return false;
+}
+
 #pragma endregion
 
 
 
-#pragma region ‰æ‘œ“Ç‚İ‚İ
+#pragma region ç”»åƒèª­ã¿è¾¼ã¿
 
 void StageBase::LoadImgs(void)
 {
-	//ƒJ[ƒ\ƒ‹
+	//ã‚«ãƒ¼ã‚½ãƒ«
 	frame_[static_cast<int>(CURSOR::NORMAL)]= 
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_IMG).handleId_;
 	frame_[static_cast<int>(CURSOR::OBLONG)] = 
@@ -1282,19 +1320,6 @@ void StageBase::LoadImgs(void)
 	frame_[static_cast<int>(CURSOR::OBLONG_2)] = 
 		ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
 }
-void StageBase::debug(void)
-{
-	std::map<std::string, RoomBase::TYPE> resetAfter;
-	for (int y = 0; y < size_.y; y++)
-	{
-		for (int x = 0; x < size_.x; x++)
-		{
-			CreateKey(y, x);
-			resetAfter[roomKey_] = roomMng_[roomKey_]->GetRoomType();
-		}
-	}
 
-	OutputDebugString("Šm”F—p");
-}
 #pragma endregion
 

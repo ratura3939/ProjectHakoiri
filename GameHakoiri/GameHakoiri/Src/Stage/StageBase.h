@@ -52,6 +52,8 @@ public:
 	void ResetPazzl(void);							//パズルのリセット
 	void SwapPazzle(std::string nowKey);			//リセット時の駒入れ替え
 
+	bool CheckAroundRoomAnything(Vector2 nowPos);	//現在のマス（roomKey_)の周りに何かしら部屋があるか
+
 	//ステルスシーン
 	bool InitStealth(void);				//ステルスシーン移行時の初期化
 	void DrawObject(void);				//オブジェクト描画
@@ -131,7 +133,6 @@ private:
 	
 	
 	//更新
-	void UpdateStealth(void);
 
 	//描画
 	void DrawPazzle(void);	//パズル
@@ -141,12 +142,8 @@ private:
 	void LoadImgs(void);	//画像読み込み
 
 
-	void debug(void);
 
 protected:
-	////各ステージのファイル名
-	//std::string file_Pzl;
-	//std::string file_Map;
 
 	std::vector<std::vector<int>>::iterator pzlCsv_;
 	Vector2 size_;
