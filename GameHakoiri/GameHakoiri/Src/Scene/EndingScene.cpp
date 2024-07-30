@@ -2,6 +2,7 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/ResourceManager.h"
+#include"../Manager/SoundManager.h"
 #include"../Application.h"
 #include"../Utility/Utility.h"
 #include"EndingScene.h"
@@ -26,6 +27,8 @@ bool EndingScene::Init(void)
 
 	endImg_= rsM.Load(ResourceManager::SRC::THANK_IMG).handleId_;
 	backTitleImg_ = rsM.Load(ResourceManager::SRC::BACK_TITLE_IMG).handleId_;
+
+	SoundManager::GetInstance().PlayBgmOfEnding();
 
 	endEx_ = EX_S;
 	//ê≥èÌÇ…èàóùÇ™çsÇÌÇÍÇΩÇÃÇ≈
@@ -57,7 +60,7 @@ void EndingScene::Draw(void)
 	DrawString(0, 0, "EndingScene", 0xffffff, true);
 
 	//TahnkyouForPlayingÇÃï`âÊ
-	DrawRotaGraph(Application::SCREEN_SIZE_X / 2 - THANK_SIZE / 2, Application::SCREEN_SIZE_Y / 2 - THANK_SIZE / 2,
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2 - THANK_SIZE / 4,
 		endEx_, 0.0f * Utility::DEG2RAD,
 		endImg_, true, false);
 
@@ -79,6 +82,7 @@ void EndingScene::KeyboardContoroller(void)
 	auto& ins = InputManager::GetInstance();
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
+		SoundManager::GetInstance().StopBgmOfEnding();
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::TITLE, true);
 	}
 }
@@ -89,6 +93,7 @@ void EndingScene::GamePadController(void)
 
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
+		SoundManager::GetInstance().StopBgmOfEnding();
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::TITLE, true);
 	}
 }

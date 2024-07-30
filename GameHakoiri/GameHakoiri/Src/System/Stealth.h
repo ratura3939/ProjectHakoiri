@@ -25,38 +25,38 @@ public:
 
 	//敵の初期位置
 
-	static constexpr float NX1 = 672.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float NY1 = 224.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float NX2 = 480.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float NY2 = 608.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float NX1 = 32.0f * 21.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float NY1 = 32.0f * 7.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float NX2 = 32.0f * 15.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float NY2 = 32.0f * 19.0f + CharacterBase::CHARACTER_HALF_Y;
 
-	static constexpr float OBX1= 256.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY1= 256.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OBX2= 768.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY2= 480.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OBX3= 256.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY3= 1056.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OBX4 = 768.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY4 = 1056.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OBX5 = 224.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY5 = 1568.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OBX6 = 768.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OBY6 = 1568.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX1= 32.0f * 8.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY1= 32.0f * 8.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX2= 32.0f * 24.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY2= 32.0f * 15.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX3= 32.0f * 8.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY3= 32.0f * 33.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX4 = 32.0f * 24.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY4 = 32.0f * 33.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX5 = 32.0f * 7.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY5 = 32.0f * 49.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OBX6 = 32.0f * 24.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OBY6 = 32.0f * 49.0f + CharacterBase::CHARACTER_HALF_Y;
 
-	static constexpr float OB2X1 = 352.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y1 = 256.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OB2X2 = 768.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y2 = 384.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X1 = 32.0f * 11.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y1 = 32.0f * 8.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X2 = 32.0f * 24.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y2 = 32.0f * 12.0f + CharacterBase::CHARACTER_HALF_Y;
 
-	static constexpr float OB2X3 = 480.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y3 = 736.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OB2X4 = 1536.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y4 = 288.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X3 = 32.0f * 15.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y3 = 32.0f * 23.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X4 = 32.0f * 48.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y4 = 32.0f * 9.0f + CharacterBase::CHARACTER_HALF_Y;
 
-	static constexpr float OB2X5 = 1216.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y5 = 480.0f + CharacterBase::CHARACTER_HALF_Y;
-	static constexpr float OB2X6 = 1664.0f + CharacterBase::CHARACTER_HALF_X;
-	static constexpr float OB2Y6 = 800.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X5 = 32.0f * 38.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y5 = 32.0f * 15.0f + CharacterBase::CHARACTER_HALF_Y;
+	static constexpr float OB2X6 = 32.0f * 52.0f + CharacterBase::CHARACTER_HALF_X;
+	static constexpr float OB2Y6 = 32.0f * 25.0f + CharacterBase::CHARACTER_HALF_Y;
 
 
 	//ブロックから見た位置の角度設定

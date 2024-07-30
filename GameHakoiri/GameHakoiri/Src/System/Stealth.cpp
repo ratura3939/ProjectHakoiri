@@ -712,7 +712,7 @@ void Stealth::EnemyInit(void)
 {
 	for (int i = 0; i < OBLONG_ENEMY_NUM * static_cast<int>(EnemyBase::TYPE::MAX); i++)
 	{
-		//ìGÇ2ëÃÇ∏Ç¬ê∂ê¨
+		//ìGÇ6ëÃÇ∏Ç¬ê∂ê¨
 		if (i < OBLONG_ENEMY_NUM)
 		{
 			enemyMng_[i] = new Housemaid;
@@ -730,10 +730,10 @@ void Stealth::EnemyInit(void)
 
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][0] = { NX1,NY1 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][1] = { NX2,NY2 };
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][2] = { 0.0f,0.0f };
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][3] = { 0.0f,0.0f };
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][4] = { 0.0f,0.0f };
-	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][5] = { 0.0f,0.0f };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][2] = { NX1,NY1 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][3] = { NX2,NY2 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][4] = { NX1,NY1 };
+	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::NOMAL)][5] = { NX2,NY2 };
 
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][0] = { OBX1,OBY1 };
 	initPos_[static_cast<int>(RoomBase::ROOM_SHAPE::OBLONG)][1] = { OBX2,OBY2 };
@@ -752,7 +752,7 @@ void Stealth::EnemyInit(void)
 
 void Stealth::CreateEnemy(void)
 {
-	int rnd;
+	int rnd = 0;
 	do
 	{
 		//óêêîéÊìæ
@@ -842,6 +842,7 @@ void Stealth::MemorizeEnemy(std::string key)
 {
 	auto size = useEnemy_.size();
 	memorizePos_[key].clear();
+	memorizeType_[key].clear();
 
 	for (int i = 0; i < size; i++)
 	{

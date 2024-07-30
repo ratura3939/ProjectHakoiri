@@ -63,6 +63,7 @@ public:
 
 	void SetManual(GameScene::MODE mode);
 	void Reset(void);
+	void CustomClearFlag(int num);
 
 private:
 	SCENEID sceneID_;	//ƒV[ƒ“Ø‚è‘Ö‚¦

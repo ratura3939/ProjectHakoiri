@@ -420,14 +420,14 @@ void ResourceManager::Init(void)
 	//ステージ②
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
-		Application::PATH_PAZZLE + "Stage_Second.csv"
+		Application::PATH_PAZZLE + "Stage_Third.csv"
 		);
 	resourcesMap_.emplace(SRC::SECOND_PAZZLE_CSV, move(res));
 
 	//ステージ➂
 	res = make_unique<Resource>(
 		Resource::TYPE::CSV,
-		Application::PATH_PAZZLE + "Stage_Third.csv"
+		Application::PATH_PAZZLE + "Stage_Second.csv"
 		);
 	resourcesMap_.emplace(SRC::THIRD_PAZZLE_CSV, move(res));
 
@@ -586,13 +586,40 @@ void ResourceManager::Init(void)
 #pragma region SOUND
 
 	////効果音
-	//// 決定音
-	//res = make_unique<Resource>(
-	//	Resource::TYPE::SOUND,
-	//	Application::PATH_SOUND + "push_enter.mp3"
-	//);
-	//resourcesMap_.emplace(SRC::PUSH_ENTER_SND, move(res));
+	// 決定音
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_SOUND + "enter.mp3"
+	);
+	resourcesMap_.emplace(SRC::PUSH_ENTER_SND, move(res));
 
+	// キャンセル音
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_SOUND + "cansel.mp3"
+		);
+	resourcesMap_.emplace(SRC::PUSH_CANSEL_SND, move(res));
+
+	// カーソル移動音
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_SOUND + "move.mp3"
+		);
+	resourcesMap_.emplace(SRC::MOVE_COSOR_SND, move(res));
+
+	// カーソル移動音
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_SOUND + "reset.mp3"
+		);
+	resourcesMap_.emplace(SRC::RESET_SND, move(res));
+
+	// 駒選択音
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_SOUND + "pazzleSelect.mp3"
+		);
+	resourcesMap_.emplace(SRC::PAZZLE_SELECT_SND, move(res));
 
 
 	////BGM
@@ -623,6 +650,27 @@ void ResourceManager::Init(void)
 		Application::PATH_BGM + "Stealth.mp3"
 		);
 	resourcesMap_.emplace(SRC::STEALTH_BGM, move(res));
+
+	//成功時
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_BGM + "success.mp3"
+		);
+	resourcesMap_.emplace(SRC::SUCCESS_BGM, move(res));
+
+	//失敗時
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_BGM + "failed.mp3"
+		);
+	resourcesMap_.emplace(SRC::FAILED_BGM, move(res));
+
+	//エンディング
+	res = make_unique<Resource>(
+		Resource::TYPE::SOUND,
+		Application::PATH_BGM + "ending.mp3"
+		);
+	resourcesMap_.emplace(SRC::ENDING_BGM, move(res));
 #pragma endregion
 }
 

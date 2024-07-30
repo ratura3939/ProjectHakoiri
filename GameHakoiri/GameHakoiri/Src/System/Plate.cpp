@@ -2,6 +2,7 @@
 #include"../Manager/ResourceManager.h"
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
+#include"../Manager/SoundManager.h"
 #include"../Utility/Utility.h"
 #include"../Application.h"
 #include "Plate.h"
@@ -249,9 +250,21 @@ Plate::INPUT Plate::KeyboardContoroller(void)
 {
 	auto& ins = InputManager::GetInstance();
 	INPUT ret = INPUT::NONE;
+	auto& snd = SoundManager::GetInstance();
 
-	if (ins.IsTrgDown(KEY_INPUT_LEFT) || ins.IsTrgDown(KEY_INPUT_RIGHT))ret = INPUT::MOVE;
-	if (ins.IsTrgDown(KEY_INPUT_SPACE))ret = INPUT::SELECT;
+	if (ins.IsTrgDown(KEY_INPUT_LEFT) || ins.IsTrgDown(KEY_INPUT_RIGHT))
+	{
+		snd.PlaySndMove();
+		ret = INPUT::MOVE;
+	}
+	if (ins.IsTrgDown(KEY_INPUT_SPACE))
+	{
+		bool flag = true;
+		if (answer_ == ANSWER::OK)flag = true;
+		else flag = false;
+		snd.PlaySndEnter(flag);
+		ret = INPUT::SELECT;
+	}
 
 	return ret;
 }
@@ -260,12 +273,24 @@ Plate::INPUT Plate::GamePadController(void)
 {
 	auto& ins = InputManager::GetInstance();
 	INPUT ret = INPUT::NONE;
+	auto& snd = SoundManager::GetInstance();
 
 	// 左スティックの横軸
 	auto leftStickX = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLX;
-	if (prevStick_ == 0 && leftStickX != 0)ret = INPUT::MOVE;
+	if (prevStick_ == 0 && leftStickX != 0)
+	{
+		snd.PlaySndMove();
+		ret = INPUT::MOVE;
+	}
 
-	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))ret = INPUT::SELECT;
+	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+	{
+		bool flag = true;
+		if (answer_ == ANSWER::OK)flag = true;
+		else flag = false;
+		snd.PlaySndEnter(flag);
+		ret = INPUT::SELECT;
+	}
 
 	prevStick_ = leftStickX;
 	return ret;

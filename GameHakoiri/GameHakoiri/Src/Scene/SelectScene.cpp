@@ -130,10 +130,12 @@ bool SelectScene::Release(void)
 void SelectScene::KeyboardContoroller(void)
 {
 	auto& ins = InputManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
 
 	auto prevSelect = selectNum_;
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
+		snd.PlaySndEnter(true);
 		if (!selectBack_)
 		{
 			SoundManager::GetInstance().StopBgmOfSelect();
@@ -151,25 +153,37 @@ void SelectScene::KeyboardContoroller(void)
 	if (ins.IsTrgDown(KEY_INPUT_RIGHT))
 	{
 		selectNum_++;
+		snd.PlaySndMove();
 		if (selectNum_ >= STAGE_NUM)selectNum_ = STAGE_NUM - 1;
 	}
 	if (ins.IsTrgDown(KEY_INPUT_LEFT))
 	{
 		selectNum_--;
+		snd.PlaySndMove();
 		if (selectNum_ < 0)selectNum_ = 0;
 	}
 	if (prevSelect != selectNum_)ResetRot();
 	//動きによって下段にいるか上段にいるかを設定
-	if (ins.IsTrgDown(KEY_INPUT_DOWN))selectBack_ = true;
-	if (ins.IsTrgDown(KEY_INPUT_UP))selectBack_ = false;
+	if (ins.IsTrgDown(KEY_INPUT_DOWN))
+	{
+		snd.PlaySndMove();
+		selectBack_ = true;
+	}
+	if (ins.IsTrgDown(KEY_INPUT_UP))
+	{
+		snd.PlaySndMove();
+		selectBack_ = false;
+	}
 }
 
 void SelectScene::GamePadController(void)
 {
 	auto& ins = InputManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
 
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
+		snd.PlaySndEnter(true);
 		if (!selectBack_)
 		{
 			SoundManager::GetInstance().StopBgmOfSelect();
@@ -196,11 +210,13 @@ void SelectScene::GamePadController(void)
 		if (leftStickX > 0)
 		{
 			selectNum_++;
+			snd.PlaySndMove();
 			if (selectNum_ >= STAGE_NUM)selectNum_ = STAGE_NUM - 1;
 		}
 		else if (leftStickX < 0)
 		{
 			selectNum_--;
+			snd.PlaySndMove();
 			if (selectNum_ < 0)selectNum_ = 0;
 		}
 		if (prevSelect != selectNum_)ResetRot();
@@ -209,8 +225,16 @@ void SelectScene::GamePadController(void)
 	if (prevStick_.y == 0)
 	{
 		//動きによって下段にいるか上段にいるかを設定
-		if (leftStickY > 0)selectBack_ = true;
-		else if (leftStickY < 0)selectBack_ = false;
+		if (leftStickY > 0)
+		{
+			snd.PlaySndMove();
+			selectBack_ = true;
+		}
+		else if (leftStickY < 0)
+		{
+			snd.PlaySndMove();
+			selectBack_ = false;
+		}
 	}
 
 	prevStick_ = { leftStickX ,leftStickY };

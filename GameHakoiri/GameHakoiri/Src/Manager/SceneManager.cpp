@@ -123,6 +123,8 @@ bool SceneManager::Release(void)
 	camera_.Relese();
 
 	Plate::GetInstance().Release();
+
+	SoundManager::GetInstance().Relese();
 	
 	delete fader_;
 	fader_ = nullptr;
@@ -336,4 +338,9 @@ void SceneManager::Reset(void)
 	clearStage_[0] = false;
 	clearStage_[1] = false;
 	clearStage_[2] = false;
+}
+
+void SceneManager::CustomClearFlag(int num)
+{
+	clearStage_[num - 1] = true;
 }

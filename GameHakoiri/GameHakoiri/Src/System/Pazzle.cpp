@@ -4,6 +4,7 @@
 #include"../Manager/InputManager.h"
 #include"../Manager/StageManager.h"
 #include"../Manager/SceneManager.h"
+#include"../Manager/SoundManager.h"
 #include"../Scene/GameScene.h"
 #include "Pazzle.h"	
 
@@ -52,6 +53,7 @@ void Pazzle::KeyboardContoroller(void)
 {
 	InputManager& ins = InputManager::GetInstance();
 	StageManager& stage = StageManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
 
 	if (ins.IsTrgDown(KEY_INPUT_V))
 	{
@@ -68,23 +70,54 @@ void Pazzle::KeyboardContoroller(void)
 			stage.PazzleReset();
 		}
 		//カーソルの移動受付
-		if (ins.IsTrgDown(KEY_INPUT_UP))	{stage.MoveCursor(Utility::DIR::UP);}
-		if (ins.IsTrgDown(KEY_INPUT_DOWN))	{stage.MoveCursor(Utility::DIR::DOWN);}
-		if (ins.IsTrgDown(KEY_INPUT_LEFT))	{stage.MoveCursor(Utility::DIR::LEFT);}
-		if (ins.IsTrgDown(KEY_INPUT_RIGHT))	{stage.MoveCursor(Utility::DIR::RIGHT);}
+		if (ins.IsTrgDown(KEY_INPUT_UP))	
+		{
+			snd.PlaySndMove();
+			stage.MoveCursor(Utility::DIR::UP);
+		}
+		if (ins.IsTrgDown(KEY_INPUT_DOWN))	
+		{
+			snd.PlaySndMove();
+			stage.MoveCursor(Utility::DIR::DOWN);}
+		if (ins.IsTrgDown(KEY_INPUT_LEFT))	
+		{
+			snd.PlaySndMove();
+			stage.MoveCursor(Utility::DIR::LEFT);}
+		if (ins.IsTrgDown(KEY_INPUT_RIGHT))	
+		{
+			snd.PlaySndMove();
+			stage.MoveCursor(Utility::DIR::RIGHT);}
 		//カーソル決定受付
-		if (ins.IsTrgDown(KEY_INPUT_SPACE))	{
-		ChangeIsSelect(true);}
+		if (ins.IsTrgDown(KEY_INPUT_SPACE))	
+		{
+			snd.PlaySndSelect();
+			ChangeIsSelect(true);}
 	}
 	else
 	{
 		//駒の移動受付
-		if (ins.IsTrgDown(KEY_INPUT_UP))	{stage.MovePiece(Utility::DIR::UP);}
-		if (ins.IsTrgDown(KEY_INPUT_DOWN))	{stage.MovePiece(Utility::DIR::DOWN);}
-		if (ins.IsTrgDown(KEY_INPUT_LEFT))	{stage.MovePiece(Utility::DIR::LEFT);}
-		if (ins.IsTrgDown(KEY_INPUT_RIGHT))	{stage.MovePiece(Utility::DIR::RIGHT);}
+		if (ins.IsTrgDown(KEY_INPUT_UP))	
+		{
+			snd.PlaySndMove(); 
+			stage.MovePiece(Utility::DIR::UP);}
+		if (ins.IsTrgDown(KEY_INPUT_DOWN))	
+		{
+			snd.PlaySndMove();
+			stage.MovePiece(Utility::DIR::DOWN);}
+		if (ins.IsTrgDown(KEY_INPUT_LEFT))	
+		{
+			snd.PlaySndMove();
+			stage.MovePiece(Utility::DIR::LEFT);}
+		if (ins.IsTrgDown(KEY_INPUT_RIGHT))	
+		{
+			snd.PlaySndMove();
+			stage.MovePiece(Utility::DIR::RIGHT);}
 		//決定解除
-		if (ins.IsTrgDown(KEY_INPUT_SPACE)){ChangeIsSelect(false);}
+		if (ins.IsTrgDown(KEY_INPUT_SPACE))
+		{
+			snd.PlaySndEnter(false); 
+			ChangeIsSelect(false);
+		}
 	}
 }
 #pragma endregion
@@ -99,6 +132,7 @@ void Pazzle::GamePadController(void)
 	
 	InputManager& ins = InputManager::GetInstance();
 	StageManager& stage = StageManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
 
 	//パズル完了次のモードに移行
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT))
@@ -142,12 +176,14 @@ void Pazzle::GamePadController(void)
 			if (abs(leftStickY) > 0 ||
 				abs(leftStickX) > 0)
 			{
+				snd.PlaySndMove();
 				stage.MoveCursor(MoveStick(inputStick));
 			}
 			
 			//駒の選択
 			if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 			{
+				snd.PlaySndSelect();
 				ChangeIsSelect(true);
 			}
 		}
@@ -158,11 +194,13 @@ void Pazzle::GamePadController(void)
 			if (abs(leftStickY) > 0 ||
 				abs(leftStickX) > 0)
 			{
+				snd.PlaySndMove();
 				stage.MovePiece(MoveStick(inputStick));
 			}
 
 			if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 			{
+				snd.PlaySndEnter(false);
 				ChangeIsSelect(false);
 			}
 		}

@@ -2,6 +2,7 @@
 #include "Manual.h"
 #include"../Manager/ResourceManager.h"
 #include"../Manager/InputManager.h"
+#include"../Manager/SoundManager.h"
 #include"../Utility/Utility.h"
 
 Manual* Manual::instance_ = nullptr;
@@ -112,28 +113,35 @@ bool Manual::IsFinish(void)
 void Manual::KeyboardContoroller(void)
 {
 	auto& ins = InputManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
 	//キーボードの動きによってページが進むか戻るかを決める
 	if (ins.IsTrgDown(KEY_INPUT_LEFT))
 	{
 		useIdx_--;
+		snd.PlaySndMove();
 		if (useIdx_ < 0)useIdx_ = 0;
 	}
 	if (ins.IsTrgDown(KEY_INPUT_RIGHT))
 	{
 		useIdx_++;
+		snd.PlaySndMove();
 		if (useIdx_ >= MANUAL_PAGE)useIdx_ = MANUAL_PAGE - 1;
 	}
 	if (useIdx_ == MANUAL_PAGE - 1)
 	{
 		//マニュアルの終了
-		if (ins.IsTrgDown(KEY_INPUT_SPACE))isFinish_ = true;
+		if (ins.IsTrgDown(KEY_INPUT_SPACE))
+		{
+			snd.PlaySndEnter(true);
+			isFinish_ = true;
+		}
 	}
 }
 
 void Manual::GamePadController(void)
 {
 	auto& ins = InputManager::GetInstance();
-
+	auto& snd = SoundManager::GetInstance();
 	// 左スティックの横軸
 	auto leftStickX = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLX;
 	//前のフレームがニュートラルだった時
@@ -143,18 +151,24 @@ void Manual::GamePadController(void)
 		if (leftStickX < 0)
 		{
 			useIdx_--;
+			snd.PlaySndMove();
 			if (useIdx_ < 0)useIdx_ = 0;
 		}
 		if (leftStickX > 0)
 		{
 			useIdx_++;
+			snd.PlaySndMove();
 			if (useIdx_ >= MANUAL_PAGE)useIdx_ = MANUAL_PAGE - 1;
 		}
 	}
 	if (useIdx_ == MANUAL_PAGE - 1)
 	{
 		//マニュアルの終了
-		if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))isFinish_ = true;
+		if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+		{
+			snd.PlaySndEnter(true);
+			isFinish_ = true;
+		}
 	}
 	
 

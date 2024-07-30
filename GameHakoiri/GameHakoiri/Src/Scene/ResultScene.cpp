@@ -2,6 +2,7 @@
 #include"../Manager/SceneManager.h"
 #include"../Manager/InputManager.h"
 #include"../Manager/ResourceManager.h"
+#include"../Manager/SoundManager.h"
 #include"../Utility/Utility.h"
 #include"../Application.h"
 #include"ResultScene.h"
@@ -29,6 +30,9 @@ bool ResultScene::Init(void)
 	backSelectImg_= rsM.Load(ResourceManager::SRC::BACK_SELECT_IMG).handleId_;
 	resultImg_[static_cast<int>(false)] = rsM.Load(ResourceManager::SRC::FAILD_IMG).handleId_;
 	resultImg_[static_cast<int>(true)] = rsM.Load(ResourceManager::SRC::CLEAER_IMG).handleId_;
+
+	if (result_)SoundManager::GetInstance().PlayBgmOfSuccess();
+	else SoundManager::GetInstance().PlayBgmOfFailed();
 
 	flash_ = 0;
 	//ê≥èÌÇ…èàóùÇ™çsÇÌÇÍÇΩÇÃÇ≈
@@ -80,8 +84,13 @@ bool ResultScene::Release(void)
 void ResultScene::KeyboardContoroller(void)
 {
 	auto& ins = InputManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
+
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
+		snd.PlaySndEnter(true);
+		if (result_)snd.StopBgmOfSuccess();
+		else snd.StopBgmOfFailed();
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
 	}
 }
@@ -89,9 +98,13 @@ void ResultScene::KeyboardContoroller(void)
 void ResultScene::GamePadController(void)
 {
 	auto& ins = InputManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
 
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
+		snd.PlaySndEnter(true);
+		if (result_)snd.StopBgmOfSuccess();
+		else snd.StopBgmOfFailed();
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::SELECT, true);
 	}
 }

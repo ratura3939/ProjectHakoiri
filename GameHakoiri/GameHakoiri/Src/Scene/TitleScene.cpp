@@ -98,30 +98,44 @@ bool TitleScene::Release(void)
 void TitleScene::KeyboardContoroller(void)
 {
 	InputManager& ins = InputManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
 
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
+		snd.PlaySndEnter(true);
 		SceneManager::GetInstance().SetController(SceneManager::CONTROLLER::KEYBOARD);
 		isCheck_ = true;
 		Plate::GetInstance().SetState(Plate::STATE::GO);
 		str_ = "操作方法はキーボードで良いですか？\n\n※操作方法を変更する場合はこのタイトルまで戻る必要があります";
 	}
 
+	//製作者専用コマンド
+	//クリア状況のリセット
 	if (ins.IsNew(KEY_INPUT_R) &&
 		ins.IsNew(KEY_INPUT_E) &&
 		ins.IsNew(KEY_INPUT_S) &&
 		ins.IsNew(KEY_INPUT_T))
 	{
+		snd.PlaySndReset();
 		SceneManager::GetInstance().Reset();
+	}
+	//各ステージをクリア判定に
+	if (ins.IsNew(KEY_INPUT_LSHIFT))
+	{
+		if (ins.IsNew(KEY_INPUT_1))SceneManager::GetInstance().CustomClearFlag(1);
+		if (ins.IsNew(KEY_INPUT_2))SceneManager::GetInstance().CustomClearFlag(2);
+		if (ins.IsNew(KEY_INPUT_3))SceneManager::GetInstance().CustomClearFlag(3);
 	}
 }
 
 void TitleScene::GamePadController(void)
 {
 	InputManager& ins = InputManager::GetInstance();
+	auto& snd = SoundManager::GetInstance();
 
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
+		snd.PlaySndEnter(true);
 		SceneManager::GetInstance().SetController(SceneManager::CONTROLLER::PAD);
 		isCheck_ = true;
 		str_ = "操作方法はコントローラーで良いですか？\n\n※操作方法を変更する場合はこのタイトルまで戻る必要があります";
