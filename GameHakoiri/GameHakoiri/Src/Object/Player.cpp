@@ -19,7 +19,7 @@ Player::~Player(void)
 
 void Player::SetParam(void)
 {
-	img_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::PLAYER_1_IMGS).handleIds_;
+	img_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::PLAYER_IMGS).handleIds_;
 	dir_ = CharacterBase::DIR::BOTTOM;
 	pos_ = { 990.0f,270.0f };
 	move_ = 2.0f;

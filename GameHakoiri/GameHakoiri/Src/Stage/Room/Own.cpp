@@ -25,7 +25,7 @@ void Own::SetParam(void)
 	pazzleSize_ = { StageManager::OBLONG_2_PAZZLE_X,StageManager::OBLONG_2_PAZZLE_Y };
 	type_ = TYPE::OWN;
 	isDrawRoom_ = true;
-	chara_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::PLAYER_1_IMGS).handleIds_;
+	chara_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::PLAYER_IMGS).handleIds_;
 }
 
 void Own::DrawPazzle(void)

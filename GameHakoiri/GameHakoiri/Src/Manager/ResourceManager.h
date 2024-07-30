@@ -79,9 +79,9 @@ public:
 
 		//キャラクター
 		PLAYER_IMGS,
-		PLAYER_1_IMGS,
 		SENESCHAI_IMGS,
 		OLDMAN_IMGS,
+		MAID_IMGS,
 
 		//マップ
 		BATH_MAPTHIP,

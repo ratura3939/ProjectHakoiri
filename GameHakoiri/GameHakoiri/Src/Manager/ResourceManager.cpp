@@ -333,18 +333,6 @@ void ResourceManager::Init(void)
 		CharacterBase::CHARACTER_SIZE_X,
 		CharacterBase::CHARACTER_SIZE_Y
 		);
-	resourcesMap_.emplace(SRC::PLAYER_1_IMGS, move(res));
-
-	res = make_unique<Resource>(
-		Resource::TYPE::IMGS,
-		Application::PATH_CHARACTER + "player.png",
-		CHARACTER_ORIGIN_SIZE_X / CharacterBase::CHARACTER_SIZE_X,
-		CHARACTER_ORIGIN_SIZE_Y / CharacterBase::CHARACTER_SIZE_Y,
-		CharacterBase::CHARACTER_SIZE_X,
-		CharacterBase::CHARACTER_SIZE_Y
-		);
-
-
 	resourcesMap_.emplace(SRC::PLAYER_IMGS, move(res));
 
 	res = make_unique<Resource>(
@@ -370,6 +358,18 @@ void ResourceManager::Init(void)
 
 
 	resourcesMap_.emplace(SRC::OLDMAN_IMGS, move(res));
+
+	res = make_unique<Resource>(
+		Resource::TYPE::IMGS,
+		Application::PATH_CHARACTER + "maid.png",
+		CHARACTER_ORIGIN_SIZE_X / CharacterBase::CHARACTER_SIZE_X,
+		CHARACTER_ORIGIN_SIZE_Y_2 / CharacterBase::CHARACTER_SIZE_Y,
+		CharacterBase::CHARACTER_SIZE_X,
+		CharacterBase::CHARACTER_SIZE_Y
+		);
+
+
+	resourcesMap_.emplace(SRC::MAID_IMGS, move(res));
 
 
 	//風呂マップチップ
