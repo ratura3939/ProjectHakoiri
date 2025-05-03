@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\GameHakoiri",
+    "\\GameHakoiri\\GameHakoiri",
+    "\\GameHakoiri\\GameHakoiri\\Src",
+    "\\GameHakoiri\\GameHakoiri\\Src\\Object",
+    "\\GameHakoiri\\GameHakoiri\\Src\\Utility"
   ],
+  "SelectedNode": "\\GameHakoiri\\GameHakoiri\\Src\\Object\\Player.h",
   "PreviewInSolutionExplorer": false
 }

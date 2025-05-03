@@ -21,11 +21,11 @@ void Player::SetParam(void)
 {
 	img_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::PLAYER_IMGS).handleIds_;
 	dir_ = CharacterBase::DIR::BOTTOM;
-	pos_ = { 990.0f,270.0f };
-	move_ = 2.0f;
+	pos_ = { UNIT_POS_X,UNIT_POS_Y };
+	move_ = DASH;
 
 	isDash_ = true;
-	dash_ = 1.0f;
+	dash_ = DASH_INIT;
 	stamina_ = STAMINA_MAX;
 	staminaColor_ = ORENGE;
 
@@ -44,7 +44,7 @@ void Player::Move(void)
 	auto cnt = SceneManager::GetInstance().GetController();
 
 	//É_ÉbÉVÉÖÇÃèâä˙âª
-	dash_ = 1.0f;
+	dash_ = DASH_INIT;
 
 	switch (cnt)
 	{
