@@ -111,6 +111,7 @@ public:
 	bool Release(void);	
 
 #pragma region パズル関連
+	//処理**********************************************************************************
 	/// <summary>
 	/// 移動(カーソル)
 	/// </summary>
@@ -128,6 +129,7 @@ public:
 	/// </summary>
 	void PazzleReset(void);
 
+	//設定************************************************************************************
 	/// <summary>
 	/// 点滅
 	/// </summary>
@@ -139,25 +141,29 @@ public:
 	/// </summary>
 	/// <param name="flag">true=描画する/false=描画しない</param>
 	void SetIsDrawPazzleManual(bool flag);
+
 	//判定**************************************************************************************
 	/// <summary>
 	/// ゴール可能かをｐ返す
 	/// </summary>
 	/// <returns>true=可能/false=不可能</returns>
-	const bool CanGoal(void);
+	const bool IsCanGoal(void);
 #pragma endregion
 
 #pragma region ステルス関連
+	//処理**********************************************************************************
 	/// <summary>
 	/// ステルスモードへ変更及び初期化
 	/// </summary>
 	void ChangeModeInit(void);
+
 	/// <summary>
 	/// 部屋の切り替え
 	/// </summary>
 	/// <param name="pMapPos">扉に触れた時のプレイヤー位置</param>
 	void ChangeMap(Vector2 pMapPos);
 
+	//判定***********************************************************************************
 	/// <summary>
 	/// 長方形マスの本体じゃないほうを通ったか
 	/// </summary>
@@ -165,28 +171,93 @@ public:
 	const bool IsSecondEvidence(void)const;
 
 	/// <summary>
+	/// オブジェクトと衝突しているか
+	/// </summary>
+	/// <param name="pMapPos">判定対象の座標</param>
+	/// <returns>true=衝突している/false=衝突していない</returns>
+	const bool IsCollisionObject(const Vector2 pMapPos)const;
+
+	/// <summary>
+	/// 壁と衝突しているか
+	/// </summary>
+	/// <param name="pMapPos">判定対象の座標</param>
+	/// <returns>true=衝突している/false=衝突していない</returns>
+	const bool IsCollisionWall(const Vector2 pMapPos)const;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns>true=/false=</returns>
+	const bool IsMoveMap(void);									//マップ移動をしたかどうかを返却
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns>true=/false=</returns>
+	const bool IsClear(void)const;								//クリアしたか
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pMapPos">判定対象の座標</param>
+	/// <returns>true=/false=</returns>
+	const bool IsBottomObject(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
+
+	//情報取得*********************************************************************************
+	/// <summary>
 	/// 現在いる部屋のマップサイズを取得
 	/// </summary>
 	/// <returns>サイズ={float,float}</returns>
 	Vector2F GetMapMaxSize(void)const;
 
-	//判定(ステルス)************************************************************************************
-	const bool IsCollisionObject(const Vector2 pMapPos)const;	//座標が何かのオブジェクトと衝突しているか
-	const bool IsCollisionWall(const Vector2 pMapPos)const;		//座標が壁と衝突しているか
-	const bool IsMoveMap(void);									//マップ移動をしたかどうかを返却
-	const bool IsClear(void)const;								//クリアしたか
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pPos"></param>
+	/// <returns></returns>
+	Vector2 GetVector2MapPos(const Vector2 pPos)const;			//座標をマップの配列に変換
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pMapPos"></param>
+	/// <returns></returns>
+	const OBJECT GetObjectType(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
 	const RoomBase::ROOM_SHAPE GetShape(void);					//部屋の形正方形か長方形か）
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
 	const std::string GetKey(void)const;						//配列指定数
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
 	const DOOR GetDoor(void)const;								//移動に使用したドアの位置
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
 	const DOOR_Y GetDoorSecond(void)const;						//上記の部屋が縦長だった場合の補足分
 
-	//位置情報をもとに返す系****************************************************************************
-	Vector2 GetVector2MapPos(const Vector2 pPos)const;			//座標をマップの配列に変換
-	const OBJECT GetObjectType(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
-	const bool IsBottomObject(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
+private:
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pPos"></param>
+	/// <returns></returns>
+	Vector2 GetMapPos2Vector(const Vector2 pPos)const;			//マップの配列を座標に変換
 #pragma endregion
 	
-
+public:
 	//シングルトン化
 	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成
 	static StageManager& GetInstance(void);	//インスタンスの取得
@@ -213,8 +284,6 @@ private:
 	std::vector<std::vector<int>> objCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//オブジェクト
 	std::vector<std::vector<int>>mapchipObj_[static_cast<int>(MAPCHIP::MAX)][static_cast<int>(OBJECT::MAX)];	//マップチップ当たり判定C
 
-
-	Vector2 GetMapPos2Vector(const Vector2 pPos)const;			//マップの配列を座標に変換
 
 	//データ読み込み
 	void LoadImg(void);

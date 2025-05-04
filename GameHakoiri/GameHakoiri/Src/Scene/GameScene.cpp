@@ -83,7 +83,7 @@ void GameScene::Update(void)
 			if (pzl_->IsFinish())	//パズル終了したら
 			{
 				//クリア可能なら
-				if (stage.CanGoal())
+				if (stage.IsCanGoal())
 				{
 					str_ = "この状態で進めますか？\n※進めるとパズル操作には戻れません。";
 					goToNext_ = true;

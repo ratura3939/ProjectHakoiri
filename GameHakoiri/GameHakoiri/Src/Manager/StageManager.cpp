@@ -166,7 +166,7 @@ void StageManager::SetFlash(bool flag)
 {
 	stage_->SetFrameFlash(flag);
 }
-const bool StageManager::CanGoal(void)
+const bool StageManager::IsCanGoal(void)
 {
 	return stage_->CanGoal();
 }
