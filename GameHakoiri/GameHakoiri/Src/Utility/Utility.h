@@ -16,6 +16,7 @@ public:
 
 	static constexpr VECTOR VECTOR_ZERO = { 0.0f, 0.0f, 0.0f };
 	static constexpr VECTOR VECTOR_ONE = { 1.0f, 1.0f, 1.0f };
+	static constexpr float CIRCLE_DEG = 360.0f;
 
 	//—ñ‹“Œ^
 	//************************************************************

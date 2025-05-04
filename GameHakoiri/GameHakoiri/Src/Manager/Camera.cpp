@@ -63,11 +63,11 @@ Vector2F Camera::GetPos(void) const
 void Camera::MoveCamera(void)
 {
 	//カメラ左上（始点）とプレイヤー（終点）のベクトル
-	auto diff = targetPos_ - pos_;
+	Vector2F diff = targetPos_ - pos_;
 	//現在のカメラ位置から相対的に
-	auto scrCenter = pos_+localCenterPos_;
+	Vector2F scrCenter = pos_+localCenterPos_;
 
-	auto cameraDir = scrCenter - pos_;
+	Vector2F cameraDir = scrCenter - pos_;
 
 	//カメラ差分移動(大きいー小さい）
 	//左移動

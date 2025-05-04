@@ -51,7 +51,7 @@ void EnemyBase::SetParam(void)
 
 void EnemyBase::Draw(void)
 {
-	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
+	Vector2F cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 	
 	//視界の描画
 	//円弧書きたい
@@ -84,14 +84,14 @@ void EnemyBase::Move(void)
 
 	pos_ += Vector2F{ moveDir_.x * speed_,moveDir_.y * speed_ };
 
-	auto diff = Utility::Distance(pos_.ToVector2(), moveStartPos_.ToVector2());
+	float diff = static_cast<float>(Utility::Distance(pos_.ToVector2(), moveStartPos_.ToVector2()));
 
 	if (static_cast<int>(diff) > moveLimit_) { SetIsMove(false); }
 }
 
 void EnemyBase::MoveDebg(void)
 {
-	auto& ins = InputManager::GetInstance();
+	InputManager& ins = InputManager::GetInstance();
 
 	if (ins.IsNew(KEY_INPUT_W))
 	{
@@ -121,13 +121,13 @@ void EnemyBase::MoveDebg(void)
 bool EnemyBase::FindPlayer(Vector2F pPos) const
 {
 	//プレイヤーと敵の距離ベクトル
-	auto diff = pPos - pos_;
+	Vector2F diff = pPos - pos_;
 
-	auto distance = std::pow(diff.x, 2.0f) + std::pow(diff.y, 2.0f);
+	float distance = std::pow(diff.x, 2.0f) + std::pow(diff.y, 2.0f);
 
 	if (distance <= (std::pow(VIEW_RANGE, 2.0f)))	//視界（円）判定
 	{
-		auto rot = atan2(moveDir_.x, -moveDir_.y);
+		float rot = atan2(moveDir_.x, -moveDir_.y);
 
 		//自分から見たplayerの角度を求める
 		float rad = atan2(diff.x, -diff.y);
@@ -138,7 +138,7 @@ bool EnemyBase::FindPlayer(Vector2F pPos) const
 		float viewDeg = static_cast<float>(Utility::DegIn360(Utility::Rad2DegF(viewRad)));
 
 		//視野内なら
-		if (viewDeg <= VIEW_ANGLE || viewDeg >= (360.0f - VIEW_ANGLE))
+		if (viewDeg <= VIEW_ANGLE || viewDeg >= (Utility::CIRCLE_DEG - VIEW_ANGLE))
 		{
 			return true;
 		}
@@ -158,7 +158,7 @@ void EnemyBase::DecideDir(void)
 	dir_ = static_cast<DIR>(rand() % static_cast<int>(DIR::MAX));
 	ResetAnim(dir_);
 
-	auto moveDir = Utility::VECTOR_ZERO;
+	VECTOR moveDir = Utility::VECTOR_ZERO;
 	//動く方向に応じた単位ベクトルと回転の角度の指定
 	int rot = ROT_UNIT;
 
@@ -208,7 +208,7 @@ void EnemyBase::DecideDir(void)
 
 void EnemyBase::DecideDirDebug(void)
 {
-	auto moveDir = Utility::VECTOR_ZERO;
+	VECTOR moveDir = Utility::VECTOR_ZERO;
 	//動く方向に応じた単位ベクトルと回転の角度の指定
 	int rot = ROT_UNIT;
 
@@ -260,7 +260,7 @@ void EnemyBase::DecideDirDebug(void)
 void EnemyBase::DrawVision(Vector2F cameraPos)
 {
 	//視界
-	auto pos = GetCollisionPos();
+	Vector2F pos = GetCollisionPos();
 
 	DrawRotaGraph3(pos.x - cameraPos.x,
 		pos.y - cameraPos.y,

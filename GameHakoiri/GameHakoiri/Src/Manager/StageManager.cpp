@@ -45,32 +45,42 @@ bool StageManager::Init(STAGENUM num)
 
 	SetIsDrawPazzleManual(true);
 
+	//生成するステージによって違う情報の設定
+	int pzlIdx = -1;		//ステージ情報
+	int pzlSizeX = -1;		//パズルの横幅
+	int pzlSizeY = -1;		//パズルの縦幅
 	switch (num_)
 	{
 	case StageManager::STAGENUM::TUTORIAL:
 		//stage_ = new TutorialStage();
 		break;
 	case StageManager::STAGENUM::FIRST:
-		stage_ = new FirstStage(stageCsv_[static_cast<int>(STAGENUM::FIRST)].begin(),
-			FIRST_PAZZLE_SIZE_X, FIRST_PAZZLE_SIZE_Y,
-			mapCsv_, objCsv_,
-			roomImg_, mapTile_);
+		pzlIdx = static_cast<int>(STAGENUM::FIRST);
+		pzlSizeX = FIRST_PAZZLE_SIZE_X;
+		pzlSizeY = FIRST_PAZZLE_SIZE_Y;
+
 		break;
 	case StageManager::STAGENUM::SECOND:
-		stage_ = new SecondStage(stageCsv_[static_cast<int>(STAGENUM::SECOND)].begin(),
-			SECOND_PAZZLE_SIZE_X, SECOND_PAZZLE_SIZE_Y,
-			mapCsv_, objCsv_,
-			roomImg_, mapTile_);
+
+		pzlIdx = static_cast<int>(STAGENUM::SECOND);
+		pzlSizeX = SECOND_PAZZLE_SIZE_X;
+		pzlSizeY = SECOND_PAZZLE_SIZE_Y;
 		break;
 	case StageManager::STAGENUM::THIRD:
-		stage_ = new SecondStage(stageCsv_[static_cast<int>(STAGENUM::THIRD)].begin(),
-			THIRD_PAZZLE_SIZE_X, THIRD_PAZZLE_SIZE_Y,
-			mapCsv_, objCsv_,
-			roomImg_, mapTile_);
+
+		pzlIdx = static_cast<int>(STAGENUM::THIRD);
+		pzlSizeX = THIRD_PAZZLE_SIZE_X;
+		pzlSizeY = THIRD_PAZZLE_SIZE_Y;
 		break;
 	default:
 		break;
 	}
+
+	//生成
+	stage_ = std::make_unique<StageBase>(stageCsv_[pzlIdx].begin(),
+		pzlSizeX, pzlSizeY,
+		mapCsv_, objCsv_,
+		roomImg_, mapTile_);
 
 	if (!stage_->Init())
 	{
@@ -89,11 +99,12 @@ void StageManager::Update(GameScene::MODE mode)
 {
 	stage_->Update(mode);
 
-	if (mode == GameScene::MODE::PAZZLE)
-	{
-		manualFlash_++;
-		if (manualFlash_ > MANUAL_FLASH_MAX)manualFlash_ = 0;
-	}
+	//点滅用のカウンタ更新(パズル時のみ)
+	if (mode != GameScene::MODE::PAZZLE)return;
+
+	manualFlash_++;
+	//上限に行ったとき
+	if (manualFlash_ > MANUAL_FLASH_MAX)manualFlash_ = 0;
 }
 //描画
 //********************************************************
@@ -101,16 +112,19 @@ void StageManager::Draw(GameScene::MODE mode)
 {
 	stage_->Draw(mode);
 
+	//パズル開始時マニュアルを表示するとき
 	if (mode == GameScene::MODE::PAZZLE && isDrawPazzleManual_)
 	{
-		auto cnt = SceneManager::GetInstance().GetController();
+		//コントローラー状態をintに変換して取得(配列要素数用)
+		int cntroller = static_cast<int>(SceneManager::GetInstance().GetController());
 
+		//点滅表示（大きさ半分）
 		if (manualFlash_ % Application::FPS < MANUAL_FLASH)
 		{
 			DrawRotaGraph(Application::SCREEN_SIZE_X - MANUAL_SIZE / 2, MANUAL_SIZE / 2,
 				0.5f,
 				0.0f * Utility::DEG2RAD,
-				manualImg_[static_cast<int>(cnt)],
+				manualImg_[cntroller],
 				true,
 				false);
 		}
@@ -125,8 +139,6 @@ void StageManager::DrawObject(void)
 bool StageManager::Release(void)
 {
 	stage_->Release();
-	delete stage_;
-	stage_ = nullptr;
 	//正しく処理が終了したので
 	return true;
 }
@@ -154,7 +166,7 @@ void StageManager::SetFlash(bool flag)
 {
 	stage_->SetFrameFlash(flag);
 }
-bool StageManager::CanGoal(void)
+const bool StageManager::CanGoal(void)
 {
 	return stage_->CanGoal();
 }
@@ -177,19 +189,19 @@ Vector2F StageManager::GetMapMaxSize(void)const
 
 #pragma region 当たり判定に必要な奴
 
-bool StageManager::IsCollisionObject(const Vector2 pMapPos) const
+const bool StageManager::IsCollisionObject(const Vector2 pMapPos) const
 {
 	if (stage_->IsMapObj(pMapPos)) { return true; }
 	return false;
 }
-bool StageManager::IsCollisionWall(const Vector2 pMapPos) const
+const bool StageManager::IsCollisionWall(const Vector2 pMapPos) const
 {
-	auto map = stage_->GetMapNum(pMapPos);
-	auto mapchip = stage_->GetMapchipType();
-	auto sizeY = mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)].size();
+	int map = stage_->GetMapNum(pMapPos);
+	StageManager::MAPCHIP mapchip = stage_->GetMapchipType();
+	int sizeY = mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)].size();
 	for (int y = 0; y < sizeY; y++)
 	{
-		auto sizeX = mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y].size();
+		int sizeX = mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y].size();
 		for (int x = 0; x < sizeX; x++)
 		{
 			if (map==mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y][x])
@@ -217,12 +229,13 @@ Vector2 StageManager::GetMapPos2Vector(const Vector2 pPos) const
 	return Vector2{ pPos.x * UNIT_STEALTH_SIZE_X,pPos.y * UNIT_PAZZLE_SIZE_Y };
 }
 //オブジェクトのタイプを返却
-StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) const
+const StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) const
 {
-	auto obj = stage_->GetObjNum(pMapPos);
-	auto mapchip = stage_->GetMapchipType();
+	int obj = stage_->GetObjNum(pMapPos);
+	StageManager::MAPCHIP mapchip = stage_->GetMapchipType();
 	OBJECT type = OBJECT::MAX;
 
+	//ないとき
 	if (obj == -1)
 	{
 		return type;
@@ -232,10 +245,10 @@ StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) const
 	for (int i = 0; i < static_cast<int>(OBJECT::MAX); i++)
 	{
 		//オブジェクト判定用のCSVを１個ずつ回す。
-		auto sizeY = mapchipObj_[static_cast<int>(mapchip)][i].size();
+		int sizeY = mapchipObj_[static_cast<int>(mapchip)][i].size();
 		for (int y = 0; y < sizeY; y++)
 		{
-			auto sizeX = mapchipObj_[static_cast<int>(mapchip)][i][y].size();
+			int sizeX = mapchipObj_[static_cast<int>(mapchip)][i][y].size();
 			for (int x = 0; x < sizeX; x++)
 			{
 				if (obj == mapchipObj_[static_cast<int>(mapchip)][i][y][x])	//i=オブジェクト種類,x・y=CSV添字
@@ -249,35 +262,35 @@ StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) const
 	return type;
 }
 //オブジェクトの一番下かを判定
-bool StageManager::IsBottomObject(const Vector2 pMapPos) const
+const bool StageManager::IsBottomObject(const Vector2 pMapPos) const
 {
 	return stage_->CheckOneDownObject(pMapPos);
 }
-bool StageManager::IsMove(void)
+const bool StageManager::IsMoveMap(void)
 {
 	return stage_->IsMoveRoom();
 }
-RoomBase::ROOM_SHAPE StageManager::GetShape(void)
+const RoomBase::ROOM_SHAPE StageManager::GetShape(void)
 {
 	return stage_->GetNowShape();
 }
-std::string StageManager::GetKey(void) const
+const std::string StageManager::GetKey(void) const
 {
 	return stage_->GetKey();
 }
-StageManager::DOOR StageManager::GetDoor(void) const
+const StageManager::DOOR StageManager::GetDoor(void) const
 {
 	return stage_->GetDoorPos();
 }
-StageManager::DOOR_Y StageManager::GetDoorSecond(void) const
+const StageManager::DOOR_Y StageManager::GetDoorSecond(void) const
 {
 	return stage_->GetDoorPosSecond();
 }
-bool StageManager::IsSecondEvidence(void) const
+const bool StageManager::IsSecondEvidence(void) const
 {
 	return stage_->IsSecondRoom();
 }
-bool StageManager::IsClear(void) const
+const bool StageManager::IsClear(void) const
 {
 	return stage_->IsGoal();
 }
@@ -294,7 +307,7 @@ void StageManager::SetIsDrawPazzleManual(bool flag)
 
 void StageManager::LoadImg(void)
 {
-	auto& rsM = ResourceManager::GetInstance();
+	ResourceManager& rsM = ResourceManager::GetInstance();
 
 	//部屋
 	roomImg_[static_cast<int>(RoomBase::TYPE::BATH)] =
@@ -336,7 +349,7 @@ void StageManager::LoadImg(void)
 
 void StageManager::LoadCsv(void)
 {
-	auto& rsM = ResourceManager::GetInstance();
+	ResourceManager& rsM = ResourceManager::GetInstance();
 
 	//パズル
 	stageCsv_[static_cast<int>(STAGENUM::FIRST)] = 

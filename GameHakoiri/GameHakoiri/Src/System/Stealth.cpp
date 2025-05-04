@@ -254,7 +254,7 @@ void Stealth::CollisionEvent(Vector2 pCol)
 		return;	//ƒS[ƒ‹‚µ‚Ä‚½‚çˆ—’†’f
 	}
 
-	if (!stage.IsMove())		//ˆÚ“®‚Å‚«‚È‚¢‚Æ‚«
+	if (!stage.IsMoveMap())		//ˆÚ“®‚Å‚«‚È‚¢‚Æ‚«
 	{
 		player_->SetPos(player_->GetPrevPos());
 	}

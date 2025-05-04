@@ -64,7 +64,7 @@ public:
 	};
 
 	//定数
-	//各ステージにおけるパズルのサイズ
+	//各ステージにおけるパズルのサイズXY
 	static constexpr int TUTORIAL_PAZZLE_SIZE_X = 6;
 	static constexpr int TUTORIAL_PAZZLE_SIZE_Y = 6;
 	static constexpr int FIRST_PAZZLE_SIZE_X = 6;
@@ -73,14 +73,14 @@ public:
 	static constexpr int SECOND_PAZZLE_SIZE_Y = 7;
 	static constexpr int THIRD_PAZZLE_SIZE_X = 7;
 	static constexpr int THIRD_PAZZLE_SIZE_Y = 7;
-	//部屋の種類別のパズルにおける大きさ
+	//部屋の種類別のパズルにおける大きさXY
 	static constexpr int NOMAL_PAZZLE_X = 1;
 	static constexpr int NOMAL_PAZZLE_Y = 1;
 	static constexpr int OBLONG_PAZZLE_X = 1;
 	static constexpr int OBLONG_PAZZLE_Y = 2;
 	static constexpr int OBLONG_2_PAZZLE_X = 2;
 	static constexpr int OBLONG_2_PAZZLE_Y = 1;
-	//部屋の種類別のマップにおける大きさ
+	//部屋の種類別のマップにおける大きさXY
 	static constexpr int NOMAL_MAP_X = 30;
 	static constexpr int NOMAL_MAP_Y = 30;
 	static constexpr int OBLONG_MAP_X = 30;
@@ -88,7 +88,7 @@ public:
 	static constexpr int OBLONG_2_MAP_X = 60;
 	static constexpr int OBLONG_2_MAP_Y = 30;
 
-	//各モードにおける基本サイズ
+	//各モードにおける基本サイズXY
 	static constexpr int UNIT_PAZZLE_SIZE_X = 64;
 	static constexpr int UNIT_PAZZLE_SIZE_Y = 64;
 	static constexpr int UNIT_STEALTH_SIZE_X = 32;
@@ -104,37 +104,88 @@ public:
 	static constexpr int MANUAL_FLASH_MAX = 3000;
 
 
-	bool Init(STAGENUM);				//初期化
-	void Update(GameScene::MODE mode);	//更新
-	void Draw(GameScene::MODE mode);	//描画
-	void DrawObject(void);				//描画
-	bool Release(void);					//解放
+	bool Init(STAGENUM);
+	void Update(GameScene::MODE mode);
+	void Draw(GameScene::MODE mode);
+	void DrawObject(void);
+	bool Release(void);	
 
-	void MoveCursor(Utility::DIR dir);	//カーソルの移動
-	void MovePiece(Utility::DIR dir);	//駒の移動
-	void PazzleReset(void);		//盤面リセット
-	void SetFlash(bool flag);	//枠点滅
+#pragma region パズル関連
+	/// <summary>
+	/// 移動(カーソル)
+	/// </summary>
+	/// <param name="dir">移動方向</param>
+	void MoveCursor(Utility::DIR dir);
+
+	/// <summary>
+	/// 移動(駒)
+	/// </summary>
+	/// <param name="dir">移動方向</param>
+	void MovePiece(Utility::DIR dir);
+
+	/// <summary>
+	/// 盤面リセット
+	/// </summary>
+	void PazzleReset(void);
+
+	/// <summary>
+	/// 点滅
+	/// </summary>
+	/// <param name="flag">true=点滅させる/fals=点滅させない</param>
+	void SetFlash(bool flag);
+
+	/// <summary>
+	/// ゲーム説明フラグセット
+	/// </summary>
+	/// <param name="flag">true=描画する/false=描画しない</param>
+	void SetIsDrawPazzleManual(bool flag);
+	//判定**************************************************************************************
+	/// <summary>
+	/// ゴール可能かをｐ返す
+	/// </summary>
+	/// <returns>true=可能/false=不可能</returns>
+	const bool CanGoal(void);
+#pragma endregion
+
+#pragma region ステルス関連
+	/// <summary>
+	/// ステルスモードへ変更及び初期化
+	/// </summary>
+	void ChangeModeInit(void);
+	/// <summary>
+	/// 部屋の切り替え
+	/// </summary>
+	/// <param name="pMapPos">扉に触れた時のプレイヤー位置</param>
+	void ChangeMap(Vector2 pMapPos);
+
+	/// <summary>
+	/// 長方形マスの本体じゃないほうを通ったか
+	/// </summary>
+	/// <returns>true=通った/false=通っていない</returns>
+	const bool IsSecondEvidence(void)const;
+
+	/// <summary>
+	/// 現在いる部屋のマップサイズを取得
+	/// </summary>
+	/// <returns>サイズ={float,float}</returns>
+	Vector2F GetMapMaxSize(void)const;
+
+	//判定(ステルス)************************************************************************************
+	const bool IsCollisionObject(const Vector2 pMapPos)const;	//座標が何かのオブジェクトと衝突しているか
+	const bool IsCollisionWall(const Vector2 pMapPos)const;		//座標が壁と衝突しているか
+	const bool IsMoveMap(void);									//マップ移動をしたかどうかを返却
+	const bool IsClear(void)const;								//クリアしたか
+	const RoomBase::ROOM_SHAPE GetShape(void);					//部屋の形正方形か長方形か）
+	const std::string GetKey(void)const;						//配列指定数
+	const DOOR GetDoor(void)const;								//移動に使用したドアの位置
+	const DOOR_Y GetDoorSecond(void)const;						//上記の部屋が縦長だった場合の補足分
+
+	//位置情報をもとに返す系****************************************************************************
+	Vector2 GetVector2MapPos(const Vector2 pPos)const;			//座標をマップの配列に変換
+	const OBJECT GetObjectType(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
+	const bool IsBottomObject(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
+#pragma endregion
 	
-	bool CanGoal(void);	//ゴール可能かを判断
-	void ChangeModeInit(void);	//シーン切り替え時の初期化
-	void ChangeMap(Vector2 pMapPos);	//部屋の切り替え
-	Vector2F GetMapMaxSize(void)const;	//マップの最大サイズを取得
-
-	bool IsCollisionObject(const Vector2 pMapPos)const;	//座標が何かのオブジェクトと衝突しているか
-	bool IsCollisionWall(const Vector2 pMapPos)const;	//座標が壁と衝突しているか
-	Vector2 GetVector2MapPos(const Vector2 pPos)const;	//座標をマップの配列に変換
-	Vector2 GetMapPos2Vector(const Vector2 pPos)const;	//マップの配列を座標に変換
-	OBJECT GetObjectType(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
-	bool IsBottomObject(const Vector2 pMapPos)const;	//オブジェクトのタイプを返却
-	bool IsMove(void);				//マップ移動をしたかどうかを返却
-	RoomBase::ROOM_SHAPE GetShape(void);//部屋の形を取得（正方形か長方形か）
-	std::string GetKey(void)const;	//roomKeyの取得
-	DOOR GetDoor(void)const;		//移動に使用したドアの位置を返却
-	DOOR_Y GetDoorSecond(void)const;//上記の部屋が縦長だった場合の補足分
-	bool IsSecondEvidence(void)const;//長方形の本体じゃない方を通ったか
-	bool IsClear(void)const;		//クリアしたか
-
-	void SetIsDrawPazzleManual(bool flag);			//パズルの操作説明描画の設定
 
 	//シングルトン化
 	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成
@@ -142,38 +193,32 @@ public:
 	
 private:
 
-	//インスタンス
-	StageBase* stage_;
+	std::unique_ptr<StageBase> stage_;	//ステージ本体
 
-	STAGENUM num_;	//生成するステージ番号を保持
+	STAGENUM num_;						//生成するステージ番号
 
-	Vector2 dir_[static_cast<int>(Utility::DIR::MAX)];
+	Vector2 dir_[static_cast<int>(Utility::DIR::MAX)];	//移動方向
 
-
-	bool isDrawPazzleManual_;	//パズルの操作説明を描画するかどうか
+	bool isDrawPazzleManual_;			//パズルの操作説明を描画するかどうか
+	int manualFlash_;												//点滅用カウンタ
 
 	//IMG
-	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];
-	int manualImg_[static_cast<int>(SceneManager::CONTROLLER::MAX)];
-	int manualFlash_;
+	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];			//部屋
+	int* mapTile_[static_cast<int>(MAPCHIP::MAX)];					//マップ画像
+	int manualImg_[static_cast<int>(SceneManager::CONTROLLER::MAX)];//説明
 	
 	//Csv
-	//パズルステージ保持
-	std::vector<std::vector<int>> stageCsv_[static_cast<int>(STAGENUM::MAX)];
+	std::vector<std::vector<int>> stageCsv_[static_cast<int>(STAGENUM::MAX)];		//パズル
+	std::vector<std::vector<int>> mapCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//マップ
+	std::vector<std::vector<int>> objCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//オブジェクト
+	std::vector<std::vector<int>>mapchipObj_[static_cast<int>(MAPCHIP::MAX)][static_cast<int>(OBJECT::MAX)];	//マップチップ当たり判定C
 
-	//マップのCsvデータの先頭アドレス格納
-	std::vector<std::vector<int>> mapCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	
-	//オブジェクトのCsvデータの先頭アドレス格納
-	std::vector<std::vector<int>> objCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	
-	//マップ画像を取得
-	int* mapTile_[static_cast<int>(MAPCHIP::MAX)];	
-	//マップチップごとの当たり判定CSV格納用
-	std::vector<std::vector<int>>mapchipObj_[static_cast<int>(MAPCHIP::MAX)][static_cast<int>(OBJECT::MAX)];	
 
+	Vector2 GetMapPos2Vector(const Vector2 pPos)const;			//マップの配列を座標に変換
+
+	//データ読み込み
 	void LoadImg(void);
 	void LoadCsv(void);
-
-
 
 	//シングルトン化
 	StageManager(void);	//コンストラクタ
