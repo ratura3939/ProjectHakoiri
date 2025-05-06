@@ -68,109 +68,109 @@ bool StageBase::Init(void)
 
 	goalPos_ = { 0,0 };
 
+	std::unique_ptr<RoomBase>createRoom;
 
 	for (int y = 0; y < size_.y; y++)
 	{
 		for (int x = 0; x < size_.x; x++)
 		{
-			RoomBase* r = nullptr;
 
 			switch (static_cast<RoomBase::TYPE>(pzlCsv_[y][x]))
 			{
 			//空きスペース
 			case RoomBase::TYPE::NONE: 
-				r = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
-				r->Init();
+				createRoom = std::make_unique<None>(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
+				createRoom->Init();
 				break;
 
 			//自室
 			case RoomBase::TYPE::OWN: 
-				r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)],
+				createRoom = std::make_unique<Own>(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)],
 					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y,
 					mapCsv_[static_cast<int>(RoomBase::TYPE::OWN)],
 					objCsv_[static_cast<int>(RoomBase::TYPE::OWN)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
-				r->Init();
+				createRoom->Init();
 				//もし生成したものが長方形の２コマ目だったら
-				if (CheckInstanceLeft(y, x, r)){ r = GetSecondRoomInstance(r); }
+				if (CheckInstanceLeft(y, x, *createRoom))createRoom = std::move(GetSecondRoomInstance(*createRoom));
 				break;
 			//和室
 			case RoomBase::TYPE::WASITU:
-				r = new Wasitu(roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)],
+				createRoom = std::make_unique<Wasitu>(roomImg_[static_cast<int>(RoomBase::TYPE::WASITU)],
 					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
 					mapCsv_[static_cast<int>(RoomBase::TYPE::WASITU)],
 					objCsv_[static_cast<int>(RoomBase::TYPE::WASITU)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
-				r->Init();
+				createRoom->Init();
 				break;
 			//居間
 			case RoomBase::TYPE::LIVING:
-				r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)],
+				createRoom = std::make_unique<Living>(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)],
 					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y,
 					mapCsv_[static_cast<int>(RoomBase::TYPE::LIVING)],
 					objCsv_[static_cast<int>(RoomBase::TYPE::LIVING)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
-				r->Init();
+				createRoom->Init();
 				//もし生成したものが長方形の２コマ目だったら
-				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
+				if (CheckInstanceUp(y, x, *createRoom))createRoom = std::move(GetSecondRoomInstance(*createRoom));
 				break;
 			//風呂
 			case RoomBase::TYPE::BATH: 
-				r = new Bath(roomImg_[static_cast<int>(RoomBase::TYPE::BATH)],
+				createRoom = std::make_unique<Bath>(roomImg_[static_cast<int>(RoomBase::TYPE::BATH)],
 					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
 					mapCsv_[static_cast<int>(RoomBase::TYPE::BATH)],
 					objCsv_[static_cast<int>(RoomBase::TYPE::BATH)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::BATH)]);
-				r->Init();
+				createRoom->Init();
 				break;
 			//物置
 			case RoomBase::TYPE::STORAGE:
-				r = new Storage(roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)],
+				createRoom = std::make_unique<Storage>(roomImg_[static_cast<int>(RoomBase::TYPE::STORAGE)],
 					StageManager::NOMAL_MAP_X, StageManager::NOMAL_MAP_Y,
 					mapCsv_[static_cast<int>(RoomBase::TYPE::STORAGE)],
 					objCsv_[static_cast<int>(RoomBase::TYPE::STORAGE)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
-				r->Init();
+				createRoom->Init();
 				break;
 			//台所
 			case RoomBase::TYPE::KITCHEN: 
-				r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
+				createRoom = std::make_unique<Kitchen>(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
 					StageManager::OBLONG_MAP_X, StageManager::OBLONG_MAP_Y,
 					mapCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
 					objCsv_[static_cast<int>(RoomBase::TYPE::KITCHEN)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::INTERIA)]);
-				r->Init();
+				createRoom->Init();
 				//もし生成したものが長方形の２コマ目だったら
-				if (CheckInstanceUp(y, x, r)) { r = GetSecondRoomInstance(r); }
+				if (CheckInstanceUp(y, x, *createRoom))createRoom = std::move(GetSecondRoomInstance(*createRoom));
 				break;
 			//玄関
 			case RoomBase::TYPE::ENTRANCE: 
-				r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
+				createRoom = std::make_unique<Entrance>(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
 					StageManager::OBLONG_2_MAP_X, StageManager::OBLONG_2_MAP_Y,
 					mapCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
 					objCsv_[static_cast<int>(RoomBase::TYPE::ENTRANCE)],
 					mapchip_[static_cast<int>(StageManager::MAPCHIP::EXTERIA)]);
-				r->Init();
+				createRoom->Init();
 				//もし生成したものが長方形の２コマ目だったら
-				if (CheckInstanceLeft(y, x, r)) { r = GetSecondRoomInstance(r); }
+				if (CheckInstanceLeft(y, x, *createRoom)) { createRoom = GetSecondRoomInstance(*createRoom); }
 				break;
 			//壁
 			case RoomBase::TYPE::WALL:	
-				r = new Wall(roomImg_[static_cast<int>(RoomBase::TYPE::WALL)]);
-				r->Init();
+				createRoom = std::make_unique<Wall>(roomImg_[static_cast<int>(RoomBase::TYPE::WALL)]);
+				createRoom->Init();
 				break;
 			//ゴール
 			case RoomBase::TYPE::GOAL:
-				r = new Goal(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)]);
-				r->Init();
+				createRoom = std::make_unique<Goal>(roomImg_[static_cast<int>(RoomBase::TYPE::GOAL)]);
+				createRoom->Init();
 				goalPos_ = { x,y };
 				break;
 			}
 
 			CreateKey(y, x);
-			roomMng_[roomKey_] = r;//配列内に格納
-			resetRoom_[roomKey_] = r->GetRoomType();
-			resetRoomClone_[roomKey_] = r->IsClone();
+			roomMng_[roomKey_] = std::move(createRoom);//配列内に格納
+			resetRoom_[roomKey_] = roomMng_[roomKey_]->GetRoomType();
+			resetRoomClone_[roomKey_] = roomMng_[roomKey_]->IsClone();
 			pzlPos_[roomKey_] = pos;
 
 			//座標の更新
@@ -391,8 +391,6 @@ bool StageBase::Release(void)
 		{
 			CreateKey(y, x);
 			roomMng_[roomKey_]->Release();
-			delete roomMng_[roomKey_];
-			roomMng_[roomKey_] = nullptr;
 		}
 	}
 
@@ -434,7 +432,7 @@ Vector2F StageBase::GetNowDrawMapSize(void)
 
 //指定した座標はオブジェクトがあるか
 //********************************************************
-bool StageBase::IsMapObj(Vector2 pMapPos)
+const bool StageBase::IsMapObj(const Vector2 pMapPos)
 {
 	if (roomMng_[roomKey_]->GetObj(pMapPos) != -1)	//指定した場所にオブジェクトがあったら
 	{
@@ -442,25 +440,25 @@ bool StageBase::IsMapObj(Vector2 pMapPos)
 	}
 	return false;
 }
-bool StageBase::IsMoveRoom(void)
+const bool StageBase::IsMoveRoom(void)const
 {
 	return isMoveRoom_;
 }
 //指定された場所のオブジェクト取得
 //********************************************************
-int StageBase::GetObjNum(Vector2 pMapPos)
+const int StageBase::GetObjNum(const Vector2 pMapPos)
 {
 	return roomMng_[roomKey_]->GetObj(pMapPos);
 }
 //指定された場所のマップチップ取得
 //********************************************************
-int StageBase::GetMapNum(Vector2 pMapPos)
+const int StageBase::GetMapNum(const Vector2 pMapPos)
 {
 	return roomMng_[roomKey_]->GetMapchip(pMapPos);
 }
 //現在の部屋が使用するマップチップの種類を返す。
 //********************************************************
-StageManager::MAPCHIP StageBase::GetMapchipType(void)
+const StageManager::MAPCHIP StageBase::GetMapchipType(void)
 {
 	auto type = roomMng_[roomKey_]->GetRoomType();
 	//Bathのマップチップを使用するのはBathRoomのみ
@@ -476,19 +474,19 @@ StageManager::MAPCHIP StageBase::GetMapchipType(void)
 
 	return StageManager::MAPCHIP::INTERIA;
 }
-RoomBase::ROOM_SHAPE StageBase::GetNowShape(void)
+const RoomBase::ROOM_SHAPE StageBase::GetNowShape(void)
 {
 	return GetRoomShape(roomKey_);
 }
 //一つ下にオブジェクトがあるかを調べる
 //********************************************************
-bool StageBase::CheckOneDownObject(Vector2 pMapPos)
+const bool StageBase::CheckOneDownObject(const Vector2 pMapPos)
 {
 	return roomMng_[roomKey_]->IsOneDownObj(pMapPos);
 }
 //部屋を変える
 //********************************************************
-void StageBase::ChangeRoom(Vector2 pMapPos)
+void StageBase::ChangeRoom(const Vector2 pMapPos)
 {
 	//ドアの位置取得
 	door_ = SearchDoor(pMapPos);
@@ -572,24 +570,24 @@ void StageBase::ChangeRoom(Vector2 pMapPos)
 	MoveRoom(afterRoom, nowRoom);
 }
 //出るのに使用したドアの位置を渡す
-StageManager::DOOR StageBase::GetDoorPos(void) const
+const StageManager::DOOR StageBase::GetDoorPos(void) const
 {
 	return door_;
 }
-StageManager::DOOR_Y StageBase::GetDoorPosSecond(void) const
+const StageManager::DOOR_Y StageBase::GetDoorPosSecond(void) const
 {
 	return doorSpare_;
 }
-bool StageBase::IsSecondRoom(void)const
+const bool StageBase::IsSecondRoom(void)const
 {
 	return isSecondRoom_;
 }
-bool StageBase::IsGoal(void) const
+const bool StageBase::IsGoal(void) const
 {
 	return isGoal_;
 }
 //ゴールにつながる部屋があるかどうか
-bool StageBase::CanGoal(void)
+const bool StageBase::CanGoal(void)
 {
 	auto pos = goalPos_;
 	//ゴールマスの一つ上に部屋があるかを確認
@@ -675,14 +673,14 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 }
 //左右移動
 //********************************************************
-Vector2 StageBase::MoveLeftOrRight(const StageManager::DOOR_X door)
+const Vector2 StageBase::MoveLeftOrRight(const StageManager::DOOR_X door)const
 {
 	if (door == StageManager::DOOR_X::LEFT) { return { -1,0 }; }	//一つ左に
 	if (door == StageManager::DOOR_X::RIGHT) { return { 1,0 }; }	//一つ右に
 }
 //ドアの位置検索
 //********************************************************
-StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
+const StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 {
 	//ドア位置保存用
 	StageManager::DOOR ret;
@@ -724,7 +722,7 @@ StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 	return ret;
 }
 //マップを六分割したときplayerがどこにイルカを返却
-StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)
+const StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)const
 {
 	StageManager::DOOR ret;
 
@@ -752,7 +750,7 @@ StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 siz
 
 #pragma region 現在のカーソル位置取得
 
-Vector2 StageBase::GetNowCursorPos(void)
+const Vector2 StageBase::GetNowCursorPos(void)
 {
 	//現在のカーソルの位置を取得
 	Vector2 cursor;
@@ -773,11 +771,11 @@ Vector2 StageBase::GetNowCursorPos(void)
 
 
 
-void StageBase::SetCursorType(CURSOR type)
+void StageBase::SetCursorType(const CURSOR type)
 {
 	type_ = type;
 }
-StageManager::DOOR_Y StageBase::GetDoorSpare(void)
+const StageManager::DOOR_Y StageBase::GetDoorSpare(void)const
 {
 	return doorSpare_;
 }
@@ -864,7 +862,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 #pragma region 長方形の二マス目だった時の処理
 	if (GetRoomShape(afterRoomType)!=RoomBase::ROOM_SHAPE::NOMAL)
 	{
-		auto r = CreateInstance4Confirmation(afterRoomType);
+		RoomBase& ret = CreateInstance4Confirmation(afterRoomType);
 
 		//現在が長方形の本体かを確認
 		if (roomMng_[afterMoveKey]->IsClone())
@@ -884,8 +882,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 			roomMng_[roomKey_]->SetIsCursor(true);
 		}
 
-		r->Release();
-		delete r;
+		ret.Release();
 	}
 #pragma endregion
 
@@ -1016,7 +1013,7 @@ void StageBase::SetPiece(Vector2 move, Utility::DIR dir)
 }
 
 //入れ替え
-bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::string aft)
+const bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::string aft)
 {
 	//移動先が壁・ゴールでないか
 	if (!IsDontMoveBlock(aft))
@@ -1031,9 +1028,9 @@ bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::st
 			if (roomMng_[aft]->GetRoomType() == RoomBase::TYPE::NONE)
 			{
 				//部屋の入れ替え
-				RoomBase* change = roomMng_[bfr];
-				roomMng_[bfr] = roomMng_[aft];
-				roomMng_[aft] = change;
+				std::unique_ptr<RoomBase> change = std::move( roomMng_[bfr]);
+				roomMng_[bfr] = std::move(roomMng_[aft]);
+				roomMng_[aft] = std::move(change);
 				//移動が行われたので
 				return true;
 			}
@@ -1049,11 +1046,11 @@ bool StageBase::MovePiece(const Vector2 csr,const std::string bfr, const std::st
 
 #pragma region 長方形判定
 //インスタンスの生成（初期化に使用）
-bool StageBase::CheckInstanceUp(int y, int x, RoomBase* r)
+const bool StageBase::CheckInstanceUp(int y, const int x, RoomBase& r)
 {
 	y--;
 	CreateKey(y, x);	//配列一つ上のキーを生成
-	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
+	if (roomMng_[roomKey_]->GetRoomType() == r.GetRoomType())
 	{
 		return true;
 	}
@@ -1061,11 +1058,11 @@ bool StageBase::CheckInstanceUp(int y, int x, RoomBase* r)
 	CreateKey(y, x);	//元の場所のキーを生成
 	return false;
 }
-bool StageBase::CheckInstanceDown(int y, int x, RoomBase* r)
+const bool StageBase::CheckInstanceDown(int y, const int x, RoomBase& r)
 {
 	y++;
 	CreateKey(y, x);	//配列一つ上のキーを生成
-	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
+	if (roomMng_[roomKey_]->GetRoomType() == r.GetRoomType())
 	{
 		return true;
 	}
@@ -1074,11 +1071,11 @@ bool StageBase::CheckInstanceDown(int y, int x, RoomBase* r)
 	return false;
 	return false;
 }
-bool StageBase::CheckInstanceLeft(int y, int x, RoomBase* r)
+const bool StageBase::CheckInstanceLeft(const int y,int x, RoomBase& r)
 {
 	x--;
 	CreateKey(y, x);	//配列一つ左のキーを生成
-	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
+	if (roomMng_[roomKey_]->GetRoomType() == r.GetRoomType())
 	{
 		return true;
 	}
@@ -1087,11 +1084,11 @@ bool StageBase::CheckInstanceLeft(int y, int x, RoomBase* r)
 	return false;
 }
 
-bool StageBase::CheckInstanceRight(int y, int x, RoomBase* r)
+const bool StageBase::CheckInstanceRight(const int y, int x, RoomBase& r)
 {
 	x++;
 	CreateKey(y, x);	//配列一つ左のキーを生成
-	if (roomMng_[roomKey_]->GetRoomType() == r->GetRoomType())
+	if (roomMng_[roomKey_]->GetRoomType() == r.GetRoomType())
 	{
 		return true;
 	}
@@ -1104,7 +1101,7 @@ bool StageBase::CheckInstanceRight(int y, int x, RoomBase* r)
 
 
 //部屋の形の種類を返却
-RoomBase::ROOM_SHAPE StageBase::GetRoomShape(std::string key)
+const RoomBase::ROOM_SHAPE StageBase::GetRoomShape(const std::string key)
 {
 	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::KITCHEN || roomMng_[key]->GetRoomType() == RoomBase::TYPE::LIVING)
 	{
@@ -1119,7 +1116,7 @@ RoomBase::ROOM_SHAPE StageBase::GetRoomShape(std::string key)
 	return RoomBase::ROOM_SHAPE::NOMAL;
 }
 
-RoomBase::ROOM_SHAPE StageBase::GetRoomShape(RoomBase::TYPE type)
+const RoomBase::ROOM_SHAPE StageBase::GetRoomShape(const RoomBase::TYPE type)const
 {
 	if (type == RoomBase::TYPE::KITCHEN || type == RoomBase::TYPE::LIVING) 
 	{ return RoomBase::ROOM_SHAPE::OBLONG; }
@@ -1132,7 +1129,7 @@ RoomBase::ROOM_SHAPE StageBase::GetRoomShape(RoomBase::TYPE type)
 
 
 
-bool StageBase::IsDontMoveBlock(std::string key)
+const bool StageBase::IsDontMoveBlock(const std::string key)
 {
 	if (roomMng_[key]->GetRoomType() == RoomBase::TYPE::GOAL ||
 		roomMng_[key]->GetRoomType() == RoomBase::TYPE::WALL)
@@ -1148,56 +1145,56 @@ bool StageBase::IsDontMoveBlock(std::string key)
 #pragma region 長方形の２コマ目のインスタンスを生成
 
 //２コマ目のインスタンスはNONEで置きタイプをイジル
-RoomBase* StageBase::GetSecondRoomInstance(RoomBase* r)
+std::unique_ptr<RoomBase> StageBase::GetSecondRoomInstance(const RoomBase& r)
 {
-	RoomBase* room;
-	room = new None(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
+	std::unique_ptr<RoomBase> room;
+	room = std::make_unique<None>(roomImg_[static_cast<int>(RoomBase::TYPE::NONE)]);
 	room->Init();
-	room->SetRoomType(r->GetRoomType());
+	room->SetRoomType(r.GetRoomType());
 	room->SetIsDrawRoom(false);
 	room->SetIsClone(true);
 	return room;
 }
-void StageBase::SetIsMoveRoom(bool flag)
+void StageBase::SetIsMoveRoom(const bool flag)
 {
 	isMoveRoom_ = flag;
 }
-void StageBase::SetIsSecondRoom(bool flag)
+void StageBase::SetIsSecondRoom(const bool flag)
 {
 	isSecondRoom_ = flag;
 }
-void StageBase::SetIsGoal(bool flag)
+void StageBase::SetIsGoal(const bool flag)
 {
 	isGoal_ = flag;
 }
 //生成して取得したものは必ず用が終わったら消すこと！
-RoomBase* StageBase::CreateInstance4Confirmation(RoomBase::TYPE type)
+RoomBase& StageBase::CreateInstance4Confirmation(const RoomBase::TYPE type)
 {
-	RoomBase* r = nullptr;
+	std::unique_ptr<RoomBase> r = nullptr;
 
 	switch (type)
 	{
 	case RoomBase::TYPE::LIVING:
-		r = new Living(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
+		r = std::make_unique<Living>(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
 		r->Init();
 		break;
 	case RoomBase::TYPE::KITCHEN:
-		r = new Kitchen(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
+		r = std::make_unique<Kitchen>(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
 		r->Init();
 		break;
 	case RoomBase::TYPE::OWN:
-		r = new Own(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
+		r = std::make_unique<Own>(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
 		r->Init();
 		break;
 	case RoomBase::TYPE::ENTRANCE:
-		r = new Entrance(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
+		r = std::make_unique<Entrance>(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
 		r->Init();
 		break;
 	}
-	return r;
+	return *r;
 }
 
-void StageBase::SetFrameFlash(bool flag)
+void StageBase::SetFrameFlash(const bool flag)
 {
 	frameFlash_ = flag;
 }
@@ -1253,7 +1250,7 @@ void StageBase::ResetPazzl(void)
 	}
 }
 
-void StageBase::SwapPazzle(std::string nowKey)
+void StageBase::SwapPazzle(const std::string nowKey)
 {
 	//現在の位置から初期のタイプの部屋があるかを確認
 	for (int i = 0; i < size_.y; i++)
@@ -1266,16 +1263,16 @@ void StageBase::SwapPazzle(std::string nowKey)
 				roomMng_[roomKey_]->GetRoomType() == resetRoom_[nowKey] &&
 				roomKey_ != nowKey)
 			{
-				RoomBase* r = roomMng_[nowKey];
-				roomMng_[nowKey] = roomMng_[roomKey_];
-				roomMng_[roomKey_] = r;
+				std::unique_ptr<RoomBase> r = std::move(roomMng_[nowKey]);
+				roomMng_[nowKey] = std::move(roomMng_[roomKey_]);
+				roomMng_[roomKey_] = std::move_if_noexcept(r);
 				break;
 			}
 		}
 	}
 }
 
-bool StageBase::CheckAroundRoomAnything(Vector2 nowPos)
+const bool StageBase::CheckAroundRoomAnything(const Vector2 nowPos)
 {
 	//現在の部屋保存用
 	std::string nowKey = roomKey_;

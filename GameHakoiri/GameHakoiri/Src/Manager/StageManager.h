@@ -167,41 +167,41 @@ public:
 	/// <summary>
 	/// 長方形マスの本体じゃないほうを通ったか
 	/// </summary>
-	/// <returns>true=通った/false=通っていない</returns>
+	/// <returns> true=通った/false=通っていない </returns>
 	const bool IsSecondEvidence(void)const;
 
 	/// <summary>
 	/// オブジェクトと衝突しているか
 	/// </summary>
 	/// <param name="pMapPos">判定対象の座標</param>
-	/// <returns>true=衝突している/false=衝突していない</returns>
+	/// <returns> true=している/false=していない </returns>
 	const bool IsCollisionObject(const Vector2 pMapPos)const;
 
 	/// <summary>
 	/// 壁と衝突しているか
 	/// </summary>
 	/// <param name="pMapPos">判定対象の座標</param>
-	/// <returns>true=衝突している/false=衝突していない</returns>
+	/// <returns> true=している/false=していない </returns>
 	const bool IsCollisionWall(const Vector2 pMapPos)const;
 
 	/// <summary>
-	/// 
+	/// マップ移動をしたか
 	/// </summary>
-	/// <returns>true=/false=</returns>
-	const bool IsMoveMap(void);									//マップ移動をしたかどうかを返却
+	/// <returns> true=した/false=していない </returns>
+	const bool IsMoveMap(void);
 
 	/// <summary>
-	/// 
+	/// クリアしたか
 	/// </summary>
-	/// <returns>true=/false=</returns>
-	const bool IsClear(void)const;								//クリアしたか
+	/// <returns>true=した/false=していない</returns>
+	const bool IsClear(void)const;
 
 	/// <summary>
-	/// 
+	/// 縦長のオブジェクトの最下部ブロックであるかどうか
 	/// </summary>
 	/// <param name="pMapPos">判定対象の座標</param>
-	/// <returns>true=/false=</returns>
-	const bool IsBottomObject(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
+	/// <returns>true=最下部である/false=最下部ではない</returns>
+	const bool IsBottomObject(const Vector2 pMapPos)const;
 
 	//情報取得*********************************************************************************
 	/// <summary>
@@ -211,49 +211,49 @@ public:
 	Vector2F GetMapMaxSize(void)const;
 
 	/// <summary>
-	/// 
+	/// 座標をマップの要素数用に変換
 	/// </summary>
-	/// <param name="pPos"></param>
-	/// <returns></returns>
-	Vector2 GetVector2MapPos(const Vector2 pPos)const;			//座標をマップの配列に変換
+	/// <param name="pPos">座標</param>
+	/// <returns>要素数変換後の{X,Y}</returns>
+	Vector2 GetVector2MapPos(const Vector2 pPos)const;
 
 	/// <summary>
-	/// 
+	/// 座標に衝突しているオブジェクトの種類変換
 	/// </summary>
-	/// <param name="pMapPos"></param>
-	/// <returns></returns>
+	/// <param name="pMapPos">座標</param>
+	/// <returns>オブジェクトの種類(通り抜け可能かなど)</returns>
 	const OBJECT GetObjectType(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
 
 	/// <summary>
-	/// 
+	/// 部屋の形を取得
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>正方形OR長方形</returns>
 	const RoomBase::ROOM_SHAPE GetShape(void);					//部屋の形正方形か長方形か）
 
 	/// <summary>
-	/// 
+	/// 鍵の取得
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>現在の配列要素数</returns>
 	const std::string GetKey(void)const;						//配列指定数
 
 	/// <summary>
-	/// 
+	/// ドアの位置を取得
 	/// </summary>
 	/// <returns></returns>
 	const DOOR GetDoor(void)const;								//移動に使用したドアの位置
 
 	/// <summary>
-	/// 
+	/// 上記の部屋が縦長だった場合の補足分
 	/// </summary>
-	/// <returns></returns>
-	const DOOR_Y GetDoorSecond(void)const;						//上記の部屋が縦長だった場合の補足分
+	/// <returns>補足後の正確な場所</returns>
+	const DOOR_Y GetDoorSecond(void)const;
 
 private:
 	/// <summary>
-	/// 
+	/// 配列要素数を座標に変換
 	/// </summary>
-	/// <param name="pPos"></param>
-	/// <returns></returns>
+	/// <param name="pPos">マップ配列要素数</param>
+	/// <returns>座標</returns>
 	Vector2 GetMapPos2Vector(const Vector2 pPos)const;			//マップの配列を座標に変換
 #pragma endregion
 	

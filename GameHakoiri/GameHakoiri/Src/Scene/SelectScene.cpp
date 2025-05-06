@@ -38,8 +38,8 @@ bool SelectScene::Init(void)
 	checkImg_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::CHECK_IMG).handleId_;
 	backTitleImg_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::BACK_TITLE_IMG).handleId_;
 
-	frame_[0] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_IMG).handleId_;
-	frame_[1] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
+	frame_[static_cast<int>(FRAME_TYPE::NOMAL)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_IMG).handleId_;
+	frame_[static_cast<int>(FRAME_TYPE::OBLONG)] = ResourceManager::GetInstance().Load(ResourceManager::SRC::FRAME_OBLONG_2_IMG).handleId_;
 
 	stageNumPos_[0] = { Application::SCREEN_SIZE_X / 4,Application::SCREEN_SIZE_Y / 4 };
 	stageNumPos_[1] = { Application::SCREEN_SIZE_X / 2,Application::SCREEN_SIZE_Y / 4 };
@@ -56,9 +56,9 @@ bool SelectScene::Init(void)
 //********************************************************
 void SelectScene::Update(void)
 {
-	auto cnt = SceneManager::GetInstance().GetController();
+	auto controller = SceneManager::GetInstance().GetController();
 
-	switch (cnt)
+	switch (controller)
 	{
 	case SceneManager::CONTROLLER::KEYBOARD:
 		KeyboardContoroller();
@@ -84,7 +84,7 @@ void SelectScene::Update(void)
 void SelectScene::Draw(void)
 {
 
-	auto& stg = SceneManager::GetInstance();
+	SceneManager& stg = SceneManager::GetInstance();
 
 	//ステージナンバーの描画
 	for (int i = 0; i < STAGE_NUM; i++)
@@ -129,10 +129,10 @@ bool SelectScene::Release(void)
 
 void SelectScene::KeyboardContoroller(void)
 {
-	auto& ins = InputManager::GetInstance();
-	auto& snd = SoundManager::GetInstance();
+	InputManager& ins = InputManager::GetInstance();
+	SoundManager& snd = SoundManager::GetInstance();
 
-	auto prevSelect = selectNum_;
+	int prevSelect = selectNum_;
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
 		snd.PlaySndEnter(true);
@@ -178,8 +178,8 @@ void SelectScene::KeyboardContoroller(void)
 
 void SelectScene::GamePadController(void)
 {
-	auto& ins = InputManager::GetInstance();
-	auto& snd = SoundManager::GetInstance();
+	InputManager& ins = InputManager::GetInstance();
+	SoundManager& snd = SoundManager::GetInstance();
 
 	if (ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
@@ -199,11 +199,11 @@ void SelectScene::GamePadController(void)
 	}
 
 	// 左スティックの横軸
-	auto leftStickX = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLX;
+	int leftStickX = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLX;
 	// 左スティックの縦軸
-	auto leftStickY = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLY;
+	int leftStickY = ins.GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1).AKeyLY;
 
-	auto prevSelect = selectNum_;
+	int prevSelect = selectNum_;
 	//左右移動
 	if (prevStick_.x == 0)
 	{

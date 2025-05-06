@@ -118,7 +118,7 @@ void EnemyBase::MoveDebg(void)
 }
 
 //視野内にplayerがいるか
-bool EnemyBase::FindPlayer(Vector2F pPos) const
+const bool EnemyBase::FindPlayer(const Vector2F pPos) const
 {
 	//プレイヤーと敵の距離ベクトル
 	Vector2F diff = pPos - pos_;
@@ -296,23 +296,23 @@ void EnemyBase::ResetColObject(void)
 	colObject_ = { 0,0 };
 }
 
-Vector2 EnemyBase::GetColObject(void) const
+const Vector2 EnemyBase::GetColObject(void) const
 {
 	return colObject_;
 }
 
 
-void EnemyBase::SetIsUse(bool flag)
+void EnemyBase::SetIsUse(const bool flag)
 {
 	isUse_ = flag;
 }
 
-bool EnemyBase::IsUse(void)
+const bool EnemyBase::IsUse(void)
 {
 	return isUse_;
 }
 
-EnemyBase::TYPE EnemyBase::GetType(void)
+const EnemyBase::TYPE EnemyBase::GetType(void)
 {
 	return type_;
 }

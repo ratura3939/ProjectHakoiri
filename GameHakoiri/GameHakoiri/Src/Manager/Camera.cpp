@@ -55,7 +55,7 @@ void Camera::SetMapSize(const Vector2F mapsize)
 	mapSize_ = mapsize;
 }
 
-Vector2F Camera::GetPos(void) const
+const Vector2F Camera::GetPos(void) const
 {
 	return pos_;
 }

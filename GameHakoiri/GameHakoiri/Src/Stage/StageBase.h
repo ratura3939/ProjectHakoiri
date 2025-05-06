@@ -5,7 +5,7 @@
 #include<sstream>
 #include<string>
 #include<map>
-#include<vector>
+#include<memory>
 #include"../Common/Vector2.h"
 #include"../Utility/Utility.h"
 #include"../Scene/GameScene.h"
@@ -42,41 +42,164 @@ public:
 	virtual void Draw(GameScene::MODE mode);	//描画
 	virtual bool Release(void);					//解放
 
+	/// <summary>
+	/// 配列をしていする指定数を取得
+	/// </summary>
+	/// <returns>配列指定数</returns>
 	std::string GetKey(void)const;
 
-	//パズルシーン
-	Vector2 GetNowCursorPos(void);	//現在のカーソルの位置を取得
-	void SetCursor(Vector2 move, Utility::DIR dir);	//カーソルのセット yとxはカーソルの移動量
-	void SetPiece(Vector2 move, Utility::DIR dir);	//駒の位置入れ替え yとxはカーソルの移動量
-	void SetFrameFlash(bool flag);					//枠点滅用
-	void ResetPazzl(void);							//パズルのリセット
-	void SwapPazzle(std::string nowKey);			//リセット時の駒入れ替え
+#pragma region パズル関連
 
-	bool CheckAroundRoomAnything(Vector2 nowPos);	//現在のマス（roomKey_)の周りに何かしら部屋があるか
+	/// <summary>
+	/// カーソル位置取得
+	/// </summary>
+	/// <returns>カーソル位置(配列指定数)</returns>
+	const Vector2 GetNowCursorPos(void);
 
-	//ステルスシーン
-	bool InitStealth(void);				//ステルスシーン移行時の初期化
-	void DrawObject(void);				//オブジェクト描画
-	Vector2F GetNowDrawMapSize(void);	//現在描画しているマップの最大サイズを取得
-	bool IsMapObj(Vector2 pMapPos);		//座標にオブジェクトがあるかどうか
-	bool IsMoveRoom(void);				//部屋の移動が可能だったかを返す
-	int GetObjNum(Vector2 pMapPos);		//座標にあるオブジェクトが何かを返す
-	int GetMapNum(Vector2 pMapPos);		//座標にあるマップチップがが何かを返す
-	StageManager::MAPCHIP GetMapchipType(void);	//現在描画しているマップチップを返却
-	RoomBase::ROOM_SHAPE GetNowShape(void);	//部屋の形を検索(鍵検索)
-	bool CheckOneDownObject(Vector2 pMapPos);	//一つ下のマップチップがオブジェクトかを示す。
-	void ChangeRoom(Vector2 pMapPos);			//部屋の切り替え
+	/// <summary>
+	/// カーソル移動
+	/// </summary>
+	/// <param name="move">移動量</param>
+	/// <param name="dir">方向</param>
+	void SetCursor(const Vector2 move, const Utility::DIR dir);
 
-	StageManager::DOOR GetDoorPos(void)const;			//ドアの移動場所返却
-	StageManager::DOOR_Y GetDoorPosSecond(void)const;	//同上
-	bool IsSecondRoom(void)const;
-	bool IsGoal(void)const;
-	bool CanGoal(void);
+	/// <summary>
+	/// 駒の移動
+	/// </summary>
+	/// <param name="move">移動量</param>
+	/// <param name="dir">方向</param>
+	void SetPiece(const Vector2 move, const Utility::DIR dir);
+
+	/// <summary>
+	/// 点滅させるかどうか
+	/// </summary>
+	/// <param name="flag">true=させる/false=させない</param>
+	void SetFrameFlash(const bool flag);
+
+	/// <summary>
+	/// リセット
+	/// </summary>
+	void ResetPazzl(void);
+
+	/// <summary>
+	/// 駒入れ替え(初期位置)
+	/// </summary>
+	/// <param name="nowKey">現在の配列位置(string)</param>
+	void SwapPazzle(const std::string nowKey);
+
+	/// <summary>
+	/// 周囲①マスに駒があるか（ゴールできるかの判定のみに使用）
+	/// </summary>
+	/// <param name="nowPos">ゴール位置</param>
+	/// <returns>true=ある/false=ない</returns>
+	const bool CheckAroundRoomAnything(const Vector2 nowPos);
+
+	/// <summary>
+	/// ゴール可能か
+	/// </summary>
+	/// <returns>true=可能/fale=不可能</returns>
+	const bool CanGoal(void);
+#pragma endregion
+	
+#pragma region ステルス関連
+	/// <summary>
+	/// ステルス時の初期化
+	/// </summary>
+	/// <returns>true=成功/false=失敗</returns>
+	bool InitStealth(void);
+
+	/// <summary>
+	/// オブジェクトの描画
+	/// </summary>
+	void DrawObject(void);
+
+	/// <summary>
+	/// 現在描画中のマップサイズ取得
+	/// </summary>
+	/// <returns>サイズ{float,float}</returns>
+	Vector2F GetNowDrawMapSize(void);
+
+	/// <summary>
+	/// オブジェクトがあるか
+	/// </summary>
+	/// <param name="pMapPos">判定元の座標</param>
+	/// <returns>true=ある/false=ない</returns>
+	const bool IsMapObj(const Vector2 pMapPos);
+
+	/// <summary>
+	/// 部屋の移動が可能か
+	/// </summary>
+	/// <returns>true=可能/false=不可能</returns>
+	const bool IsMoveRoom(void)const;
+
+	/// <summary>
+	/// オブジェクトの種類を取得
+	/// </summary>
+	/// <param name="pMapPos">判定元の座標</param>
+	/// <returns>オブジェクトの種類(int)</returns>
+	const int GetObjNum(const Vector2 pMapPos);
+
+	/// <summary>
+	/// 現在の床を得る
+	/// </summary>
+	/// <param name="pMapPos">判定元の座標</param>
+	/// <returns>現在のマップ情報(通常or移動マス)</returns>
+	const int GetMapNum(const Vector2 pMapPos);	
+
+	/// <summary>
+	/// 現在描画しているマップの種類
+	/// </summary>
+	/// <returns>マップの種類</returns>
+	const StageManager::MAPCHIP GetMapchipType(void);
+
+	/// <summary>
+	/// 部屋の形を取得
+	/// </summary>
+	/// <returns>部屋の形(正方形or長方形)</returns>
+	const RoomBase::ROOM_SHAPE GetNowShape(void);
+
+	/// <summary>
+	/// 下にオブジェクトがあるか(縦長の障害物用)
+	/// </summary>
+	/// <param name="pMapPos">判定元の座標</param>
+	/// <returns>true=ある/false=ない</returns>
+	const bool CheckOneDownObject(const Vector2 pMapPos);
+
+	/// <summary>
+	/// 部屋の変更
+	/// </summary>
+	/// <param name="pMapPos">プレイヤー位置</param>
+	void ChangeRoom(const Vector2 pMapPos);
+
+	/// <summary>
+	/// ドアの位置取得
+	/// </summary>
+	/// <returns>ドアの位置取得(ドアがどの方向にあったか)</returns>
+	const StageManager::DOOR GetDoorPos(void)const;			//ドアの移動場所返却
+
+	/// <summary>
+	/// GetDoorPos補足用
+	/// </summary>
+	/// <returns>ドアの位置取得(ドアがどの方向にあったか)</returns>
+	const StageManager::DOOR_Y GetDoorPosSecond(void)const;
+
+	/// <summary>
+	/// 長方形のにマス目(非本体)かどうか
+	/// </summary>
+	/// <returns>true=非本体/false=本体</returns>
+	const bool IsSecondRoom(void)const;
+
+	/// <summary>
+	/// ゴールしているか
+	/// </summary>
+	/// <returns>true=している/false=していない</returns>
+	const bool IsGoal(void)const;
+#pragma endregion
 
 private:
-	std::map<std::string, RoomBase*> roomMng_;			//部屋の情報一括管理
+	std::map<std::string, std::unique_ptr<RoomBase>> roomMng_;			//部屋の情報一括管理
 	std::map<std::string, RoomBase::TYPE> resetRoom_;	//部屋のリセット用
-	std::map<std::string, bool> resetRoomClone_;	//部屋のリセット用
+	std::map<std::string, bool> resetRoomClone_;		//部屋のリセット用
 	std::string roomKey_;								//連想配列のキー
 	Vector2 goalPos_;		//ゴールの位置記録
 
@@ -94,42 +217,42 @@ private:
 	bool isGoal_;	//ゴールにたどり着いたか
 	
 
-	void CreateKey(int y, int x);	//連想配列のキー生成
+	void CreateKey(const int y, const int x);	//連想配列のキー生成
 
-	bool MovePiece(const Vector2 csr,
-		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKey
+	const bool MovePiece(const Vector2 csr,
+		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKeyぱずる
 
-	void MoveRoom(const Vector2 after, const std::string prvKey);
+	void MoveRoom(const Vector2 after, const std::string prvKey);	//ステルス
 
 	
 
 
 	//判定系
-	bool CheckInstanceUp(int y, int x, RoomBase* r);	//長方形の２コマ目かを判断およびインスタンスの生成(縦長）
-	bool CheckInstanceDown(int y, int x, RoomBase* r);	
-	bool CheckInstanceLeft(int y, int x, RoomBase* r);	//長方形の２コマ目かを判断およびインスタンスの生成(横長）
-	bool CheckInstanceRight(int y, int x, RoomBase* r);
-	RoomBase::ROOM_SHAPE GetRoomShape(std::string key);	//部屋の形を検索(鍵検索)
-	RoomBase::ROOM_SHAPE GetRoomShape(RoomBase::TYPE type);	//部屋の形を検索(種類検索)
-	bool IsDontMoveBlock(std::string key);	//移動不可なブロックかどうか
+	const bool CheckInstanceUp(int y, const int x, RoomBase& r);	//長方形の２コマ目かを判断およびインスタンスの生成(縦長）
+	const bool CheckInstanceDown(int y, const int x, RoomBase& r);
+	const bool CheckInstanceLeft(const int y, int x, RoomBase& r);	//長方形の２コマ目かを判断およびインスタンスの生成(横長）
+	const bool CheckInstanceRight(const int y, int x, RoomBase& r);
+	const RoomBase::ROOM_SHAPE GetRoomShape(const std::string key);	//部屋の形を検索(鍵検索)
+	const RoomBase::ROOM_SHAPE GetRoomShape(const RoomBase::TYPE type)const;	//部屋の形を検索(種類検索)
+	const bool IsDontMoveBlock(const std::string key);	//移動不可なブロックかどうか
 
-	Vector2 MoveLeftOrRight(const StageManager::DOOR_X door);	//左右の移動量を返却
-	StageManager::DOOR SearchDoor(const Vector2 pMapPos);		//ドアの検索
-	StageManager::DOOR SplitRoom(const Vector2 pMapPos,const Vector2 size,const Vector2 startPos);	//部屋の分割
+	const Vector2 MoveLeftOrRight(const StageManager::DOOR_X door)const;	//左右の移動量を返却
+	const StageManager::DOOR SearchDoor(const Vector2 pMapPos);		//ドアの検索
+	const StageManager::DOOR SplitRoom(const Vector2 pMapPos,const Vector2 size,const Vector2 startPos)const;	//部屋の分割
 
 	
 
 	//Get&Set
-	RoomBase* GetSecondRoomInstance(RoomBase* r);		//長方形２コマ目のインスタンスの生成
-	void SetIsMoveRoom(bool flag);	//フラグのセット
-	void SetIsSecondRoom(bool flag);	//フラグのセット
-	void SetIsGoal(bool flag);
+	std::unique_ptr<RoomBase> GetSecondRoomInstance(const RoomBase& r);		//長方形２コマ目のインスタンスの生成
+	void SetIsMoveRoom(const bool flag);	//フラグのセット
+	void SetIsSecondRoom(const bool flag);	//フラグのセット
+	void SetIsGoal(const bool flag);
 
 	//長方形２コマ目かを判断するために必要なインスタンスを生成する
-	RoomBase* CreateInstance4Confirmation(RoomBase::TYPE type);
+	RoomBase& CreateInstance4Confirmation(const RoomBase::TYPE type);
 
-	void SetCursorType(CURSOR type);
-	StageManager::DOOR_Y GetDoorSpare(void);			//縦長用の追加判定のドア検知を返却
+	void SetCursorType(const CURSOR type);
+	const StageManager::DOOR_Y GetDoorSpare(void)const;			//縦長用の追加判定のドア検知を返却
 	
 	
 	//更新

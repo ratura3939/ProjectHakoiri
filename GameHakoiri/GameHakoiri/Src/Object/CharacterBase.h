@@ -65,10 +65,10 @@ public:
 	virtual void Draw(void);
 	void Release(void);
 
-	void SetPos(Vector2F pos);
-	Vector2F GetPos(void)const;
+	void SetPos(const Vector2F pos);
+	const Vector2F GetPos(void)const;
 	void SetPrevPos(const Vector2F pos);
-	Vector2F GetPrevPos()const;
+	const Vector2F GetPrevPos()const;
 	Vector2F GetCollisionPos(void)const;
 
 private:
@@ -97,7 +97,7 @@ protected:
 	virtual void Move(void);	//動きの処理
 	void SetDir(DIR dir);		//方向の変換
 
-	DIR GetDir(void)const;
+	const DIR GetDir(void)const;
 	virtual void SetParam(void);//各パラメータ設定
 };
 

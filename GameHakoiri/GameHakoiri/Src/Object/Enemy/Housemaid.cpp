@@ -5,8 +5,8 @@ void Housemaid::SetParam(void)
 {
 	img_ = ResourceManager::GetInstance().Load(ResourceManager::SRC::MAID_IMGS).handleIds_;
 	dir_ = CharacterBase::DIR::RIGHT;
-	speed_ = 0.5f;
-	move_ = 5.0f;
+	speed_ = SPEED;
+	move_ = MOVE_POW;
 	type_ = TYPE::HOUSEMADE;
 	SetIsUse(false);
 }

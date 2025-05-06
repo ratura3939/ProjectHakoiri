@@ -34,8 +34,8 @@ bool GameScene::Init(void)
 		return false;	//初期化失敗のためシステム終了
 	}
 	SetMode(MODE::PAZZLE);
-	pzl_ = new Pazzle;
-	stl_ = new Stealth;
+	pzl_ = std::make_unique<Pazzle>();
+	stl_ = std::make_unique<Stealth>();
 	isPlate_ = false;
 	str_ = "NONE";
 
@@ -160,23 +160,20 @@ void GameScene::Draw(void)
 bool GameScene::Release(void)
 {
 	StageManager::GetInstance().Release();
-	delete pzl_;
-	pzl_ = nullptr;
+
 	stl_->Release();
-	delete stl_;
-	stl_ = nullptr;
 
 	//正常に処理が行われたので
 	return true;
 }
 
 
-void GameScene::SetMode(MODE mode)
+void GameScene::SetMode(const MODE mode)
 {
 	mode_ = mode;
 }
 
-GameScene::MODE GameScene::GetMode(void)
+const GameScene::MODE GameScene::GetMode(void)const
 {
 	return mode_;
 }

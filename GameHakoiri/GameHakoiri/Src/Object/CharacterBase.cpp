@@ -62,7 +62,7 @@ void CharacterBase::SetPos(Vector2F pos)
 	pos_ = pos;
 }
 
-Vector2F CharacterBase::GetPos(void)const
+const Vector2F CharacterBase::GetPos(void)const
 {
 	return pos_;
 }
@@ -72,7 +72,7 @@ void CharacterBase::SetPrevPos(const Vector2F pos)
 	prevPos_ = pos;
 }
 
-Vector2F CharacterBase::GetPrevPos() const
+const Vector2F CharacterBase::GetPrevPos() const
 {
 	return prevPos_;
 }
@@ -160,7 +160,7 @@ void CharacterBase::SetDir(DIR dir)
 	dir_ = dir;
 }
 
-CharacterBase::DIR CharacterBase::GetDir(void) const
+const CharacterBase::DIR CharacterBase::GetDir(void) const
 {
 	return dir_;
 }

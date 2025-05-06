@@ -248,7 +248,7 @@ int RoomBase::GetMapchip(Vector2 pos) const
 {
 	return map_[pos.y][pos.x];
 }
-bool RoomBase::IsOneDownObj(Vector2 pos) const
+bool RoomBase::IsOneDownObj(Vector2 pos)const
 {
 	pos.y++;
 	if (obj_[pos.y][pos.x] == -1)	//オブジェクトが何も入っていなかったら

@@ -8,6 +8,12 @@ class SelectScene :public SceneBase
 {
 public:
 
+	enum class FRAME_TYPE {
+		NOMAL,
+		OBLONG,
+		MAX
+	};
+
 	//定数
 	static constexpr int STAGE_NUM = 3;
 	static constexpr int BACK_TITLE_X = 512;
@@ -36,7 +42,7 @@ private:
 	int backTitleImg_;	//タイトルに戻る
 	bool selectBack_;	//タイトルに戻るにカーソルを当てているか
 
-	int frame_[2];	//フレーム画像
+	int frame_[static_cast<int>(FRAME_TYPE::MAX)];	//フレーム画像
 
 	Vector2 prevStick_;	//1フレーム前のスティックの移動を保持
 

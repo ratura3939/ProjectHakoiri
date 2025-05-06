@@ -1,6 +1,7 @@
 #pragma once
 #include"SceneBase.h"
 #include<string>
+#include<memory>
 
 class Pazzle;
 class Stealth;
@@ -25,14 +26,14 @@ public:
 	void Draw(void);	//描画
 	bool Release(void);	//解放
 
-	void SetMode(MODE mode);	//ゲームモード変更
-	MODE GetMode(void);			//ゲームモード取得
+	void SetMode(const MODE mode);	//ゲームモード変更
+	const MODE GetMode(void)const;			//ゲームモード取得
 
 private:
 
 	//インスタンス
-	Pazzle* pzl_;
-	Stealth* stl_;
+	std::unique_ptr<Pazzle> pzl_;
+	std::unique_ptr<Stealth> stl_;
 
 	MODE mode_;	//現在のゲームのモードを保持
 

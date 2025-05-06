@@ -12,9 +12,24 @@ public:
 	void Update(void);
 	void Relese(void);
 
+	/// <summary>
+	/// 注視点の設定
+	/// </summary>
+	/// <param name="pPos"></param>
 	void SetTargetPos(const Vector2F pPos);
+
+	/// <summary>
+	/// マップサイズセット
+	/// </summary>
+	/// <param name="mapsize"></param>
 	void SetMapSize(const Vector2F mapsize);
-	Vector2F GetPos(void)const;
+
+	/// <summary>
+	/// 位置取得
+	/// </summary>
+	/// <param name=""></param>
+	/// <returns></returns>
+	const Vector2F GetPos(void)const;
 
 private:
 

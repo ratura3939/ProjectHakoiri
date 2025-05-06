@@ -220,7 +220,6 @@ void Stealth::CollisionMapchip(CharacterBase* character, bool isPlayer)
 				CollisionObstacle(character);
 			}
 		}
-		//pCol = stage.GetVector2MapPos(player_->GetCollisionPos().ToVector2());
 	}
 }
 //通り抜け不可なオブジェクト

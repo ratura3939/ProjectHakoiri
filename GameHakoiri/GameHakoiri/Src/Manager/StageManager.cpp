@@ -3,9 +3,6 @@
 #include"../Scene/GameScene.h"
 #include"../Stage/StageBase.h"
 #include"../Stage/TutorialStage.h"
-#include"../Stage/FirstStage.h"
-#include"../Stage/SecondStage.h"
-#include"../Stage/ThirdStage.h"
 #include"../Application.h"
 #include"../Utility/Utility.h"
 
@@ -261,7 +258,6 @@ const StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) co
 
 	return type;
 }
-//オブジェクトの一番下かを判定
 const bool StageManager::IsBottomObject(const Vector2 pMapPos) const
 {
 	return stage_->CheckOneDownObject(pMapPos);
