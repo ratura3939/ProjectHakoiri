@@ -130,12 +130,16 @@ bool Stealth::IsFailde(void)
 //当たり判定総括
 void Stealth::Collision(void)
 {
+	//部屋移動フラグリセット
+	isMoveRoom_ = false;
+
 	//プレイヤー
 	//--------------------------------------------------------
 	//toマップチップ
 	CollisionMapchip(player_,true);
 
-	if (StageManager::GetInstance().IsClear())
+	//クリアしているか部屋の移動があったならこの後の当たり判定は行わない
+	if (StageManager::GetInstance().IsClear()||isMoveRoom_)
 	{
 		return;
 	}
@@ -247,6 +251,7 @@ void Stealth::CollisionEvent(Vector2 pCol)
 	auto prevKey = stage.GetKey();
 
 	stage.ChangeMap(pCol);	//部屋の移動処理
+	isMoveRoom_ = true;
 
 	if (stage.IsClear())
 	{

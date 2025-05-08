@@ -682,9 +682,7 @@ const Vector2 StageBase::MoveLeftOrRight(const StageManager::DOOR_X door)const
 //********************************************************
 const StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 {
-	//ドア位置保存用
-	StageManager::DOOR ret;
-	//player位置
+	StageManager::DOOR retDoorPos;
 	Vector2 pPos = pMapPos;
 	//判定スペアのリセット
 	doorSpare_ = StageManager::DOOR_Y::NONE;
@@ -698,7 +696,7 @@ const StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 	//探索初期位置
 	Vector2 startPos = { 0,0 };
 
-	ret = SplitRoom(pPos, size,startPos);
+	retDoorPos = SplitRoom(pPos, size,startPos);
 
 	//縦長の場合は二回目の判定が必要
 	if (roomMng_[roomKey_]->GetRoomType() == RoomBase::TYPE::KITCHEN ||
@@ -706,20 +704,25 @@ const StageManager::DOOR StageBase::SearchDoor(const Vector2 pMapPos)
 	{
 		//二回目の判定は一回目で分割した上中下をさらに分割し扉を特定する(部屋の一部をズームする感じ)
 		//プレイヤーの場所は一回目の分割の影響を受ける
+
+		//判定初期位置を一回目のSplitRoomと同じにする用の変数(縦長マスなので気にかけるのはY軸だけ)
+		StageManager::DOOR firstSplitDoor = retDoorPos;
+		firstSplitDoor.y = static_cast<StageManager::DOOR_Y>(static_cast<int>(retDoorPos.y) - 1);
+
 		//playerを上限からの距離に設定
-		pPos.y -= size.y * (static_cast<int>(ret.y) - 1);
+		pPos.y -= size.y * static_cast<int>(firstSplitDoor.y);
 
 		//移動の下限設定
 		size.y /= static_cast<int>(StageManager::DOOR_Y::BOTTOM);	//サイズを三分割
 
 		//判定初期位置を一回目のY部分基準(構造体の都合上-1でスタート位置にする）
-		startPos.y = StageManager::SPLIT_ROOM_Y * (static_cast<int>(ret.y) - 1);
+		startPos.y = StageManager::SPLIT_ROOM_Y * static_cast<int>(firstSplitDoor.y);
 		StageManager::DOOR oblongSecond = SplitRoom(pPos, size, startPos);
 
 		doorSpare_ = oblongSecond.y;
 	}
 		
-	return ret;
+	return retDoorPos;
 }
 //マップを六分割したときplayerがどこにイルカを返却
 const StageManager::DOOR StageBase::SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)const
@@ -1170,28 +1173,28 @@ void StageBase::SetIsGoal(const bool flag)
 //生成して取得したものは必ず用が終わったら消すこと！
 RoomBase& StageBase::CreateInstance4Confirmation(const RoomBase::TYPE type)
 {
-	std::unique_ptr<RoomBase> r = nullptr;
+	std::unique_ptr<RoomBase> retRoom = nullptr;
 
 	switch (type)
 	{
 	case RoomBase::TYPE::LIVING:
-		r = std::make_unique<Living>(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
-		r->Init();
+		retRoom = std::make_unique<Living>(roomImg_[static_cast<int>(RoomBase::TYPE::LIVING)]);
+		retRoom->Init();
 		break;
 	case RoomBase::TYPE::KITCHEN:
-		r = std::make_unique<Kitchen>(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
-		r->Init();
+		retRoom = std::make_unique<Kitchen>(roomImg_[static_cast<int>(RoomBase::TYPE::KITCHEN)]);
+		retRoom->Init();
 		break;
 	case RoomBase::TYPE::OWN:
-		r = std::make_unique<Own>(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
-		r->Init();
+		retRoom = std::make_unique<Own>(roomImg_[static_cast<int>(RoomBase::TYPE::OWN)]);
+		retRoom->Init();
 		break;
 	case RoomBase::TYPE::ENTRANCE:
-		r = std::make_unique<Entrance>(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
-		r->Init();
+		retRoom = std::make_unique<Entrance>(roomImg_[static_cast<int>(RoomBase::TYPE::ENTRANCE)]);
+		retRoom->Init();
 		break;
 	}
-	return *r;
+	return *retRoom;
 }
 
 void StageBase::SetFrameFlash(const bool flag)

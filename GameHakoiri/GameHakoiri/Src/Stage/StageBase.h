@@ -42,6 +42,22 @@ public:
 	virtual void Draw(GameScene::MODE mode);	//描画
 	virtual bool Release(void);					//解放
 
+private:
+	void DrawPazzle(void);	//パズル
+	void DrawCursor(void);	//カーソル
+	void DrawStealth(void);	//ステルス
+
+	void LoadImgs(void);	//画像読み込み
+
+
+	/// <summary>
+	/// 連想配列キー生成
+	/// </summary>
+	/// <param name="y"></param>
+	/// <param name="x"></param>
+	void CreateKey(const int y, const int x);
+
+public:
 	/// <summary>
 	/// 配列をしていする指定数を取得
 	/// </summary>
@@ -49,6 +65,7 @@ public:
 	std::string GetKey(void)const;
 
 #pragma region パズル関連
+	//Set&Get*************************************************************************************************************************
 
 	/// <summary>
 	/// カーソル位置取得
@@ -76,11 +93,30 @@ public:
 	/// <param name="flag">true=させる/false=させない</param>
 	void SetFrameFlash(const bool flag);
 
+private:
+	/// <summary>
+	/// カーソルの形設定
+	/// </summary>
+	/// <param name="type">正方形用or長方形用</param>
+	void SetCursorType(const CURSOR type);
+public:
 	/// <summary>
 	/// リセット
 	/// </summary>
 	void ResetPazzl(void);
 
+private:
+	/// <summary>
+	/// 駒の移動
+	/// </summary>
+	/// <param name="csr">移動後のカーソル位置</param>
+	/// <param name="bfr">移動前の配列キー</param>
+	/// <param name="aft">移動後の配列キー</param>
+	/// <returns></returns>
+	const bool MovePiece(const Vector2 csr,
+		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKeyぱずる
+
+public:
 	/// <summary>
 	/// 駒入れ替え(初期位置)
 	/// </summary>
@@ -99,9 +135,19 @@ public:
 	/// </summary>
 	/// <returns>true=可能/fale=不可能</returns>
 	const bool CanGoal(void);
+
+	
+private:
+	/// <summary>
+	/// 移動不可なブロックかどうか
+	/// </summary>
+	/// <param name="key">調べたい配列要素数(string)</param>
+	/// <returns>true=不可/false=可</returns>
+	const bool IsDontMoveBlock(const std::string key);
 #pragma endregion
 	
 #pragma region ステルス関連
+public:
 	/// <summary>
 	/// ステルス時の初期化
 	/// </summary>
@@ -166,6 +212,13 @@ public:
 	const bool CheckOneDownObject(const Vector2 pMapPos);
 
 	/// <summary>
+	/// 部屋の移動
+	/// </summary>
+	/// <param name="after"></param>
+	/// <param name="prvKey"></param>
+	void MoveRoom(const Vector2 after, const std::string prvKey);	//ステルス
+
+	/// <summary>
 	/// 部屋の変更
 	/// </summary>
 	/// <param name="pMapPos">プレイヤー位置</param>
@@ -196,6 +249,114 @@ public:
 	const bool IsGoal(void)const;
 #pragma endregion
 
+#pragma region 共通項目
+private:
+	//長方形の駒
+	
+	/// <summary>
+	/// 長方形の非本体用の空のインスタンスの生成
+	/// </summary>
+	/// <param name="r">生成する部屋</param>
+	/// <returns>空の部屋</returns>
+	std::unique_ptr<RoomBase> GetSecondRoomInstance(const RoomBase& r);	
+
+	/// <summary>
+	/// 同一の長方形要素が上にあるか
+	/// </summary>
+	/// <param name="y">部屋Y列</param>
+	/// <param name="x">部屋X列</param>
+	/// <param name="r">あるかもしれない部屋の種類</param>
+	/// <returns>true=ある/false=ない</returns>
+	const bool CheckInstanceUp(int y, const int x, RoomBase& r);
+
+	/// <summary>
+	/// 同一の長方形要素が下にあるか
+	/// </summary>
+	/// <param name="y">部屋Y列</param>
+	/// <param name="x">部屋X列</param>
+	/// <param name="r">あるかもしれない部屋の種類</param>
+	/// <returns>true=ある/false=ない</returns>
+	const bool CheckInstanceDown(int y, const int x, RoomBase& r);
+
+	/// <summary>
+	/// 同一の長方形要素が左にあるか
+	/// </summary>
+	/// <param name="y">部屋Y列</param>
+	/// <param name="x">部屋X列</param>
+	/// <param name="r">あるかもしれない部屋の種類</param>
+	/// <returns>true=ある/false=ない</returns>
+	const bool CheckInstanceLeft(const int y, int x, RoomBase& r);
+
+	/// <summary>
+	/// 同一の長方形要素が右にあるか
+	/// </summary>
+	/// <param name="y">部屋Y列</param>
+	/// <param name="x">部屋X列</param>
+	/// <param name="r">あるかもしれない部屋の種類</param>
+	/// <returns>true=ある/false=ない</returns>
+	const bool CheckInstanceRight(const int y, int x, RoomBase& r);
+
+	//部屋の形*********************************************************************************************************************
+
+	/// <summary>
+	/// 部屋の形が正方形か長方形か(部屋の位置検索)
+	/// </summary>
+	/// <param name="key">配列指定要素数(string)</param>
+	/// <returns>正方形or長方形</returns>
+	const RoomBase::ROOM_SHAPE GetRoomShape(const std::string key);	//部屋の形を検索(鍵検索)
+
+	/// <summary>
+	/// 部屋の形が正方形か長方形か(部屋の種類検索)
+	/// </summary>
+	/// <param name="type">形を調べたい部屋の種類</param>
+	/// <returns>正方形or長方形</returns>
+	const RoomBase::ROOM_SHAPE GetRoomShape(const RoomBase::TYPE type)const;
+
+	//部屋移動のためのドア関連**************************************************************************************************
+
+	/// <summary>
+	/// 元の判定場所から移動させる
+	/// </summary>
+	/// <param name="door">ドアが存在する位置(左右の二択)</param>
+	/// <returns>移動量</returns>
+	const Vector2 MoveLeftOrRight(const StageManager::DOOR_X door)const;
+
+	/// <summary>
+	/// どこのドアに触れたか検索
+	/// </summary>
+	/// <param name="pMapPos">キャラクター位置</param>
+	/// <returns>触れたドア位置</returns>
+	const StageManager::DOOR SearchDoor(const Vector2 pMapPos);
+
+	/// <summary>
+	/// 検索のために範囲を分割する
+	/// </summary>
+	/// <param name="pMapPos">キャラクター位置</param>
+	/// <param name="size">分割後のその範囲の大きさ</param>
+	/// <param name="startPos">検索初期位置</param>
+	/// <returns></returns>
+	const StageManager::DOOR SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)const;	//部屋の分割
+
+
+	//フラグ関係********************************************************************************************************************************
+	
+	/// <summary>
+	/// 移動可能かを設定する
+	/// </summary>
+	/// <param name="flag">true=可能/false=不可能</param>
+	void SetIsMoveRoom(const bool flag);
+
+	/// <summary>
+	/// 長方形の非本体であるかを示す
+	/// </summary>
+	/// <param name="flag">true=非本体/false=本体</param>
+	void SetIsSecondRoom(const bool flag);
+
+	void SetIsGoal(const bool flag);
+
+#pragma endregion
+
+
 private:
 	std::map<std::string, std::unique_ptr<RoomBase>> roomMng_;			//部屋の情報一括管理
 	std::map<std::string, RoomBase::TYPE> resetRoom_;	//部屋のリセット用
@@ -211,58 +372,26 @@ private:
 	bool frameFlash_;							//カーソルを点滅させるかどうか
 	int frameAnim_;								//カーソル点滅カウント用
 
-	bool isMoveRoom_;		//部屋の移動が可能かを示す
+	bool isMoveRoom_;			//部屋の移動が可能かを示す
 	StageManager::DOOR door_;	//移動に使用するドアの位置
-	bool isSecondRoom_;	//長方形の二マス目に出たか
-	bool isGoal_;	//ゴールにたどり着いたか
-	
-
-	void CreateKey(const int y, const int x);	//連想配列のキー生成
-
-	const bool MovePiece(const Vector2 csr,
-		const std::string bfr, const std::string aft);	//実際の移動処理　移動後のカーソル、移動前のKey、移動後のKeyぱずる
-
-	void MoveRoom(const Vector2 after, const std::string prvKey);	//ステルス
-
-	
-
-
-	//判定系
-	const bool CheckInstanceUp(int y, const int x, RoomBase& r);	//長方形の２コマ目かを判断およびインスタンスの生成(縦長）
-	const bool CheckInstanceDown(int y, const int x, RoomBase& r);
-	const bool CheckInstanceLeft(const int y, int x, RoomBase& r);	//長方形の２コマ目かを判断およびインスタンスの生成(横長）
-	const bool CheckInstanceRight(const int y, int x, RoomBase& r);
-	const RoomBase::ROOM_SHAPE GetRoomShape(const std::string key);	//部屋の形を検索(鍵検索)
-	const RoomBase::ROOM_SHAPE GetRoomShape(const RoomBase::TYPE type)const;	//部屋の形を検索(種類検索)
-	const bool IsDontMoveBlock(const std::string key);	//移動不可なブロックかどうか
-
-	const Vector2 MoveLeftOrRight(const StageManager::DOOR_X door)const;	//左右の移動量を返却
-	const StageManager::DOOR SearchDoor(const Vector2 pMapPos);		//ドアの検索
-	const StageManager::DOOR SplitRoom(const Vector2 pMapPos,const Vector2 size,const Vector2 startPos)const;	//部屋の分割
-
-	
+	bool isSecondRoom_;			//長方形の二マス目に出たか
+	bool isGoal_;				//ゴールにたどり着いたか
 
 	//Get&Set
-	std::unique_ptr<RoomBase> GetSecondRoomInstance(const RoomBase& r);		//長方形２コマ目のインスタンスの生成
-	void SetIsMoveRoom(const bool flag);	//フラグのセット
-	void SetIsSecondRoom(const bool flag);	//フラグのセット
-	void SetIsGoal(const bool flag);
+
+	
 
 	//長方形２コマ目かを判断するために必要なインスタンスを生成する
 	RoomBase& CreateInstance4Confirmation(const RoomBase::TYPE type);
 
-	void SetCursorType(const CURSOR type);
+	
 	const StageManager::DOOR_Y GetDoorSpare(void)const;			//縦長用の追加判定のドア検知を返却
 	
 	
 	//更新
 
 	//描画
-	void DrawPazzle(void);	//パズル
-	void DrawCursor(void);	//カーソル
-	void DrawStealth(void);	//ステルス
-
-	void LoadImgs(void);	//画像読み込み
+	
 
 
 

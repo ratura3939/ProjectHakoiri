@@ -81,6 +81,7 @@ private:
 	//”»’è
 	bool isEnemyMove_;	//“G‚ªÕ“Ë‚µˆÚ“®‚Å‚«‚Ä‚¢‚È‚¢‚©
 	bool isFailed_;
+	bool isMoveRoom_;	//•”‰®ˆÚ“®‚ğs‚Á‚½‚©
 
 	EnemyBase* enemyMng_[OBLONG_ENEMY_NUM*static_cast<int>(EnemyBase::TYPE::MAX)];	//“G‚ÌÅ‘å”–í—Ş‚ğ•Û
 	std::vector<EnemyBase*> useEnemy_;		//g—p‚·‚é“G‚ğ•Û‚·‚é
