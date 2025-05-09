@@ -29,8 +29,9 @@ public:
 	};
 
 	//定数
-	static constexpr int FRAME_INTERVAL = 15;
-	static constexpr int STRING_TO_INT = 10;
+	static constexpr int FRAME_INTERVAL = 15;	//枠点滅感覚
+	static constexpr int STRING_TO_INT = 10;	//配列指定数(string)をintに戻すよう
+	static constexpr int GOAL_AROUND = 3;		//ゴールの周りのマスの数(ゴールより下にマスはないので３方向)
 
 	StageBase(std::vector<std::vector<int>>::iterator pzlIt, int pzlSizeX, int pzlSizeY,
 		std::vector<std::vector<int>> map[], std::vector<std::vector<int>> obj[],
@@ -387,19 +388,13 @@ private:
 	
 	const StageManager::DOOR_Y GetDoorSpare(void)const;			//縦長用の追加判定のドア検知を返却
 	
-	
-	//更新
-
-	//描画
-	
-
 
 
 protected:
 
 	std::vector<std::vector<int>>::iterator pzlCsv_;
 	Vector2 size_;
-	virtual void SetParam(void);	//部屋ごとのパラメータ設定
+	virtual void SetParam(void);			//部屋ごとのパラメータ設定
 
 	std::vector<std::vector<int>>* mapCsv_;	//マップのCsvデータの先頭アドレス格納
 	std::vector<std::vector<int>>* objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
