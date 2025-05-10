@@ -104,13 +104,36 @@ public:
 	static constexpr int MANUAL_FLASH_MAX = 3000;
 
 
+	
+private:
+
+	//シングルトン化
+	StageManager(void);	//コンストラクタ
+	StageManager(const StageManager&);	//コピーコンストラクタ
+	
+
+	static  StageManager* instance_;	//実体を確保
+
+public:
+
+	void Destroy(void);	//デストラクタ
+	//シングルトン化
+	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成
+	static StageManager& GetInstance(void);	//インスタンスの取得
+
 	bool Init(STAGENUM);
 	void Update(GameScene::MODE mode);
 	void Draw(GameScene::MODE mode);
 	void DrawObject(void);
 	bool Release(void);	
 
+private:
+	//データ読み込み
+	void LoadImg(void);
+	void LoadCsv(void);
+
 #pragma region パズル関連
+public:
 	//処理**********************************************************************************
 	/// <summary>
 	/// 移動(カーソル)
@@ -151,6 +174,7 @@ public:
 #pragma endregion
 
 #pragma region ステルス関連
+public:
 	//処理**********************************************************************************
 	/// <summary>
 	/// ステルスモードへ変更及び初期化
@@ -256,12 +280,7 @@ private:
 	/// <returns>座標</returns>
 	Vector2 GetMapPos2Vector(const Vector2 pPos)const;			//マップの配列を座標に変換
 #pragma endregion
-	
-public:
-	//シングルトン化
-	static bool CreateInstance(STAGENUM);	//外部から静的インスタンスを生成
-	static StageManager& GetInstance(void);	//インスタンスの取得
-	
+
 private:
 
 	std::unique_ptr<StageBase> stage_;	//ステージ本体
@@ -283,16 +302,4 @@ private:
 	std::vector<std::vector<int>> mapCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//マップ
 	std::vector<std::vector<int>> objCsv_[static_cast<int>(RoomBase::TYPE::MAX)];	//オブジェクト
 	std::vector<std::vector<int>>mapchipObj_[static_cast<int>(MAPCHIP::MAX)][static_cast<int>(OBJECT::MAX)];	//マップチップ当たり判定C
-
-
-	//データ読み込み
-	void LoadImg(void);
-	void LoadCsv(void);
-
-	//シングルトン化
-	StageManager(void);	//コンストラクタ
-	StageManager(const StageManager&);	//コピーコンストラクタ
-	void Destroy(void);	//デストラクタ
-
-	static  StageManager* instance_;	//実体を確保
 };

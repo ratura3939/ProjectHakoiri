@@ -141,7 +141,7 @@ void Stealth::Collision(void)
 	//クリアしているか部屋の移動があったならこの後の当たり判定は行わない
 	if (StageManager::GetInstance().IsClear()||isMoveRoom_)
 	{
-		return;
+    		return;
 	}
 	
 	
@@ -247,7 +247,7 @@ void Stealth::CollisionTrough(Vector2 pCol, CharacterBase* character)
 void Stealth::CollisionEvent(Vector2 pCol)
 {
 	//ステージマネージャ取得
-	auto& stage = StageManager::GetInstance();
+     auto& stage = StageManager::GetInstance();
 	auto prevKey = stage.GetKey();
 
 	stage.ChangeMap(pCol);	//部屋の移動処理

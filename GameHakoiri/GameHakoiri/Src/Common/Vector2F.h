@@ -5,6 +5,10 @@ class Vector2;
 class Vector2F
 {
 public:
+
+	//定数
+	float VECTOR2F_ZERO = 0.0f ;
+
 	//メンバ関数
 	Vector2F(void); //デフォルトコンストラクタ
 	Vector2F(float, float);	//コンストラクタ

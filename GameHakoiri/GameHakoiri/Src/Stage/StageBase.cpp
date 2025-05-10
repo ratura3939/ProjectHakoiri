@@ -597,11 +597,12 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 	//長方形で実体ではないほうに出たとき
 	if (GetRoomShape(roomKey_) != RoomBase::ROOM_SHAPE::NOMAL){
 
-		auto r = CreateInstance4Confirmation(type);
+		auto r = std::move(CreateInstance4Confirmation(type));
 
 		//縦長の実体調整
 		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG){
-			if (CheckInstanceUp(moveAfter.y, moveAfter.x, r)){
+			//上に本体がある場合
+			if (CheckInstanceUp(moveAfter.y, moveAfter.x, *r)){
 				moveAfter.y--;
 				CreateKey(moveAfter.y, moveAfter.x);
 				SetIsSecondRoom(true);
@@ -609,7 +610,7 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 		}
 		//横長の実体調整
 		if (GetRoomShape(type) == RoomBase::ROOM_SHAPE::OBLONG_SIDE){
-			if (CheckInstanceLeft(moveAfter.y, moveAfter.x, r)){
+			if (CheckInstanceLeft(moveAfter.y, moveAfter.x, *r)){
 				moveAfter.x--;
 				CreateKey(moveAfter.y, moveAfter.x);
 				SetIsSecondRoom(true);
@@ -784,7 +785,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 
 #pragma region 長方形の二マス目だった時の処理
 	if (GetRoomShape(afterRoomType)!=RoomBase::ROOM_SHAPE::NOMAL){
-		RoomBase& ret = CreateInstance4Confirmation(afterRoomType);
+		auto ret = std::move(CreateInstance4Confirmation(afterRoomType));
 
 		//現在が長方形の本体かを確認
 		if (roomMng_[afterMoveKey]->IsClone()){
@@ -801,7 +802,7 @@ void StageBase::SetCursor(Vector2 move, Utility::DIR dir)
 			roomMng_[roomKey_]->SetIsCursor(true);
 		}
 
-		ret.Release();
+		ret->Release();
 	}
 #pragma endregion
 
@@ -1073,7 +1074,7 @@ void StageBase::SetIsGoal(const bool flag)
 	isGoal_ = flag;
 }
 //生成して取得したものは必ず用が終わったら消すこと！
-RoomBase& StageBase::CreateInstance4Confirmation(const RoomBase::TYPE type)
+std::unique_ptr<RoomBase> StageBase::CreateInstance4Confirmation(const RoomBase::TYPE type)
 {
 	std::unique_ptr<RoomBase> retRoom = nullptr;
 
@@ -1095,7 +1096,7 @@ RoomBase& StageBase::CreateInstance4Confirmation(const RoomBase::TYPE type)
 		retRoom->Init();
 		break;
 	}
-	return *retRoom;
+	return retRoom;
 }
 
 void StageBase::SetFrameFlash(const bool flag)

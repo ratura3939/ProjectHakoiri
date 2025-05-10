@@ -20,6 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Manager\SoundManager.cpp" />
+    <ClCompile Include="Src\Stage\Room\Bath.cpp" />
+    <ClCompile Include="Src\Stage\Room\Entrance.cpp" />
+    <ClCompile Include="Src\Stage\Room\Goal.cpp" />
+    <ClCompile Include="Src\Stage\Room\Kitchen.cpp" />
+    <ClCompile Include="Src\Stage\Room\Living.cpp" />
+    <ClCompile Include="Src\Stage\Room\None.cpp" />
+    <ClCompile Include="Src\Stage\Room\Own.cpp" />
+    <ClCompile Include="Src\Stage\Room\Storage.cpp" />
+    <ClCompile Include="Src\Stage\Room\Wall.cpp" />
+    <ClCompile Include="Src\Stage\Room\Wasitu.cpp" />
     <ClCompile Include="Src\System\Manual.cpp" />
     <ClCompile Include="Src\Object\Enemy\Oldman.cpp" />
     <ClCompile Include="Src\System\Plate.cpp" />
@@ -28,17 +38,10 @@
     <ClCompile Include="Src\Object\EnemyBase.cpp" />
     <ClCompile Include="Src\Object\CharacterBase.cpp" />
     <ClCompile Include="Src\Manager\Camera.cpp" />
-    <ClCompile Include="Src\Stage\Room\Goal.cpp" />
-    <ClCompile Include="Src\Stage\Room\Bath.cpp" />
-    <ClCompile Include="Src\Stage\Room\Entrance.cpp" />
-    <ClCompile Include="Src\Stage\Room\Kitchen.cpp" />
-    <ClCompile Include="Src\Stage\Room\Living.cpp" />
-    <ClCompile Include="Src\Stage\Room\Own.cpp" />
     <ClCompile Include="Src\Common\Fader.cpp" />
     <ClCompile Include="Src\Manager\InputManager.cpp" />
     <ClCompile Include="Src\Manager\Resource.cpp" />
     <ClCompile Include="Src\Manager\ResourceManager.cpp" />
-    <ClCompile Include="Src\Stage\Room\None.cpp" />
     <ClCompile Include="Src\Common\Vector2.cpp" />
     <ClCompile Include="Src\Common\Vector2F.cpp" />
     <ClCompile Include="Src\Manager\StageManager.cpp" />
@@ -53,17 +56,24 @@
     <ClCompile Include="Src\Scene\SelectScene.cpp" />
     <ClCompile Include="Src\Scene\TitleScene.cpp" />
     <ClCompile Include="Src\Stage\Room\RoomBase.cpp" />
-    <ClCompile Include="Src\Stage\Room\Wasitu.cpp" />
     <ClCompile Include="Src\Stage\StageBase.cpp" />
     <ClCompile Include="Src\Stage\TutorialStage.cpp" />
     <ClCompile Include="Src\System\Pazzle.cpp" />
     <ClCompile Include="Src\System\Stealth.cpp" />
     <ClCompile Include="Src\Utility\Utility.cpp" />
-    <ClCompile Include="Src\Stage\Room\Wall.cpp" />
-    <ClCompile Include="Src\Stage\Room\Storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Manager\SoundManager.h" />
+    <ClInclude Include="Src\Stage\Room\Bath.h" />
+    <ClInclude Include="Src\Stage\Room\Entrance.h" />
+    <ClInclude Include="Src\Stage\Room\Goal.h" />
+    <ClInclude Include="Src\Stage\Room\Kitchen.h" />
+    <ClInclude Include="Src\Stage\Room\Living.h" />
+    <ClInclude Include="Src\Stage\Room\None.h" />
+    <ClInclude Include="Src\Stage\Room\Own.h" />
+    <ClInclude Include="Src\Stage\Room\Storage.h" />
+    <ClInclude Include="Src\Stage\Room\Wall.h" />
+    <ClInclude Include="Src\Stage\Room\Wasitu.h" />
     <ClInclude Include="Src\System\Manual.h" />
     <ClInclude Include="Src\Object\Enemy\Oldman.h" />
     <ClInclude Include="Src\System\Plate.h" />
@@ -72,17 +82,10 @@
     <ClInclude Include="Src\Object\EnemyBase.h" />
     <ClInclude Include="Src\Object\CharacterBase.h" />
     <ClInclude Include="Src\Manager\Camera.h" />
-    <ClInclude Include="Src\Stage\Room\Goal.h" />
-    <ClInclude Include="Src\Stage\Room\Bath.h" />
-    <ClInclude Include="Src\Stage\Room\Entrance.h" />
-    <ClInclude Include="Src\Stage\Room\Kitchen.h" />
-    <ClInclude Include="Src\Stage\Room\Living.h" />
-    <ClInclude Include="Src\Stage\Room\Own.h" />
     <ClInclude Include="Src\Common\Fader.h" />
     <ClInclude Include="Src\Manager\InputManager.h" />
     <ClInclude Include="Src\Manager\Resource.h" />
     <ClInclude Include="Src\Manager\ResourceManager.h" />
-    <ClInclude Include="Src\Stage\Room\None.h" />
     <ClInclude Include="Src\Common\Vector2.h" />
     <ClInclude Include="Src\Common\Vector2F.h" />
     <ClInclude Include="Src\Manager\StageManager.h" />
@@ -96,14 +99,11 @@
     <ClInclude Include="Src\Scene\SelectScene.h" />
     <ClInclude Include="Src\Scene\TitleScene.h" />
     <ClInclude Include="Src\Stage\Room\RoomBase.h" />
-    <ClInclude Include="Src\Stage\Room\Wasitu.h" />
     <ClInclude Include="Src\Stage\StageBase.h" />
     <ClInclude Include="Src\Stage\TutorialStage.h" />
     <ClInclude Include="Src\System\Pazzle.h" />
     <ClInclude Include="Src\System\Stealth.h" />
     <ClInclude Include="Src\Utility\Utility.h" />
-    <ClInclude Include="Src\Stage\Room\Wall.h" />
-    <ClInclude Include="Src\Stage\Room\Storage.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

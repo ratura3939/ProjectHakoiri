@@ -10,6 +10,10 @@ public:
 	static constexpr int ROOM_TYPES = 7;	//部屋の種類数
 
 	//列挙型
+	
+	/// <summary>
+	/// 部屋の種類
+	/// </summary>
 	enum class TYPE
 	{
 		NONE
@@ -25,6 +29,9 @@ public:
 		, MAX
 	};
 
+	/// <summary>
+	/// 部屋の形
+	/// </summary>
 	enum class ROOM_SHAPE
 	{
 		NOMAL,
@@ -35,50 +42,119 @@ public:
 
 	RoomBase(int roomImg, int sizeX, int sizeY,
 		std::vector<std::vector<int>> map, std::vector<std::vector<int>> obj,
-		int* mapchip);	//コンストラクタ
-	RoomBase(int roomImg);	//コピーコンストラクタ
+		int* mapchip);			//コンストラクタ
+	RoomBase(int roomImg);		//コピーコンストラクタ
 	virtual ~RoomBase(void);	//デストラクタ
 
 	bool Init(void);	//初期化
-	virtual void DrawPazzle(void);	//パズルシーンにおける部屋の描画
-	void DrawStealth(void);	//ステルスシーンにおける部屋の描画
-	void DrawStealthObject(void);	//ステルスシーンにおける部屋の描画(これはプレイヤーとの描画順の関係でステルスで呼ぶ）
-	bool Release(void);	//解放
+	//部屋の描画
+	virtual void DrawPazzle(void);	//パズル
+	void DrawStealth(void);			//ステルス
+	void DrawStealthObject(void);	//障害物
+
+	bool Release(void);				//解放
 
 
 	//セッター・ゲッター
-	void SetRoomType(TYPE type);	//部屋の種類を設定
-	TYPE GetRoomType(void)const;			//部屋の種類を返却
 
-	void SetPzlPos(Vector2F pos);	//パズルの座標設定
-	Vector2F GetPzlPos(void)const;		//パズルの座標返却
+	/// <summary>
+	/// 種類設定
+	/// </summary>
+	/// <param name="type">種類</param>
+	void SetRoomType(const TYPE type);
 
-	void SetMapPos(Vector2F pos);	//マップの座標設定
-	Vector2F GetMapPos(void)const;		//マップの座標返却
+	/// <summary>
+	/// 種類取得
+	/// </summary>
+	/// <returns>種類</returns>
+	const TYPE GetRoomType(void)const;	//部屋の種類を返却
 
-	void SetIsCursor(bool flag);	//カーソルフラグの設定
-	bool GetIsCursor(void)const;			//カーソルフラグの返却
+	/// <summary>
+	/// 座標設定(パズル時)
+	/// </summary>
+	/// <param name="pos">座標</param>
+	void SetPzlPos(const Vector2F pos);
 
-	bool IsChange(void);			//IsChangeのゲッター
-	void SetIsChange(bool flag);	//IsChangeのセッター
+	/// <summary>
+	/// 座標取得
+	/// </summary>
+	/// <returns>種類</returns>
+	const Vector2F GetPzlPos(void)const;
 
-	void SetIsDrawRoom(bool flag);	//部屋を描画するかのフラグをセット
+	/// <summary>
+	/// カーソルフラグ設定
+	/// </summary>
+	/// <param name="flag">true=カーソル状態/false=非カーソル状態</param>
+	void SetIsCursor(const bool flag);
 
-	Vector2F GetRoomSize(void)const;//現在の部屋のサイズを取得
+	/// <summary>
+	/// カーソルフラグ取得
+	/// </summary>
+	/// <returns>true=カーソル状態/false=非カーソル状態</returns>
+	const bool GetIsCursor(void)const;
 
-	int GetObj(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
-	int GetMapchip(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
-	bool IsOneDownObj(Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
+	/// <summary>
+	/// 変更が既にされたかの設定
+	/// </summary>
+	/// <param name="flag">true=した/false=していない</param>
+	void SetIsChange(const bool flag);
 
-	bool IsClone(void)const;	//複製たいかどうか
-	void SetIsClone(bool flag);	//上記のセット
+	/// <summary>
+	/// 変更が既にされたかの取得
+	/// </summary>
+	/// <returns>true=されている/false=されていない</returns>
+	const bool IsChange(void)const;
+	
+	/// <summary>
+	/// 部屋を描画するかのフラグ
+	/// </summary>
+	/// <param name="flag">true=する/false=しない</param>
+	void SetIsDrawRoom(const bool flag);
+
+	/// <summary>
+	/// 現在の部屋のサイズ取得
+	/// </summary>
+	/// <returns>サイズ</returns>
+	Vector2F GetRoomSize(void)const;
+
+	/// <summary>
+	/// 指定場所のオブジェクトを返す
+	/// </summary>
+	/// <param name="pos">指定場所</param>
+	/// <returns>指定のオブジェクトCSV値</returns>
+	const int GetObj(const Vector2 pos)const;
+
+	/// <summary>
+	/// 指定場所のマップチップを返す
+	/// </summary>
+	/// <param name="pos">指定場所</param>
+	/// <returns>指定のマップCSV値</returns>
+	const int GetMapchip(const Vector2 pos)const;
+
+	/// <summary>
+	/// 指定場所の一つ下のオブジェクトを返す
+	/// </summary>
+	/// <param name="pos">指定場所</param>
+	/// <returns>指定の一つ下のオブジェクトCSV値</returns>
+	const bool IsOneDownObj(const Vector2 pos)const;	//指定された場所のオブジェクトCSVの値を返す
+
+	/// <summary>
+	/// ダミーフラグ取得
+	/// </summary>
+	/// <returns>true=ダミーではない/false=ダミーである</returns>
+	const bool IsClone(void)const;
+
+	/// <summary>
+	/// ダミーフラグ設定
+	/// </summary>
+	/// <param name="flag">true=ダミー/false=非ダミー</param>
+	void SetIsClone(const bool flag);
 
 
 private:
-	Vector2F mapPos_;		//ステルスシーンにおけるmapの座標（必要かはわからん）
 	Vector2F mapMaxSize_;		//実際に描画するマップのサイズ
 
-	bool isChange_;	//パズルリセット時にすでに確定している場所であるかの判定
+	bool isChange_;			//パズルリセット時にすでに確定している場所であるかの判定
 	bool isDrawStealth_;	//ステルスシーンにおいて描画するかを決める
 
 	std::vector<std::vector<int>> map_;

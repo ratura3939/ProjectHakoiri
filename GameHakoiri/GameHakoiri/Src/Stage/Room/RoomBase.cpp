@@ -24,7 +24,6 @@ RoomBase::RoomBase(int roomImg, int sizeX, int sizeY,
 
 	type_ = TYPE::NONE;
 	pzlPos_ = { 0.0f,0.0f };
-	mapPos_ = { 0.0f,0.0f };
 	pieceSize_ = { 1.0f,1.0f };
 	mapMaxSize_ = { 1.0f,1.0f };
 	isCursor_ = false;
@@ -57,7 +56,6 @@ RoomBase::~RoomBase(void)
 bool RoomBase::Init(void)
 {
 	pzlPos_ = { 0.0f,0.0f };
-	mapPos_ = { 0.0f,0.0f };
 	isCursor_ = false;
 	isChange_ = false;
 	isClone_ = false;
@@ -99,7 +97,8 @@ void RoomBase::DrawStealth(void)
 	//マップを表示しないところは描画処理を行わない
 	if (!isDrawStealth_) { return; }
 
-	Vector2F pos = mapPos_;
+	//ステルス時の基本描画位置は{0,0}
+	Vector2F pos = { 0.0f,0.0f };
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
 	for (int y = 0; y < mapSize_.y; y++)
@@ -132,7 +131,7 @@ void RoomBase::DrawStealth(void)
 }
 void RoomBase::DrawStealthObject(void)
 {
-	Vector2F pos = mapPos_;
+	Vector2F pos = { 0.0f,0.0f };
 	pos.x += StageManager::UNIT_STEALTH_SIZE_X / 2;
 	pos.y += StageManager::UNIT_STEALTH_SIZE_Y / 2;
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
@@ -180,7 +179,7 @@ void RoomBase::SetRoomType(TYPE type)
 	type_ = type;
 }
 
-RoomBase::TYPE RoomBase::GetRoomType(void)const
+const RoomBase::TYPE RoomBase::GetRoomType(void)const
 {
 	return type_;
 }
@@ -190,78 +189,69 @@ RoomBase::TYPE RoomBase::GetRoomType(void)const
 
 #pragma region パズルのSetGet
 
-void RoomBase::SetPzlPos(Vector2F pos)
+void RoomBase::SetPzlPos(const Vector2F pos)
 {
 	pzlPos_ = pos;
 }
-Vector2F RoomBase::GetPzlPos(void)const
+const Vector2F RoomBase::GetPzlPos(void)const
 {
 	return pzlPos_;
 }
 #pragma endregion
 
-#pragma region マップのSetGet
-
-void RoomBase::SetMapPos(Vector2F pos)
-{
-	mapPos_ = pos;
-}
-
-Vector2F RoomBase::GetMapPos(void)const
-{
-	return mapPos_;
-}
-#pragma endregion
-
 #pragma region カーソルのSetGet
 
-void RoomBase::SetIsCursor(bool flag)
+void RoomBase::SetIsCursor(const bool flag)
 {
 	isCursor_ = flag;
 }
 
-bool RoomBase::GetIsCursor(void)const
+const bool RoomBase::GetIsCursor(void)const
 {
 	return isCursor_;
 }
-bool RoomBase::IsChange(void)
+const bool RoomBase::IsChange(void)const 
 {
 	return isChange_;
 }
-void RoomBase::SetIsChange(bool flag)
+void RoomBase::SetIsChange(const bool flag)
 {
 	isChange_ = flag;
 }
-void RoomBase::SetIsDrawRoom(bool flag)
+void RoomBase::SetIsDrawRoom(const bool flag)
 {
 	isDrawRoom_ = flag;
 }
-Vector2F RoomBase::GetRoomSize(void) const
+ Vector2F RoomBase::GetRoomSize(void) const
 {
 	return mapSize_;
 }
-int RoomBase::GetObj(Vector2 pos) const
+const int RoomBase::GetObj(const Vector2 pos) const
 {
 	return obj_[pos.y][pos.x];
 }
-int RoomBase::GetMapchip(Vector2 pos) const
+const int RoomBase::GetMapchip(const Vector2 pos) const
 {
 	return map_[pos.y][pos.x];
 }
-bool RoomBase::IsOneDownObj(Vector2 pos)const
+const bool RoomBase::IsOneDownObj(const Vector2 pos)const
 {
-	pos.y++;
-	if (obj_[pos.y][pos.x] == -1)	//オブジェクトが何も入っていなかったら
+	Vector2 serchPos = pos;
+
+	//一つ下に
+	serchPos.y++;
+
+	if (obj_[serchPos.y][serchPos.x] == -1)	//オブジェクトが何も入っていなかったら
 	{
 		return true;
 	}
 	return false;
 }
-bool RoomBase::IsClone(void) const
+const bool RoomBase::IsClone(void) const
 {
 	return isClone_;
 }
-void RoomBase::SetIsClone(bool flag)
+void RoomBase::SetIsClone(const bool flag)
 {
 	isClone_ = flag;
 }

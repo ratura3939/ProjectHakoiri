@@ -43,6 +43,9 @@ public:
 	virtual void Draw(GameScene::MODE mode);	//描画
 	virtual bool Release(void);					//解放
 
+protected:
+	virtual void SetParam(void);			//部屋ごとのパラメータ設定
+
 private:
 	void DrawPazzle(void);	//パズル
 	void DrawCursor(void);	//カーソル
@@ -254,6 +257,14 @@ public:
 private:
 	//長方形の駒
 	
+
+	/// <summary>
+	/// 貯法系判断のためダミーを生成
+	/// </summary>
+	/// <param name="type">ダミーのタイプ</param>
+	/// <returns>ダミーインスタンス(参照)</returns>
+	std::unique_ptr<RoomBase> CreateInstance4Confirmation(const RoomBase::TYPE type);
+
 	/// <summary>
 	/// 長方形の非本体用の空のインスタンスの生成
 	/// </summary>
@@ -304,7 +315,7 @@ private:
 	/// </summary>
 	/// <param name="key">配列指定要素数(string)</param>
 	/// <returns>正方形or長方形</returns>
-	const RoomBase::ROOM_SHAPE GetRoomShape(const std::string key);	//部屋の形を検索(鍵検索)
+	const RoomBase::ROOM_SHAPE GetRoomShape(const std::string key);
 
 	/// <summary>
 	/// 部屋の形が正方形か長方形か(部屋の種類検索)
@@ -336,7 +347,14 @@ private:
 	/// <param name="size">分割後のその範囲の大きさ</param>
 	/// <param name="startPos">検索初期位置</param>
 	/// <returns></returns>
-	const StageManager::DOOR SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)const;	//部屋の分割
+	const StageManager::DOOR SplitRoom(const Vector2 pMapPos, const Vector2 size, const Vector2 startPos)const;
+
+	/// <summary>
+	/// 追加判定用の情報を取得
+	/// </summary>
+	/// <returns>判定結果</returns>
+	const StageManager::DOOR_Y GetDoorSpare(void)const;	
+
 
 
 	//フラグ関係********************************************************************************************************************************
@@ -353,6 +371,10 @@ private:
 	/// <param name="flag">true=非本体/false=本体</param>
 	void SetIsSecondRoom(const bool flag);
 
+	/// <summary>
+	/// ゴール状態であるかの設定
+	/// </summary>
+	/// <param name="flag">true=している/false=していない</param>
 	void SetIsGoal(const bool flag);
 
 #pragma endregion
@@ -360,15 +382,13 @@ private:
 
 private:
 	std::map<std::string, std::unique_ptr<RoomBase>> roomMng_;			//部屋の情報一括管理
-	std::map<std::string, RoomBase::TYPE> resetRoom_;	//部屋のリセット用
-	std::map<std::string, bool> resetRoomClone_;		//部屋のリセット用
-	std::string roomKey_;								//連想配列のキー
-	Vector2 goalPos_;		//ゴールの位置記録
+	std::map<std::string, RoomBase::TYPE> resetRoom_;					//部屋のリセット用
+	std::map<std::string, bool> resetRoomClone_;						//部屋のリセット用
+	std::string roomKey_;												//連想配列のキー
+	Vector2 goalPos_;													//ゴールの位置記録
+	std::map<std::string, Vector2F>pzlPos_;								//駒の描画位置管理
 
-	
-	std::map<std::string, Vector2F>pzlPos_;	//駒の描画位置管理
-
-	CURSOR type_;		//カーソルが現在何を指しているかを保持
+	CURSOR type_;								//カーソルが現在何を指しているかを保持
 	int frame_[static_cast<int>(CURSOR::MAX)];	//カーソルフレームの画像を保持
 	bool frameFlash_;							//カーソルを点滅させるかどうか
 	int frameAnim_;								//カーソル点滅カウント用
@@ -378,28 +398,15 @@ private:
 	bool isSecondRoom_;			//長方形の二マス目に出たか
 	bool isGoal_;				//ゴールにたどり着いたか
 
-	//Get&Set
-
-	
-
-	//長方形２コマ目かを判断するために必要なインスタンスを生成する
-	RoomBase& CreateInstance4Confirmation(const RoomBase::TYPE type);
-
-	
-	const StageManager::DOOR_Y GetDoorSpare(void)const;			//縦長用の追加判定のドア検知を返却
-	
-
-
 protected:
 
-	std::vector<std::vector<int>>::iterator pzlCsv_;
-	Vector2 size_;
-	virtual void SetParam(void);			//部屋ごとのパラメータ設定
+	std::vector<std::vector<int>>::iterator pzlCsv_;	//パズル配置情報
+	Vector2 size_;							//パズルサイズ
 
 	std::vector<std::vector<int>>* mapCsv_;	//マップのCsvデータの先頭アドレス格納
 	std::vector<std::vector<int>>* objCsv_;	//オブジェクトのCsvデータの先頭アドレス格納
-	int* roomImg_;		//パズルシーンの駒画像受け取り
-	int** mapchip_;		//ステルスシーンのマップチップ受け取り
+	int* roomImg_;							//パズルシーンの駒画像受け取り
+	int** mapchip_;							//ステルスシーンのマップチップ受け取り
 
-	StageManager::DOOR_Y doorSpare_;	//ドア判定縦長用(正方形と横長はNONE)
+	StageManager::DOOR_Y doorSpare_;		//ドア判定縦長用(正方形と横長はNONE)
 };
