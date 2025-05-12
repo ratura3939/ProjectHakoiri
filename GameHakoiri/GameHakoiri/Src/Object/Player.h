@@ -9,11 +9,17 @@ class Player: public CharacterBase
 public:
 
 	//定数
+
+	//初期位置
 	static constexpr float UNIT_POS_X = 990.0f;
 	static constexpr float UNIT_POS_Y = 270.0f;
+
+	//一方向の角度量
 	static constexpr float UNIT_DIR_DEG = 45.0f;
-	static constexpr float HP = 100.0f;
-	static constexpr float HP_SIZE = 128.0f;
+
+	//パラメータ類
+	static constexpr float HP = 100.0f;				//HP
+	static constexpr float HP_SIZE = 128.0f;		//
 	static constexpr float DASH = 2.0f;
 	static constexpr float DASH_INIT = 1.0f;
 	static constexpr float USE_STAMINA = 2.0f;
