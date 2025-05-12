@@ -14,6 +14,26 @@
 SelectScene::SelectScene(void)
 {
 	selectNum_ = 0;
+	stageNumImg_[0] = -1;
+	stageNumImg_[1] = -1;
+	stageNumImg_[2] = -1;
+	backTitleImg_ = -1;
+	checkImg_ = -1;
+
+	frame_[0] = -1;
+	frame_[1] = -1;
+
+	prevStick_ = { 0,0 };
+	selectBack_ = false;
+
+	stageNumRot_[0] = 0.0f;
+	stageNumRot_[1] = 0.0f;
+	stageNumRot_[2] = 0.0f;
+	rotDecre_ = false;
+
+	stageNumPos_[0] = { 0, 0 };
+	stageNumPos_[1] = { 0, 0 };
+	stageNumPos_[2] = { 0, 0 };
 }
 //デストラクタ
 //********************************************************
@@ -25,10 +45,6 @@ SelectScene::~SelectScene(void)
 //********************************************************
 bool SelectScene::Init(void)
 {
-	prevStick_ = {0,0};
-	selectNum_ = 0;
-	selectBack_ = false;
-
 	ResetRot();
 
 	stageNumImg_[0]= ResourceManager::GetInstance().Load(ResourceManager::SRC::STAGE_1_IMG).handleId_;
@@ -95,28 +111,28 @@ void SelectScene::Draw(void)
 		if (stg.IsClearStage(i))
 		{
 			DrawRotaGraph(stageNumPos_[i].x, stageNumPos_[i].y,
-				1.0f, 0.0f * Utility::DEG2RAD,
+				static_cast<double>(1.0f), static_cast < double>(0.0f * Utility::DEG2RAD),
 				checkImg_, true, false);
 		}
 	}
 
 	//タイトルに戻るの描画
 	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y - BACK_TITLE_Y / 2,
-		1.0f, 0.0f * Utility::DEG2RAD,
+		static_cast<double>(1.0f), static_cast <double>(0.0f * Utility::DEG2RAD),
 		backTitleImg_, true, false);
 
 	//フレームの描画
 	if (selectBack_)	//タイトルに戻るにカーソルがあっていたら
 	{
 		DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y - BACK_TITLE_Y / 2,
-			4.0f, 0.0f * Utility::DEG2RAD,
-			frame_[1], true, false);
+			static_cast<double>(BACK_FRAME_EX), static_cast<double>(0.0f * Utility::DEG2RAD),
+			frame_[static_cast<int>(FRAME_TYPE::OBLONG)], true, false);
 	}
 	else
 	{
 		DrawRotaGraph(stageNumPos_[selectNum_].x, stageNumPos_[selectNum_].y,
-			4.0f, stageNumRot_[selectNum_] * Utility::DEG2RAD,
-			frame_[0], true, false);
+			static_cast<double>(BACK_FRAME_EX), static_cast<double>(stageNumRot_[selectNum_] * Utility::DEG2RAD),
+			frame_[static_cast<int>(FRAME_TYPE::NOMAL)], true, false);
 	}
 }
 //解放
@@ -140,7 +156,7 @@ void SelectScene::KeyboardContoroller(void)
 		{
 			SoundManager::GetInstance().StopBgmOfSelect();
 			//ステージナンバーを受け渡しシーン切り替え
-			SceneManager::GetInstance().SetStageNum(selectNum_ + 1);
+			SceneManager::GetInstance().SetStageNum(selectNum_);
 			SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
 		}
 		else
@@ -188,7 +204,7 @@ void SelectScene::GamePadController(void)
 		{
 			SoundManager::GetInstance().StopBgmOfSelect();
 			//ステージナンバーを受け渡しシーン切り替え
-			SceneManager::GetInstance().SetStageNum(selectNum_ + 1);
+			SceneManager::GetInstance().SetStageNum(selectNum_);
 			SceneManager::GetInstance().ChangeScene(SceneManager::SCENEID::GAME, true);
 		}
 		else

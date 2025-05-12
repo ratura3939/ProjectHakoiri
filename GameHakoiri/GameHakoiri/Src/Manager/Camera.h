@@ -4,7 +4,11 @@
 
 class Camera
 {
+private:
+	Camera(void);	//コンストラクタ
+
 public:
+	~Camera(void);	//デストラクタ
 	static void CreateInstance(void);
 	static Camera& GetInstance(void);
 	
@@ -32,6 +36,10 @@ public:
 	const Vector2F GetPos(void)const;
 
 private:
+	/// <summary>
+	/// 移動処理
+	/// </summary>
+	void MoveCamera(void);
 
 	static Camera* instance_;
 
@@ -39,10 +47,5 @@ private:
 	Vector2F localCenterPos_;
 	Vector2F targetPos_;
 	Vector2F mapSize_;
-
-	void MoveCamera(void);
-
-	Camera(void);	//コンストラクタ
-	~Camera(void);	//デストラクタ
 };
 

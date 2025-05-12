@@ -44,8 +44,8 @@ void CharacterBase::Draw(void)
 	auto cameraPos = SceneManager::GetInstance().GetCamera().GetPos();
 
 	//キャラクター
-	DrawRotaGraph(pos_.x - cameraPos.x,
-		pos_.y - cameraPos.y,
+	DrawRotaGraph(static_cast<int>(pos_.x - cameraPos.x),
+		static_cast<int>(pos_.y - cameraPos.y),
 		1.0f,
 		0.0 * Utility::DEG2RAD,
 		img_[animIdx_],

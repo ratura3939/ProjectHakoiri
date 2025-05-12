@@ -9,6 +9,7 @@ public:
 	void Init(void);
 	void Relese(void);
 
+	//BGM
 	void PlayBgmOfTitle(void);
 	void StopBgmOfTitle(void);
 	void PlayBgmOfSelect(void);
@@ -24,25 +25,28 @@ public:
 	void PlayBgmOfEnding(void);
 	void StopBgmOfEnding(void);
 
+	//効果音
 	void PlaySndEnter(bool flag);
 	void PlaySndMove(void);
 	void PlaySndReset(void);
 	void PlaySndSelect(void);
 
 private:
-	int titleBgm_;
-	int selectBgm_;
-	int pazzleBgm_;
-	int stealthBgm_;
-	int successBgm_;
-	int failedBgm_;
-	int endingBgm_;
+	//BGM
+	int titleBgm_;		//タイトル
+	int selectBgm_;		//セレクト
+	int pazzleBgm_;		//パズル
+	int stealthBgm_;	//ステルス
+	int successBgm_;	//成功
+	int failedBgm_;		//失敗
+	int endingBgm_;		//エンディング
 
-	int enterSnd_;
-	int canselSnd_;
-	int moveSnd_;
-	int resetSnd_;
-	int selectSnd_;
+	//効果音
+	int enterSnd_;		//決定
+	int canselSnd_;		//キャンセル
+	int moveSnd_;		//移動
+	int resetSnd_;		//リセット
+	int selectSnd_;		//選択
 
 	SoundManager(void);
 	void Destroy(void);	//デストラクタ

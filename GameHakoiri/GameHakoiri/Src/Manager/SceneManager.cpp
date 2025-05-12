@@ -22,16 +22,21 @@ SceneManager::SceneManager(Camera& _camera) : camera_(_camera)
 {
 	sceneID_ = SCENEID::NONE;
 	nextSceneID_ = SCENEID::NONE;
-	//isChangeScene_ = false;
+	controller_ = CONTROLLER::MAX;
+
+	isChangeScene_ = false;
+
 	scene_ = nullptr;
 	fader_ = nullptr;
+
+	stageNum_ = -1;
+	clearStage_[0] = false;
+	clearStage_[1] = false;
+	clearStage_[2] = false;
+
 	isManual_ = false;
-}
-//コピーコンストラクタ
-//********************************************************
-SceneManager::SceneManager(const SceneManager& ins, Camera& _camera) : camera_(_camera)
-{
-	
+	firstManual_[0] = false;
+	firstManual_[1] = false;
 }
 //デストラクタ
 //********************************************************
@@ -52,7 +57,7 @@ bool SceneManager::Init(void)
 	DoChangeScene();
 
 	//フェード
-	fader_ = new Fader;
+	fader_ = std::make_unique<Fader>();
 	fader_->Init();
 
 	//タイトルをフェードインで表示
@@ -63,14 +68,6 @@ bool SceneManager::Init(void)
 	Plate::CreateInstance();
 	//マニュアルの生成
 	Manual::CreateInstance();
-
-	clearStage_[0] = false;
-	clearStage_[1] = false;
-	clearStage_[2] = false;
-
-	isManual_ = false;
-	firstManual_[0] = false;
-	firstManual_[1] = false;
 
 	//正しく処理が終了したので
 	return true;
@@ -126,26 +123,24 @@ bool SceneManager::Release(void)
 
 	SoundManager::GetInstance().Relese();
 	
-	delete fader_;
-	fader_ = nullptr;
-	instance_ = nullptr;
+	Destroy();
 	//正しく処理が終了したので
 	return true;
 }
 //ステージナンバーの保管
 //********************************************************
-void SceneManager::SetStageNum(int num)
+void SceneManager::SetStageNum(const int num)
 {
 	stageNum_ = num;
 }
 //ステージナンバーの譲渡
 //********************************************************
-int SceneManager::GetStageNum(void)
+const int SceneManager::GetStageNum(void)const
 {
 	return stageNum_;
 }
 
-void SceneManager::SetController(CONTROLLER cnt)
+void SceneManager::SetController(const CONTROLLER cnt)
 {
 	controller_ = cnt;
 }
@@ -156,7 +151,7 @@ void SceneManager::ChangeController(void)
 	else controller_ = CONTROLLER::KEYBOARD;
 }
 
-SceneManager::CONTROLLER SceneManager::GetController(void) const
+const SceneManager::CONTROLLER SceneManager::GetController(void) const
 {
 	return controller_;
 }
@@ -170,7 +165,7 @@ Camera& SceneManager::GetCamera(void) const
 
 //シーン切り替え
 //********************************************************
-void SceneManager::ChangeScene(SCENEID next,bool isToFade)
+void SceneManager::ChangeScene(const SCENEID next,const bool isToFade)
 {
 	nextSceneID_ = next;
 	if (isToFade)
@@ -257,7 +252,7 @@ void SceneManager::Fade(void)
 }
 //指定したシーンの解放
 //********************************************************
-void SceneManager::ReleaseScene(SCENEID sceneID)
+void SceneManager::ReleaseScene(const SCENEID sceneID)
 {
 	if (sceneID != SCENEID::NONE)	//NONE以外だったら
 	{
@@ -295,22 +290,22 @@ SceneManager& SceneManager::GetInstance(void)
 	return *instance_;
 }
 
-void SceneManager::ClearStage(int stageNum)
+void SceneManager::ClearStage(const int stageNum)
 {
 	clearStage_[stageNum] = true;
 }
 
-bool SceneManager::IsClearStage(int stageNum)
+const bool SceneManager::IsClearStage(const int stageNum)const
 {
 	return clearStage_[stageNum];
 }
 
-bool SceneManager::IsClearStageNow(void)
+const bool SceneManager::IsClearStageNow(void)const
 {
-	return clearStage_[stageNum_ - 1];
+	return clearStage_[stageNum_];
 }
 
-bool SceneManager::CheckAllClear(void)
+const bool SceneManager::CheckAllClear(void)const
 {
 	for (int i = 0; i < STAGE_ALL; i++)
 	{
@@ -319,7 +314,7 @@ bool SceneManager::CheckAllClear(void)
 	return true;
 }
 
-void SceneManager::SetManual(GameScene::MODE mode)
+void SceneManager::SetManual(const GameScene::MODE mode)
 {
 	if (!firstManual_[static_cast<int>(mode)])
 	{
@@ -342,5 +337,5 @@ void SceneManager::Reset(void)
 
 void SceneManager::CustomClearFlag(int num)
 {
-	clearStage_[num - 1] = true;
+	clearStage_[num] = true;
 }

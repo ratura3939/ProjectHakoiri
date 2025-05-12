@@ -28,6 +28,9 @@ Stealth::Stealth(void)
 	enemyMng_[5] = nullptr;
 
 	isEnemyMove_ = false;
+	isFailed_ = false;
+	isMoveRoom_ = false;
+
 }
 //デストラクタ
 //********************************************************

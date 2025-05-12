@@ -12,7 +12,7 @@ public:
 	static constexpr int SCREEN_SIZE_Y = 720;
 
 	static constexpr int FPS = 60;
-	static constexpr float frameRate = 1000 / 60;
+	static constexpr float frameRate = 1000.0f / 60.0f;
 
 	// データパス関連
 	//-------------------------------------------

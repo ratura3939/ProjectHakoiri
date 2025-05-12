@@ -2,7 +2,6 @@
 #include"ResourceManager.h"
 #include"../Scene/GameScene.h"
 #include"../Stage/StageBase.h"
-#include"../Stage/TutorialStage.h"
 #include"../Application.h"
 #include"../Utility/Utility.h"
 
@@ -43,14 +42,11 @@ bool StageManager::Init(STAGENUM num)
 	SetIsDrawPazzleManual(true);
 
 	//生成するステージによって違う情報の設定
-	int pzlIdx = -1;		//ステージ情報
+	int pzlIdx = 0;		//ステージ情報
 	int pzlSizeX = -1;		//パズルの横幅
 	int pzlSizeY = -1;		//パズルの縦幅
 	switch (num_)
 	{
-	case StageManager::STAGENUM::TUTORIAL:
-		//stage_ = new TutorialStage();
-		break;
 	case StageManager::STAGENUM::FIRST:
 		pzlIdx = static_cast<int>(STAGENUM::FIRST);
 		pzlSizeX = FIRST_PAZZLE_SIZE_X;
@@ -119,8 +115,8 @@ void StageManager::Draw(GameScene::MODE mode)
 		if (manualFlash_ % Application::FPS < MANUAL_FLASH)
 		{
 			DrawRotaGraph(Application::SCREEN_SIZE_X - MANUAL_SIZE / 2, MANUAL_SIZE / 2,
-				0.5f,
-				0.0f * Utility::DEG2RAD,
+				static_cast<double>(0.5f),
+				static_cast < double>(0.0f * Utility::DEG2RAD),
 				manualImg_[cntroller],
 				true,
 				false);
@@ -195,10 +191,10 @@ const bool StageManager::IsCollisionWall(const Vector2 pMapPos) const
 {
 	int map = stage_->GetMapNum(pMapPos);
 	StageManager::MAPCHIP mapchip = stage_->GetMapchipType();
-	int sizeY = mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)].size();
+	int sizeY = static_cast<int>(mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)].size());
 	for (int y = 0; y < sizeY; y++)
 	{
-		int sizeX = mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y].size();
+		int sizeX = static_cast<int>(mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y].size());
 		for (int x = 0; x < sizeX; x++)
 		{
 			if (map==mapchipObj_[static_cast<int>(mapchip)][static_cast<int>(OBJECT::OBSTACLE)][y][x])
@@ -242,10 +238,10 @@ const StageManager::OBJECT StageManager::GetObjectType(const Vector2 pMapPos) co
 	for (int i = 0; i < static_cast<int>(OBJECT::MAX); i++)
 	{
 		//オブジェクト判定用のCSVを１個ずつ回す。
-		int sizeY = mapchipObj_[static_cast<int>(mapchip)][i].size();
+		int sizeY = static_cast<int>(mapchipObj_[static_cast<int>(mapchip)][i].size());
 		for (int y = 0; y < sizeY; y++)
 		{
-			int sizeX = mapchipObj_[static_cast<int>(mapchip)][i][y].size();
+			int sizeX = static_cast<int>(mapchipObj_[static_cast<int>(mapchip)][i][y].size());
 			for (int x = 0; x < sizeX; x++)
 			{
 				if (obj == mapchipObj_[static_cast<int>(mapchip)][i][y][x])	//i=オブジェクト種類,x・y=CSV添字

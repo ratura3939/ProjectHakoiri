@@ -152,19 +152,19 @@ public:
 
 
 private:
-	Vector2F mapMaxSize_;		//実際に描画するマップのサイズ
+	Vector2F mapMaxSize_;	//実際に描画するマップのサイズ
 
 	bool isChange_;			//パズルリセット時にすでに確定している場所であるかの判定
 	bool isDrawStealth_;	//ステルスシーンにおいて描画するかを決める
 
-	std::vector<std::vector<int>> map_;
-	std::vector<std::vector<int>> obj_;
-	int* mapchip_;
+	std::vector<std::vector<int>> map_;		//マップデータ
+	std::vector<std::vector<int>> obj_;		//オブジェクトデータ
+	int* mapchip_;	//マップイラスト
 	
 
 protected:
 
-	TYPE type_;	//部屋の種類の識別子
+	TYPE type_;				//部屋の種類の識別子
 
 
 	Vector2F pzlPos_;		//パズルシーンにおける座標
@@ -172,13 +172,13 @@ protected:
 	Vector2F pazzleSize_;	//パズルシーンにおけるサイズ(〇×〇か）
 	
 
-	Vector2F mapSize_;	//ステルスシーンにおけるマップのサイズ(〇×〇か）
+	Vector2F mapSize_;		//ステルスシーンにおけるマップのサイズ(〇×〇か）
 
 	bool isCursor_;			//カーソルに選択されているかどうか
 
-	int roomImg_;	//部屋の画像
-	bool isDrawRoom_;	//描画するか決める（長方形の二マス目用）
-	bool isClone_;	//本体じゃないかどうかを判断
+	int roomImg_;			//部屋の画像
+	bool isDrawRoom_;		//描画するか決める（長方形の二マス目用）
+	bool isClone_;			//本体じゃないかどうかを判断
 
 	virtual void SetParam(void);	//部屋ごとのパラメータ設定
 };

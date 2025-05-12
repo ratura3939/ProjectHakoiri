@@ -14,8 +14,8 @@ RoomBase::RoomBase(int roomImg, int sizeX, int sizeY,
 	int* mapchip)
 {
 	roomImg_ = roomImg;
-	mapSize_.x = sizeX;
-	mapSize_.y = sizeY;
+	mapSize_.x = static_cast<float>(sizeX);
+	mapSize_.y = static_cast<float>(sizeY);
 
 	map_ = map;
 	obj_ = obj;
@@ -34,11 +34,13 @@ RoomBase::RoomBase(int roomImg, int sizeX, int sizeY,
 RoomBase::RoomBase(int roomImg)
 {
 	roomImg_ = roomImg;
+	mapchip_ = nullptr;
 
 	type_ = TYPE::NONE;
 	pzlPos_ = { 0.0f,0.0f };
 	pieceSize_ = { 1.0f,1.0f };
 
+	isClone_ = false;
 	isCursor_ = false;
 	isChange_ = false;
 	isDrawRoom_ = false;
@@ -107,8 +109,9 @@ void RoomBase::DrawStealth(void)
 		{
 			//mapÉåÉCÉÑÅ[ÇÃï`âÊ
 			int mapchip = map_[y][x];
-			DrawGraph(pos.x-cameraPos.x,
-				pos.y-cameraPos.y,
+			DrawGraph(
+				static_cast<int>(pos.x-cameraPos.x),
+				static_cast<int>(pos.y-cameraPos.y),
 				mapchip_[mapchip],
 				false);
 
@@ -116,8 +119,8 @@ void RoomBase::DrawStealth(void)
 			if (mapchip != -1)		//âÊëúÇ™ë∂ç›Ç∑ÇÈÇ∆Ç´
 			{
 				DrawGraph(
-					pos.x - cameraPos.x,
-					pos.y - cameraPos.y,
+					static_cast<int>(pos.x - cameraPos.x),
+					static_cast<int>(pos.y - cameraPos.y),
 					mapchip_[mapchip],
 					true);
 			}
@@ -145,10 +148,10 @@ void RoomBase::DrawStealthObject(void)
 			if (mapchip != -1)		//âÊëúÇ™ë∂ç›Ç∑ÇÈÇ∆Ç´
 			{
 				DrawRotaGraph(
-					pos.x - cameraPos.x,
-					pos.y - cameraPos.y,
-					1.0f,
-					Utility::DEG2RAD,
+					static_cast<int>(pos.x - cameraPos.x),
+					static_cast<int>(pos.y - cameraPos.y),
+					static_cast<double>(1.0f),
+					static_cast<double>(Utility::DEG2RAD),
 					mapchip_[mapchip],
 					true,
 					false);

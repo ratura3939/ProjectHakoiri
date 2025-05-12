@@ -11,6 +11,15 @@
 
 Player::Player(void)
 {
+	dash_ = false;
+	hpBaseImg_ = -1;
+	hpCircleImg_ = -1;
+	hpText_ = -1;
+	hp_ = -1.0f;
+	isDash_ = false;
+	isDrawMap_ = false;
+	stamina_ = -1.0f;
+	staminaColor_ = 0xffffff;
 }
 
 Player::~Player(void)
@@ -76,33 +85,30 @@ void Player::Draw(void)
 		pos_.y - (CharacterBase::CHARACTER_HALF_Y + STAMINA_BOX) };
 
 	//ベースの描画
-	DrawBox(staminaPos.x - cameraPos.x, staminaPos.y - cameraPos.y,
-		staminaPos.x + STAMINA_MAX - cameraPos.x, staminaPos.y + STAMINA_BOX - cameraPos.y,
+	DrawBox(static_cast<int>(staminaPos.x - cameraPos.x), static_cast<int>(staminaPos.y - cameraPos.y),
+		static_cast<int>(staminaPos.x + STAMINA_MAX - cameraPos.x), static_cast<int>(staminaPos.y + STAMINA_BOX - cameraPos.y),
 		0x000000, true);
 	//スタミナの描画
-	DrawBox(staminaPos.x - cameraPos.x, staminaPos.y - cameraPos.y,
-		staminaPos.x + stamina_ - cameraPos.x, staminaPos.y + STAMINA_BOX - cameraPos.y,
+	DrawBox(static_cast<int>(staminaPos.x - cameraPos.x), static_cast<int>(staminaPos.y - cameraPos.y),
+		static_cast<int>(staminaPos.x + stamina_ - cameraPos.x), static_cast<int>(staminaPos.y + STAMINA_BOX - cameraPos.y),
 		staminaColor_, true);
 
 	//枠
-	DrawRotaGraph(hpPos_.x,
-		hpPos_.y,
-		1.0f,
-		0.0 * Utility::DEG2RAD,
+	DrawRotaGraph(static_cast<int>(hpPos_.x), static_cast<int>(hpPos_.y),
+		static_cast<double>(1.0f),
+		static_cast<double>(0.0 * Utility::DEG2RAD),
 		hpBaseImg_,
 		true,
 		false);
 	//HPそのもの
-	DrawCircleGauge(hpPos_.x,
-		hpPos_.y,
-		hp_,
+	DrawCircleGauge(static_cast<int>(hpPos_.x), static_cast<int>(hpPos_.y),
+		static_cast<double>(hp_),
 		hpCircleImg_,
 		0.0);
 	//HPテキスト
-	DrawRotaGraph(hpPos_.x,
-		hpPos_.y,
-		1.0f,
-		0.0 * Utility::DEG2RAD,
+	DrawRotaGraph(static_cast<int>(hpPos_.x), static_cast<int>(hpPos_.y),
+		static_cast<double>(1.0f),
+		static_cast<double>(0.0 * Utility::DEG2RAD),
 		hpText_,
 		true,
 		false);

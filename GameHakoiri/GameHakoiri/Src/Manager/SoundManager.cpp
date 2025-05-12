@@ -6,6 +6,19 @@ SoundManager* SoundManager::instance_ = nullptr;
 
 SoundManager::SoundManager(void)
 {
+	titleBgm_ = -1;
+	selectBgm_ = -1;
+	pazzleBgm_ = -1;
+	stealthBgm_ = -1;
+	successBgm_ = -1;
+	failedBgm_ = -1;
+	endingBgm_ = -1;
+
+	enterSnd_ = -1;
+	canselSnd_ = -1;
+	moveSnd_ = -1;
+	resetSnd_ = -1;
+	selectSnd_ = -1;
 }
 
 void SoundManager::Destroy(void)

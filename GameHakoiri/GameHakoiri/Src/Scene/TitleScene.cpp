@@ -3,6 +3,7 @@
 #include"../Manager/InputManager.h"
 #include"../Manager/ResourceManager.h"
 #include"../Manager/SoundManager.h"
+#include"../Manager/StageManager.h"
 #include"../System/Plate.h"
 #include"../Application.h"
 #include"../Utility/Utility.h"
@@ -14,6 +15,10 @@
 TitleScene::TitleScene(void)
 {
 	isNext_ = false;
+	isCheck_ = false;
+	startEx_ = 0.7f;
+	startImg_ = -1;
+	titleImg_ = -1;
 }
 //デストラクタ
 //********************************************************
@@ -25,13 +30,12 @@ TitleScene::~TitleScene(void)
 //********************************************************
 bool TitleScene::Init(void)
 {
-	isCheck_ = false;
 	str_ = "NONE";
 
 	auto& rsM = ResourceManager::GetInstance();
 	titleImg_= rsM.Load(ResourceManager::SRC::TITLE_IMG).handleId_;
 	startImg_ = rsM.Load(ResourceManager::SRC::START_IMG).handleId_;
-	startEx_ = 0.7f;
+	
 
 	SoundManager::GetInstance().PlayBgmOfTitle();
 	//正常に処理が行われたので
@@ -78,7 +82,7 @@ void TitleScene::Draw(void)
 		true,
 		false);
 
-	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y -256,
+	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y - Application::SCREEN_SIZE_Y/3,
 		startEx_,
 		0.0 * Utility::DEG2RAD,
 		startImg_,
@@ -122,9 +126,9 @@ void TitleScene::KeyboardContoroller(void)
 	//各ステージをクリア判定に
 	if (ins.IsNew(KEY_INPUT_LSHIFT))
 	{
-		if (ins.IsNew(KEY_INPUT_1))SceneManager::GetInstance().CustomClearFlag(1);
-		if (ins.IsNew(KEY_INPUT_2))SceneManager::GetInstance().CustomClearFlag(2);
-		if (ins.IsNew(KEY_INPUT_3))SceneManager::GetInstance().CustomClearFlag(3);
+		if (ins.IsNew(KEY_INPUT_1))SceneManager::GetInstance().CustomClearFlag(static_cast<int>(StageManager::STAGENUM::FIRST));
+		if (ins.IsNew(KEY_INPUT_2))SceneManager::GetInstance().CustomClearFlag(static_cast<int>(StageManager::STAGENUM::SECOND));
+		if (ins.IsNew(KEY_INPUT_3))SceneManager::GetInstance().CustomClearFlag(static_cast<int>(StageManager::STAGENUM::THIRD));
 	}
 }
 

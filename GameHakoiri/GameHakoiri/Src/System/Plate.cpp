@@ -12,12 +12,24 @@ Plate* Plate::instance_ = nullptr;
 
 Plate::Plate(void)
 {
-	plateImg_[0] = 0;
-	plateImg_[1] = 0;
-	frameImg_ = 0;
+	plateImg_[0] = -1;
+	plateImg_[1] = -1;
+	frameImg_ = -1;
+	boxImg_[0] = -1;
+	boxImg_[1] = -1;
+
+	frameAnim_ = 0;
+	prevStick_ = 0;
+	state_ = STATE::GO;
 	answer_ = ANSWER::OK;
 	isSelect_ = false;
 	isFinish_ = false;
+
+	platePos_ ={0.0f, 0.0f};
+	boxPos_[0][0] = { 0.0f,0.0f };
+	boxPos_[0][1] = { 0.0f,0.0f };
+	boxPos_[1][0] = { 0.0f,0.0f };
+	boxPos_[1][1] = { 0.0f,0.0f };
 }
 
 void Plate::Destroy(void)
@@ -166,22 +178,22 @@ void Plate::Draw(TYPE type, std::string str,bool strLong)
 	if (strLong)strTune = 2;
 
 	//ボードの表示
-	DrawRotaGraph(platePos_.x, platePos_.y,
-		1.0f,
-		0.0f * Utility::DEG2RAD,
+	DrawRotaGraph(static_cast<int>(platePos_.x), static_cast<int>(platePos_.y),
+		static_cast<double>(1.0f),
+		static_cast<double>(0.0 * Utility::DEG2RAD),
 		plateImg_[static_cast<int>(type)],
 		true,
 		false);
 
 	//文章の表示
 	auto size = str.length();
-	auto pos = Vector2F{ platePos_.x - PLATE_SIZE / strTune,platePos_.y };
+	auto pos = Vector2{ static_cast<int>(platePos_.x - PLATE_SIZE / strTune),static_cast<int>(platePos_.y) };
 	DrawFormatString(pos.x, pos.y, 0x000000, "%s", str.c_str());
 
 	//ボタンの表示
 	for (int i = 0; i < static_cast<int>(ANSWER::MAX); i++)
 	{
-		DrawRotaGraph(boxPos_[static_cast<int>(type)][i].x, boxPos_[static_cast<int>(type)][i].y,
+		DrawRotaGraph(static_cast<int>(boxPos_[static_cast<int>(type)][i].x), static_cast<int>(boxPos_[static_cast<int>(type)][i].y),
 			1.0f,
 			0.0f * Utility::DEG2RAD,
 			boxImg_[i],
@@ -193,9 +205,9 @@ void Plate::Draw(TYPE type, std::string str,bool strLong)
 	if (frameAnim_ % (Application::FPS / 2) < FLASH)
 	{
 		//フレームの表示
-		DrawRotaGraph(boxPos_[static_cast<int>(type)][static_cast<int>(answer_)].x,
-			boxPos_[static_cast<int>(type)][static_cast<int>(answer_)].y,
-			2.0f,
+		DrawRotaGraph(static_cast<int>(boxPos_[static_cast<int>(type)][static_cast<int>(answer_)].x),
+			static_cast<int>(boxPos_[static_cast<int>(type)][static_cast<int>(answer_)].y),
+			FRAME_EX,
 			0.0f * Utility::DEG2RAD,
 			frameImg_,
 			true,

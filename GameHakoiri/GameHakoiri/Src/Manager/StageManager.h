@@ -13,17 +13,22 @@ class StageManager
 public:
 
 	//列挙型
-	//生成するステージ
+	
+	/// <summary>
+	/// ステージ
+	/// </summary>
 	enum class STAGENUM
 	{
-		TUTORIAL
-		, FIRST
+		FIRST
 		, SECOND
 		, THIRD
 		, MAX
 	};
 
-	//マップに使用するマップチップの種類
+	
+	/// <summary>
+	/// マップ種類
+	/// </summary>
 	enum class MAPCHIP
 	{
 		BATH,
@@ -32,7 +37,9 @@ public:
 		MAX
 	};
 
-	//オブジェクトの種類
+	/// <summary>
+	/// オブジェクト種類尾
+	/// </summary>
 	enum class OBJECT
 	{
 		OBSTACLE,
@@ -41,7 +48,9 @@ public:
 		MAX
 	};
 
-	//扉の位置
+	/// <summary>
+	/// 扉位置(X)
+	/// </summary>
 	enum class DOOR_X
 	{
 		NONE,
@@ -49,6 +58,9 @@ public:
 		RIGHT
 	};
 
+	/// <summary>
+	/// 扉位置(Y)
+	/// </summary>
 	enum class DOOR_Y
 	{
 		NONE,
@@ -57,6 +69,9 @@ public:
 		BOTTOM
 	};
 
+	/// <summary>
+	/// 扉位置(総称)
+	/// </summary>
 	struct DOOR
 	{
 		DOOR_X x;
@@ -246,25 +261,25 @@ public:
 	/// </summary>
 	/// <param name="pMapPos">座標</param>
 	/// <returns>オブジェクトの種類(通り抜け可能かなど)</returns>
-	const OBJECT GetObjectType(const Vector2 pMapPos)const;		//オブジェクトのタイプを返却
+	const OBJECT GetObjectType(const Vector2 pMapPos)const;
 
 	/// <summary>
 	/// 部屋の形を取得
 	/// </summary>
 	/// <returns>正方形OR長方形</returns>
-	const RoomBase::ROOM_SHAPE GetShape(void);					//部屋の形正方形か長方形か）
+	const RoomBase::ROOM_SHAPE GetShape(void);
 
 	/// <summary>
 	/// 鍵の取得
 	/// </summary>
 	/// <returns>現在の配列要素数</returns>
-	const std::string GetKey(void)const;						//配列指定数
+	const std::string GetKey(void)const;
 
 	/// <summary>
 	/// ドアの位置を取得
 	/// </summary>
 	/// <returns></returns>
-	const DOOR GetDoor(void)const;								//移動に使用したドアの位置
+	const DOOR GetDoor(void)const;
 
 	/// <summary>
 	/// 上記の部屋が縦長だった場合の補足分
@@ -278,7 +293,7 @@ private:
 	/// </summary>
 	/// <param name="pPos">マップ配列要素数</param>
 	/// <returns>座標</returns>
-	Vector2 GetMapPos2Vector(const Vector2 pPos)const;			//マップの配列を座標に変換
+	Vector2 GetMapPos2Vector(const Vector2 pPos)const;
 #pragma endregion
 
 private:
@@ -290,7 +305,7 @@ private:
 	Vector2 dir_[static_cast<int>(Utility::DIR::MAX)];	//移動方向
 
 	bool isDrawPazzleManual_;			//パズルの操作説明を描画するかどうか
-	int manualFlash_;												//点滅用カウンタ
+	int manualFlash_;					//点滅用カウンタ
 
 	//IMG
 	int roomImg_[static_cast<int>(RoomBase::TYPE::MAX)];			//部屋

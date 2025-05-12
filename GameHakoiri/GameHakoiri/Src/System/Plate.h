@@ -5,6 +5,8 @@
 class Plate
 {
 public:
+	//’è”
+	static constexpr float FRAME_EX = 2.0f;
 
 	//ƒvƒŒ[ƒg‚Ìó‘Ô
 	enum class STATE

@@ -43,9 +43,6 @@ public:
 	virtual void Draw(GameScene::MODE mode);	//描画
 	virtual bool Release(void);					//解放
 
-protected:
-	virtual void SetParam(void);			//部屋ごとのパラメータ設定
-
 private:
 	void DrawPazzle(void);	//パズル
 	void DrawCursor(void);	//カーソル
@@ -397,8 +394,6 @@ private:
 	StageManager::DOOR door_;	//移動に使用するドアの位置
 	bool isSecondRoom_;			//長方形の二マス目に出たか
 	bool isGoal_;				//ゴールにたどり着いたか
-
-protected:
 
 	std::vector<std::vector<int>>::iterator pzlCsv_;	//パズル配置情報
 	Vector2 size_;							//パズルサイズ

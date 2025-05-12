@@ -102,7 +102,7 @@ void GameScene::Update(void)
 			auto& mng = SceneManager::GetInstance();
 			if (stage.IsClear())	//クリアしてたら
 			{
-				mng.ClearStage(mng.GetStageNum() - 1);	//フラグセット
+				mng.ClearStage(mng.GetStageNum());	//フラグセット
 				if (mng.CheckAllClear())
 				{
 					SoundManager::GetInstance().StopBgmOfStealth();

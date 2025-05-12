@@ -56,8 +56,6 @@ bool StageBase::Init(void)
 	SetIsSecondRoom(false);
 	SetIsGoal(false);
 
-	//各ステージによる設定
-	SetParam();
 	//パズル配置の読み込み
 	//LoadPazzle();
 	//画像読み込み
@@ -68,7 +66,7 @@ bool StageBase::Init(void)
 
 	goalPos_ = { 0,0 };
 
-	std::unique_ptr<RoomBase>createRoom;
+	std::unique_ptr<RoomBase>createRoom = nullptr;
 
 	for (int y = 0; y < size_.y; y++){
 		for (int x = 0; x < size_.x; x++){
@@ -332,7 +330,7 @@ void StageBase::DrawCursor(void)
 
 	if (roomMng_[roomKey_]->GetIsCursor()){
 		//枠の描画
-		DrawGraph(pzlPos_[roomKey_].x, pzlPos_[roomKey_].y,
+		DrawGraph(static_cast<int>(pzlPos_[roomKey_].x), static_cast<int>(pzlPos_[roomKey_].y),
 			frame_[static_cast<int>(type_)], true);
 	}
 }
@@ -368,12 +366,6 @@ bool StageBase::Release(void)
 	return true;
 }
 
-//ステージごとのパラメータ設定
-//********************************************************
-void StageBase::SetParam(void)
-{
-	//この関数は派生先ごとのものなので関係なし
-}
 //連想配列のキー生成
 //********************************************************
 void StageBase::CreateKey(int y, int x)
@@ -625,8 +617,9 @@ void StageBase::MoveRoom(const Vector2 after, const std::string prvKey)
 //********************************************************
 const Vector2 StageBase::MoveLeftOrRight(const StageManager::DOOR_X door)const
 {
-	if (door == StageManager::DOOR_X::LEFT) { return { -1,0 }; }	//一つ左に
-	if (door == StageManager::DOOR_X::RIGHT) { return { 1,0 }; }	//一つ右に
+	if (door == StageManager::DOOR_X::LEFT) { return Vector2{ -1,0 }; }	//一つ左に
+	if (door == StageManager::DOOR_X::RIGHT) { return Vector2{ 1,0 }; }	//一つ右に
+	return Vector2{ 0,0 };
 }
 //ドアの位置検索
 //********************************************************

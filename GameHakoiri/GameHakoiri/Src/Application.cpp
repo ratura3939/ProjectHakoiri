@@ -23,13 +23,15 @@ const std::string Application::PATH_BGM = "Data/Snd/Bgm/";
 //********************************************************
 Application::Application(void)
 {
-	
+	currentFrame_ = 0;
+	lastFrame_ = 0;
 }
 //コピーコンストラクタ
 //********************************************************
 Application::Application(const Application& ins)
 {
-
+	currentFrame_ = 0;
+	lastFrame_ = 0;
 }
 //デストラクタ
 //********************************************************
@@ -63,8 +65,7 @@ bool Application::Init(void)
 		return false;	//初期化失敗のためシステム終了
 	}
 
-	currentFrame_ = 0;
-	lastFrame_ = 0;
+	
 	//正しく処理が終了したので
 	return true;
 }

@@ -60,8 +60,8 @@ void EnemyBase::Draw(void)
 	//三角形（仮）
 
 
-	DrawRotaGraph(pos_.x - cameraPos.x,
-		pos_.y - cameraPos.y,
+	DrawRotaGraph(static_cast<int>(pos_.x - cameraPos.x),
+		static_cast<int>(pos_.y - cameraPos.y),
 		1.0f,
 		Utility::DEG2RAD,
 		img_[animIdx_],
@@ -262,8 +262,8 @@ void EnemyBase::DrawVision(Vector2F cameraPos)
 	//視界
 	Vector2F pos = GetCollisionPos();
 
-	DrawRotaGraph3(pos.x - cameraPos.x,
-		pos.y - cameraPos.y,
+	DrawRotaGraph3(static_cast<int>(pos.x - cameraPos.x),
+		static_cast<int>(pos.y - cameraPos.y),
 		VISION_SIZE_X / 2,
 		VISION_SIZE_Y,
 		1.0f,
